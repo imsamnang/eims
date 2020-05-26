@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers\Images;
+
+use App\Models\Students;
+use App\Helpers\ImageHelper;
+use App\Helpers\QRHelper;
+use App\Http\Controllers\Controller;
+use App\Models\App;
+use App\Models\CardFrames;
+use App\Models\Staff;
+use App\Models\StudentsRequest;
+use App\Models\StudentsStudyCourse;
+
+class ImagesController extends Controller
+{
+    protected $response;
+    public function __construct()
+    {
+        $this->response = response()->json(
+            array(
+                'success' => false,
+                'message'  => 'Bad URL timestamp'
+            )
+        );
+    }
+
+    public function index($param1 = null, $param2 = null, $param3 = null)
+    {
+
+         if (strtolower($param1) == Staff::$path['image']) {
+            $this->response = ImageHelper::getImage($param2, Staff::$path['image'], null, request('type'), request('w'), request('h'), request('q'));
+        } else if (strtolower($param1) == Students::$path['image']) {
+            if ($param2 == StudentsStudyCourse::$path['image']) {
+                $this->response = ImageHelper::getImageNoType($param3, Students::$path['image'] . '/' . StudentsStudyCourse::$path['image']);
+            } else if ($param2 == QRHelper::$path['image']) {
+                $this->response = ImageHelper::getImageNoType($param3, Students::$path['image'] . '/' . QRHelper::$path['image']);
+            } else if ($param2 == CardFrames::$path['image']) {
+                $this->response = ImageHelper::getImageNoType($param3, Students::$path['image'] . '/' . CardFrames::$path['image']);
+            } else if ($param2 == StudentsRequest::$path['image']) {
+                $this->response = ImageHelper::getImage($param3, Students::$path['image'] . '/' . StudentsRequest::$path['image']);
+            } else {
+                $this->response = ImageHelper::getImage($param2, Students::$path['image'], null, request('type'), request('w'), request('h'), request('q'));
+            }
+        } else if (strtolower($param1) == QRHelper::$path['image']) {
+            $this->response = ImageHelper::getImageNoType($param2, QRHelper::$path['image']);
+        } else if (strtolower($param1) == App::$path['image']) {
+            $this->response = ImageHelper::getImageNoType($param2, App::$path['image']);
+        } else if (strtolower($param1) == CardFrames::$path['image']) {
+            $this->response = ImageHelper::getImageNoType($param2, CardFrames::$path['image']);
+        } else {
+            $this->response = ImageHelper::getImage($param2, $param1, null, request('type'), request('w'), request('h'), request('q'));
+        }
+
+        return $this->response;
+    }
+}
