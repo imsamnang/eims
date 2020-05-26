@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6959b375ff71576d40f5a3b2f3fb687",
+    "content-hash": "82ac016402cd408a59b712775b5cbb4d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -107,6 +107,53 @@
                 "tls"
             ],
             "time": "2020-04-08T08:27:21+00:00"
+        },
+        {
+            "name": "dawood/phpscreenrecorder",
+            "version": "v1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/daudmalik06/PhpScreenRecorder.git",
+                "reference": "df9d03dbfed34bc779af98cd6bde016325c88f19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/daudmalik06/PhpScreenRecorder/zipball/df9d03dbfed34bc779af98cd6bde016325c88f19",
+                "reference": "df9d03dbfed34bc779af98cd6bde016325c88f19",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/process": ">=2.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "dawood\\PhpScreenRecorder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dawood Ikhlaq",
+                    "email": "daudmalik06@gmail.com"
+                }
+            ],
+            "description": "A slim PHP wrapper around ffmpeg to record screen,best for recording your acceptance test using selenium, easy to use and clean OOP interface",
+            "keywords": [
+                "chrome",
+                "php",
+                "recording",
+                "selenium",
+                "shell",
+                "video"
+            ],
+            "time": "2017-07-20T08:10:28+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
