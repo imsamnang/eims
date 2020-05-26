@@ -137,16 +137,6 @@
 
         @endforeach
         @endif
-
-
-
-
-        <div class="card">
-            @if ($student)
-            @php $response = $student; @endphp
-            @include(config("pages.parent").".includes.list.includes.body",$response)
-            @endif
-        </div>
     </div>
 
 </div>

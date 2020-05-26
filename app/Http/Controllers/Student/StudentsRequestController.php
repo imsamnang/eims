@@ -58,7 +58,7 @@ class StudentsRequestController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudentsRequest::getData(null, null, 10);
+                return StudentsRequest::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }

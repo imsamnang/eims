@@ -982,17 +982,21 @@ class StudentsStudyCourse extends Model
 
     public static function getStudy($student_id)
     {
-        $get =  StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+        $get =  StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsRequest())->getTable() . '.student_id')
             ->where((new StudentsRequest())->getTable() . '.student_id', $student_id)
             ->groupBy('study_course_session_id')
             ->get()->toArray();
+            
         $study_course_session_id = [];
         if ($get) {
             foreach ($get as $key => $row) {
                 $study_course_session_id[] = $row['study_course_session_id'];
             }
+            return StudyCourseSession::getData($study_course_session_id);
+        }else{
+            return StudyCourseSession::getData('null');
         }
-        return StudyCourseSession::getData($study_course_session_id);
+
     }
 }

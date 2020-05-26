@@ -87,7 +87,7 @@ _TOTAL_ ".Translator::phrase("entries"),
                                 {{Translator::phrase("status")}}
                             </th>
                             <th width=1 data-type="image" data-key="photo">{{Translator::phrase("photo")}}​</th>
-                            <th width=1 data-type="option" data-key="view,edit,delete">
+                            <th width=1 data-type="option" data-key="view,edit,approve">
                             </th>
 
                         </tr>
@@ -111,9 +111,14 @@ _TOTAL_ ".Translator::phrase("entries"),
                                 {{Translator::phrase("edit")}}
                             </a>
 
+                            <a data-toggle="modal" data-target="#modal" id="btn-option-approve" class="dropdown-item">
+                                <i class="fas fa-check-circle"></i>
+                                {{Translator::phrase("approve")}}
+                            </a>
+
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
+                            <a class="d-none dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                                 data-sweet-alert="confirm" data-sweet-id="" href="">
                                 <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
                         </div>

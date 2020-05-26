@@ -391,8 +391,6 @@ class StudentController extends Controller
 
         $data['study_course_session'] = null;
         if (Auth::user()->node_id) {
-            $data['student'] = Students::getData(Auth::user()->node_id, null);
-
             $student_study_course = StudentsStudyCourse::select((new StudentsStudyCourse())->getTable() . '.*')->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                 ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
                 ->where((new StudentsRequest())->getTable() . '.student_id', Auth::user()->node_id)
@@ -421,11 +419,12 @@ class StudentController extends Controller
     {
 
         $data['study_course_session'] = StudentsStudyCourse::getStudy(Auth::user()->node_id);
-        $data['course_routine'] = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+        $data['course_routine'] = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
             ->where((new StudentsRequest())->getTable() . '.student_id', Auth::user()->node_id)
             ->latest('study_course_session_id')
             ->first();
+
         if ($data['course_routine']) {
             request()->merge([
                 'course-sessionId' => request('course-sessionId', $data['course_routine']->study_course_session_id),

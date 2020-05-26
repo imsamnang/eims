@@ -20,13 +20,15 @@ class StudentsRequest extends Model
         'view'   => 'StudentsRequest'
     ];
 
-    public static function getData($id = null, $student_id = null, $paginate = null)
+    public static function getData($id = null, $student_id = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/'  . StudentsRequest::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/'  . StudentsRequest::$path['url'] . '/add?ref='.request('ref')),
             ),
         );
+
+       
 
 
 
@@ -148,14 +150,14 @@ class StudentsRequest extends Model
 
     public static function getDataTable()
     {
-        $model = StudentsRequest::select((new StudentsRequest())->getTable().'.*')
-        ->join((new Students())->getTable(),(new Students())->getTable().'.id',(new StudentsRequest())->getTable().'.student_id');
+        $model = StudentsRequest::select((new StudentsRequest())->getTable() . '.*')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id');
 
         return DataTables::eloquent($model)
             ->filter(function ($query) {
 
                 if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StudentsRequest())->getTable().'.institute_id', Auth::user()->institute_id);
+                    $query =  $query->where((new StudentsRequest())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
 
@@ -177,7 +179,7 @@ class StudentsRequest extends Model
                 $student = Students::where('id', $row['student_id'])->first()->toArray();
                 return [
                     'id'              => $row['id'],
-                    'name'                  => $student['first_name_km'] . ' ' . $student['last_name_km'].' - '.$student['first_name_en'] . ' ' . $student['last_name_en'],
+                    'name'                  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
                     'institute'            => Institute::getData($row['institute_id'])['data'][0],
                     'study_program'        => StudyPrograms::getData($row['study_program_id'])['data'][0],
                     'study_course'         => StudyCourse::getData($row['study_course_id'])['data'][0],
@@ -191,6 +193,7 @@ class StudentsRequest extends Model
                     'action'        => [
                         'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/edit/' . $row['id']),
                         'view'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/view/' . $row['id']),
+                        'approve'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/add?studRequestId=' . $row['id']),
                     ]
                 ];
             })

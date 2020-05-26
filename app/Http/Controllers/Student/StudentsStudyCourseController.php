@@ -48,7 +48,7 @@ class StudentsStudyCourseController extends Controller
 
         $data['study_course_session'] = StudyCourseSession::getData(request('course-sessionId'));
         $data['study_status']         = StudyStatus::getData(request('statusId', 'null'));
-        $data['student']              = StudentsRequest::getData('null');
+        $data['student']              = StudentsRequest::getData(request('studRequestId','null'));
         $data['formAction']           = '/add';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
         $data['title']                = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);

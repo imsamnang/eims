@@ -44,7 +44,7 @@
                     data-url="{{$student["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.student") }}" name="student[]"
-                    data-select-value="{{config("pages.form.data.node.id")}}"
+                    data-select-value="{{config("pages.form.data.node.id",request("studRequestId"))}}"
                     data-ajax="{{str_replace("add","list",$student["pages"]["form"]["action"]["add"])}}"
                     {{(array_key_exists("student[]",config("pages.form.validate.rules"))) ? "required" : ""}}>
                     @foreach($student["data"] as $o)
