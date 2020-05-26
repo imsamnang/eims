@@ -34,6 +34,8 @@ class FrontController extends Controller
     }
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
+        phpinfo();
+        dd();
         if(Auth::user()){
             JavaScriptFacade::put([
                 'User'  => [
