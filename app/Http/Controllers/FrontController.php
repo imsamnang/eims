@@ -34,7 +34,8 @@ class FrontController extends Controller
     }
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
-        if(Auth::user()){
+        dd();
+        if (Auth::user()) {
             JavaScriptFacade::put([
                 'User'  => [
                     'id'  => Auth::user()->id,
@@ -49,7 +50,7 @@ class FrontController extends Controller
         $data['formAction'] = null;
         $data['title']    = config('app.name');
         $data['view']     = 'Front.includes.home.index';
-        $data['sliders']  =  FeatureSlider::getData(null,10,true);
+        $data['sliders']  =  FeatureSlider::getData(null, 10, true);
         $data['sponsored'] = Sponsored::getData();
 
         if (strtolower($param1) == null) {
@@ -73,7 +74,7 @@ class FrontController extends Controller
             $data['study_program']  = StudyPrograms::getData();
             $data['study_course']   = StudyCourse::getData();
         } elseif (strtolower($param1) == 'news-even') {
-            $data['response']    =  ActivityFeed::getData(null,10);
+            $data['response']    =  ActivityFeed::getData(null, 10);
             $data['theme_color'] = ThemesColor::getData();
             $data['title']  = config('app.name') . ' | ' . Translator::phrase('news. & .even');
             $data['view']   = 'Front.includes.newsEven.index';
@@ -115,7 +116,6 @@ class FrontController extends Controller
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
-
     }
 
 
@@ -144,9 +144,9 @@ class FrontController extends Controller
 
     public function ajax()
     {
-        if(request()->method() == 'POST')
+        if (request()->method() == 'POST')
             $feed = ActivityFeed::getData();
-            if($feed['success'])
+        if ($feed['success'])
             return $feed;
     }
 }
