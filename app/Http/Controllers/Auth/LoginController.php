@@ -47,6 +47,7 @@ class LoginController extends Controller
 
     protected function authenticated($request, $user)
     {
+
         if ($user) {
             if ($request->redirect) {
                 return redirect($request->redirect);
@@ -54,10 +55,10 @@ class LoginController extends Controller
             return redirect(Users::role());
         }
     }
-  
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('login');
-    }
+
+    // public function logout()
+    // {
+    //     Auth::logout();
+    //     return redirect('login');
+    // }
 }

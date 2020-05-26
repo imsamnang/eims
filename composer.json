@@ -39,6 +39,7 @@
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
+        "laravel/dusk": "^6.2",
         "laravel/telescope": "^2.1",
         "laravel/ui": "^1.0",
         "mockery/mockery": "^1.0",

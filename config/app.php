@@ -172,7 +172,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\FractalServiceProvider::class,
-        
+
         /*
          * Package Service Providers...
          */
@@ -186,6 +186,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
 
 
 
