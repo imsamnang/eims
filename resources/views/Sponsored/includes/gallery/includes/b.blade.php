@@ -40,7 +40,7 @@
             @if ($response["success"])
                 @foreach ($response["data"] as $row)
                 <li>
-                    <img class="img-responsive" data-original="{{$row["image"]}}?type=original" data-src="{{$row["image"]}}?type=middle"
+                    <img class="img-responsive" data-original="{{$row["image"]}}?type=original" data-src="{{$row["image"]}}?type=large"
                         data-alt="{{$row["name"]}}">
                 </li>
                 @endforeach

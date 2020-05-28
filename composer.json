@@ -38,6 +38,7 @@
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
+        "fruitcake/laravel-telescope-toolbar": "^1.2",
         "fzaninotto/faker": "^1.4",
         "laravel/dusk": "^6.2",
         "laravel/telescope": "^2.1",

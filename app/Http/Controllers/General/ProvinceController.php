@@ -109,7 +109,6 @@ class ProvinceController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Provinces::getData(request('id'),null,25);
         $data['view']     = 'Cambodia.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.province');
         return $data;

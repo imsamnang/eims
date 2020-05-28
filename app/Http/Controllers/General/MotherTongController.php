@@ -111,7 +111,6 @@ class MotherTongController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  MotherTong::getData(null, null, 10);
         $data['view']     = MotherTong::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.mother_tong');
         return $data;

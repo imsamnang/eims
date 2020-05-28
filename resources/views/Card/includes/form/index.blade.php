@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase(config("pages.form.role").".".str_replace("-","_",config("pages.form.name"))) }}
+                            {{ Translator:: phrase(config("pages.form.role").".card") }}
                         </h5>
                     </div>
                     <div class="card-body p-0" >

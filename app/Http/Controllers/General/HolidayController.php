@@ -115,7 +115,6 @@ class HolidayController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Holidays::getData(null, null, 10);
         $data['view']     = Holidays::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.holiday');
         return $data;

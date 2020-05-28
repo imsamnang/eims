@@ -110,7 +110,6 @@ class DistrictController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Districts::getData(request('provinceId'),request('id'),null,10);
         $data['view']     = 'Cambodia.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.district');
         return $data;

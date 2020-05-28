@@ -130,7 +130,6 @@ class VillageController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Villages::getData(request('communeId'),request('id'),null,10);
         $data['view']     = 'Cambodia.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.village');
         return $data;

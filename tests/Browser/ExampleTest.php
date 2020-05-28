@@ -2,13 +2,14 @@
 
 namespace Tests\Browser;
 
-use App\Helpers\Translator;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use App\Helpers\Translator;
+use App\Helpers\ImageHelper;
 use App\Helpers\VideoHelper;
+use Illuminate\Support\Facades\Storage;
 use dawood\PhpScreenRecorder\ScreenRecorder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Facades\Storage;
 
 class ExampleTest extends DuskTestCase
 {
@@ -19,16 +20,20 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('http://127.0.0.1:8000/')
+        $folder = 'public/'.ImageHelper::$path['image'] . '/screenshot';
+        Storage::makeDirectory($folder);
+        $destinationPath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+
+        $this->browse(function (Browser $browser) use ($destinationPath) {
+            $browser->visit('/')
                 ->clickLink(Translator::phrase('login'))
                 ->assertSee(Translator::phrase('login'))
                 ->value('[name="email"]', 'keamsan.sem@gmail.com')
                 ->value('[name="password"]', '123456')
+                ->click('[for="remember"]')
                 ->click('button[type="submit"]')
-                ->assertSee(Translator::phrase('dashboard'));
-
-                $browser->driver->takeScreenshot(base_path('tests/Browser/screenshots/1.png'));
+                ->driver->takeScreenshot($destinationPath.'/'.ImageHelper::num_random().'.png');
         });
+
     }
 }

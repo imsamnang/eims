@@ -28,8 +28,12 @@
                 {{Translator::phrase("delete")}}
             </span>
         </a>
+        <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."gallery")}}" class="btn">
+            <i class="fas fa-image-polaroid m-0"></i>
+            <span class="d-none d-sm-inline">
+                {{Translator::phrase("gallery")}}
+            </span>
+        </a>
 
     </div>
-
-
 </div>

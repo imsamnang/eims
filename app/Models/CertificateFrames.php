@@ -66,8 +66,9 @@ class CertificateFrames extends Model
                     'id'            => $row['id'],
                     'type'          => $edit ? $row['type'] : Translator::phrase($row['type']),
                     'name'          => $row['name'],
-                    'front'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front'], 'original'),
-                    'background'    => ImageHelper::site(CertificateFrames::$path['image'], $row['background'], 'original'),
+                    'front'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front']),
+                    'front_o'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front'], 'original'),
+                    'background'    => ImageHelper::site(CertificateFrames::$path['image'], $row['background']),
                     'layout'        => $edit ? $row['layout'] : Translator::phrase($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
@@ -117,8 +118,9 @@ class CertificateFrames extends Model
                     'id'            => $row['id'],
                     'type'          => Translator::phrase($row['type']),
                     'name'          => $row['name'],
-                    'front'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front'], 'original'),
-                    'background'    => ImageHelper::site(CertificateFrames::$path['image'], $row['background'], 'original'),
+                    'front'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front']),
+                    'front_o'         => ImageHelper::site(CertificateFrames::$path['image'], $row['front'], 'original'),
+                    'background'    => ImageHelper::site(CertificateFrames::$path['image'], $row['background']),
                     'layout'        => Translator::phrase($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
@@ -166,6 +168,21 @@ class CertificateFrames extends Model
     public static function addToTable()
     {
 
+        if (!request()->hasFile('front')) {
+            return array(
+                'success'   => false,
+                'type'      => 'add',
+                'message'   => array(
+                    'title' => Translator::phrase('error'),
+                    'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
+                        . Translator::phrase('( .frame_front. ) .empty'),
+                    'button'   => array(
+                        'confirm' => Translator::phrase('ok'),
+                        'cancel'  => Translator::phrase('cancel'),
+                    ),
+                ),
+            );
+        }
         $response           = array();
         $validator          = Validator::make(request()->all(), FormCard::rulesField(), FormCard::customMessages(), FormCard::attributeField());
 
@@ -180,13 +197,7 @@ class CertificateFrames extends Model
 
                 $values['name']        = trim(request('name'));
                 $values['description'] = trim(request('description'));
-                $values['image']       = null;
 
-                if (config('app.languages')) {
-                    foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
-                    }
-                }
 
 
                 $add = CertificateFrames::insertGetId($values);
@@ -194,7 +205,7 @@ class CertificateFrames extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']));
+                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']),'front');
                     } else {
                         ImageHelper::uploadImage(false, CertificateFrames::$path['image'], CertificateFrames::$path['image'], public_path('/assets/img/icons/image.jpg'));
                     }
@@ -237,17 +248,11 @@ class CertificateFrames extends Model
                 $values['name']        = trim(request('name'));
                 $values['description'] = trim(request('description'));
 
-                if (config('app.languages')) {
-                    foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
-                    }
-                }
-
                 $update = CertificateFrames::where('id', $id)->update($values);
                 if ($update) {
-                    if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']));
+                    if (request()->hasFile('front')) {
+                        $image      = request()->file('front');
+                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']),'front');
                     }
                     $response       = array(
                         'success'   => true,
@@ -270,7 +275,7 @@ class CertificateFrames extends Model
         return $response;
     }
 
-    public static function updateImageToTable($id, $image)
+    public static function updateImageToTable($id, $image ,$column)
     {
         $response = array(
             'success'   => false,
@@ -279,7 +284,7 @@ class CertificateFrames extends Model
         if ($image) {
             try {
                 $update =  CertificateFrames::where('id', $id)->update([
-                    'image'    => $image,
+                    $column   => $image,
                 ]);
 
                 if ($update) {

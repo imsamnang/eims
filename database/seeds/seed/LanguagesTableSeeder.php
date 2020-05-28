@@ -19,7 +19,7 @@ class LanguagesTableSeeder extends Seeder
                 'code_name'     => 'en',
                 'en'            => 'English',
                 'km'            => 'អង់គ្លេស',
-                'image'         => 'en.svg',
+                'image'         => 'en.png',
              ],
              [
                 'name'          => 'khmer',
@@ -27,7 +27,7 @@ class LanguagesTableSeeder extends Seeder
                 'code_name'     => 'km',
                 'en'            => 'Khmer',
                 'km'            => 'ខ្មែរ',
-                'image'         => 'km.svg',
+                'image'         => 'km.png',
              ],
         ]);
     }

@@ -13,7 +13,7 @@ class CertificateHelper
 
         $certificate       = Session::get('certificate');
         $certificateFrame         = CertificateFrames::getData(CertificateFrames::where("status", 1)->first()->id, true)["data"][0];
-        $certificate_front = Session::has('certificate_front') ? (Session::get('certificate_front')) : $certificateFrame["front"];
+        $certificate_front = Session::has('certificate_front') ? (Session::get('certificate_front')) : $certificateFrame["front_o"];
         $certificate_back  = Session::has('certificate_back') ? (Session::get('certificate_back')) : $certificateFrame["background"];
         $layout     = ($certificate && $certificate["settings"]["layout"]) ? $certificate["settings"]["layout"] : $certificateFrame["layout"];
 

@@ -13,8 +13,8 @@ class CardHelper
 
         $card = Session::get('card');
         $cardFrame  = CardFrames::getData(CardFrames::where("status", 1)->first()->id, true)["data"][0];
-        $card_front = Session::has('card_front') ? (Session::get('card_front')) : $cardFrame["front"];
-        $card_back  = Session::has('card_back') ? (Session::get('card_back')) : $cardFrame["background"];
+        $card_front = Session::has('card_front') ? (Session::get('card_front')) : $cardFrame["front_o"];
+        $card_back  = Session::has('card_back') ? (Session::get('card_back')) : $cardFrame["background_o"];
         $layout     = ($card && $card["settings"]["layout"]) ? $card["settings"]["layout"] : $cardFrame["layout"];
 
         $allCards = array();

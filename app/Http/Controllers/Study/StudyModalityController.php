@@ -107,7 +107,6 @@ class StudyModalityController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyModality::getData(null, null, 10);
         $data['view']     = StudyModality::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Modality');
         return $data;

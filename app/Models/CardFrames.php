@@ -39,7 +39,6 @@ class CardFrames extends Model
             } else {
                 $orderBy = 'DESC';
             }
-
         }
         $get = CardFrames::orderBy('id', $orderBy);
 
@@ -69,7 +68,9 @@ class CardFrames extends Model
                     'type'          => $edit ? $row['type'] : Translator::phrase($row['type']),
                     'name'          => $row['name'],
                     'front'         => ImageHelper::site(CardFrames::$path['image'], $row['front']),
+                    'front_o'         => ImageHelper::site(CardFrames::$path['image'], $row['front'], 'original'),
                     'background'    => ImageHelper::site(CardFrames::$path['image'], $row['background']),
+                    'background_o'    => ImageHelper::site(CardFrames::$path['image'], $row['background'], 'original'),
                     'layout'        => $edit ? $row['layout'] : Translator::phrase($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
@@ -113,7 +114,7 @@ class CardFrames extends Model
         $model = CardFrames::query();
         $i = 1;
         return DataTables::eloquent($model)
-            ->setTransformer(function ($row){
+            ->setTransformer(function ($row) {
 
                 $row = $row->toArray();
                 return [
@@ -121,7 +122,9 @@ class CardFrames extends Model
                     'type'          => Translator::phrase($row['type']),
                     'name'          => $row['name'],
                     'front'         => ImageHelper::site(CardFrames::$path['image'], $row['front']),
+                    'front_o'         => ImageHelper::site(CardFrames::$path['image'], $row['front'], 'original'),
                     'background'    => ImageHelper::site(CardFrames::$path['image'], $row['background']),
+                    'background_o'    => ImageHelper::site(CardFrames::$path['image'], $row['background'], 'original'),
                     'layout'        => Translator::phrase($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
@@ -154,7 +157,7 @@ class CardFrames extends Model
                 return $query;
             })
             ->order(function ($query) {
-                if(request('order')){
+                if (request('order')) {
                     foreach (request('order') as $order) {
                         $col = request('columns')[$order['column']];
                         if ($col['data'] == 'id') {

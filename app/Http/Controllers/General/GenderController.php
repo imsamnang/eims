@@ -111,7 +111,6 @@ class GenderController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Gender::getData(null, null, 10);
         $data['view']     = Gender::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.gender');
         return $data;

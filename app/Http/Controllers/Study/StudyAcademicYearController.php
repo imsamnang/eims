@@ -111,7 +111,6 @@ class StudyAcademicYearController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyAcademicYears::getData(null, null, 10);
         $data['view']     = StudyAcademicYears::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Academic_Year');
         return $data;

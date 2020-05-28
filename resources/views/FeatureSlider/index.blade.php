@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{asset("/assets/css/spinner.css")}}" type="text/css">
     <link rel="stylesheet" href="{{asset("/assets/css/custom.css") }}" />
     <link rel="stylesheet" href="{{asset("/assets/css/icon.css") }}" />
+    <link rel="stylesheet" href="{{asset("/assets/vendor/viewerjs/dist/viewer.min.css")}}" />
 
     <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css")}}">
@@ -46,7 +47,7 @@
                 <div class="header-body">
                     <div class="row align-items-center py-4">
                         <div class="col-lg-6 col-7">
-                            <h6 class="h2 text-white d-inline-block mb-0">{{Translator::phrase("study")}} </h6>
+                            <h6 class="h2 text-white d-inline-block mb-0">{{Translator::phrase("settings")}} </h6>
                             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                     <li class="breadcrumb-item text-white"><i class="fas fa-home"></i></li>
@@ -102,10 +103,14 @@
     <script src="{{asset("/assets/vendor/dropzone/dist/min/dropzone.min.js")}}"></script>
 
     <script src="{{asset("/assets/vendor/list.js/dist/list.min.js")}}"></script>
+    <script src="{{asset("/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/validator.js")}}"></script>
     @if (app()->getLocale() !== "en")
     <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
+    <script
+        src="{{asset("/assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.".app()->getLocale().".min.js")}}">
+    </script>
     @endif
     <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
     <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>
@@ -117,6 +122,7 @@
     <script src="{{asset("/assets/vendor/autogrow/autogrow-ui.js")}}"></script>
     <script src="{{asset("/assets/vendor/pagination/simplePagination.js")}}"></script>
     <script src="{{asset("/assets/js/custom/main-content.js")}}"></script>
+    <script src="{{asset("/assets/vendor/viewerjs/dist/viewer.min.js")}}"></script>
     <script src="{{asset("/assets/js/custom/ajaxTableData.js")}}"></script>
 
     <script src="{{asset("/assets/vendor/datatables.net/js/jquery.dataTables.min.js")}}"></script>
@@ -129,4 +135,5 @@
     <script src="{{asset("/assets/vendor/datatables.net-select/js/dataTables.select.min.js")}}"></script>
 
     <script src="{{asset("/assets/js/argon.min.js?v=1.1.0")}}"></script>
+
     @endsection

@@ -111,7 +111,6 @@ class StudyStatusController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyStatus::getData(null, null, 10);
         $data['view']     = StudyStatus::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Status');
         return $data;

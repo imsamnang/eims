@@ -27,44 +27,48 @@
             width: 1000px;
             @endif
         }
-        header{
+
+        header {
             padding: 10px;
             color: white;
-            background: var(--app-color,blueviolet);
+            background: var(--app-color, blueviolet);
         }
-</style>
+    </style>
     @endsection
     @section("content")
-        <div class="paper A4 {{($certificates["settings"]  && $certificates["settings"]["layout"] =="vertical")? "landscape": ""}}">
-            <header class="sticky">
-                <h1 class="d-print-none">{{$certificates["frame"]["institute"]["name"]}}</h1>
+    <div
+        class="paper A4 {{($certificates["settings"]  && $certificates["settings"]["layout"] =="vertical")? "landscape": ""}}">
+        <header class="sticky">
+            <h1 class="d-print-none">{{$certificates["frame"]["institute"]["name"]}}</h1>
 
-                <div class="{{$certificates["success"] == false ? "d-none":""}}">
-                    <button class="btn-save btn d-print-none">
-                        <i class="fas fa-save"></i> {{Translator::phrase("save")}}
-                    </button>
+            <div class="{{$certificates["success"] == false ? "d-none":""}}">
+                <button class="btn-save btn d-print-none">
+                    <i class="fas fa-save"></i> {{Translator::phrase("save")}}
+                </button>
 
-                    <button class="btn-print btn btn-primary d-print-none">
-                        <i class="fas fa-print"></i>
-                        {{Translator::phrase("print")}} | (A4) {{$certificates["settings"]  && $certificates["settings"]["layout"] =="vertical"? Translator::phrase("landscape") : Translator::phrase("portrait")}}
-                    </button>
-                </div>
-            </header>
-
-            @if ($certificates["success"] == false)
-            <section class="sheet nodata">
-                <div class="nodata-text">{{Translator::phrase("no_data")}}</div>
-            </section>
-
-            @endif
-
-        </div>
-
-        <footer>
-            <div class="copyright d-print-none">
-                &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1" target="_blank">{{config('app.name')}}</a>
+                <button class="btn-print btn btn-primary d-print-none">
+                    <i class="fas fa-print"></i>
+                    {{Translator::phrase("print")}} | (A4)
+                    {{$certificates["settings"]  && $certificates["settings"]["layout"] =="vertical"? Translator::phrase("landscape") : Translator::phrase("portrait")}}
+                </button>
             </div>
-        </footer>
+        </header>
+
+        @if ($certificates["success"] == false)
+        <section class="sheet nodata">
+            <div class="nodata-text">{{Translator::phrase("no_data")}}</div>
+        </section>
+
+        @endif
+
+    </div>
+
+    <footer>
+        <div class="copyright d-print-none">
+            &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
+                target="_blank">{{config('app.name')}}</a>
+        </div>
+    </footer>
 
 
     @endsection
@@ -74,92 +78,110 @@
     <script src="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.js")}}"></script>
     <script>
         function b64toFile(dataURI) {
-            const byteString = atob(dataURI.split(',')[1]);
-            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            const blob = new Blob([ab],{
-                'type': mimeString
-            });
-            blob['lastModifiedDate'] = (new Date()).toISOString();
-            blob['name'] = 'file';
-            switch (blob.type) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], {
+            'type': mimeString
+        });
+        blob['lastModifiedDate'] = (new Date()).toISOString();
+        blob['name'] = 'file';
+        switch (blob.type) {
             case 'image/jpeg':
                 blob['name'] += '.jpg';
                 break;
             case 'image/png':
                 blob['name'] += '.png';
                 break;
-            }
-            return blob;
         }
-        var certificateId  = [];
-        var certificates = {!!json_encode($certificates["data"])!!};
-      var j = 1;
-    for(var i in certificates){
-            var id =  certificates[i].id;
-            var sheet = $("<section></section>");
-             sheet.attr({
-                id :id,
-                class : "sheet padding-10mm"
-            });
-            certificateId.push(id);
-            var container = $("<div></div>");
-                container.attr({
-              id: "stage-" + id,
-            });
+        return blob;
+    }
+    var certificateId = [];
+    var certificates = {!!json_encode($certificates["data"]) !!};
+    var j = 1;
+    for (var i in certificates) {
+        var id = certificates[i].id;
+        var sheet = $("<section></section>");
+        sheet.attr({
+            id: id,
+            class: "sheet padding-10mm"
+        });
+        certificateId.push(id);
+        var container = $("<div></div>");
+        container.attr({
+            id: "stage-" + id,
+        });
 
         $(".paper").append(sheet);
         $(".paper").find("section:last").append(container);
-        certificates[i] = Konva.Node.create(certificates[i], "stage-"+id);
+        certificates[i] = Konva.Node.create(certificates[i], "stage-" + id);
         certificates[i].find("Image").forEach(imageNode => {
-          var nativeImage = new Image();
-          nativeImage.onload = () => {
-            imageNode.image(nativeImage);
-            imageNode.getLayer().batchDraw();
-          };
-          nativeImage.src = imageNode.getAttr("source");
+            var nativeImage = new Image();
+            nativeImage.onload = () => {
+                imageNode.image(nativeImage);
+                imageNode.getLayer().batchDraw();
+            };
+            nativeImage.src = imageNode.getAttr("source");
         });
         j++;
     }
 
-    $(".btn-print").on("click",()=>{
-                window.print();
+    $(".btn-print").on("click", () => {
+        window.print();
     });
 
-    $(".btn-save").on("click",()=>{
-                    var formData = new FormData();
-                        formData.append("_token",$("meta[name='csrf-token']").attr('content'));
-                        for(var i in certificates){
-                            formData.append("certificates["+i+"][id]",certificateId[i]);
-                            formData.append("certificates["+i+"][image]",b64toFile(certificates[i].toDataURL({ pixelRatio: 3 })));
-                        }
+    $(".btn-save").on("click", () => {
+        var a = null;
+        var formData = new FormData();
+        formData.append("_token", $("meta[name='csrf-token']").attr('content'));
+        for (var i in certificates) {
+            formData.append("certificates[" + i + "][id]", certificateId[i]);
+            formData.append("certificates[" + i + "][image]", b64toFile(certificates[i].toDataURL({
+                pixelRatio: 3
+            })));
+        }
+        if (a) {
+            a.abort();
+        }
 
-
-                    $.ajax({
-                        url : location.href.replace("result","save"),
-                        method : "POST",
-                        data : formData,
-                        processData: false,
-                        contentType: false,
-                        success:function(response){
-                            if (response.success) {
-                                swal({
-                                    title: response.message.title,
-                                    text: response.message.text,
-                                    type: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonClass : "btn",
-                                    confirmButtonText: response.message.button.confirm,
-                                });
-                            }
-                        }
-                    })
-
+        a = $.ajax({
+            url: location.href.replace("result", "save"),
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal({
+                    title: 'Saving',
+                    showCloseButton: true,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        swal.showLoading();
+                    },
+                    onClose: () => {
+                        a.abort();
+                    }
                 });
+            },
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: response.message.title,
+                        text: response.message.text,
+                        type: "success",
+                        buttonsStyling: !1,
+                        confirmButtonClass: "btn",
+                        confirmButtonText: response.message.button.confirm,
+                    });
+                }
+            }
+        })
 
+    });
     </script>
     @endsection

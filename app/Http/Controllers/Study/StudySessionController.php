@@ -111,7 +111,6 @@ class StudySessionController extends Controller
 
     public function list($data)
     {
-        $data['response'] = StudySession::getData(null, null, 10);
         $data['view']     = StudySession::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Session');
         return $data;

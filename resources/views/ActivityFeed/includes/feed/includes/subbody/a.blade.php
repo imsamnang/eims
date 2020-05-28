@@ -30,7 +30,7 @@ $caption = $feed['post_message'];
     @if ($feed['media'])
         <div class="card-gallery" data-toggle="gallery-feed1">
             @foreach ($feed['media'] as $media)
-                <embed data-id="{{$media["id"]}}" data-type="{{$media["type"]}}" data-src="{{$media['source'] .(($media["type"] == "image") ? "?type=larg" : "")}}"  data-original="{{$media['source'].(($media["type"] == "image") ? "?type=original" : "")}}" />
+                <embed data-id="{{$media["id"]}}" data-type="{{$media["type"]}}" data-src="{{$media['source'] .(($media["type"] == "image") ? "?type=large" : "")}}"  data-original="{{$media['source'].(($media["type"] == "image") ? "?type=original" : "")}}" />
             @endforeach
         </div>
     @endif

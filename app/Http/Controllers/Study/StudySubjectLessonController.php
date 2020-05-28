@@ -120,7 +120,6 @@ class StudySubjectLessonController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudySubjectLesson::getData(null, null, 10);
         $data['view']     = StudySubjectLesson::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Subject_lesson');
         return $data;

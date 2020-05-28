@@ -31,9 +31,6 @@ class FormCertificate extends FormRequest
             'type'                          => 'required',
             'name'                          => 'required|string|min:5|max:200',
             'layout'                        => 'required',
-            'front'                         => 'required',
-            'background'                    => 'required',
-            'extra_info'                    => 'required',
         ];
     }
 
@@ -46,7 +43,6 @@ class FormCertificate extends FormRequest
             'layout'                        => Translator::phrase('layout'),
             'front'                         => Translator::phrase('frame_front'),
             'background'                    => Translator::phrase('frame_background'),
-            'extra_info'                    => Translator::phrase('extra_info'),
 
         ];
     }

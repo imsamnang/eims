@@ -108,7 +108,6 @@ class AttendanceTypeController extends Controller
 
     public function list($data)
     {
-        $data['response'] = AttendancesType::getData(null, null, 10);
         $data['view']     = AttendancesType::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Attendance_Type');
         return $data;

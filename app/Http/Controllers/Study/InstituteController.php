@@ -109,7 +109,6 @@ class InstituteController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Institute::getData(null, null, 10);
         $data['view']     = Institute::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Institute');
         return $data;

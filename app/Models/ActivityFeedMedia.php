@@ -35,14 +35,13 @@ class ActivityFeedMedia extends Model
                     'poster'        => $row['poster'],
                 );
 
-                if($row['type'] == 'image'){
+                if ($row['type'] == 'image') {
                     $data[$key]['source'] = ImageHelper::site(ActivityFeed::$path['image'], $row['source']);
-                }elseif($row['type'] == 'video'){
+                } elseif ($row['type'] == 'video') {
                     $data[$key]['source'] =  VideoHelper::site(ActivityFeed::$path['video'], $row['source']);
-                   // $data[$key]['source'] =  Storage::disk('local')->get(VideoHelper::$path['video'].'/'.ActivityFeed::$path['video'].'/'. $row['source']);
+                    // $data[$key]['source'] =  Storage::disk('local')->get(VideoHelper::$path['video'].'/'.ActivityFeed::$path['video'].'/'. $row['source']);
 
                 }
-
             }
 
             $response       = array(
@@ -70,7 +69,7 @@ class ActivityFeedMedia extends Model
         if ($activity_feed_id) {
             if (request('media_files')) {
                 foreach (request('media_files') as $media) {
-                    if($media){
+                    if ($media) {
                         $media =  json_decode($media);
                         $add = ActivityFeedMedia::insertGetId([
                             'activity_feed_id' => $activity_feed_id,
@@ -86,7 +85,6 @@ class ActivityFeedMedia extends Model
                                 'message'   => Translator::phrase('upload.successfully'),
                             ];
                         }
-
                     }
                 }
             }
@@ -95,11 +93,11 @@ class ActivityFeedMedia extends Model
                 $data = [];
                 foreach (request()->file('media') as $media) {
 
-                    if(preg_match("/image\/*/", strtolower($media->getMimeType()))){
+                    if (preg_match("/image\/*/", strtolower($media->getMimeType()))) {
                         $upload = ImageHelper::uploadImage($media, ActivityFeed::$path['image']);
                         $type   = 'image';
                         $source = ImageHelper::site(ActivityFeed::$path['image'], $upload);
-                    }elseif(preg_match("/video\/*/", strtolower($media->getMimeType()))){
+                    } elseif (preg_match("/video\/*/", strtolower($media->getMimeType()))) {
                         $upload = VideoHelper::uploadVideo($media, ActivityFeed::$path['video']);
                         $type   = 'video';
                         $source = VideoHelper::site(ActivityFeed::$path['video'], $upload);

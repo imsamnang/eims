@@ -111,7 +111,6 @@ class MaritalController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Marital::getData(null, null, 10);
         $data['view']     = Marital::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.marital');
         return $data;

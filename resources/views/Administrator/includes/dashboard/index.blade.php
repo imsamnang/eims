@@ -16,7 +16,7 @@
 
     <div class="col-xl-4">
         @if (Internet::conneted())
-        <div class="card" data-toggle="weather">
+        <div class="card d-none" data-toggle="weather">
             <div class="card-header">
                 <div class="city-title ">
                     <span id="location"> </span>

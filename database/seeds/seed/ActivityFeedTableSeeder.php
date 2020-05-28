@@ -2,8 +2,6 @@
 
 use App\Models\ActivityFeed;
 use App\Models\ActivityFeedMedia;
-use App\Models\Students;
-use App\Models\StudentsGuardians;
 use Illuminate\Database\Seeder;
 
 class ActivityFeedTableSeeder extends Seeder

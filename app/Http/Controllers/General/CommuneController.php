@@ -114,7 +114,6 @@ class CommuneController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Communes::getData(request('districtId'), request('id'), null, true);
         $data['view']     = 'Cambodia.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.commune');
         return $data;

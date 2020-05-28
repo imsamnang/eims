@@ -76,97 +76,116 @@
     <script src="{{asset("/assets/vendor/jquery/dist/jquery.min.js")}}"></script>
     <script src="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.js")}}"></script>
     <script>
-        function b64toFile(dataURI) {
-            const byteString = atob(dataURI.split(',')[1]);
-            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-            const blob = new Blob([ab],{
-                'type': mimeString
-            });
-            blob['lastModifiedDate'] = (new Date()).toISOString();
-            blob['name'] = 'file';
-            switch (blob.type) {
+       function b64toFile(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], {
+            'type': mimeString
+        });
+        blob['lastModifiedDate'] = (new Date()).toISOString();
+        blob['name'] = 'file';
+        switch (blob.type) {
             case 'image/jpeg':
                 blob['name'] += '.jpg';
                 break;
             case 'image/png':
                 blob['name'] += '.png';
                 break;
-            }
-            return blob;
         }
-        var cardId  = [];
-        var cards = {!!json_encode($cards["data"])!!};
-      var j = 1;
-    for(var i in cards){
-            var id =  cards[i].id;
-            var sheet = $("<section></section>");
-             sheet.attr({
-                id :id,
-                class : "sheet padding-10mm"
-            });
-            cardId.push(id);
-            var container = $("<div></div>");
-                container.attr({
-              id: "stage-" + id,
-            });
+        return blob;
+    }
+    var cardId = [];
+    var cards = {!!json_encode($cards["data"]) !!};
+    var j = 1;
+    for (var i in cards) {
+        var id = cards[i].id;
+        var sheet = $("<section></section>");
+        sheet.attr({
+            id: id,
+            class: "sheet padding-10mm"
+        });
+        cardId.push(id);
+        var container = $("<div></div>");
+        container.attr({
+            id: "stage-" + id,
+        });
 
-        if(j == 1){
-          $(".paper").append(sheet);
-        }else if(j == 4){
+        if (j == 1) {
+            $(".paper").append(sheet);
+        } else if (j == 4) {
             j = 0;
         }
         $(".paper").find("section:last").append(container);
-        cards[i] = Konva.Node.create(cards[i], "stage-"+id);
+        cards[i] = Konva.Node.create(cards[i], "stage-" + id);
         cards[i].find("Image").forEach(imageNode => {
-          var nativeImage = new Image();
-          nativeImage.onload = () => {
-            imageNode.image(nativeImage);
-            imageNode.getLayer().batchDraw();
-          };
-          nativeImage.src = imageNode.getAttr("source");
+            var nativeImage = new Image();
+            nativeImage.onload = () => {
+                imageNode.image(nativeImage);
+                imageNode.getLayer().batchDraw();
+            };
+            nativeImage.src = imageNode.getAttr("source");
         });
         j++;
     }
 
-    $(".btn-print").on("click",()=>{
-                window.print();
+    $(".btn-print").on("click", () => {
+        window.print();
     });
 
-    $(".btn-save").on("click",()=>{
-                    var formData = new FormData();
-                        formData.append("_token",$("meta[name='csrf-token']").attr('content'));
-                        for(var i in cards){
-                            formData.append("cards["+i+"][id]",cardId[i]);
-                            formData.append("cards["+i+"][image]",b64toFile(cards[i].toDataURL({ pixelRatio: 3 })));
-                        }
+    $(".btn-save").on("click", () => {
+        var a = null;
+        var formData = new FormData();
+        formData.append("_token", $("meta[name='csrf-token']").attr('content'));
+        for (var i in cards) {
+            formData.append("cards[" + i + "][id]", cardId[i]);
+            formData.append("cards[" + i + "][image]", b64toFile(cards[i].toDataURL({
+                pixelRatio: 3
+            })));
+        }
+        if (a) {
+            a.abort();
+        }
 
-
-                    $.ajax({
-                        url : location.href.replace("result","save"),
-                        method : "POST",
-                        data : formData,
-                        processData: false,
-                        contentType: false,
-                        success:function(response){
-                            if (response.success) {
-                                swal({
-                                    title: response.message.title,
-                                    text: response.message.text,
-                                    type: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonClass : "btn",
-                                    confirmButtonText: response.message.button.confirm,
-                                });
-                            }
-                        }
-                    })
-
+        a = $.ajax({
+            url: location.href.replace("result", "save"),
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                swal({
+                    title: 'Saving',
+                    showCloseButton: true,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        swal.showLoading();
+                    },
+                    onClose: () => {
+                        a.abort();
+                    }
                 });
+            },
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: response.message.title,
+                        text: response.message.text,
+                        type: "success",
+                        buttonsStyling: !1,
+                        confirmButtonClass: "btn",
+                        confirmButtonText: response.message.button.confirm,
+                    });
+                }
+            }
+        })
+
+    });
 
     </script>
     @endsection

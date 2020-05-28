@@ -68,14 +68,12 @@ class FeatureSlider extends Model
         if ($get) {
 
             foreach ($get as $key => $row) {
-
                 $data[$key]         = array(
                     'id'            => $row['id'],
                     'title'         => $row['title'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
-                    'status'        => $key == 0 ? 'active' : '',
+                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),                    'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
                         'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
@@ -145,7 +143,7 @@ class FeatureSlider extends Model
                 return $query;
             })
             ->order(function ($query) {
-                if(request('order')){
+                if (request('order')) {
                     foreach (request('order') as $order) {
                         $col = request('columns')[$order['column']];
                         if ($col['data'] == 'id') {
@@ -198,7 +196,7 @@ class FeatureSlider extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::$path['image']));
+                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null,null, true));
                     }
 
                     $response       = array(
@@ -244,7 +242,7 @@ class FeatureSlider extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::$path['image']));
+                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null,null, true));
                     }
                     $response       = array(
                         'success'   => true,

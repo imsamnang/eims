@@ -111,7 +111,6 @@ class NationalityController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Nationality::getData(null, null, 10);
         $data['view']     =  Nationality::$path['view'] . '.includes.list.index';
         $data['title']    =  Translator::phrase(Users::role(app()->getLocale()) . '. | .list.nationality');
         return $data;

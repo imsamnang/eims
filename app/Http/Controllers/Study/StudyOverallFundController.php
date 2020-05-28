@@ -107,7 +107,6 @@ class StudyOverallFundController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyOverallFund::getData(null, null, 10);
         $data['view']     = StudyOverallFund::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Overall_Fund');
         return $data;

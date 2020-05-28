@@ -7,7 +7,6 @@ use App\Models\Days;
 use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Languages;
-use App\Models\StudyTime;
 use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
@@ -139,7 +138,6 @@ class StudyCourseScheduleController extends Controller
 
     public function list($data, $param1)
     {
-        $data['response'] = StudyCourseSchedule::getData(null , null, 10);
         $data['view']     = StudyCourseSchedule::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course_Schedule' . '.' . $param1);
         return $data;

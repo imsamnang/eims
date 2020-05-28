@@ -28,6 +28,7 @@ class CourseTypes extends Model
         );
 
         $data = array();
+        $orderBy = 'DESC';
         if ($id) {
             $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
             $sorted = array_values($id);

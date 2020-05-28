@@ -45,11 +45,8 @@ class CourseTypeController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return CourseTypes::addToTable();
-                }
+            if (request()->method() === 'POST') {
+                return CourseTypes::addToTable();
             }
 
             $data = $this->add($data);
@@ -107,7 +104,6 @@ class CourseTypeController extends Controller
 
     public function list($data)
     {
-        $data['response'] = CourseTypes::getData(null, null, 10);
         $data['view']     = CourseTypes::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Course_Type');
         return $data;

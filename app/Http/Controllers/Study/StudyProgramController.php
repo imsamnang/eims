@@ -111,7 +111,6 @@ class StudyProgramController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyPrograms::getData(null, null, 10);
         $data['view']     = StudyPrograms::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Program');
         return $data;

@@ -112,7 +112,6 @@ class MonthController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Months::getData(null, null, 10);
         $data['view']     = Months::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.month');
         return $data;

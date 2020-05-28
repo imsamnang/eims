@@ -19,7 +19,7 @@ class ThemeBackground extends Model
         'view'   => 'ThemeBackground'
     ];
 
-    public static function getData($id = null, $paginate = null, $random = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $random = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -91,8 +91,15 @@ class ThemeBackground extends Model
                     'name'   => $data[$key]['name'],
                     'image'  => $data[$key]['image'],
                     'action' => $data[$key]['action'],
-
                 );
+                if ($edit) {
+                    $data[$key]['name'] =  $row['name'];
+                    if (config('app.languages')) {
+                        foreach (config('app.languages') as $lang) {
+                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
+                        }
+                    }
+                }
             }
 
             $response       = array(
@@ -189,7 +196,11 @@ class ThemeBackground extends Model
                     ),
                 ),
             );
+        } else {
+            $image      = request()->file('image');
+            dd($image);
         }
+
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

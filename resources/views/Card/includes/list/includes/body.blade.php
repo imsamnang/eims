@@ -96,7 +96,7 @@ _TOTAL_ ".Translator::phrase("entries"),
                                 data-confirm-button-text="{{Translator::phrase("set")}}"
                                 data-cancel-button-text="{{Translator::phrase("cancel")}}"
                                 data-text-select="{{ Translator::phrase("select") }}"
-                                data-text-selected="{{ Translator::phrase("selected") }}" data-image="front,background"
+                                data-text-selected="{{ Translator::phrase("selected") }}" data-image="front_o,background_o"
                                 data-link="" class="dropdown-item">
                                 <i class="fas fa-check-square"></i>
                                 {{Translator::phrase("set.as.default")}}

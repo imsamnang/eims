@@ -111,7 +111,6 @@ class StudyGradeController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyGrade::getData(null, null, 10);
         $data['view']     = StudyGrade::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Class');
         return $data;

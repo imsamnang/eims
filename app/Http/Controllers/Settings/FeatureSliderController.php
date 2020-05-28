@@ -25,6 +25,7 @@ class FeatureSliderController extends Controller
     }
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+
         $data['institute'] = Institute::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),

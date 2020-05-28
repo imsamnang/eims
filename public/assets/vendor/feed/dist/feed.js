@@ -580,7 +580,7 @@ var app = {
                 if (post.media) {
                     template += '<div class="card-gallery" data-toggle="gallery-feed1">';
                     $.each(post.media, function(i, im) {
-                        template += '<embed data-id="' + im.id + '" data-type="' + im.type + '" data-src="' + im.source + (im.type == "image" ? "?type=larg" : "") + '"  data-original="' + im.source + (im.type == "image" ? "?type=original" : "") + '" />';
+                        template += '<embed data-id="' + im.id + '" data-type="' + im.type + '" data-src="' + im.source + (im.type == "image" ? "?type=large" : "") + '"  data-original="' + im.source + (im.type == "image" ? "?type=original" : "") + '" />';
                     });
 
                     template += "</div>";

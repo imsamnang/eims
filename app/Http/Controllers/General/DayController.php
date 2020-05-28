@@ -111,7 +111,7 @@ class DayController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Days::getData(null, null, 7);
+      
         $data['view']     = Days::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.day');
         return $data;

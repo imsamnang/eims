@@ -44,7 +44,7 @@
                     @foreach (config('app.languages') as $lang)
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="{{$lang["code_name"]}}">
-                            {{ Translator:: phrase("theme_background".".as.".$lang["translate_name"]) }}
+                            {{ Translator:: phrase("as.".$lang["code_name"]) }}
 
                             @if(array_key_exists($lang["code_name"],config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -54,7 +54,7 @@
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
-                            placeholder="{{ Translator::phrase("theme_background".".as.".$lang["translate_name"]) }}"
+                            placeholder="{{ Translator::phrase("theme_background.as.".$lang["code_name"]) }}"
                             value="{{config("pages.form.data.".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
@@ -125,7 +125,7 @@
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
                                     <img class="dz-preview-img"
-                                        data-src="{{config("pages.form.data.image")}}?type=slide" alt data-dz-thumbnail>
+                                        data-src="{{config("pages.form.data.image")}}" alt data-dz-thumbnail>
                                 </div>
                             </div>
                         </div>

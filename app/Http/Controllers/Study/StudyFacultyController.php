@@ -112,7 +112,6 @@ class StudyFacultyController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudyFaculty::getData(null, null, 10);
         $data['view']     = StudyFaculty::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Faculty');
         return $data;

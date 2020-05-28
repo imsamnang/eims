@@ -147,8 +147,6 @@ class StudyCourseController extends Controller
         } elseif ($param1 == "long") {
             request()->merge(["typeId" => 2]);
         }
-
-        $data['response'] = StudyCourse::getData(null, null, 10);
         $data['view']     = StudyCourse::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course' . '.' . $param1);
         return $data;

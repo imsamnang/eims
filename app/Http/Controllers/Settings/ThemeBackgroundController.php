@@ -29,13 +29,13 @@ class ThemeBackgroundController extends Controller
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName'] = App::$path['url'].'/'.ThemeBackground::$path['url'];
+        $data['formName'] = App::$path['url'] . '/' . ThemeBackground::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
-            if(strtolower(request()->server('CONTENT_TYPE')) == 'application/json'){
-                return ThemeBackground::getData(null,null,10);
-            }else{
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return ThemeBackground::getData(null, null, 10);
+            } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
@@ -45,14 +45,14 @@ class ThemeBackgroundController extends Controller
                 $data = $this->list($data, $param1);
             }
         } elseif ($param1 == 'gallery') {
-            if(strtolower(request()->server('CONTENT_TYPE')) == 'application/json'){
-                return ThemeBackground::getData(null,null,10);
-            }else{
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return ThemeBackground::getData(null, null, 10);
+            } else {
                 $data = $this->gallery($data);
             }
         } elseif ($param1 == 'add') {
             if (request()->method() === 'POST') {
-                 return ThemeBackground::addToTable();
+                return ThemeBackground::addToTable();
             }
             $data = $this->add($data);
         } elseif ($param1 == 'edit') {
@@ -60,19 +60,19 @@ class ThemeBackgroundController extends Controller
             if (request()->method() === 'POST') {
                 return ThemeBackground::updateToTable($id);
             }
-            $data = $this->show($data, $id,$param1);
+            $data = $this->show($data, $id, $param1);
         } elseif ($param1 == 'set') {
             return ThemeBackground::setToTable($param2);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
 
-            $data = $this->show($data, $id,$param1);
+            $data = $this->show($data, $id, $param1);
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return ThemeBackground::deleteFromTable($id);
-        }else{
+        } else {
             abort(404);
         }
 
@@ -98,7 +98,7 @@ class ThemeBackgroundController extends Controller
             'parent'     => ThemeBackground::$path['view'],
             'view'       => $data['view'],
         );
-         $pages['form']['validate'] = [
+        $pages['form']['validate'] = [
             'rules'       =>  FormThemeBackground::rulesField(),
             'attributes'  =>  FormThemeBackground::attributeField(),
             'messages'    =>  FormThemeBackground::customMessages(),
@@ -112,7 +112,7 @@ class ThemeBackgroundController extends Controller
 
     public function list($data)
     {
-        $data['response'] = ThemeBackground::getData(null,10);
+        $data['response'] = ThemeBackground::getData(null, null, 10);
         $data['view']     = ThemeBackground::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.theme_background');
         return $data;
@@ -135,16 +135,16 @@ class ThemeBackgroundController extends Controller
         return $data;
     }
 
-    public function show($data, $id,$type)
+    public function show($data, $id, $type)
     {
-        $response           = ThemeBackground::getData($id);
+        $response           = ThemeBackground::getData($id, true);
         $data['view']       = ThemeBackground::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .'.$type.'.theme_background');
-        $data['metaImage']  = asset('assets/img/icons/'.$type.'.png');
-        $data['metaLink']   = url(Users::role() . '/'.$type.'/' . $id);
+        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.theme_background');
+        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
+        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/'.$type.'/' .$id;
+        $data['formAction'] = '/' . $type . '/' . $id;
         $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
         return $data;
     }

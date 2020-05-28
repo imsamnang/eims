@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
             DistrictsTableSeeder::class,
             CommunesTableSeeder::class,
             VillagesTableSeeder::class,
-            ActivityFeedTableSeeder::class,
+            //ActivityFeedTableSeeder::class,
             QuizQuestionTypeTableSeeder::class,
             QuizTableSeeder::class,
             QuizAnswerTypeTableSeeder::class,

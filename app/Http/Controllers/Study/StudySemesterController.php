@@ -112,7 +112,6 @@ class StudySemesterController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StudySemesters::getData(null, null, 10);
         $data['view']     = StudySemesters::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Semester');
         return $data;

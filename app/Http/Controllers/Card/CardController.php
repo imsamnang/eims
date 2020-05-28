@@ -39,7 +39,7 @@ class CardController extends Controller
             'background' => asset('/assets/img/card/background.png'),
         );
         $data['formAction']      = '/add';
-        $data['formName']        = CardFrames::$path['url'];
+        $data['formName']        = Students::$path['url'] . '/' . CardFrames::$path['url'];
         $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
@@ -53,7 +53,7 @@ class CardController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if(request()->method() == 'POST'){
+            if (request()->method() == 'POST') {
                 return CardFrames::addToTable();
             }
             $data = $this->add($data);
@@ -64,7 +64,11 @@ class CardController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'edit') {
-            if ($param2) {
+            $id = request('id', $param2);
+            if ($id) {
+                if (request()->method() == "POST") {
+                    return CardFrames::updateToTable($id);
+                }
                 $data = $this->edit($data, $param2);
             } else {
                 $data = $this->list($data);
@@ -102,7 +106,6 @@ class CardController extends Controller
                 }
             }
             $data = $this->make($data, $param3);
-
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
@@ -119,6 +122,7 @@ class CardController extends Controller
             );
             config()->set('app.title', $d['title']);
             $d['cards'] = CardHelper::make($param3);
+          
             return view('Card.includes.result.index', $d);
         } else {
             abort(404);
@@ -147,7 +151,7 @@ class CardController extends Controller
             'view'       => $data['view'],
         );
 
-         $pages['form']['validate'] = [
+        $pages['form']['validate'] = [
             'rules'       =>  FormCard::rulesField(),
             'attributes'  =>  FormCard::attributeField(),
             'messages'    =>  FormCard::customMessages(),
@@ -170,7 +174,7 @@ class CardController extends Controller
     public function add($data)
     {
         $data['view']  = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.card' );
+        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.card');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
 
@@ -180,7 +184,7 @@ class CardController extends Controller
     public function view($data, $id)
     {
         $response = CardFrames::getData($id, true);
-        $data['view']       = CardFrames::$path['view'] . '.includes.form.index';
+        $data['view']       = CardFrames::$path['view'] . '.includes.view.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.card');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
@@ -208,7 +212,9 @@ class CardController extends Controller
         $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
         $data['view']  = CardFrames::$path['view'] . '.includes.make.index';
         $data['cards']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];
-        $data['response']        =  CardFrames::getData();
+        $data['cards']['frame']['front'] = $data['cards']['frame']['front_o'];
+        $data['cards']['frame']['background'] = $data['cards']['frame']['background_o'];
+
         $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');
 
