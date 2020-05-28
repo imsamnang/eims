@@ -73,7 +73,12 @@
                             if (type == "success") {}
                         });
                     }
-
+                    if($('[data-toggle="datatable-ajax"]').length){
+                        $('[data-toggle="datatable-ajax"]').each(function () {
+                            var t = $(this).DataTable();
+                                t.ajax.reload();
+                        });
+                    }
                     swal({
                         showCloseButton: false,
                         title: response.message.title,

@@ -198,7 +198,21 @@ class ThemeBackground extends Model
             );
         } else {
             $image      = request()->file('image');
-            dd($image);
+            if (!in_array($image->getMimeType(), ImageHelper::$path['mime'])) {
+                return array(
+                    'success'   => false,
+                    'type'      => 'add',
+                    'message'   => array(
+                        'title' => Translator::phrase('error'),
+                        'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
+                            . Translator::phrase('( .image. ) .allow. ').' ( '.str_replace('image/','',implode(',',ImageHelper::$path['mime'])) .' )',
+                        'button'   => array(
+                            'confirm' => Translator::phrase('ok'),
+                            'cancel'  => Translator::phrase('cancel'),
+                        ),
+                    ),
+                );
+            }
         }
 
         if ($validator->fails()) {
