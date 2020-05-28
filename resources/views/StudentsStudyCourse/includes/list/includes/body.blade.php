@@ -44,15 +44,17 @@ _TOTAL_ ".Translator::phrase("entries"),
 
         <div class="card-body p-0">
             <div class="table-responsive py-4">
-            <table data-url="{{request()->url()}}-datatable{{config("pages.search")}}" class="table table-flush" data-toggle="datatable-ajax"
-                    data-i18n='{!!json_encode($i18n)!!}'>
+                <table
+                    data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
+                    class="table table-flush" data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
                     <thead class="thead-light">
                         <tr>
                             <th data-type="checkbox" data-key="null" width="1">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                         data-checked-controls="table-checked"
-                                        data-checked-show-controls='["view","edit","photo","qrcode","card","certificate","delete"]' type="checkbox">
+                                        data-checked-show-controls='["view","edit","photo","qrcode","card","certificate","delete"]'
+                                        type="checkbox">
                                     <label class="custom-control-label" for="table-check-all"></label>
                                 </div>
                             </th>
@@ -65,13 +67,15 @@ _TOTAL_ ".Translator::phrase("entries"),
                             <th width=1 data-type="text" data-key="study_course_session.name">
                                 {{Translator::phrase("course")}}​
                             </th>
-                            <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green" data-key="account">
+                            <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green"
+                                data-key="account">
                                 {{Translator::phrase("account")}}​
                             </th>
                             {{-- <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green" data-key="qrcode">
                                 {{Translator::phrase("qrcode")}}​
                             </th>
-                            <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green" data-key="card">
+                            <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green"
+                                data-key="card">
                                 {{Translator::phrase("card")}}​
                             </th> --}}
                             <th width=1 data-type="image" data-key="photo">{{Translator::phrase("photo")}}​</th>

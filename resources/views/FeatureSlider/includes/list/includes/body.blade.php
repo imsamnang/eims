@@ -44,8 +44,9 @@ _TOTAL_ ".Translator::phrase("entries"),
 
         <div class="card-body p-0">
             <div class="table-responsive py-4">
-                <table data-url="{{request()->url()}}-datatable{{config("pages.search")}}" class="table table-flush"
-                    data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
+                <table
+                    data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
+                    class="table table-flush" data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
                     <thead class="thead-light">
                         <tr>
                             <th data-type="checkbox" data-key="null" width="1">
@@ -58,11 +59,12 @@ _TOTAL_ ".Translator::phrase("entries"),
                             </th>
                             <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                                 {{Translator::phrase("numbering")}}​</th>
-                                <th data-type="text" data-key="title" class="sort" data-sort="name">
-                                    {{Translator::phrase("title")}}​</th>
-                                <th data-type="text" data-key="institute.short_name">{{Translator::phrase("institute")}}​</th>
-                                <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
-                                <th data-type="image" data-key="image">{{Translator::phrase("feature")}}​</th>
+                            <th data-type="text" data-key="title" class="sort" data-sort="name">
+                                {{Translator::phrase("title")}}​</th>
+                            <th data-type="text" data-key="institute.short_name">{{Translator::phrase("institute")}}​
+                            </th>
+                            <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
+                            <th data-type="image" data-key="image">{{Translator::phrase("feature")}}​</th>
                             <th width=1 data-type="option" data-key="view,edit,delete"></th>
 
                         </tr>

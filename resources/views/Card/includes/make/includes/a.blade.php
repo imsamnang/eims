@@ -22,15 +22,16 @@
             {{Translator::phrase("layout")}}
         </button>
         <div class="dropdown" data-close="false">
-            <a class="btn btn-outline-primary " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn btn-outline-primary " href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
                 <i class="fad fa-cog"></i>
                 <span class="caret"></span>
             </a>
             <div class="p-2 dropdown-menu dropdown-menu-lg dropdown-menu-right dropdown-menu-arrow">
                 @foreach ($cards["all"] as $key => $item)
                 <div class="custom-control custom-checkbox">
-                    <input {{array_key_exists($key,$cards["selected"]) ? "checked" : "" }} value="{{$key}}" type="checkbox"
-                        class="custom-control-input card-value-check" id="customCheck-{{$key}}">
+                    <input {{array_key_exists($key,$cards["selected"]) ? "checked" : "" }} value="{{$key}}"
+                        type="checkbox" class="custom-control-input card-value-check" id="customCheck-{{$key}}">
                     <label class="custom-control-label" for="customCheck-{{$key}}">{{$item}}</label>
                 </div>
                 @endforeach
@@ -38,31 +39,32 @@
         </div>
     </div>
 
-    <div class="card-body">
-    <style>
-        [id^="stage"] {
-            margin: auto;
-            width: 704px !important;
-            @if ($cards["frame"] && $cards["frame"]["layout"]=="vertical")
-            /* height: 350px;
-               width: 504px !important; */
-            @endif
-        }
 
-        [id^="stage"] .konvajs-content {
-            margin: auto;
-        }
-    </style>
-    @if ($cards["user"] == null)
-    <div class="text-danger text-center">
-        {{ Translator:: phrase("no_data") }}
-    </div>
-    @endif
-    <div class="col-12">
-        <div id="stage" data-toggle="card-maker" data-layout="{{$cards["frame"]["layout"]}}"
-            data-front="{{$cards["frame"]["front"]}}" data-background="{{$cards["frame"]["background"]}}"
-            data-user='{!! json_encode($cards["user"])!!}'></div>
-    </div>
+    <div class="card-body">
+        <style>
+            [id^="stage"] {
+                margin: auto;
+                width: 704px !important;
+                @if ($cards["frame"] && $cards["frame"]["layout"]=="vertical")
+                /* height: 350px;
+               width: 504px !important; */
+                @endif
+            }
+
+            [id^="stage"] .konvajs-content {
+                margin: auto;
+            }
+        </style>
+        @if ($cards["user"] == null)
+        <div class="text-danger text-center">
+            {{ Translator:: phrase("no_data") }}
+        </div>
+        @endif
+        <div class="col-12">
+            <div id="stage" data-toggle="card-maker" data-layout="{{$cards["frame"]["layout"]}}"
+                data-front="{{$cards["frame"]["front"]}}" data-background="{{$cards["frame"]["background"]}}"
+                data-user='{!! json_encode($cards["user"])!!}'></div>
+        </div>
     </div>
 
     <div class="card-footer">

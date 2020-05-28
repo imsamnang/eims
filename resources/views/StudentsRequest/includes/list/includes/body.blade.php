@@ -44,8 +44,9 @@ _TOTAL_ ".Translator::phrase("entries"),
 
         <div class="card-body p-0">
             <div class="table-responsive py-4">
-            <table data-url="{{request()->url()}}-datatable{{config("pages.search")}}" class="table table-flush" data-toggle="datatable-ajax"
-                    data-i18n='{!!json_encode($i18n)!!}'>
+                <table
+                    data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
+                    class="table table-flush" data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
                     <thead class="thead-light">
                         <tr>
                             <th data-type="checkbox" data-key="null" width="1">
@@ -63,24 +64,30 @@ _TOTAL_ ".Translator::phrase("entries"),
                                 {{Translator::phrase("name")}}​
                             </th>
                             @if (Auth::user()->role_id != 2)
-                            <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">{{Translator::phrase("institute")}}​</th>
+                            <th data-type="text" data-key="institute.short_name" width="1" class="sort"
+                                data-sort="institute">{{Translator::phrase("institute")}}​</th>
                             @endif
-                            <th data-type="text" data-key="study_program.name" width="1" class="sort" data-sort="study_program">
+                            <th data-type="text" data-key="study_program.name" width="1" class="sort"
+                                data-sort="study_program">
                                 {{Translator::phrase("study_program")}}
                             </th>
-                            <th data-type="text" data-key="study_course.name" width="1" class="sort" data-sort="study_course">
+                            <th data-type="text" data-key="study_course.name" width="1" class="sort"
+                                data-sort="study_course">
                                 {{Translator::phrase("study_course")}}
                             </th>
                             {{-- <th data-type="text" data-key="study_generation.name" width="1" class="sort" data-sort="study_generation">
                                 {{Translator::phrase("study_generation")}}
                             </th> --}}
-                            <th data-type="text" data-key="study_academic_year.name" width="1" class="sort" data-sort="study_academic_year">
+                            <th data-type="text" data-key="study_academic_year.name" width="1" class="sort"
+                                data-sort="study_academic_year">
                                 {{Translator::phrase("study_academic_year")}}
                             </th>
-                            <th data-type="text" data-key="study_semester.name" width="1" class="sort" data-sort="study_semester">
+                            <th data-type="text" data-key="study_semester.name" width="1" class="sort"
+                                data-sort="study_semester">
                                 {{Translator::phrase("study_semester")}}
                             </th>
-                            <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
+                            <th data-type="text" data-key="study_session.name" width="1" class="sort"
+                                data-sort="study_session">
                                 {{Translator::phrase("study_session")}}
                             </th>
                             <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
@@ -118,8 +125,8 @@ _TOTAL_ ".Translator::phrase("entries"),
 
                             <div class="dropdown-divider"></div>
 
-                            <a class="d-none dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
-                                data-sweet-alert="confirm" data-sweet-id="" href="">
+                            <a class="d-none dropdown-item sweet-alert-reload" data-toggle="sweet-alert"
+                                id="btn-option-delete" data-sweet-alert="confirm" data-sweet-id="" href="">
                                 <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
                         </div>
                     </div>

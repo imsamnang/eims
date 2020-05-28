@@ -17,7 +17,7 @@ class ThemeBackgroundTableSeeder extends Seeder
                 'name'  => '',
                 'en'    => '',
                 'km'    => '',
-                'image' => '1.svg',
+                'image' => '1.png',
                 'status' => 1,
             ],
             [

@@ -44,8 +44,9 @@ _TOTAL_ ".Translator::phrase("entries"),
 
         <div class="card-body p-0">
             <div class="table-responsive py-4">
-                <table data-url="{{request()->url()}}-datatable{{config("pages.search")}}" class="table table-flush"
-                    data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
+                <table
+                    data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
+                    class="table table-flush" data-toggle="datatable-ajax" data-i18n='{!!json_encode($i18n)!!}'>
                     <thead class="thead-light">
                         <tr>
                             <th data-type="checkbox" data-key="null" width="1">

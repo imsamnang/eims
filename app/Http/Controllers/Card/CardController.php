@@ -122,7 +122,7 @@ class CardController extends Controller
             );
             config()->set('app.title', $d['title']);
             $d['cards'] = CardHelper::make($param3);
-          
+
             return view('Card.includes.result.index', $d);
         } else {
             abort(404);
@@ -208,7 +208,7 @@ class CardController extends Controller
     }
     public function make($data, $user)
     {
-
+        
         $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
         $data['view']  = CardFrames::$path['view'] . '.includes.make.index';
         $data['cards']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];

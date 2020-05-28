@@ -37,9 +37,7 @@
             </div>
         </div>
     </div>
-    {{-- <div class="card-header">
-        @include('Certificate.includes.list.includes.body')
-    </div> --}}
+   
 
     <div class="card-body">
 
