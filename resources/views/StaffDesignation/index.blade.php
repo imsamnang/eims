@@ -46,7 +46,8 @@
                 <div class="header-body">
                     <div class="row align-items-center py-4">
                         <div class="col-lg-6 col-7">
-                            <h6 class="h2 text-white d-inline-block mb-0">{{Translator::phrase("staff. & .teacher")}} </h6>
+                            <h6 class="h2 text-white d-inline-block mb-0">{{Translator::phrase("staff. & .teacher")}}
+                            </h6>
                             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                     <li class="breadcrumb-item text-white"><i class="fas fa-home"></i></li>
@@ -105,6 +106,7 @@
     <script src="{{asset("/assets/vendor/validatorjs/dist/validator.js")}}"></script>
     @if (app()->getLocale() !== "en")
     <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
+    <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
     @endif
     <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>

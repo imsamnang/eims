@@ -105,11 +105,13 @@
     <script src="{{asset("/assets/vendor/validatorjs/dist/validator.js")}}"></script>
     @if (app()->getLocale() !== "en")
     <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
+    <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
     <script
         src="{{asset("/assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.".app()->getLocale().".min.js")}}">
-    @endif
-    <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
+        @endif
+    <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}">
+    </script>
     <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>
     <script src="{{asset("/assets/js/custom/languages.js")}}"></script>
     <script src="{{asset("/assets/js/custom/validation.js")}}"></script>

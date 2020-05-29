@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{asset("/assets/vendor/pickerjs/dist/picker.css")}}" type="text/css" />
     <link rel="stylesheet" href="{{asset("/assets/vendor/jquery-contextmenu/dist/jquery.contextMenu.min.css")}}"
         type="text/css" />
-        
+
     <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css")}}">
     <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css")}}">
@@ -110,6 +110,7 @@
     <script src="{{asset("/assets/vendor/pickerjs/dist/picker.js")}}"></script>
     @if (app()->getLocale() !== "en")
     <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
+    <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/pickerjs/locale/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
     <script

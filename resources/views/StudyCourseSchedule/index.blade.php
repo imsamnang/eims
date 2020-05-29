@@ -105,6 +105,7 @@
     <script src="{{asset("/assets/vendor/pickerjs/dist/picker.js")}}"></script>
     @if (app()->getLocale() !== "en")
     <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
+    <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/pickerjs/locale/".app()->getLocale().".js")}}"></script>
     <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
     <script
