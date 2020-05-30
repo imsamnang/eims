@@ -23,6 +23,7 @@
         "laravel/slack-notification-channel": "^2.0",
         "laravel/socialite": "^4.3",
         "laravel/tinker": "^1.0",
+        "laravolt/avatar": "^3.2",
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.25",
         "phpdocumentor/graphviz": "^1.0",

@@ -159,6 +159,10 @@ class QuizQuestion extends Model
                     $query =  $query->where('institute_id', Auth::user()->institute_id);
                 }
 
+                if (request('quizId')) {
+                    $query = $query->where((new QuizQuestion())->getTable().'.quiz_id', request('quizId'));
+                }
+
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
                         if ($value['searchable']) {

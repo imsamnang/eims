@@ -109,6 +109,8 @@ class ImageHelper
     }
     public static function getImage($filename, $path, $type = null, $width = null, $height = null, $quality = null)
     {
+
+
         if ($type) {
             $folderSize = 'public/' . ImageHelper::$path['image'] . '/' . $path . '/' . $type;
         } else {
@@ -153,6 +155,8 @@ class ImageHelper
     }
     public static function site($path, $filename, $type = null, $width = null, $height = null, $quality = null)
     {
+       
+
         if ($path && $filename) {
             $uurl = url(ImageHelper::$path['image'] . '/' . $path . '/' . $filename);
 

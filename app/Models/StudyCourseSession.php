@@ -185,7 +185,7 @@ class StudyCourseSession extends Model
             })
             ->filter(function ($query) {
                 if (Auth::user()->role_id == 2) {
-                    $query =  $query->where('institute_id', Auth::user()->institute_id);
+                    $query =  $query->where((new StudyCourseSchedule())->getTable().'.institute_id', Auth::user()->institute_id);
                 }
 
                 if (request('search.value')) {

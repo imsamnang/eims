@@ -172,6 +172,7 @@ return [
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\FractalServiceProvider::class,
+        Laravolt\Avatar\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -253,6 +254,7 @@ return [
         'UsersOnline' => HighIdeas\UsersOnline\Traits\UsersOnlineTrait::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
+        'Avatar'    => Laravolt\Avatar\Facade::class,
 
     ],
 

@@ -8,11 +8,13 @@ use DomainException;
 use App\Helpers\Exception;
 use App\Helpers\DateHelper;
 use App\Helpers\Translator;
+use Laravolt\Avatar\Facade as Avatar;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStaff;
 use App\Http\Requests\FormUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -37,15 +39,12 @@ class Users extends Model
     }
     public static function getData($id = null, $edit = null, $paginate = null)
     {
-
+      
         $pages['form'] = array(
             'action'  => array(
                 'add'    => url(Users::role() . '/' . Users::$path['url'] . '/add/'),
             ),
         );
-
-
-
 
         $data = array();
         $orderBy = 'DESC';
@@ -92,12 +91,25 @@ class Users extends Model
         if ($get) {
             foreach ($get as $key => $row) {
                 $socail_auth = SocialAuth::getData(null, $row['id']);
-                $profile = null;
+                $profile = Avatar::create($row['name'])->toBase64()->getEncoded();
                 if ($row['profile']) {
                     $profile = ImageHelper::site('profile', $row['profile']);
                 } elseif ($socail_auth) {
                     $profile = $socail_auth['_avatar'];
+                } elseif ($row['role_id'] == 6) {
+                    $student = Students::where('id', $row['node_id'])->first();
+                    if ($student) {
+                        $profile = ImageHelper::site(Students::$path['image'], $student['photo']);
+
+                    }
+                } else {
+                    $staff = Staff::where('id', $row['node_id'])->first();
+                    if ($staff) {
+                        $profile = ImageHelper::site(Staff::$path['image'], $staff['photo']);
+
+                    }
                 }
+
                 $data[$key]         = array(
                     'id'             => $row['id'],
                     'name'           => $row['name'],
@@ -172,7 +184,7 @@ class Users extends Model
                 $row = $row->toArray();
 
                 $socail_auth = SocialAuth::getData(null, $row['id']);
-                $profile = null;
+                $profile = Avatar::create($row['name'])->toBase64()->getEncoded();
                 if ($row['profile']) {
                     $profile = ImageHelper::site('profile', $row['profile']);
                 } elseif ($socail_auth) {

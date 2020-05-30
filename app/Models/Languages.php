@@ -66,6 +66,7 @@ class Languages extends Model
 
         if ($get) {
             foreach ($get as $key => $row) {
+
                 $image = $row['image'] ? (ImageHelper::getImage($row['image'], Languages::$path['image'])) : null;
 
                 $data[$key]         = array(
@@ -185,6 +186,7 @@ class Languages extends Model
         $get = $get->get()->toArray();
         if ($get) {
             foreach ($get as $key => $row) {
+                
                 $image = $row['image'] ? (ImageHelper::getImage($row['image'], Languages::$path['image'])) : null;
                 $data[$row['code_name']] = array(
                     'id'             => $row['id'],

@@ -140,11 +140,16 @@ class Quiz extends Model
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
+                $student = QuizStudent::where('quiz_id',$row['id'])->count();
                 return [
                     'id'            => $row['id'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
+                    'student'       => [
+                        'total'  => Translator::phrase('student') .'('.$student .')',
+                        'link_view'  => url(Users::role() . '/' . Quiz::$path['url'] . '/'.QuizStudent::$path['url'].'/list?quizId=' . $row['id']),
+                    ],
                     'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/edit/' . $row['id']),
