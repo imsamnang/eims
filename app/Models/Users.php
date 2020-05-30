@@ -39,7 +39,7 @@ class Users extends Model
     }
     public static function getData($id = null, $edit = null, $paginate = null)
     {
-      
+
         $pages['form'] = array(
             'action'  => array(
                 'add'    => url(Users::role() . '/' . Users::$path['url'] . '/add/'),
