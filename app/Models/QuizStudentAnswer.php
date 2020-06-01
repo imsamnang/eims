@@ -18,9 +18,11 @@ class QuizStudentAnswer extends Model
     ];
     public static function getData($quiz_student_id, $paginate = null)
     {
+        $total_marks = 0;
         $response       = array(
             'success'   => false,
             'data'      => [],
+            'total_marks' => $total_marks.' '. Translator::phrase('marks'),
         );
         if ($quiz_student_id) {
             $get = QuizStudentAnswer::where('quiz_student_id', $quiz_student_id);
@@ -39,6 +41,7 @@ class QuizStudentAnswer extends Model
             }
 
             $data = [];
+
             if ($get) {
                 foreach ($get  as $key => $row) {
                     $data[$key] = [
@@ -67,6 +70,7 @@ class QuizStudentAnswer extends Model
                                 $correct_marks += $data[$key]['question']['marks'] / $quizAnswerCorrect;
                             }
                         }
+
                         if ($quizAnswerCorrect == count($correct)) {
                             $data[$key]['correct'] = true;
                             $data[$key]['correct_marks'] = $data[$key]['question']['marks'];
@@ -80,11 +84,14 @@ class QuizStudentAnswer extends Model
                             $data[$key]['correct_marks'] = $data[$key]['question']['marks'];
                         }
                     }
+
+                    $total_marks+=$data[$key]['correct_marks'];
                 }
 
                 $response       = array(
                     'success'   => true,
                     'data'      => $data,
+                    'total_marks' => $total_marks.' '.Translator::phrase('marks'),
                 );
             }
         }
@@ -169,6 +176,8 @@ class QuizStudentAnswer extends Model
         }
         return $response;
     }
+
+
 
     public static function addToTable()
     {

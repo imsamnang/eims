@@ -7,25 +7,16 @@ use App\Models\Quiz;
 use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Students;
-use App\Models\Institute;
-
 use App\Models\Languages;
-use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\QuizStudent;
-use App\Models\StudyCourse;
 use App\Helpers\ImageHelper;
 use App\Models\QuizQuestion;
 use App\Models\SocailsMedia;
-use App\Models\StudySession;
-use App\Models\StudyPrograms;
-use App\Models\StudySemesters;
 use App\Models\StudentsRequest;
-use App\Models\StudyGeneration;
 use App\Models\QuizStudentAnswer;
-use App\Models\StudyAcademicYears;
 use App\Models\StudyCourseSession;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
@@ -150,14 +141,13 @@ class QuizStudentController extends Controller
 
     public function list($data)
     {
-
-        $data['response'] = QuizStudent::getData(null, null, 10);
         $data['view']     = QuizStudent::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.quiz_student');
         return $data;
     }
 
-    public function add($data)  {
+    public function add($data)
+    {
 
         $data['view']      = QuizStudent::$path['view'] . '.includes.form.index';
         $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.quiz_student');
@@ -183,16 +173,25 @@ class QuizStudentController extends Controller
 
     public function report($data)
     {
-        $get = QuizStudent::get()->toArray();
+        $get = new QuizStudent;
+        if (request('quizId')) {
+            $get = $get->where('quiz_id', request('quizId'));
+        }
+        $get = $get->get()->toArray();
+
+
         if ($get) {
             $data1 = [];
             $question = [];
             foreach ($get as $row) {
                 $student_study_course =   StudentsStudyCourse::select((new StudentsRequest())->getTable() . '.*')
-                ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', '=', (new StudentsStudyCourse())->getTable() . '.id')
-                ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-                ->where((new StudentsStudyCourse())->getTable().'.id', $row['student_study_course_id'])->first()->toArray();
+                    ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
+                    ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                    ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                    ->where((new StudentsStudyCourse())->getTable() . '.id', $row['student_study_course_id'])
+                    ->first()->toArray();
+
+
                 $student    =   Students::where('id', $student_study_course['student_id'])->first()->toArray();
                 $node = [
                     'id'            => $student['id'],
@@ -207,7 +206,7 @@ class QuizStudentController extends Controller
 
                     $qa = [];
                     foreach ($question->toArray() as $key => $q) {
-                        $a  = QuizStudentAnswer::where('quiz_student_id',$row['id'])->where('quiz_question_id',$q['id'])->first();
+                        $a  = QuizStudentAnswer::where('quiz_student_id', $row['id'])->where('quiz_question_id', $q['id'])->first();
                         $qa[] = [
                             'id'        => null,
                             'question'  => QuizQuestion::getData($q['id'])['data'][0],

@@ -179,7 +179,6 @@ class QuizController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Quiz::getData(null, null, 10);
         $data['view']     = Quiz::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
         return $data;

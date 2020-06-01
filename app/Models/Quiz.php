@@ -140,15 +140,20 @@ class Quiz extends Model
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
-                $student = QuizStudent::where('quiz_id',$row['id'])->count();
+                $student = QuizStudent::where('quiz_id', $row['id'])->count();
+                $question = QuizQuestion::where('quiz_id', $row['id'])->count();
                 return [
                     'id'            => $row['id'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
+                    'question'      => [
+                        'total' => '('.Translator::phrase($question.'.question'). ')',
+                        'link_view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list/?quizId=' . $row['id']),
+                    ],
                     'student'       => [
-                        'total'  => Translator::phrase('student') .'('.$student .')',
-                        'link_view'  => url(Users::role() . '/' . Quiz::$path['url'] . '/'.QuizStudent::$path['url'].'/list?quizId=' . $row['id']),
+                        'total'  => Translator::phrase('student') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
+                        'link_view'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/list?quizId=' . $row['id']),
                     ],
                     'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
                     'action'        => [

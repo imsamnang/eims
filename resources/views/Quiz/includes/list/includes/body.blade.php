@@ -16,14 +16,13 @@
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
                     @if (Auth::user()->role_id == 1)
-                    <th data-type="text" data-key="institute.name" width="1" class="sort" data-sort="institute">
+                    <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
                         {{Translator::phrase('institute')}}​</th>
                     @endif
-                    <th data-type="link" data-key="name" data-url="action.question_answer" class="sort"
+                    <th data-type="link" data-key="name,question.total" data-url="question.link_view" class="sort"
                         data-sort="name">
                         {{Translator::phrase("quiz")}}​</th>
                     <th data-type="link" data-key="student.total" data-url="student.link_view" >{{Translator::phrase("student")}}</th>
-                    <th data-type="text" data-key="description">{{Translator::phrase("description")}}</th>
                     <th width=1 data-type="image" data-key="image">{{Translator::phrase("image")}}</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
 

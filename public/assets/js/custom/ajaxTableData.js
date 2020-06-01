@@ -10,8 +10,8 @@ AjaxTableData.prototype = {
                     element: $(el),
                     type: $(el).data("type"),
                     key: $(el).data("key"),
-                    join: $(el).data("join"), // ? $(el).data("join") : "&#9866;",
-                    link: $(el).data("url"), 
+                    join: $(el).data("join") ? $(el).data("join") : "",//&#9866;
+                    link: $(el).data("url"),
                 });
             }
 

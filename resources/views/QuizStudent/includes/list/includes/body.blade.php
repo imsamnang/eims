@@ -26,6 +26,9 @@
                     <th data-type="text-image" data-key="student.name" data-url="student.photo" class="sort">
                         {{Translator::phrase("student")}}
                         ​</th>
+                    <th data-type="text" data-key="quiz_answered_marks" class="sort">
+                        {{Translator::phrase("total_marks")}}
+                        ​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
 
                 </tr>

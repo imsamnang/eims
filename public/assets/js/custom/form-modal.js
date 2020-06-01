@@ -67,7 +67,6 @@ AjaxFormModal = function(opts) {
                 newModalBody = newModal.find("div.modal-body"),
                 newModalFooter = newModal.find("div.modal-footer"),
                 newModalForm = newModal.find("form");
-
             var oldModal = settings.modalContainer,
                 oldModalHeader = oldModal.find("div.modal-header"),
                 oldModalBody = oldModal.find("div.modal-body"),
@@ -80,7 +79,7 @@ AjaxFormModal = function(opts) {
                 var loadstyle = settings.element ?  settings.element.data("loadstyle") : [];
                 var loadscript = settings.element ?  settings.element.data("loadscript") : [];
 
-             
+
                 if (loadstyle) {
                     $.each(loadstyle, (i, link) => {
                         var style = $("<link>").attr({

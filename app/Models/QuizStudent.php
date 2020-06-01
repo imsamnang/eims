@@ -88,12 +88,13 @@ class QuizStudent extends Model
                     'email' => $student['email'],
                     'phone' => $student['phone'],
                 ];
-                $quiz_answered = QuizStudentAnswer::getData($row['id'])['data'];
+                $quiz_answered = QuizStudentAnswer::getData($row['id']);
 
                 $data[$key]         = array(
                     'id'            => $row['id'],
                     'quiz'         => Quiz::getData($row['quiz_id'])['data'][0],
-                    'quiz_answered'  => $quiz_answered,
+                    'quiz_answered'  => $quiz_answered['data'],
+                    'quiz_answered_marks'  => $quiz_answered['total_marks'],
                     'student'      => [
                         'id'        =>  $student_study_course['id'],
                         'name'      =>  $node['first_name'] . ' ' . $node['last_name'],
@@ -153,11 +154,13 @@ class QuizStudent extends Model
                     'gender'    => $student['gender_id'] ? (Gender::getData($student['gender_id'])['data'][0]) : null,
                     'photo'     => ImageHelper::site(Students::$path['image'], $student['photo']),
                 ];
-                $quiz_answered = QuizStudentAnswer::getData($row['id'])['data'];
+                $quiz_answered = QuizStudentAnswer::getData($row['id']);
+
                 return [
                     'id'            => $row['id'],
                     'quiz'         => Quiz::getData($row['quiz_id'])['data'][0],
-                    'quiz_answered'  => $quiz_answered,
+                    'quiz_answered'  => $quiz_answered['data'],
+                    'quiz_answered_marks'  => $quiz_answered['total_marks'],
                     'student'      => [
                         'id'        =>  $student_study_course['id'],
                         'name'      =>  $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
