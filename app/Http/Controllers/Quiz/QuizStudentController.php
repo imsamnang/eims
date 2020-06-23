@@ -235,10 +235,14 @@ class QuizStudentController extends Controller
                 'question'  => $question
             ];
 
-            $data['view']     = QuizStudent::$path['view'] . '.includes.report.index';
-            $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .report.quiz_student');
-
+        }else{
+            $data['response'] = [
+                'success'   => false,
+                'data'      => [],
+            ];
         }
+        $data['view']     = QuizStudent::$path['view'] . '.includes.report.index';
+        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .report.quiz_student');
         return $data;
     }
 }
