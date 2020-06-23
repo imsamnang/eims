@@ -29,7 +29,7 @@
             <div class="col">
                 <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name="{{$name}}"
                     class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
-                    <i class="fas fa-file-excel-o"></i>
+                    <i class="fas fa-file-excel"></i>
                     {{Translator::phrase("Excel")}}
                 </button>
                 <button data-toggle="table-to-print" data-target=".sheet.card"
@@ -59,8 +59,8 @@
             </div>
         </div>
         <div class="container border-0 p-2">
-            <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}"
-                id="form-filter" enctype="multipart/form-data">
+            <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
+                enctype="multipart/form-data">
                 <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
                     <div class="col-12 collapse mb-3" id="filter">
                         <div class="form-row">
@@ -94,7 +94,7 @@
 
     @if ($response["success"] == false)
     <section class="sheet nodata">
-        <div class="nodata-text">{{Translator::phrase("no_data")}}</div>
+        <div class="nodata-text">{{$response["message"]}}</div>
     </section>
     @else
     <section class="sheet padding-5mm card {{count($response["data"]) > 20 ? "h-100" : "" }}">

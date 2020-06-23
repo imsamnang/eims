@@ -173,72 +173,78 @@ class QuizStudentController extends Controller
 
     public function report($data)
     {
-        $get = new QuizStudent;
         if (request('quizId')) {
-            $get = $get->where('quiz_id', request('quizId'));
-        }
-        $get = $get->get()->toArray();
+            $get = new QuizStudent;
+            if (request('quizId')) {
+                $get = $get->where('quiz_id', request('quizId'));
+            }
+            $get = $get->get()->toArray();
 
 
-        if ($get) {
-            $data1 = [];
-            $question = [];
-            foreach ($get as $row) {
-                $student_study_course =   StudentsStudyCourse::select((new StudentsRequest())->getTable() . '.*')
-                    ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
-                    ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                    ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
-                    ->where((new StudentsStudyCourse())->getTable() . '.id', $row['student_study_course_id'])
-                    ->first()->toArray();
+            if ($get) {
+                $data1 = [];
+                $question = [];
+                foreach ($get as $row) {
+                    $student_study_course =   StudentsStudyCourse::select((new StudentsRequest())->getTable() . '.*')
+                        ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
+                        ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                        ->where((new StudentsStudyCourse())->getTable() . '.id', $row['student_study_course_id'])
+                        ->first()->toArray();
 
 
-                $student    =   Students::where('id', $student_study_course['student_id'])->first()->toArray();
-                $node = [
-                    'id'            => $student['id'],
-                    'first_name'         => array_key_exists('first_name_' . app()->getLocale(), $student) ? $student['first_name_' . app()->getLocale()] : $student['first_name_en'],
-                    'last_name'          => array_key_exists('last_name_' . app()->getLocale(), $student) ? $student['last_name_' . app()->getLocale()] : $student['last_name_en'],
-                    'gender'    => $student['gender_id'] ? (Gender::getData($student['gender_id'])['data'][0]) : null,
-                    'photo'     => ImageHelper::site(Students::$path['image'], $student['photo']),
-                ];
-                $question = QuizQuestion::where('quiz_id', $row['quiz_id'])->get();
-                $quiz_answered = [];
-                if ($question) {
+                    $student    =   Students::where('id', $student_study_course['student_id'])->first()->toArray();
+                    $node = [
+                        'id'            => $student['id'],
+                        'first_name'         => array_key_exists('first_name_' . app()->getLocale(), $student) ? $student['first_name_' . app()->getLocale()] : $student['first_name_en'],
+                        'last_name'          => array_key_exists('last_name_' . app()->getLocale(), $student) ? $student['last_name_' . app()->getLocale()] : $student['last_name_en'],
+                        'gender'    => $student['gender_id'] ? (Gender::getData($student['gender_id'])['data'][0]) : null,
+                        'photo'     => ImageHelper::site(Students::$path['image'], $student['photo']),
+                    ];
+                    $question = QuizQuestion::where('quiz_id', $row['quiz_id'])->get();
+                    $quiz_answered = [];
+                    if ($question) {
 
-                    $qa = [];
-                    foreach ($question->toArray() as $key => $q) {
-                        $a  = QuizStudentAnswer::where('quiz_student_id', $row['id'])->where('quiz_question_id', $q['id'])->first();
-                        $qa[] = [
-                            'id'        => null,
-                            'question'  => QuizQuestion::getData($q['id'])['data'][0],
-                            'answered'  => null,
-                            'marks'     => $a ? $a->marks : 0,
-                        ];
+                        $qa = [];
+                        foreach ($question->toArray() as $key => $q) {
+                            $a  = QuizStudentAnswer::where('quiz_student_id', $row['id'])->where('quiz_question_id', $q['id'])->first();
+                            $qa[] = [
+                                'id'        => null,
+                                'question'  => QuizQuestion::getData($q['id'])['data'][0],
+                                'answered'  => null,
+                                'marks'     => $a ? $a->marks : 0,
+                            ];
+                        }
+                        $quiz_answered = $qa;
                     }
-                    $quiz_answered = $qa;
+
+                    $data1[]         = [
+                        'id'            => $row['id'],
+                        'quiz'          => Quiz::getData($row['quiz_id'])['data'][0],
+                        'quiz_answered' => $quiz_answered,
+                        'student'       => [
+                            'id'        =>  $student_study_course['id'],
+                            'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $student_study_course['photo'])) : $node['photo'],
+                            'node'      =>  $node,
+                        ],
+                    ];
                 }
 
-                $data1[]         = [
-                    'id'            => $row['id'],
-                    'quiz'          => Quiz::getData($row['quiz_id'])['data'][0],
-                    'quiz_answered' => $quiz_answered,
-                    'student'       => [
-                        'id'        =>  $student_study_course['id'],
-                        'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $student_study_course['photo'])) : $node['photo'],
-                        'node'      =>  $node,
-                    ],
+                $data['response'] = [
+                    'success'   => true,
+                    'data'      => $data1,
+                    'question'  => $question
+                ];
+            } else {
+                $data['response'] = [
+                    'success'   => false,
+                    'message'   => Translator::phrase('no_data'),
                 ];
             }
-
-            $data['response'] = [
-                'success'   => true,
-                'data'      => $data1,
-                'question'  => $question
-            ];
-
         }else{
             $data['response'] = [
                 'success'   => false,
-                'data'      => [],
+                'message'   => Translator::phrase('please_filter'),
             ];
         }
         $data['view']     = QuizStudent::$path['view'] . '.includes.report.index';

@@ -7,33 +7,37 @@
     header {
         padding: 10px;
         color: white;
-        background: var(--app-color,blueviolet);
+        background: var(--app-color, blueviolet);
     }
+
     .print-option {
         display: none;
     }
-    table:hover .print-option {display: inherit;}
+
+    table:hover .print-option {
+        display: inherit;
+    }
 </style>
 <div class="paper A4 landscape">
     <header class="sticky">
         @php
-            $name =  Translator::day(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"],null,"short");
+        $name = Translator::day(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"],null,"short");
         @endphp
         @if($study_course_session["success"])
-            @php
-                $name = $study_course_session["data"][0]["name"];
-            @endphp
+        @php
+        $name = $study_course_session["data"][0]["name"];
+        @endphp
         <h1 class="d-print-none">
-           {{$study_course_session["data"][0]["study_course_schedule"]["institute"]["name"]}}
+            {{$study_course_session["data"][0]["study_course_schedule"]["institute"]["name"]}}
         </h1>
 
         @endif
 
         <div class="{{$response["success"] == false ? "d-none":""}}">
             <div class="col">
-            <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name="{{$name}}"
+                <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name="{{$name}}"
                     class="btn btn-primary d-print-none">
-                    <i class="fas fa-file-excel-o"></i>
+                    <i class="fas fa-file-excel"></i>
                     {{Translator::phrase("Excel")}}
                 </button>
                 <button data-toggle="table-to-print" data-target=".sheet.card" class="btn btn-primary d-print-none">
