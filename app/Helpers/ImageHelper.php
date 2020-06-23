@@ -45,7 +45,7 @@ class ImageHelper
             $getMimeType = explode('/', $photo->getMimeType());
             $imageEx    = $photo->getClientOriginalExtension() ? $photo->getClientOriginalExtension() : end($getMimeType);
             $name       =  $rename ? ($rename . '.' . $imageEx) : ($newFilenameNoExtension . $imageEx);
-
+            $name       = strtolower($name);
 
 
             if ($photo->move($destinationPath, $name)) {
@@ -155,7 +155,7 @@ class ImageHelper
     }
     public static function site($path, $filename, $type = null, $width = null, $height = null, $quality = null)
     {
-       
+
 
         if ($path && $filename) {
             $uurl = url(ImageHelper::$path['image'] . '/' . $path . '/' . $filename);

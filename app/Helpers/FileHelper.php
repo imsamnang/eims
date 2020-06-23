@@ -25,6 +25,7 @@ class FileHelper
             $getMimeType = explode('/', $file->getMimeType());
             $imageEx    = $file->getClientOriginalExtension() ? $file->getClientOriginalExtension() : end($getMimeType);
             $name       =  $rename ? ($rename . '.' . $imageEx) : ($newFilenameNoExtension . $imageEx);
+            $name       = strtolower($name);
             if ($file->move($destinationPath, $name)) {
             }
             return $name;
