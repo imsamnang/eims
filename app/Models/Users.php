@@ -8,16 +8,15 @@ use DomainException;
 use App\Helpers\Exception;
 use App\Helpers\DateHelper;
 use App\Helpers\Translator;
-use Laravolt\Avatar\Facade as Avatar;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStaff;
 use App\Http\Requests\FormUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Laravolt\Avatar\Avatar;
 
 class Users extends Model
 {
@@ -37,7 +36,7 @@ class Users extends Model
         }
         return null;
     }
-    public static function getData($id = null, $edit = null, $paginate = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
 
         $pages['form'] = array(
@@ -69,6 +68,10 @@ class Users extends Model
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));
             }
+
+            if ($search) {
+                $get = $get->where('name', 'LIKE', '%' . $search . '%');
+            }
         }
 
 
@@ -91,7 +94,11 @@ class Users extends Model
         if ($get) {
             foreach ($get as $key => $row) {
                 $socail_auth = SocialAuth::getData(null, $row['id']);
-                $profile = Avatar::create($row['name'])->toBase64()->getEncoded();
+                $avatar = new Avatar(config('laravolt.avatar'));
+
+                $profile = $avatar->create($row['name'])
+                    ->setFont(public_path('assets/fonts/NiDAKhmerEmpire.ttf'))
+                    ->toBase64()->getEncoded();
                 if ($row['profile']) {
                     $profile = ImageHelper::site('profile', $row['profile']);
                 } elseif ($socail_auth) {
@@ -100,13 +107,11 @@ class Users extends Model
                     $student = Students::where('id', $row['node_id'])->first();
                     if ($student) {
                         $profile = ImageHelper::site(Students::$path['image'], $student['photo']);
-
                     }
                 } else {
                     $staff = Staff::where('id', $row['node_id'])->first();
                     if ($staff) {
                         $profile = ImageHelper::site(Staff::$path['image'], $staff['photo']);
-
                     }
                 }
 
@@ -184,7 +189,11 @@ class Users extends Model
                 $row = $row->toArray();
 
                 $socail_auth = SocialAuth::getData(null, $row['id']);
-                $profile = Avatar::create($row['name'])->toBase64()->getEncoded();
+
+                $avatar = new Avatar(config('laravolt.avatar'));
+                $profile = $avatar->create($row['name'])
+                    ->setFont(public_path('assets/fonts/NiDAKhmerEmpire.ttf'))
+                    ->toBase64()->getEncoded();
                 if ($row['profile']) {
                     $profile = ImageHelper::site('profile', $row['profile']);
                 } elseif ($socail_auth) {

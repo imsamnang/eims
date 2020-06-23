@@ -37,10 +37,9 @@ class FormStudyCourse extends FormRequest
         $rules['course_type']              = 'required';
         $rules['study_modality']           = 'required';
         $rules['study_program']            = 'required';
-        $rules['study_overall_fund']             = 'required';
+        $rules['study_overall_fund']       = 'required';
         $rules['curriculum_author']        = 'required';
         $rules['curriculum_endorsement']   = 'required';
-        $rules['study_generation']         = 'required';
         //$rules['description']            = 'required';
         //$rules['image']                  = 'required';
 
@@ -65,7 +64,6 @@ class FormStudyCourse extends FormRequest
             $attributes['study_overall_fund']       = Translator::phrase('study_overall_fund');
             $attributes['curriculum_author']        = Translator::phrase('curriculum_author');
             $attributes['curriculum_endorsement']   = Translator::phrase('curriculum_endorsement');
-            $attributes['study_generation']         = Translator::phrase('study_generation');
             $attributes['description']              = Translator::phrase('description');
             $attributes['image']                    = Translator::phrase('image');
 

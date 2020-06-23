@@ -22,7 +22,7 @@ class QuizStudentAnswer extends Model
         $response       = array(
             'success'   => false,
             'data'      => [],
-            'total_marks' => $total_marks.' '. Translator::phrase('marks'),
+            'total_marks' => $total_marks . ' ' . Translator::phrase('marks'),
         );
         if ($quiz_student_id) {
             $get = QuizStudentAnswer::where('quiz_student_id', $quiz_student_id);
@@ -85,13 +85,13 @@ class QuizStudentAnswer extends Model
                         }
                     }
 
-                    $total_marks+=$data[$key]['correct_marks'];
+                    $total_marks += $data[$key]['correct_marks'];
                 }
 
                 $response       = array(
                     'success'   => true,
                     'data'      => $data,
-                    'total_marks' => $total_marks.' '.Translator::phrase('marks'),
+                    'total_marks' => $total_marks . ' ' . Translator::phrase('marks'),
                 );
             }
         }
@@ -121,51 +121,66 @@ class QuizStudentAnswer extends Model
         $get = $get->get()->toArray();
         if ($get) {
             foreach ($get as $qstu) {
-                $qq = Quiz::getData($qstu['quiz_id'])['data'][0];
-                $a[$qstu['quiz_id']] = [
-                    'id'    => $qstu['quiz_id'],
-                    'name'  => $qq['name'],
-                    'image'  => $qq['image'],
-                    'quiz_student'    => $qstu['id'],
-                    'children'  => &$b[$qstu['quiz_id']]
-                ];
-                $quizQuestion = QuizQuestion::where('quiz_id', $qstu['quiz_id'])->paginate(5)->toArray();
+                $countQ = QuizQuestion::where('quiz_id', $qstu['quiz_id'])->count();
+                $countA = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->count();
 
-                if ($quizQuestion) {
-                    foreach ($quizQuestion['data'] as $question) {
-                        $answered = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->where('quiz_question_id', $question['id'])->get()->toArray();
-                        $b[$qstu['quiz_id']][] = [
-                            'id'    => $question['id'],
-                            'quiz_type'    => QuizQuestionType::getData($question['quiz_question_type_id'])['data'][0],
-                            'quiz_answer_type'    => QuizAnswerType::getData($question['quiz_answer_type_id'])['data'][0],
-                            'question'    => $question['question'],
-                            'answer_limit'  => QuizAnswer::where('quiz_question_id', $question['id'])->where('correct_answer', 1)->count(),
-                            'answer'      => QuizAnswer::getData($question['id'])['data'],
-                            'answered'    => $answered ? [
-                                'id'          => $answered[0]['id'],
-                                'answered'    => $answered[0]['answered'],
-                                'marks'       => $answered[0]['marks'],
-                            ] : null,
-                            'marks'    => $question['marks'],
+                if ($countQ != $countA) {
+                    $qq = Quiz::getData($qstu['quiz_id'])['data'][0];
+                    $a[$qstu['quiz_id']] = [
+                        'id'    => $qstu['quiz_id'],
+                        'name'  => $qq['name'],
+                        'image'  => $qq['image'],
+                        'quiz_student'    => $qstu['id'],
+                        'children'  => &$b[$qstu['quiz_id']]
+                    ];
+                    $quizQuestion = QuizQuestion::where('quiz_id', $qstu['quiz_id'])->paginate(5)->toArray();
 
-                        ];
-                    }
+                    if ($quizQuestion) {
+                        foreach ($quizQuestion['data'] as $question) {
+                            $answered = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->where('quiz_question_id', $question['id'])->get()->toArray();
+                            $b[$qstu['quiz_id']][] = [
+                                'id'    => $question['id'],
+                                'quiz_type'    => QuizQuestionType::getData($question['quiz_question_type_id'])['data'][0],
+                                'quiz_answer_type'    => QuizAnswerType::getData($question['quiz_answer_type_id'])['data'][0],
+                                'question'    => $question['question'],
+                                'answer_limit'  => QuizAnswer::where('quiz_question_id', $question['id'])->where('correct_answer', 1)->count(),
+                                'answer'      => QuizAnswer::getData($question['id'])['data'],
+                                'answered'    => $answered ? [
+                                    'id'          => $answered[0]['id'],
+                                    'answered'    => $answered[0]['answered'],
+                                    'marks'       => $answered[0]['marks'],
+                                ] : null,
+                                'marks'    => $question['marks'],
 
-                    foreach ($quizQuestion as $key => $value) {
-                        if ($key == 'data') {
-                        } else {
-                            $pages[$key] = $value;
+                            ];
+                        }
+
+                        foreach ($quizQuestion as $key => $value) {
+                            if ($key == 'data') {
+                            } else {
+                                $pages[$key] = $value;
+                            }
                         }
                     }
+                } else {
+                    //Answer All already
+                    $response = array(
+                        'success'   => false,
+                        'data'      => [],
+                        'message'   => Translator::phrase('no_data'),
+                        'pages'     => $pages
+                    );
                 }
             }
 
-            $response = array(
-                'success'   => true,
-                'data'      => $a,
-                'pages'     => $pages
+            if ($a) {
+                $response = array(
+                    'success'   => true,
+                    'data'      => $a,
+                    'pages'     => $pages
 
-            );
+                );
+            }
         } else {
             $response = array(
                 'success'   => false,

@@ -70,7 +70,7 @@ class QuizStudentAnswerController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
             $data = $this->list($data);
-        
+
         } elseif ($param1 == 'add') {
             if (request()->ajax() && request()->method() === 'POST') {
                 return QuizStudentAnswer::addToTable();
@@ -146,7 +146,7 @@ class QuizStudentAnswerController extends Controller
             $student_study_course_id[] = $course['id'];
         }
         $data['response'] = QuizStudentAnswer::getData1($student_study_course_id);
-
+        
         $data['view']     = QuizStudentAnswer::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.quiz_question');
         return $data;

@@ -73,7 +73,11 @@ class usersController extends Controller
             $data['formName'] = users::$path['url'];
             $data['formAction'] = '/add';
             if ($param1 == null || $param1 == 'list') {
-                $data = $this->list($data);
+                if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                    return Users::getData(null, null, 10, request('search'));
+                } else {
+                    $data = $this->list($data);
+                }
             } elseif ($param1 == 'add') {
                 if (request()->method() === 'POST') {
                     return users::addToTable();

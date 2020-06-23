@@ -26,20 +26,10 @@
                     <th width=1 class="font-weight-bold">
                         {{Translator::phrase("time")}}
                     </th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("monday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("tuesday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("wednesday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("thursday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("friday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("saturday")}}</th>
-                    <th width=170 class="font-weight-bold">
-                        {{Translator::day("sunday")}}</th>
+                    @foreach ($days["data"] as $day)
+                    <th width=170 class="{{date("N") == $day["id"] ? "text-white bg-blue" : "" }} font-weight-bold">
+                        {{$day["name"]}}</th>
+                    @endforeach
                 </tr>
 
 

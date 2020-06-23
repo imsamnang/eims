@@ -24,7 +24,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="name">
-                            {{ Translator:: phrase("curriculum_author​") }}
+                            {{ Translator:: phrase("curriculum_author") }}
 
                             @if(array_key_exists("name",config("pages.form.validate.rules"))) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -33,7 +33,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="name" id="name"
-                            placeholder="{{ Translator::phrase("curriculum_author​") }}"
+                            placeholder="{{ Translator::phrase("curriculum_author") }}"
                             value="{{config("pages.form.data.name")}}"
                             {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
@@ -55,7 +55,7 @@
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
-                            placeholder="{{ Translator::phrase("curriculum_author​.as.".$lang["translate_name"]) }}"
+                            placeholder="{{ Translator::phrase("curriculum_author.as.".$lang["translate_name"]) }}"
                             value="{{config("pages.form.data.".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>

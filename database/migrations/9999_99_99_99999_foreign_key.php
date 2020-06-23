@@ -40,6 +40,11 @@ use App\Models\StudyCourseSchedule;
 use App\Models\CurriculumEndorsement;
 use App\Models\Districts;
 use App\Models\FeatureSlider;
+use App\Models\Mailbox;
+use App\Models\MailboxImportant;
+use App\Models\MailboxRead;
+use App\Models\MailboxReply;
+use App\Models\MailboxTrash;
 use App\Models\Provinces;
 use App\Models\Quiz;
 use App\Models\QuizAnswer;
@@ -277,6 +282,32 @@ class ForeignKey extends Migration
         });
 
         Schema::table((new SocialAuth())->getTable(), function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new Mailbox())->getTable(), function (Blueprint $table) {
+            $table->foreign('from')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+            $table->foreign('recipient')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new MailboxReply())->getTable(), function (Blueprint $table) {
+            $table->foreign('mailbox_id')->references('id')->on((new Mailbox())->getTable())->onDelete('cascade');
+            $table->foreign('from')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+            $table->foreign('recipient')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new MailboxRead())->getTable(), function (Blueprint $table) {
+            $table->foreign('mailbox_id')->references('id')->on((new Mailbox())->getTable())->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new MailboxImportant())->getTable(), function (Blueprint $table) {
+            $table->foreign('mailbox_id')->references('id')->on((new Mailbox())->getTable())->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new MailboxTrash())->getTable(), function (Blueprint $table) {
+            $table->foreign('mailbox_id')->references('id')->on((new Mailbox())->getTable())->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
         });
 

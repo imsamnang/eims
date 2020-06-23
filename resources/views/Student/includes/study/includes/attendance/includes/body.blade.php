@@ -1,3 +1,4 @@
+
 <div class="card-body {{request()->segment(2) == "study" ? "py-0" : "p-0"}}">
     <div class="table-responsive" data-toggle="list" data-list-values='["id", "name"'>
         <table class="table table-bordered table-hover table-xs" id="t1 list-table">

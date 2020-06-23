@@ -104,9 +104,7 @@ class StudyCourse extends Model
                         if ($data[$key]['study_program']) {
                             $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
                         }
-                        if ($data[$key]['study_generation']) {
-                            $data[$key]['_name'] =  $data[$key]['_name'] . ' - (' . $data[$key]['study_generation']['name'] . ')';
-                        }
+
                         $data[$key]['name'] = $data[$key]['_name'];
                     }
                 }
@@ -120,7 +118,6 @@ class StudyCourse extends Model
                         'description'             => $row['description'],
                         'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
                         'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
-                        'study_generation'        => $row['study_generation_id'] == null ? null : StudyGeneration::getData($row['study_generation_id'])['data'][0],
                         'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
                         'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
                         'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
@@ -139,9 +136,6 @@ class StudyCourse extends Model
                     if (request('ref') != StudentsStudyCourse::$path['image'] . '-certificate') {
                         if ($data[$key]['study_program']) {
                             $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
-                        }
-                        if ($data[$key]['study_generation']) {
-                            $data[$key]['_name'] =  $data[$key]['_name'] . ' - (' . $data[$key]['study_generation']['name'] . ')';
                         }
                     }
                     if (request('ref') == Students::$path['url'] . '-' . StudentsRequest::$path['url']) {
@@ -195,7 +189,6 @@ class StudyCourse extends Model
                         'description'             => $row['description'],
                         'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
                         'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
-                        'study_generation'        => $row['study_generation_id'] == null ? null : StudyGeneration::getData($row['study_generation_id'])['data'][0],
                         'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
                         'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
                         'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
@@ -264,7 +257,6 @@ class StudyCourse extends Model
                 $values['institute_id']                 = request('institute');
                 $values['name']                         = trim(request('name'));
                 $values['study_faculty_id']             = request('study_faculty');
-                $values['study_generation_id']          = request('study_generation');
                 $values['course_type_id']               = request('course_type');
                 $values['study_modality_id']            = request('study_modality');
                 $values['study_program_id']             = request('study_program');
@@ -328,7 +320,6 @@ class StudyCourse extends Model
                 $values['institute_id']                 = request('institute');
                 $values['name']                         = trim(request('name'));
                 $values['study_faculty_id']             = request('study_faculty');
-                $values['study_generation_id']          = request('study_generation');
                 $values['course_type_id']               = request('course_type');
                 $values['study_modality_id']            = request('study_modality');
                 $values['study_program_id']             = request('study_program');

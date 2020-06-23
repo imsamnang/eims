@@ -28,9 +28,6 @@
                     <th data-type="text" data-key="study_modality.name" width="1" class="sort" data-sort="modality">
                         {{Translator::phrase("study_modality")}}​
                     </th>
-                    <th data-type="text" data-key="study_generation.name" width="1" class="sort" data-sort="generation">
-                        {{Translator::phrase("study_generation")}}​
-                    </th>
                     <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
                     <th data-type="image" data-key="image" width="1">{{Translator::phrase("image")}}​</th>
 

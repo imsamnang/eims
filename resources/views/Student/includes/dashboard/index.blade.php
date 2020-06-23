@@ -103,6 +103,7 @@
 
                 @if ($course_session["schedules"])
                 @foreach ($course_session["schedules"] as $schedule)
+
                 <div class="card">
                     @include(config("pages.parent").".includes.study.includes.schedule.includes.body",$schedule)
                 </div>
@@ -115,8 +116,9 @@
                     @php
                     $response = $course_session["attendances"];
                     $holiday = $course_session["holiday"];
+                    $no_name = true;
                     @endphp
-                    @include(config("pages.parent").".includes.study.includes.attendance.includes.body",$response)
+                    @include(config("pages.parent").".includes.study.includes.attendance.includes.body",[$response,$holiday,$no_name])
                 </div>
                 @endif
 
@@ -126,8 +128,9 @@
                 <div class="card">
                     @php
                     $response = $course_session["score"];
+                    $no_name = true;
                     @endphp
-                    @include(config("pages.parent").".includes.study.includes.score.includes.body",$response)
+                    @include(config("pages.parent").".includes.study.includes.score.includes.body",[$response,$no_name])
                 </div>
                 @endif
 

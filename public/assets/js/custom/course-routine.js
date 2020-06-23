@@ -1,4 +1,4 @@
-var CourseRoutine = function(element) {
+var CourseRoutine = function (element) {
     this.element = element;
     this.table = null;
     this.sel = [];
@@ -6,7 +6,7 @@ var CourseRoutine = function(element) {
 };
 
 CourseRoutine.prototype = {
-    build: function() {
+    build: function () {
         this.element.length &&
             this.element.each((i, el) => {
                 this.table = new Table(el);
@@ -14,7 +14,7 @@ CourseRoutine.prototype = {
                 this.contextMenu();
             });
     },
-    td: function(td) {
+    td: function (td) {
         td.on("mousedown", event => {
             if (event.which == 1) {
                 var isCtrl = event.ctrlKey || event.metaKey;
@@ -29,14 +29,14 @@ CourseRoutine.prototype = {
             }
         });
     },
-    contextMenu: function() {
+    contextMenu: function () {
         this.element.find("tbody").contextMenu({
             selector: "td.cell",
             build: ($triggerElement, event) => {
                 var items = {
                     select: {
                         name: "Select",
-                        icon: function() {
+                        icon: function () {
                             return "context-menu-icon fa-check-square";
                         },
                         callback: () => {
@@ -45,7 +45,7 @@ CourseRoutine.prototype = {
                     },
                     unselect: {
                         name: "Unselect",
-                        icon: function() {
+                        icon: function () {
                             return "context-menu-icon fa-times-square";
                         },
                         callback: () => {
@@ -59,7 +59,7 @@ CourseRoutine.prototype = {
                             var selected = [];
                             $(this.table.element)
                                 .find("td.cell.selected")
-                                .each(function() {
+                                .each(function () {
                                     if (
                                         $.inArray(
                                             $.trim($(this).attr("class")),
@@ -75,7 +75,7 @@ CourseRoutine.prototype = {
                                 var cells = this.table.element.querySelectorAll(
                                     '[class^="' + c + '"]'
                                 );
-                                this.table.merge(cells, function(
+                                this.table.merge(cells, function (
                                     colspan,
                                     rowspan,
                                     kept,
@@ -91,7 +91,7 @@ CourseRoutine.prototype = {
                             var selected = [];
                             $(this.table.element)
                                 .find("td.cell.selected")
-                                .each(function() {
+                                .each(function () {
                                     if (
                                         $.inArray(
                                             $.trim($(this).attr("class")),
@@ -130,8 +130,8 @@ CourseRoutine.prototype = {
                                 }
                                 $triggerElement.append(
                                     $(".tsc-template")
-                                        .clone()
-                                        .html()
+                                    .clone()
+                                    .html()
                                 );
                                 $triggerElement.find("select");
 
@@ -140,14 +140,49 @@ CourseRoutine.prototype = {
                         }
                     },
                     sep1: "---------",
-                    delete: {
-                        name: "Delete",
-                        icon: "delete",
+                    empty: {
+                        name: "Empty Cell",
+                        icon: "fa-eraser",
                         callback: () => {
                             this.element
                                 .find("td.cell.selected")
                                 .find("div")
                                 .remove();
+                        }
+                    },
+                    sep1: "---------",
+                    add_row: {
+                        name: "Add Row",
+                        icon: "fa-grip-lines",
+                        callback: () => {
+
+
+                            var clone = $triggerElement
+                                .parent("tr").clone();
+
+                            clone.find("td.cell").removeClass("context-menu-active");
+                            clone.find("td.cell").removeClass("selected");
+                            clone.find("td.cell").html("");
+
+                            $triggerElement
+                                .parent("tr").after(clone);
+
+                            this.td(clone.find("td.cell"));
+                            this.contextMenu();
+                        }
+                    },
+                    delete: {
+                        name: "Delete Row",
+                        icon: "delete",
+                        callback: () => {
+                            if ($triggerElement.parents("tbody").find("tr").length == 1) {
+                                Swal.fire("Can't delete!");
+                            } else {
+                                $triggerElement
+                                    .parent("tr")
+                                    .remove();
+                            }
+
                         }
                     }
                 };
@@ -159,8 +194,7 @@ CourseRoutine.prototype = {
                         if (
                             $triggerElement.attr("rowspan") > 1 ||
                             $triggerElement.attr("rowspan") > 1
-                        ) {
-                        } else {
+                        ) {} else {
                             delete items.unmerge;
                         }
                     } else {
@@ -171,14 +205,14 @@ CourseRoutine.prototype = {
                     ) {
                         delete items.add;
                     } else {
-                        delete items.delete;
+                        delete items.empty;
                     }
                 } else {
                     delete items.unselect;
                     delete items.merge;
                     delete items.unmerge;
                     delete items.add;
-                    delete items.delete;
+                    delete items.empty;
                 }
                 return {
                     items: items
@@ -187,7 +221,7 @@ CourseRoutine.prototype = {
         });
     },
 
-    json: function() {
+    json: function () {
         var matrix = this.table.matrix();
         var data = [];
         $.each(matrix, (i, cells) => {
@@ -212,18 +246,15 @@ CourseRoutine.prototype = {
                         var cell = td.cell ? td.cell : td.refCell.cell;
                         data[i].day.push({
                             id: $(matrix[0][j].cell).data("value"),
-                            teacher:
-                                $(cell)
-                                    .find('[name="teacher[]"]')
-                                    .val() || null,
-                            subject:
-                                $(cell)
-                                    .find('[name="study_subject[]"]')
-                                    .val() || null,
-                            class:
-                                $(cell)
-                                    .find('[name="study_class[]"]')
-                                    .val() || null
+                            teacher: $(cell)
+                                .find('[name="teacher[]"]')
+                                .val() || null,
+                            subject: $(cell)
+                                .find('[name="study_subject[]"]')
+                                .val() || null,
+                            class: $(cell)
+                                .find('[name="study_class[]"]')
+                                .val() || null
                         });
                     }
                 });
@@ -231,7 +262,7 @@ CourseRoutine.prototype = {
         });
         return data;
     },
-    formData: function() {
+    formData: function () {
         var formData = new FormData();
         $.each(this.json(), (i, sc) => {
             if (sc) {

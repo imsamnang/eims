@@ -72,29 +72,7 @@
 
                 </select>
             </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-control-label" for="study_generation">
-                    {{ Translator:: phrase("study_generation") }}
-
-                    @if(array_key_exists("study_generation",config("pages.form.validate.rules")))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
-                            class="fas fa-asterisk fa-xs"></i></span>
-                    @endif
-
-                </label>
-
-                <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
-                    data-url="{{$study_generation["pages"]["form"]["action"]["add"]}}"
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
-                    data-select-value="{{config("pages.form.data.study_generation.id")}}"
-                    {{(array_key_exists("study_generation",config("pages.form.validate.rules"))) ? "required" : ""}}>
-                    @foreach($study_generation["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}
-                    @endforeach
-
-                </select>
-            </div>
+            
             <div class="col-md-3 mb-3">
                 <label class="form-control-label" for="course_type">
                     {{ Translator:: phrase("course_type") }}

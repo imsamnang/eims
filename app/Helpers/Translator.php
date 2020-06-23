@@ -41,7 +41,7 @@ class Translator
                 return $string;
             } else {
                 $string =  str_replace('_', ' ', $string);
-                return ($string);
+                return $string;
             }
         } else {
             // if(Lang::has('phrase.'.$string)){
@@ -56,7 +56,7 @@ class Translator
                 return $string;
             } else {
                 $string =  str_replace('_', ' ', $string);
-                return ($string);
+                return $string;
             }
         }
     }

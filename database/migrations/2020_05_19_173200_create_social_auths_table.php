@@ -21,7 +21,8 @@ class CreateSocialAuthsTable extends Migration
             $table->string('_email')->nullable();
             $table->string('_name')->nullable();
             $table->string('_avatar')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

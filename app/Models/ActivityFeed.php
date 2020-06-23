@@ -18,7 +18,7 @@ class ActivityFeed extends Model
         'view'   => 'ActivityFeed'
     ];
 
-    public static function getData($id = null, $paginate = true)
+    public static function getData($id = null, $paginate = 10)
     {
 
         $pages = [];

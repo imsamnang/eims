@@ -25,7 +25,9 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
+use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Quiz\QuizController;
+use App\Models\Mailbox;
 use App\Models\Quiz;
 use App\Models\StudentsRequest;
 use App\Models\StudyCourseSchedule;
@@ -48,6 +50,9 @@ class AdministratorController extends Controller
             return $this->dashboard();
         } elseif (strtolower($param1) == ActivityFeed::$path['url']) {
             $view = new ActivityFeedController();
+            return $view->index($param2, $param3, $param4, $param5, $param6);
+        } elseif (strtolower($param1) == Mailbox::$path['url']) {
+            $view = new MailboxController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == Staff::$path['url']) {
             $view = new StaffController();

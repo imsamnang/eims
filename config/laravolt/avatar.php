@@ -24,7 +24,7 @@ return [
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
 
     // Whether all characters supplied must be replaced with their closest ASCII counterparts
-    'ascii' => true,
+    'ascii' => false,
 
     // Image shape: circle or square
     'shape' => 'square',
@@ -46,7 +46,10 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
+    'fonts' => [
+        __DIR__ . '/../fonts/OpenSans-Bold.ttf',
+        __DIR__ . '/../fonts/rockwell.ttf',
+    ],
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds' => [
         '#FFFFFF',

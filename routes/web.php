@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Settings\LanguagesController;
-use App\Http\Controllers\Staff\StaffRegisterController;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +25,7 @@ Route::any('/about', ['uses'  => 'FrontController@about'])->name('about');
 Route::any('/contact', ['uses'  => 'FrontController@contact'])->name('contact');
 Route::any('/ajax', ['uses'  => 'FrontController@ajax'])->name('ajax');
 
+
 //SocialAuth
 Route::group(['prefix' => 'auth'], function () {
     Route::any('/{param1}', ['uses'  => 'SocialAuthController@index']);
@@ -45,7 +45,13 @@ Route::any('/language/set/{locale}', function ($locale) {
 Route::group(['prefix' => 'holiday', 'namespace' => 'General\\'], function () {
     Route::any('/{param1}', ['uses'  => 'HolidayController@index']);
 });
-
+Route::group(['prefix' => 'mailbox', 'namespace' => 'Mailbox\\'], function () {
+    Route::any('/', ['uses'  => 'MailboxController@index']);
+    Route::any('/{param1}', ['uses'  => 'MailboxController@index']);
+    Route::any('/{param1}/{param2}', ['uses'  => 'MailboxController@index']);
+    Route::any('/{param1}/{param2}/{param3}', ['uses'  => 'MailboxController@index']);
+    Route::any('/{param1}/{param2}/{param3}/{param4}', ['uses'  => 'MailboxController@index']);
+});
 
 Route::group(['middleware' => ['web']], function () {
     // For Adminitrator

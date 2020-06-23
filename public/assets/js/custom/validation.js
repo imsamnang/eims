@@ -283,11 +283,11 @@
 
         }).removeAttr("required");
 
-        $(this).find("select[name]").each(function () {
-            $(this).val($(this).attr("data-select-value") ? $(this).attr("data-select-value").split(",") : 0).trigger("change").removeAttr("required").select2().on("select2:select", function (e) {
-                $(this).removeClass("has-error").parent().find(".invalid-feedback").remove();
-                $(this).parent().find(".select2-selection").removeClass("has-error").addClass("has-success");
-            });
-        });
+        // $(this).find("select[name]").each(function () {
+        //     $(this).val($(this).attr("data-select-value") ? $(this).attr("data-select-value").split(",") : 0).trigger("change").removeAttr("required").select2().on("select2:select", function (e) {
+        //         $(this).removeClass("has-error").parent().find(".invalid-feedback").remove();
+        //         $(this).parent().find(".select2-selection").removeClass("has-error").addClass("has-success");
+        //     });
+        // });
     };
 })(jQuery);

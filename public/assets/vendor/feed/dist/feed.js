@@ -556,7 +556,7 @@ var app = {
             var caption = post.post_message;
             if(post.mention){
                 $.each(post.mention,function(key){
-                    var t = '<a href="#" data-user=\''+JSON.stringify(post)+'\' class="emojionearea-mention">'+post.name+'</a>';
+                    var t = '<a href="#" data-user=\''+JSON.stringify(this)+'\' class="emojionearea-mention">'+this.name+'</a>';
                     caption  = caption.replaceAll("@["+key+"]",t);
 
                 });

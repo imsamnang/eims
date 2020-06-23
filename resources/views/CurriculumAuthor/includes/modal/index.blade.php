@@ -8,7 +8,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase(config("pages.form.role").'.curriculum_author​') }}
+                            {{ Translator:: phrase(config("pages.form.role").'.curriculum_author') }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>

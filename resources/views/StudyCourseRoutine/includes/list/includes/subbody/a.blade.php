@@ -25,8 +25,10 @@
             <tr>
                 <td>
                     <div class="d-flex">
-                        <span>{{$routine["times"]["start_time"]}}</span>
-                        <span>{{$routine["times"]["end_time"]}}</span>
+                        <span>
+                            {{$routine["times"]["start_time"]}} &#9866;
+                            {{$routine["times"]["end_time"]}}
+                    </span>
                     </div>
                 </td>
                 @foreach ($routine["days"] as $d)

@@ -55,7 +55,10 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizStudentAnswerController;
 use App\Http\Controllers\Certificate\CertificateController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
+use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Student\StudentsStudyCourseController;
+use App\Models\Days;
+use App\Models\Mailbox;
 
 class StudentController extends Controller
 {
@@ -69,6 +72,7 @@ class StudentController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
     {
+        
         if (Auth::user()->role_id != 6) {
             $data['blood_group']         = BloodGroup::getData('null');
             $data['mother_tong']         = MotherTong::getData('null');
@@ -109,8 +113,13 @@ class StudentController extends Controller
             } elseif (strtolower($param1)  == 'profile') {
                 $view = new ProfileController();
                 return $view->index($param2, $param3, $param4);
+            } elseif (strtolower($param1)  == Users::$path['url']) {
+                return Users::getData(null, null, 10, request('search'));
             } elseif (strtolower($param1)  == ActivityFeed::$path['url']) {
                 $view = new ActivityFeedController();
+                return $view->index($param2, $param3, $param4);
+            } elseif (strtolower($param1)  == Mailbox::$path['url']) {
+                $view = new MailboxController();
                 return $view->index($param2, $param3, $param4);
             } else {
                 abort(404);
@@ -365,6 +374,7 @@ class StudentController extends Controller
 
     public function dashboard($data)
     {
+        $data['days']                  = Days::getData();
         $data['institute']            = Institute::getData(request('instituteId', 'null'));
         $data['study_program']        = StudyPrograms::getData(request('programId', 'null'));
         $data['study_course']         = StudyCourse::getData(request('courseId', 'null'));
@@ -606,6 +616,7 @@ class StudentController extends Controller
             }
         } elseif (strtolower($param1) == 'schedule') {
             if ($data['course_routine']) {
+                $data['days']                  = Days::getData();
                 $data['response'] = StudyCourseRoutine::getData(request('course-sessionId', $data['course_routine']->study_course_session_id));
                 $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .schedule');
                 $data['view']  = Students::$path['view'] . '.includes.study.includes.schedule.index';

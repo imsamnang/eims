@@ -31,7 +31,7 @@ class StudyCourseRoutine extends Model
         $get = StudyCourseRoutine::select((new StudyCourseRoutine())->getTable() . '.*')
             ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudyCourseRoutine())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->orderBy('study_course_session_id', 'ASC');
+            ->orderBy('study_course_session_id', 'DESC');
 
         if ($study_course_session_id) {
             $study_course_session_id  =  (gettype($study_course_session_id) == 'array') ? $study_course_session_id :  explode(',', $study_course_session_id);

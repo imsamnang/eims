@@ -27,8 +27,6 @@
             <span class="d-none d-sm-inline">
                 {{Translator::phrase("delete")}}
             </span>
-
-
         </a>
     </div>
 

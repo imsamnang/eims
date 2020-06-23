@@ -1,15 +1,16 @@
 <div class="card-body p-0">
     <div class="table-responsive" data-toggle="list" data-list-values='["id", "quiz","student"]'>
-        <table id="quiz-table" class="table">
+        <table id="quiz-table" class="table table-hover">
             <thead class="thead-light">
                 <tr>
                     <th width="1" class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
                     <th width="1" class="sort" data-sort="quiz">{{Translator::phrase("quiz")}}​</th>
                     <th class="sort">
                         @if (request()->segment(3) !== "quiz")
-                            <a href="{{str_replace("answer/add","list",config("pages.form.action.detect"))}}" target="_blank" class="float-right full-link">
-                                <i class="fas fa-external-link"></i>
-                            </a>
+                        <a href="{{str_replace("answer/add","list",config("pages.form.action.detect"))}}"
+                            target="_blank" class="float-right full-link">
+                            <i class="fas fa-external-link"></i>
+                        </a>
                         @endif
                     </th>
 
@@ -20,11 +21,10 @@
                 @foreach ($response['data'] as $row)
                 <tr data-id="{{$row["id"]}}">
                     <td class="id">{{$row["id"]}}</td>
-                    <td class="quiz">
+                    <td class="quiz" data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
                         {{$row["name"]}}
                         <img data-src="{{ $row['image']}}" alt="" width="50px" height="50px">
                     </td>
-
                     <td>
                         <div class="table-responsive">
                             <table class="table border">
@@ -36,10 +36,8 @@
                                         <th width="1">{{Translator::phrase("marks")}}​</th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
+                                <tbody class="collapse" id="collapse-{{$row["id"]}}">
                                     @foreach ($row["children"] as $q)
-
                                     <tr>
                                         <td>{{ $q['id']}}</td>
                                         <td>{{ $q['quiz_type']['name']}}</td>
@@ -97,38 +95,38 @@
                                                 <div class="d-flex mb-3">
                                                     <span
                                                         class="text-green">{{Translator::phrase("answered. :")}}​</span>
-                                                        @if ($q["quiz_answer_type"]["id"] == 1)
+                                                    @if ($q["quiz_answer_type"]["id"] == 1)
+                                                    @foreach ($q["answer"] as $answer)
+                                                    <div class="custom-control custom-radio mx-2">
+                                                        <input disabled
+                                                            {{in_array($answer["id"],explode(",",$q['answered']['answered'])) ? "checked"  : "" }}
+                                                            type="radio" class="custom-control-input position-absolute">
+                                                        <label
+                                                            class="custom-control-label">{{$answer["answer"]}}</label>
+                                                    </div>
+                                                    @endforeach
+                                                    @elseif ($q["quiz_answer_type"]["id"] == 2)
+                                                    <div data-toggle="checkbox-limit1"
+                                                        data-limit="{{$q["answer_limit"]}}">
+                                                        <div>
+                                                            {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
+                                                        </div>
                                                         @foreach ($q["answer"] as $answer)
-                                                        <div class="custom-control custom-radio mx-2">
+                                                        <div class="custom-control custom-checkbox">
                                                             <input disabled
                                                                 {{in_array($answer["id"],explode(",",$q['answered']['answered'])) ? "checked"  : "" }}
-                                                                type="radio" class="custom-control-input position-absolute">
+                                                                type="checkbox" value="{{$answer["id"]}}"
+                                                                name="answer[]"
+                                                                class="custom-control-input position-absolute">
                                                             <label
                                                                 class="custom-control-label">{{$answer["answer"]}}</label>
                                                         </div>
                                                         @endforeach
-                                                        @elseif ($q["quiz_answer_type"]["id"] == 2)
-                                                        <div data-toggle="checkbox-limit1"
-                                                            data-limit="{{$q["answer_limit"]}}">
-                                                            <div>
-                                                                {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
-                                                            </div>
-                                                            @foreach ($q["answer"] as $answer)
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input disabled
-                                                                    {{in_array($answer["id"],explode(",",$q['answered']['answered'])) ? "checked"  : "" }}
-                                                                    type="checkbox" value="{{$answer["id"]}}"
-                                                                    name="answer[]"
-                                                                    class="custom-control-input position-absolute">
-                                                                <label
-                                                                    class="custom-control-label">{{$answer["answer"]}}</label>
-                                                            </div>
-                                                            @endforeach
-                                                        </div>
-                                                        @elseif ($q["quiz_answer_type"]["id"] == 3)
-                                                        <span
-                                                            class="form-control text-pre-wrap text-break">{{$q['answered']['answered']}}</span>
-                                                        @endif
+                                                    </div>
+                                                    @elseif ($q["quiz_answer_type"]["id"] == 3)
+                                                    <span
+                                                        class="form-control text-pre-wrap text-break">{{$q['answered']['answered']}}</span>
+                                                    @endif
 
 
                                                 </div>

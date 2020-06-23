@@ -29,7 +29,7 @@ class StudyCourseSchedule extends Model
         $data = array();
 
 
-        $orderBy = 'ASC';
+        $orderBy = 'DESC';
         if ($id) {
 
             $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
