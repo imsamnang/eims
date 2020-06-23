@@ -7,35 +7,46 @@
     header {
         padding: 10px;
         color: white;
-        background: {{config("app.theme_color.color")?config("app.theme_color.color"): "blueviolet"}};
+        background: var(--app-color);
     }
+
     .print-option {
         display: none;
     }
-    table:hover .print-option {display: inherit;}
+
+    table:hover .print-option {
+        display: inherit;
+    }
 </style>
 <div class="paper A4 landscape">
     <header class="sticky">
         <h1 class="d-print-none">
-            {{-- @if ($institute["success"])
-            {{$institute["data"][0]["name"]}}
-            @endif --}}
+            @if ($response["success"])
+            {{$response["data"][0]["quiz"]["institute"]["name"]}}
+            @endif
         </h1>
-
-        <div class="{{$response["success"] == false ? "d-none":""}}">
+        <div class="">
             <div class="col">
                 <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name="{{$name}}"
-                    class="btn btn-primary d-print-none">
+                    class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
                     <i class="fas fa-file-excel-o"></i>
                     {{Translator::phrase("Excel")}}
                 </button>
-                <button data-toggle="table-to-print" data-target=".sheet.card" class="btn btn-primary d-print-none">
+                <button data-toggle="table-to-print" data-target=".sheet.card"
+                    class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
                     <i class="fas fa-print"></i>
                     {{Translator::phrase("print")}} | (A4) {{Translator::phrase("landscape")}}
                 </button>
+                <button href="#filter" data-toggle="collapse" class="btn btn-primary" role="button"
+                    aria-expanded="false">
+                    <i class="fa fa-filter m-0"></i>
+                    <span class="d-none d-sm-inline">
+                        {{Translator::phrase("filter")}}
+                    </span>
+                </button>
             </div>
 
-            <div class="col">
+            <div class="col {{$response["success"] == false ? "d-none":""}}">
                 <div class="custom-control custom-checkbox mt-2">
                     <input class="custom-control-input" id="table-toggle-color" data-toggle="table-toggle-color"
                         data-table-id="t1,t2,t3" type="checkbox">
@@ -46,9 +57,40 @@
                     </label>
                 </div>
             </div>
-
         </div>
+        <div class="container border-0 p-2">
+            <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}"
+                id="form-filter" enctype="multipart/form-data">
+                <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
+                    <div class="col-12 collapse mb-3" id="filter">
+                        <div class="form-row">
+                            <div class="col-md-8">
+                                <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
+                                    data-url="{{$quiz["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
+                                    data-ajax="{{str_replace("add","list",$quiz["pages"]["form"]["action"]["add"])}}"
+                                    data-text="{{ Translator::phrase("add_new_option") }}"
+                                    data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quizId"
+                                    data-select-value="{{request('quizId')}}">
+                                    @foreach($quiz["data"] as $o)
+                                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary float-right"><i
+                                        class="fa fa-filter-search"></i>
+                                    {{ Translator::phrase("search_filter") }}</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </header>
+
+
 
     @if ($response["success"] == false)
     <section class="sheet nodata">
