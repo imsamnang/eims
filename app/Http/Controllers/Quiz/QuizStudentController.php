@@ -234,10 +234,11 @@ class QuizStudentController extends Controller
                 'data'      => $data1,
                 'question'  => $question
             ];
-            
+
             $data['view']     = QuizStudent::$path['view'] . '.includes.report.index';
             $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .report.quiz_student');
-            return $data;
+
         }
+        return $data;
     }
 }
