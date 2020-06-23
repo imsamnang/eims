@@ -21,7 +21,10 @@
                 @foreach ($response['data'] as $row)
                 <tr data-id="{{$row["id"]}}">
                     <td class="id">{{$row["id"]}}</td>
-                    <td class="quiz" data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
+                    <td class="quiz">
+                        <button data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
+                            <i class="fas fa-plus-minus"></i>
+                        </button>
                         <img data-src="{{ $row['image']}}" alt="" width="50px" height="50px">
                         {{$row["name"]}}
                     </td>
