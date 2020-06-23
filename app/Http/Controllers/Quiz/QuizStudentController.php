@@ -38,7 +38,7 @@ class QuizStudentController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['quiz'] = Quiz::getData(null, null, 10);
+        $data['quiz'] = Quiz::getData(request('quizId'), null, 10);
         $data['study_course_session'] = StudyCourseSession::getData(request('course-sessionId', 'null'));
         $data['student']  = StudentsStudyCourse::getData('null');
 
