@@ -22,8 +22,8 @@
                 <tr data-id="{{$row["id"]}}">
                     <td class="id">{{$row["id"]}}</td>
                     <td class="quiz" data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
-                        {{$row["name"]}}
                         <img data-src="{{ $row['image']}}" alt="" width="50px" height="50px">
+                        {{$row["name"]}}
                     </td>
                     <td>
                         <div class="table-responsive">
