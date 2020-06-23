@@ -40,6 +40,17 @@ class usersController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
+        $get = Users::get()->toArray();
+        foreach ($get as $row) {
+            if($row['profile']){
+                Users::where('id',$row['id'])->update([
+                    'profile'   => strtolower($row['profile'])
+                ]);
+            }
+        }
+        dd();
+
+
         request()->merge([
             'ref'   => Users::$path['url'],
         ]);
