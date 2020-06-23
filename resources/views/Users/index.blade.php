@@ -145,7 +145,7 @@
     <script src="{{asset("/assets/js/argon.min.js?v=1.1.0")}}"></script>
 
     <script>
-        $(".check-reference").on("change",function(event){
+        $(document).on("change",".check-reference",function(event){
             $('#reference-student').addClass("d-none").find("select").prop("disabled","disabled");
             $('#reference-staff').addClass("d-none").find("select").prop("disabled","disabled");
 
