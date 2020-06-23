@@ -55,7 +55,10 @@
 
                     @if ($response["question"])
                     @foreach ($response["question"] as $item)
-                    <th width="1" class="sort">{{Translator::phrase("question. ".$item['id'])}}​</th>
+                    <th data-placement="top" data-toggle="tooltip"
+                        data-original-title="{{$item["question"]}}" width="1" class="sort">
+                        {{Translator::phrase("question. ".$item['id'])}}​</th>
+
                     @endforeach
                     @endif
                     <th class="sort">{{Translator::phrase("total")}}​</th>
