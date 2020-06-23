@@ -175,7 +175,7 @@ class Quiz extends Model
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
                         if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
+                            if ($value['data'] == 'name,question.total') {
                                 $query =  $query->where(function ($q) {
                                     $q->where('name', 'LIKE', '%' . request('search.value') . '%');
                                     if (config('app.languages')) {

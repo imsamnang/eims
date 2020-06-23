@@ -168,10 +168,10 @@ class QuizQuestion extends Model
                         if ($value['searchable']) {
                             if ($value['data'] == 'quiz.name') {
                                 $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
+                                    $q->where((new Quiz())->getTable().'.name', 'LIKE', '%' . request('search.value') . '%');
                                     if (config('app.languages')) {
                                         foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
+                                            $q->orWhere((new Quiz())->getTable().'.'.$lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
                                         }
                                     }
                                 });
