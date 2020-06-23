@@ -22,7 +22,7 @@
                 <tr data-id="{{$row["id"]}}">
                     <td class="id">{{$row["id"]}}</td>
                     <td class="quiz">
-                        <button data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
+                        <button class="btn btn-sm collapsed" data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
                             <i class="fas fa-plus-minus"></i>
                         </button>
                         <img data-src="{{ $row['image']}}" alt="" width="50px" height="50px">
