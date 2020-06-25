@@ -72,6 +72,9 @@ class Users extends Model
             if ($search) {
                 $get = $get->where('name', 'LIKE', '%' . $search . '%');
             }
+            if(request('selected')){
+                $get = $get->whereNotIn('id', request('selected'));
+            }
         }
 
 

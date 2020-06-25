@@ -391,3 +391,157 @@
         width: 100%;
         display: inline-block;
     }
+
+
+
+div.taginputs-wapper {
+    position: relative;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 1;
+    min-height: calc(1.5em + 1.25rem + 5px);
+    max-height: 100%;
+    height: auto;
+    padding: 5px;
+}
+
+div.taginputs-wapper input {
+    width: auto;
+    height: 30px;
+    border: 0px solid rgb(0, 0, 0, .1);
+    padding: 4px;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/*Tags Input */
+div.taginputs-wapper >div {
+    width: 100%;
+    margin-right: 0px;
+    display: inline-block;
+    /* border: 1px solid rgb(0, 0, 0, .1); */
+}
+
+div.taginputs-wapper div ul {
+    width: 100%;
+    margin: 0;
+    padding: 0 2px;
+    display: inline-block;
+}
+
+div.taginputs-wapper div ul li.input {
+    /* width: auto; */
+    background: unset;
+    border: 0px solid #9cb4d8;
+}
+
+div.taginputs-wapper div ul li {
+    background: #e9ebee;
+    border: 1px solid #9cb4d8;
+    border-radius: 2px;
+    color: #162643;
+    cursor: default;
+    display: block;
+    float: left;
+    height: 30px;
+    margin: 1px;
+    position: relative;
+    white-space: nowrap;
+}
+
+div.taginputs-wapper div ul li.selected {
+    background: #abc0e0;
+}
+
+div.taginputs-wapper div ul li[thisuser] {
+    display: none;
+}
+
+div.taginputs-wapper div ul li:not(.input) input {
+    display: none;
+}
+
+div.taginputs-wapper div ul li span {
+    position: relative;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 4px;
+}
+div.taginputs-wapper div ul li span img {
+    width: 20px;
+    height: 20px;
+}
+
+div.taginputs-wapper div ul li button {
+    background: transparent;
+    border: 1.5px solid transparent;
+    float: right;
+    padding: 2px;
+    width: 20px;
+}
+
+div.taginputs-wapper div ul li button:hover i {
+    color: #c70a0a;
+}
+
+
+/*User Seacrh*/
+div.users-in-search {
+    position: absolute;
+    width: 210px;
+    max-height: 210px;
+    background: #fff;
+    box-shadow: 0 0 5px rgb(0, 0, 0, .20);
+    overflow: hidden;
+    overflow-y: auto;
+    opacity: 0;
+    z-index: 1;
+}
+
+div.users-in-search div.user {
+    padding: 5px;
+    display: block;
+    height: 40px;
+}
+
+div.users-in-search div.user[selected] {
+    background-color: #2a3a5c;
+    cursor: pointer;
+}
+
+div.users-in-search div.user[selected] span.user-name,
+div.users-in-search div.user:hover span.user-name {
+    color: #fff;
+}
+
+div.users-in-search div.user:hover {
+    cursor: pointer;
+    background: #45619D !important;
+
+}
+
+
+
+div.users-in-search div.user img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, .1);
+    float: left;
+}
+
+div.users-in-search div.user span {
+    max-width: 150px;
+    float: left;
+    line-height: 30px;
+    padding-left: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
+    color: #555;
+}

@@ -14,7 +14,7 @@ use PHPHtmlParser\Dom;
 class Mailbox extends Model
 {
     public static $path = [
-        'image'  => 'mail-box',
+        'image'  => 'mailbox',
         'url'    => 'mailbox',
         'view'   => 'Mailbox'
     ];

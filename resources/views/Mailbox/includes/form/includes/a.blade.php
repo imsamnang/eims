@@ -19,12 +19,13 @@
                             @endif
 
                         </label>
-                        <select multiple="multiple" class="form-control" data-toggle="select" id="recipient"
+                        <select class="form-control" data-toggle="taginputs" id="recipient"
                             title="Simple select" data-url="{{$recipient["pages"]["form"]["action"]["add"]}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-ajax="{{str_replace("add","list",$recipient["pages"]["form"]["action"]["add"])}}"
                             data-allow-clear="true" data-placeholder="{{Translator::phrase("recipient") }}"
                             name="recipient[]"
+                            data-name="recipient[]"
                             data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
                             {{config("pages.form.validate.rules.recipient") ? "required" : ""}}>
                             @foreach($recipient["data"] as $o)
@@ -64,46 +65,6 @@
 
                         </label>
                         <div>
-                            <div id="toolbar-container">
-                                <span class="ql-formats">
-                                    <select class="ql-font"></select>
-                                    <select class="ql-size"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <select class="ql-color"></select>
-                                    <select class="ql-background"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-script" value="sub"></button>
-                                    <button class="ql-script" value="super"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-header" value="1"></button>
-                                    <button class="ql-header" value="2"></button>
-                                    <button class="ql-code-block"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-list" value="ordered"></button>
-                                    <button class="ql-list" value="bullet"></button>
-                                    <button class="ql-indent" value="-1"></button>
-                                    <button class="ql-indent" value="+1"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-direction" value="rtl"></button>
-                                    <select class="ql-align"></select>
-                                </span>
-                                {{-- <span class="ql-formats">
-                                    <button class="ql-link"></button>
-                                    <button class="ql-image"></button>
-                                    <button class="ql-video"></button>
-                                    <button class="ql-formula"></button>
-                                </span> --}}
-                            </div>
                             <div data-name="message" id="message"
                                 data-placeholder="{{ Translator::phrase("message") }}"></div>
                         </div>

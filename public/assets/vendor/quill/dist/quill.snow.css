@@ -993,12 +993,7 @@
     vertical-align: top
 }
 
-.ql-snow .ql-tooltip a.ql-action::after {
-    border-right: 1px solid #ccc;
-    content: 'Edit';
-    margin-left: 16px;
-    padding-right: 8px
-}
+
 
 .ql-snow .ql-tooltip a.ql-remove::before {
     content: 'Remove';
@@ -1019,9 +1014,12 @@
 
 .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
     border-right: 0;
-    content: 'Save';
-    padding-right: 0
+    content: 'Clear';
+    padding-right: 0;
+     margin-left: 16px;
+    padding-right: 8px
 }
+
 
 .ql-snow .ql-tooltip[data-mode=link]::before {
     content: "Enter link:"

@@ -7,6 +7,7 @@ use App\Models\App;
 use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
@@ -62,6 +63,20 @@ class MailboxController extends Controller
                 return Mailbox::addToTable();
             }
             $data['view']      = Mailbox::$path['view'] . '.includes.form.index';
+        } elseif ($param1 == 'upload') {
+            if (request()->method() == 'POST' && request()->hasFile('image')) {
+                $image = ImageHelper::uploadImage(request()->file('image'), Mailbox::$path['image']);
+                if ($image) {
+                    return [
+                        'success' => true,
+                        'data'  => [ImageHelper::site(Mailbox::$path['image'], $image,'original')]
+                    ];
+                }
+            }
+            return [
+                'success' => false,
+                'data'  => []
+            ];
         } elseif ($param1 == 'reply') {
             if (request()->method() == 'POST') {
                 return MailboxReply::addToTable();
