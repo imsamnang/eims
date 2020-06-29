@@ -105,6 +105,7 @@ class Mailbox extends Model
                 'pages' => $pages
             ];
         }
+        
         return $response;
     }
 

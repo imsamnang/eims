@@ -40,17 +40,24 @@
                                         </span>
                                     </a>
                                 </div>
+                                @if($response["success"])
                                 <ul class="unstyled inbox-pagination">
-                                    <li><span>1-50 of 234</span></li>
                                     <li>
-                                        <a href="#" class="np-btn"><i
-                                                class="fas fa-angle-left  pagination-left"></i></a>
+                                        <span>
+                                            {{$response["pages"]["from"]}}-{{$response["pages"]["to"]}} of
+                                            {{$response["pages"]["total"]}}
+                                        </span>
                                     </li>
                                     <li>
-                                        <a href="#" class="np-btn"><i
-                                                class="fas fa-angle-right pagination-right"></i></a>
+                                        <a href="{{$response["pages"]["prev_page_url"]}}" class="np-btn">
+                                            <i class="fas fa-angle-left  pagination-left"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{$response["pages"]["next_page_url"]}}" class="np-btn">
+                                            <i class="fas fa-angle-right pagination-right"></i></a>
                                     </li>
                                 </ul>
+                                @endif
                             </div>
                             <table class="table table-inbox table-hover">
                                 <tbody>
