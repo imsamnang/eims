@@ -59,13 +59,14 @@
                     <div class="form-row">
 
                         <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
+                            <select class="form-control" data-toggle="select" id="study_course_session"
+                                title="Simple select"
+                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                                data-allow-clear="true"
                                 data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
-                                name="course-sessionId"
-                                data-select-value="{{request('course-sessionId')}}">
+                                name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                                 @foreach($study_course_session["data"] as $o)
                                 <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                                 @endforeach
@@ -75,7 +76,7 @@
 
                         <div class="col-md-4 col-xs-12 offset-md-8">
                             <button type="submit" class="btn btn-primary float-right"><i
-                                    class="fa fa-filter-search"></i> {{Translator::phrase("search.filter")}}</button>
+                                    class="fa fa-filter-search"></i> {{Translator::phrase("search_filter")}}</button>
                         </div>
                     </div>
                 </div>

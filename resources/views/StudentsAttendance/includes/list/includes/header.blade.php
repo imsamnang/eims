@@ -89,7 +89,7 @@
 
                         <div class="col-md-4 col-xs-12 offset-md-8">
                             <button type="submit" class="btn btn-primary float-right"><i
-                                    class="fa fa-filter-search"></i> {{Translator::phrase("search.filter")}}</button>
+                                    class="fa fa-filter-search"></i> {{Translator::phrase("search_filter")}}</button>
                         </div>
                     </div>
                 </div>

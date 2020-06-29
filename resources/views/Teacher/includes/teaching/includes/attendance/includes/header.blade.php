@@ -51,8 +51,7 @@
     <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-search"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 p-0"
-                id="filter">
+            <div class="col-12 collapse mb-3 p-0" id="filter">
                 <div class="col-xl-8 col-12">
 
                     <div class="form-row">
@@ -89,7 +88,7 @@
 
                         <div class="col-md-4 col-xs-12 offset-md-8">
                             <button type="submit" class="btn btn-primary float-right"><i
-                                    class="fa fa-filter-search"></i> {{Translator::phrase("search.filter")}}</button>
+                                    class="fa fa-filter-search"></i> {{Translator::phrase("search_filter")}}</button>
                         </div>
                     </div>
                 </div>

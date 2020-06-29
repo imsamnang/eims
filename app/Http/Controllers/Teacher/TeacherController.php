@@ -396,6 +396,10 @@ class TeacherController extends Controller
                 $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
+            } elseif ($param2 == 'list-datatable') {
+                if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                    return StudySubjectLesson::getDataTable();
+                }
             } else {
                 $staff_teach_subject_id = request('t-subjectId', $param3);
                 $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($staff_teach_subject_id, Auth::user()->node_id, null, true, false);

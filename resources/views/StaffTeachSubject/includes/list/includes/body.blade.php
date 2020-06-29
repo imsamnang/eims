@@ -16,10 +16,10 @@
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
                     @if (Auth::user()->role_id == 1)
-                    <th data-type="text" data-key="staff.institute.name" width="1" class="sort" data-sort="institute">
+                    <th data-type="text" data-key="staff.staff_institute.institute.name" width="1" class="sort" data-sort="institute">
                         {{Translator::phrase('institute')}}​</th>
                     @endif
-                    <th data-type="text-image" data-key="name" data-url="staff.photo" class="sort" data-sort="name">
+                    <th data-type="text-image" data-key="name" data-url="image" class="sort" data-sort="name">
                         {{Translator::phrase("teacher")}}​</th>
                     <th data-type="text-image" data-key="study_subject.name" data-url="study_subject.image"
                         class="sort">

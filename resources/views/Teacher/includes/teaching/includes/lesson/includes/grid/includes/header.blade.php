@@ -55,33 +55,25 @@
     <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-search"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 p-0" id="filter">
-                <div class="col-xl-8 col-12">
+            <div class="col-12 collapse mb-3" id="filter">
+                <div class="form-row">
+                    <div class="col-md-8 mb-3">
+                        <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
+                            data-url="{{$staff_teach_subject["pages"]["form"]["action"]["add"]}}"
+                            data-allow-clear="true"
+                            data-ajax="{{str_replace("add","list",$staff_teach_subject["pages"]["form"]["action"]["add"])}}"
+                            data-text="{{ Translator::phrase("add_new_option") }}"
+                            data-placeholder="{{ Translator::phrase("choose.subject") }}" name="t-subjectId"
+                            data-select-value="{{request("t-subjectId")}}">
 
-                    <div class="form-row">
-
-                        <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="staff_teach_subject"
-                                title="Simple select"
-                                data-url="{{$staff_teach_subject["pages"]["form"]["action"]["add"]}}"
-                                data-allow-clear="true"
-                                data-ajax="{{str_replace("add","list",$staff_teach_subject["pages"]["form"]["action"]["add"])}}"
-                                data-text="{{ Translator::phrase("add_new_option") }}"
-                                data-placeholder="{{ Translator::phrase("choose.subject") }}" name="t-subjectId"
-                                data-select-value="{{request("t-subjectId")}}">
-
-                                @foreach($staff_teach_subject["data"] as $o)
-
-                                <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                        <div class="col-md-4 col-xs-12 offset-md-8">
-                            <button type="submit" class="btn btn-primary float-right"><i
-                                    class="fa fa-filter-search"></i> {{Translator::phrase("search.filter")}}</button>
-                        </div>
+                            @foreach($staff_teach_subject["data"] as $o)
+                            <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
+                            {{Translator::phrase("search_filter")}}</button>
                     </div>
                 </div>
 
@@ -146,3 +138,10 @@
         </div>
     </form>
 </div>
+@if(request("t-subjectId"))
+<div class="card-header pb-2">
+    <div class="title">
+        {{$staff_teach_subject["data"][0]["name"]}}
+    </div>
+</div>
+@endif
