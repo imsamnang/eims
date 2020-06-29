@@ -663,8 +663,8 @@ class StudentsStudyCourse extends Model
 
                 if ($create) {
 
-                    if ($studentStudyCourse['photo'] && File::exists($filePath . '/' . StudentsStudyCourse::$path['image'] . '/' . $studentStudyCourse['photo'])) {
-                        $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath . '/' . StudentsStudyCourse::$path['image'] . '/' . $studentStudyCourse['photo']);
+                    if ($studentStudyCourse['photo'] && File::exists($filePath . '/' . StudentsStudyCourse::$path['image'] . '/original/' . $studentStudyCourse['photo'])) {
+                        $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath . '/' . StudentsStudyCourse::$path['image'] . '/original/' . $studentStudyCourse['photo']);
                         Users::updateImageToTable($create, $profile);
                     } elseif ($student['photo'] && File::exists($filePath . '/' . $student['photo'])) {
                         $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath . '/' . $student['photo']);

@@ -38,7 +38,7 @@
                             data-ajax="{{str_replace("add","list",$staff_teach_subject["pages"]["form"]["action"]["add"])}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.subject") }}" name="staff_teach_subject"
-                            data-select-value="{{config("pages.form.data.staff_teach_subject.id")}}"
+                            data-select-value="{{request("t-subjectId",config("pages.form.data.staff_teach_subject.id"))}}"
                             {{config("pages.form.validate.rules.staff_teach_subject") ? "required" : ""}}>
                             @foreach($staff_teach_subject["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

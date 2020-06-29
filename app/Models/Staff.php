@@ -784,12 +784,11 @@ class Staff extends Model
                     'role_id'       => request('role', Staff::$path['roleId']),
                     'node_id'       => $staff['id'],
                     'institute_id'  => $staffInstitute['institute_id'],
-                ]);
-
+                ]);                
                 if ($create) {
-
-                    if ($staff['photo'] && File::exists($filePath . '/' . Staff::$path['image'] . '/' . $staff['photo'])) {
-                        $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath . '/' . Staff::$path['image'] . '/' . $staff['photo']);
+                                  
+                    if ($staff['photo'] && File::exists($filePath . '/original/' . $staff['photo'])) {
+                        $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath  . '/original/' . $staff['photo']);
                         Users::updateImageToTable($create, $profile);
                     } else {
                         $profile = ($staff['gender_id'] == 1) ? 'male.jpg' : 'female.jpg';
