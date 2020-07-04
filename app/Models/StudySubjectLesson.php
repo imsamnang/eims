@@ -25,6 +25,7 @@ class StudySubjectLesson extends Model
     public static function getData($id = null, $staff_teach_subject_id = null, $paginate = null, $groupByStaffTeachSubjectId = true)
     {
 
+
         $data = array();
         if ($id) {
             $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
@@ -138,10 +139,22 @@ class StudySubjectLesson extends Model
 
     public static function getDataTable()
     {
+
         $model = StudySubjectLesson::query();
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
+                $action = [
+                    'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/edit/' . $row['id']), //?id
+                    'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/view/' . $row['id']), //?id
+                    'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/delete/' . $row['id']), //?id
+                ];
+
+                if (request('ref') == StudySubjectLesson::$path['url']) {
+                    $action['edit'] = str_replace('teaching', 'study', $action['edit']);
+                    $action['view'] = str_replace('teaching', 'study', $action['view']);
+                    $action['delete'] = str_replace('teaching', 'study', $action['delete']);
+                }
                 return [
                     'id'                       => $row['id'],
                     'staff_teach_subject'      => StaffTeachSubject::getData($row['staff_teach_subject_id'])['data'][0],
@@ -150,11 +163,7 @@ class StudySubjectLesson extends Model
                     'source_file_info'         => FileHelper::getFileInfo(StudySubjectLesson::$path['file'], $row['source_file']),
                     'source_link'              => $row['source_link'] ? json_decode($row['source_link'], true) : [],
                     'image'                   => $row['image'] ? (ImageHelper::site(StudySubjectLesson::$path['image'], $row['image'])) : asset('/assets/img/icons/pdf.png'),
-                    'action'                   => [
-                        'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/delete/' . $row['id']), //?id
-                    ]
+                    'action'                   => $action,
 
                 ];
             })
