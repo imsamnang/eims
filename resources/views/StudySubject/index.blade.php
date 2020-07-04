@@ -128,6 +128,7 @@
     <script src="{{asset("/assets/vendor/datatables.net-buttons/js/buttons.flash.min.js")}}"></script>
     <script src="{{asset("/assets/vendor/datatables.net-buttons/js/buttons.print.min.js")}}"></script>
     <script src="{{asset("/assets/vendor/datatables.net-select/js/dataTables.select.min.js")}}"></script>
-
+    <script src="{{asset("/assets/vendor/pdf/pdf.js")}}"></script>
+    <script src="{{asset("/assets/vendor/pdf/pdf.worker.js")}}"></script>
     <script src="{{asset("/assets/js/argon.min.js?v=1.1.0")}}"></script>
     @endsection

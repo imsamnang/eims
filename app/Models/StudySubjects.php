@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\Exception;
+use App\Helpers\FileHelper;
 use App\Helpers\Translator;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
@@ -15,9 +16,15 @@ class StudySubjects extends Model
 {
     public static $path = [
         'image'  => 'study-subject',
+        'file'  => 'study-subject',
         'url'    => 'subject',
         'view'   => 'StudySubject'
     ];
+
+    protected $fillable = [
+        'name', 'image',
+    ];
+
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
@@ -78,6 +85,7 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
+                    'file'                     => FileHelper::site(StudySubjects::$path['file'], $row['file']),
                     'image'                    =>  $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
                     'action'                   => [
                         'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
@@ -138,6 +146,7 @@ class StudySubjects extends Model
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
                     'image'                    =>  $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'file'                     => FileHelper::site(StudySubjects::$path['file'], $row['file']),
                     'action'                   => [
                         'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
                         'view' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/view/' . $row['id']), //?id
@@ -210,7 +219,10 @@ class StudySubjects extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-
+                if (request()->hasFile('file')) {
+                    $file      = request()->file('file');
+                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::$path['file']);
+                }
                 $add = StudySubjects::insertGetId($values);
                 if ($add) {
 
@@ -220,6 +232,8 @@ class StudySubjects extends Model
                     } else {
                         ImageHelper::uploadImage(false, StudySubjects::$path['image'], null, public_path('/assets/img/icons/image.jpg'));
                     }
+
+
 
                     $response       = array(
                         'success'   => true,
@@ -269,6 +283,10 @@ class StudySubjects extends Model
                     foreach (config('app.languages') as $lang) {
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
+                }
+                if (request()->hasFile('file')) {
+                    $file      = request()->file('file');
+                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::$path['file']);
                 }
                 $update = StudySubjects::where('id', $id)->update($values);
                 if ($update) {

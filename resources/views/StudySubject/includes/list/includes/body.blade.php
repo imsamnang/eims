@@ -5,6 +5,7 @@
             class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
+
                     <th data-type="checkbox" data-key="null" width="1">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
@@ -26,8 +27,9 @@
                     <th data-type="text" data-key="pass_mark_practical">
                         {{Translator::phrase("pass_mark_practical")}}​</th>
                     <th data-type="text" data-key="credit_hour">{{Translator::phrase("credit_hour")}}​</th>
-                    <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
-                    <th data-type="image" data-key="image">{{Translator::phrase("image")}}​</th>
+                    {{-- <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th> --}}
+                    <th data-type="image" data-key="image" data-url="file">{{Translator::phrase("image")}}​</th>
+                    <th data-type="icon" data-key="file">{{Translator::phrase("File")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
 
                 </tr>

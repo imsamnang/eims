@@ -6,6 +6,34 @@
     </div>
     <div class="card-body">
         <div class="form-row">
+            <div class="col-md-12 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.file")}}" class="form-control-label" for="file">
+                    {{ Translator:: phrase("File.(.PDF.)") }}
+
+                    @if (config("pages.form.role") == "add")
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
+                <input type="file" data-toggle="read-pdf" accept="application/pdf" data-target=".dz-preview-img"
+                    class="form-control" id="file" name="file" required>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <div id="read-pdf">
+
+
+                    @if(config("pages.form.data.file"))
+                    <iframe src="{{config("pages.form.data.file")}}" frameborder="0" scrolling="no" class="w-100"
+                        height="300"></iframe>
+                    @endif
+                </div>
+
+            </div>
+        </div>
+        <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="description">
                     {{ Translator:: phrase("description") }}

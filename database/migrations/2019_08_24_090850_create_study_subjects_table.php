@@ -18,7 +18,7 @@ class CreateStudySubjectsTable extends Migration
             $table->string('name')->unique();
             $table->string('en')->nullable();
             $table->string('km')->nullable();
-            $table->string('code')->nullable();
+            $table->string('file')->nullable();
             $table->float('full_mark_theory')->nullable();
             $table->float('pass_mark_theory')->nullable();
             $table->float('full_mark_practical')->nullable();
