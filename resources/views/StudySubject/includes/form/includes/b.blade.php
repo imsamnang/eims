@@ -22,8 +22,8 @@
                     data-placeholder="{{ Translator::phrase("choose.full_mark_theory") }}" name="full_mark_theory"
                     data-select-value="{{config("pages.form.data.full_mark_theory")}}"
                     {{config("pages.form.validate.rules.full_mark_theory") ? "required" : ""}}>
-                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}">
-                        {{ Translator::phrase($i."<s>.points") }}</option>
+                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
+                        {{$i.".00 ". Translator::phrase("<s>.points") }}</option>
                         @endif
 
                         @endfor
