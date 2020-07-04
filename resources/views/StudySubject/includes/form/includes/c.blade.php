@@ -18,13 +18,11 @@
                     @endif
                 </label>
                 <input type="file" data-toggle="read-pdf" accept="application/pdf" data-target=".dz-preview-img"
-                    class="form-control" id="file" name="file" required>
+                    data-view="#read-pdf" class="form-control" id="file" name="file" required>
             </div>
 
             <div class="col-md-12 mb-3">
                 <div id="read-pdf">
-
-
                     @if(config("pages.form.data.file"))
                     <iframe src="{{config("pages.form.data.file")}}" frameborder="0" scrolling="no" class="w-100"
                         height="300"></iframe>
