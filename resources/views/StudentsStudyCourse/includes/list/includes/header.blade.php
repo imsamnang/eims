@@ -1,6 +1,6 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary mb-3" data-toggle="modal"
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary mb-3" data-toggle="modal-ajax"
             data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
@@ -22,9 +22,10 @@
             </span>
         </a>
         <a data-loadscript='["{{ asset('/assets/vendor/croppie/croppie.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
-            data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]'
-            href="#" data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
-            class="btn btn-primary disabled mb-3" data-checked-show="photo" data-target="#modal" data-backdrop="static" data-keyboard="false">
+            data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]' href="#"
+            data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
+            class="btn btn-primary disabled mb-3" data-checked-show="photo" data-target="#modal" data-backdrop="static"
+            data-keyboard="false">
             <i class="fas fa-portrait m-0"></i>
             <span class="d-none d-sm-inline">
                 {{Translator::phrase("edit.photo")}}
@@ -32,7 +33,8 @@
         </a>
         <a data-loadscript='["{{ asset('/assets/vendor/jquery-qrcode/jquery.qrcode.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
             href="#" data-href="{{str_replace('edit','qrcode/make',config("pages.form.action.edit"))}}"
-            class="btn btn-primary disabled mb-3" data-checked-show="qrcode" data-target="#modal" data-backdrop="static" data-keyboard="false">
+            class="btn btn-primary disabled mb-3" data-checked-show="qrcode" data-target="#modal" data-backdrop="static"
+            data-keyboard="false">
             <i class="fa fa-qrcode m-0"></i>
             <span class="d-none d-sm-inline">
                 {{Translator::phrase("edit.qrcode")}}
@@ -41,7 +43,8 @@
 
         <a data-loadscript='["{{ asset('/assets/vendor/konva/konva.min.js')}}","{{asset('/assets/js/custom/card.js')}}"]'
             href="#" data-href="{{str_replace('edit','card/make',config("pages.form.action.edit"))}}"
-            class="btn btn-primary disabled mb-3" data-checked-show="card" data-target="#modal" data-backdrop="static" data-keyboard="false">
+            class="btn btn-primary disabled mb-3" data-checked-show="card" data-target="#modal" data-backdrop="static"
+            data-keyboard="false">
             <i class="fa fa-id-card m-0"></i>
             <span class="d-none d-sm-inline">
                 {{Translator::phrase("edit.card")}}
@@ -49,7 +52,8 @@
         </a>
 
         <a href="#" data-href="{{str_replace('edit','certificate/make',config("pages.form.action.edit"))}}"
-            class="btn btn-primary disabled mb-3" data-checked-show="certificate" data-target="#modal" data-backdrop="static" data-keyboard="false">
+            class="btn btn-primary disabled mb-3" data-checked-show="certificate" data-target="#modal"
+            data-backdrop="static" data-keyboard="false">
             <i class="fa fa-file-certificate m-0"></i>
             <span class="d-none d-sm-inline">
                 {{Translator::phrase("edit.certificate")}}
@@ -82,13 +86,14 @@
                 <div class="col-xl-8 col-12">
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
+                            <select class="form-control" data-toggle="select" id="study_course_session"
+                                title="Simple select"
+                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                                data-allow-clear="true"
                                 data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
-                                name="course-sessionId"
-                                data-select-value="{{request('course-sessionId')}}">
+                                name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                                 @foreach($study_course_session["data"] as $o)
                                 <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                                 @endforeach

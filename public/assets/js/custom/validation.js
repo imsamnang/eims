@@ -43,13 +43,16 @@
             },
             onBeforeSend = xhr => {
                 Swal({
-                    showCloseButton: false,
+                    showCloseButton: true,
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
                     },
                     onClose: () => {
-                        mainContent.stop();
+                        if(ajax){
+                            ajax.abort();
+                        }
+                        
                     }
                 });
                 $(this).parent().prepend(loading);
@@ -100,7 +103,8 @@
                         }
                     });
                 } else if (response.hasOwnProperty("errors") && Object.values(response.errors).length) {
-                    validation.validate(response.errors, this, newRules);
+                    Swal.close();
+                    validation.highlight.error(response.errors, this);
                 } else {
                     swal({
                         showCloseButton: false,

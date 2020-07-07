@@ -1,6 +1,6 @@
 <div class="card-header border-0">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal-ajax"
             data-target="#modal">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
@@ -30,9 +30,10 @@
         </a>
 
         @if (request()->segment(3) !== "request")
-            <a href="{{str_replace("add","list",config("pages.form.action.detect"))}}" target="_blank" class="float-right full-link">
-                <i class="fas fa-external-link"></i>
-            </a>
+        <a href="{{str_replace("add","list",config("pages.form.action.detect"))}}" target="_blank"
+            class="float-right full-link">
+            <i class="fas fa-external-link"></i>
+        </a>
         @endif
     </div>
 </div>

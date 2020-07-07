@@ -18,7 +18,8 @@
                     <th data-type="text" data-key="title" class="sort" data-sort="title">
                         {{Translator::phrase("title")}}​</th>
                     @if(!request("t-subjectId"))
-                    <th data-type="text-image" data-key="staff_teach_subject.study_subject.name" data-url="staff_teach_subject.study_subject.image">
+                    <th data-type="text-image" data-key="staff_teach_subject.study_subject.name"
+                        data-url="staff_teach_subject.study_subject.image">
                         {{Translator::phrase("study_subject")}}​</th>
                     @endif
                     <th width=1 data-type="image" data-key="image">
@@ -37,11 +38,11 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
                         <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                     </a>
 
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
                         <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
 

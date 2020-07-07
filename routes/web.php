@@ -37,9 +37,9 @@ Route::any('/language/set/{locale}', function ($locale) {
     return $lng->setLocale($locale);
 });
 
-// Route::any('/holiday/{args?}',function ($args){
-//     $args = explode('/', $args);
-//     return $args;
+// Route::any('/holiday/{args?}',function (args){
+//     args = explode('/', args);
+//     return args;
 // })->where('args', '(.*)');
 
 Route::group(['prefix' => 'holiday', 'namespace' => 'General\\'], function () {
@@ -135,9 +135,16 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'staff-register', 'namespace' => 'Staff\\'], function () {
 
         Route::any('/', ['uses'  => 'StaffRegisterController@index']);
-        Route::any('/{$param1}', ['uses'  => 'StaffRegisterController@index']);
-        Route::any('/{$param1}/{$param2}', ['uses'  => 'StaffRegisterController@index']);
-        Route::any('/{$param1}/{$param2}/{$param3}', ['uses'  => 'StaffRegisterController@index']);
+        Route::any('/{param1}', ['uses'  => 'StaffRegisterController@index']);
+        Route::any('/{param1}/{param2}', ['uses'  => 'StaffRegisterController@index']);
+        Route::any('/{param1}/{param2}/{param3}', ['uses'  => 'StaffRegisterController@index']);
+    });
+    Route::group(['prefix' => 'student-register', 'namespace' => 'Student\\'], function () {
+
+        Route::any('/', ['uses'  => 'StudentRegisterController@index']);
+        Route::any('/{param1}', ['uses'  => 'StudentRegisterController@index']);
+        Route::any('/{param1}/{param2}', ['uses'  => 'StudentRegisterController@index']);
+        Route::any('/{param1}/{param2}/{param3}', ['uses'  => 'StudentRegisterController@index']);
     });
 
 

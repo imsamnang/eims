@@ -74,7 +74,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a data-toggle="modal" data-target="#modal" class="dropdown-item"
+                                <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
                                     href="{{$row["action"]["edit"]}}">
                                     <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
                                 <div class="dropdown-divider"></div>

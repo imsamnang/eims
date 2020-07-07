@@ -31,11 +31,11 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
                         <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                     </a>
 
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
                         <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
 

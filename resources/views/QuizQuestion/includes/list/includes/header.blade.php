@@ -1,6 +1,6 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal-ajax"
             data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
@@ -43,8 +43,7 @@
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatale-filter"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 {{request("quizId") ? "show" : ""}}"
-                id="filter">
+            <div class="col-12 collapse mb-3 {{request("quizId") ? "show" : ""}}" id="filter">
                 <div class="form-row">
                     <div class="col-md-8">
                         <select class="form-control" data-toggle="select" id="quiz" title="Simple select"

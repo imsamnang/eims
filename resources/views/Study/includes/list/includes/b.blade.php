@@ -11,7 +11,7 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th width="1"  class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
+                    <th width="1" class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
                     <th class="sort" data-sort="name">
                         {{Translator::phrase(str_replace("-","_",config("pages.form.name")))}}​</th>
                     <th>{{Translator::phrase("description")}}​</th>
@@ -51,12 +51,12 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a data-toggle="modal" data-target="#modal" class="dropdown-item"
+                                <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
                                     href="{{$row["action"]["view"]}}">
                                     <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                                 </a>
 
-                                <a data-toggle="modal" data-target="#modal" class="dropdown-item"
+                                <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
                                     href="{{$row["action"]["edit"]}}">
                                     <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
                                 <div class="dropdown-divider"></div>

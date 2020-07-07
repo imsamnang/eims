@@ -49,31 +49,34 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
                         <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                     </a>
 
-                    <a data-toggle="modal" data-target="#modal" id="btn-option-edit" class="dropdown-item">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item">
                         <i class="fas fa-edit"></i>
                         {{Translator::phrase("edit")}}
                     </a>
 
 
                     <div class="dropdown-divider"></div>
-                    <a href="#" data-toggle="modal" data-target="#modal" id="btn-option-photo" class="dropdown-item">
+                    <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-photo"
+                        class="dropdown-item">
                         <i class="fas fa-portrait "></i>
                         {{Translator::phrase("photo")}}
                     </a>
-                    <a href="#" data-toggle="modal" data-target="#modal" id="btn-option-qrcode" class="dropdown-item">
+                    <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-qrcode"
+                        class="dropdown-item">
                         <i class="fas fa-qrcode "></i>
                         {{Translator::phrase("qrcode")}}
                     </a>
-                    <a href="#" data-toggle="modal" data-target="#modal" id="btn-option-card" class="dropdown-item">
+                    <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-card"
+                        class="dropdown-item">
                         <i class="fas fa-id-card "></i>
                         {{Translator::phrase("card")}}
                     </a>
 
-                    <a href="#" data-toggle="modal" data-target="#modal" id="btn-option-certificate"
+                    <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-certificate"
                         class="dropdown-item">
                         <i class="fas fa-file-certificate"></i>
                         {{Translator::phrase("certificate")}}

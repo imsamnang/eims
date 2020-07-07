@@ -116,13 +116,13 @@
                                                         {{Translator::phrase("view")}}
                                                     </a>
 
-                                                    <a data-toggle="modal" data-target="#mailbox-compose"
+                                                    <a data-toggle="modal-ajax" data-target="#mailbox-compose"
                                                         class="dropdown-item" href="{{$row["action"]["mark_read"]}}">
                                                         <i class="fas fa-book-reader"></i>
                                                         {{Translator::phrase("mark_read")}}
                                                     </a>
 
-                                                    <a data-toggle="modal" data-target="#mailbox-compose"
+                                                    <a data-toggle="modal-ajax" data-target="#mailbox-compose"
                                                         class="dropdown-item"
                                                         href="{{$row["action"]["mark_important"]}}">
                                                         <i class="fas fa-bookmark"></i>
