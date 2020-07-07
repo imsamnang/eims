@@ -183,6 +183,13 @@ class StudentRegisterController extends Controller
     }
     public function excel($data)
     {
+        $export = new StudentsReqisterTemplateExport;
+
+        $data['response'] = [
+            'data' => $export->collection()->toArray(),
+            'heading' => $export->headings(),
+        ];
+
         $data['gender'] = Gender::pluck('km')->toArray();
         $data['marital'] = Marital::pluck('km')->toArray();
         $data['view']  = 'StudentRegister.includes.excel.index';

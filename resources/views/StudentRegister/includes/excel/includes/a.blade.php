@@ -26,22 +26,25 @@
         <div class="table-responsive">
             <table class="table table-sm table-xs table-bordered ">
                 <thead>
-                    <th>ល.រ</th>
-                    <th>ឈ្មោះពេញ (ជាភាសាខ្មែរ)</th>
-                    <th>ឈ្មោះពេញ (ជាភាសាឡាតាំង)</th>
-                    <th>ភេទ</th>
-                    <th>ថ្ងៃខែឆ្នាំកំណើត</th>
-                    <th>ស្ថានភាពគ្រួសារ</th>
-                    <th>អាស័យ​ដ្ឋាន​អ​ចិ​ន្រ្តៃ​យ៍</th>
-                    <th>អាស័យដ្ឋានបណ្តោះអាសន្ន</th>
-                    <th><i class="fas text-red fa-key"></i> លេខទូរស័ព្ទ</th>
-                    <th><i class="fas text-red fa-key"></i> អ៊ីម៉ែល</th>
+                    @foreach ($response["heading"] as $key => $heading)
+                    <th>
+
+                        @if($key == 3 || $key == 5)
+                        <i class="fas text-green fa-key"></i>
+                        @elseif($key == 8 || $key == 9)
+                        <i class="fas text-red fa-key"></i>
+                        @endif
+                        {{$heading}}
+                    </th>
+                    @endforeach
                 </thead>
                 <tbody>
+
+                    @foreach ($response["data"] as $columns)
                     <tr>
-                        <td>1</td>
-                        <td>សែម គឹមសាន</td>
-                        <td>Sem Keamsan</td>
+                        @foreach (array_values($columns)  as $key => $row)
+
+                        @if($key == 3)
                         <td>
                             <select class="form-control">
                                 @foreach ($gender as $o)
@@ -49,7 +52,7 @@
                                 @endforeach
                             </select>
                         </td>
-                        <td>16/10/1998</td>
+                        @elseif($key == 5)
                         <td>
                             <select class="form-control">
                                 @foreach ($marital as $o)
@@ -57,11 +60,17 @@
                                 @endforeach
                             </select>
                         </td>
-                        <td>ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប</td>
-                        <td>ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប</td>
-                        <td>0969140554</td>
-                        <td>keamsan.sem@gmail.com</td>
+
+                        @else
+                        <td>{{$row}}</td>
+                        @endif
+                        @endforeach
                     </tr>
+
+
+                    @endforeach
+
+
                 </tbody>
             </table>
         </div>
