@@ -27,22 +27,20 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
      */
     public function collection()
     {
-        $stuents = [];
 
-        for($i = 1 ; $i <= 50 ; $i++){
-            $stuents[] =  [
-                'id'    => $i,
-                'fullname_km' => 'សែម គឹមសាន',
-                'fullname_en' => 'Sem Keamsan',
-                'gender'      => 'ប្រុស',
-                'dob'         => '16/10/1998',
-                'marital'     => 'លីវ',
-                'permanent_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
-                'temporaray_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
-                'phone'     => '0969140554'.$i,
-                'email'     => 'keamsan'.$i.'.sem@gmail.com',
-            ];
-        }
+
+        $stuents[] =  [
+            'id'    => 1,
+            'fullname_km' => 'សែម គឹមសាន',
+            'fullname_en' => 'Sem Keamsan',
+            'gender'      => 'ប្រុស',
+            'dob'         => '16/10/1998',
+            'marital'     => 'លីវ',
+            'permanent_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
+            'temporaray_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
+            'phone'     => '0969140554',
+            'email'     => 'keamsan.sem@gmail.com',
+        ];
 
         return collect($stuents);
     }
@@ -111,18 +109,17 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                             ],
                         ]
                     );
-                    // get layout counts (add 1 to rows for heading row)
+                // get layout counts (add 1 to rows for heading row)
                 $row_count = 51;
                 $column_count = 10;
 
-                    for ($i = 2; $i <= $row_count; $i++) {       
-                        $event->sheet->getDelegate()->getStyle('A'.$i.':J'.$i)->getFont()
+                for ($i = 2; $i <= $row_count; $i++) {
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getFont()
                         ->setName('Khmer OS Battambang')
                         ->setSize(11);
-                        $event->sheet->getDelegate()->getStyle('A'.$i.':J'.$i)->getAlignment()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
-                   
-                     }
+                }
 
                 // set dropdown column
                 $drop_column_gender = 'D';
@@ -142,26 +139,26 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $validation->setShowErrorMessage(true);
                 $validation->setShowDropDown(true);
                 $validation->setErrorTitle('ភេទ');
-                $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');        
-                $validation->setFormula1(sprintf('"%s"', implode(',', $optionsGender)));      
-                for ($i = 3; $i <= $row_count; $i++) {                    
+                $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
+                $validation->setFormula1(sprintf('"%s"', implode(',', $optionsGender)));
+                for ($i = 3; $i <= $row_count; $i++) {
                     $event->sheet->getCell("{$drop_column_gender}{$i}")->setDataValidation(clone $validation);
                 }
 
-               // set dropdown list for first data row
-               $validation = $event->sheet->getCell("{$drop_column_marital}2")->getDataValidation();
-               $validation->setType(DataValidation::TYPE_LIST);
-               $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
-               $validation->setAllowBlank(false);
-               $validation->setShowInputMessage(true);
-               $validation->setShowErrorMessage(true);
-               $validation->setShowDropDown(true);
-               $validation->setErrorTitle('ភេទ');
-               $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');        
-               $validation->setFormula1(sprintf('"%s"', implode(',', $optionsMarital)));      
-               for ($i = 3; $i <= $row_count; $i++) {                    
-                   $event->sheet->getCell("{$drop_column_marital}{$i}")->setDataValidation(clone $validation);
-               }
+                // set dropdown list for first data row
+                $validation = $event->sheet->getCell("{$drop_column_marital}2")->getDataValidation();
+                $validation->setType(DataValidation::TYPE_LIST);
+                $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setShowDropDown(true);
+                $validation->setErrorTitle('ភេទ');
+                $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
+                $validation->setFormula1(sprintf('"%s"', implode(',', $optionsMarital)));
+                for ($i = 3; $i <= $row_count; $i++) {
+                    $event->sheet->getCell("{$drop_column_marital}{$i}")->setDataValidation(clone $validation);
+                }
 
                 // set columns to autosize
                 for ($i = 1; $i <= $column_count; $i++) {
