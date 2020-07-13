@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Exports\StudentsReqisterTemplateExport;
+use App\Exports\StudentsRegisterTemplateExport;
 use App\Models\App;
 use App\Models\Users;
 use App\Models\Gender;
@@ -58,7 +58,7 @@ class StudentRegisterController extends Controller
 
         $data['listData']            = array();
 
-        if ($param1 == null || $param1 == 'add' ) {
+        if ($param1 == null || $param1 == 'add') {
             if (request()->method() == 'POST') {
                 return Students::register();
             } else {
@@ -69,15 +69,15 @@ class StudentRegisterController extends Controller
                 if (request()->method() == 'POST') {
                     if (request()->hasFile('file')) {
                         $file = request()->file('file');
-                        $fileExtension    = pathinfo(str_replace('/','.',$file->getClientOriginalName()),PATHINFO_EXTENSION);
-                        if(preg_match("/{$fileExtension}/i", '.xls,.xlsx')){
+                        $fileExtension    = pathinfo(str_replace('/', '.', $file->getClientOriginalName()), PATHINFO_EXTENSION);
+                        if (preg_match("/{$fileExtension}/i", '.xls,.xlsx')) {
                             $import = new StudentsImport;
                             $import->import($file);
                             return [
                                 'success'   => true,
                                 'message'   => 'ប្រតិបត្តិនេះត្រូវបានបញ្ចប់',
                             ];
-                        }else{
+                        } else {
                             return [
                                 'success'   => false,
                                 'message'   => 'ឯកសារដែលអ្នកបញ្ចូលមិនត្រឹមត្រូវទេ (.xls,.xlsx)!!',
@@ -100,7 +100,7 @@ class StudentRegisterController extends Controller
                     }
                 }
             } elseif ($param2 == 'template') {
-                return Excel::download(new StudentsReqisterTemplateExport, 'ទម្រង់បញ្ចូលទិន្នន័យសិស្ស.xlsx');
+                return Excel::download(new StudentsRegisterTemplateExport, 'ទម្រង់បញ្ចូលទិន្នន័យសិស្ស.xlsx');
             }
 
             $data = $this->excel($data);
@@ -183,7 +183,7 @@ class StudentRegisterController extends Controller
     }
     public function excel($data)
     {
-        $export = new StudentsReqisterTemplateExport;
+        $export = new StudentsRegisterTemplateExport;
 
         $data['response'] = [
             'data' => $export->collection()->toArray(),

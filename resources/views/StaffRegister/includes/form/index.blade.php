@@ -8,6 +8,7 @@
                     <div class="card-header">
                         <h5 class="h3 mb-0">
                             {{ Translator:: phrase(config("pages.form.role").".".str_replace("-","_",config("pages.form.name"))) }}
+                            <a class="float-right" href="{{str_replace("/add","excel",config("pages.form.action.add"))}}">បញ្ចូលទិន្នន័យតាមទម្រង់អ៊ីហ្សែល</a>
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -67,7 +68,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        
+
                         <a href="" name="scrollTo"></a>
                         <button
                             class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"

@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents
+class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents
 {
     use Exportable;
     /**
@@ -111,7 +111,7 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                     );
                 // get layout counts (add 1 to rows for heading row)
                 $row_count = 51;
-                $column_count = 10;
+                $column_count = count($this->headings());
 
                 for ($i = 2; $i <= $row_count; $i++) {
                     $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getFont()
@@ -120,17 +120,27 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                     $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
                 }
+                 // Apply array of styles to 'A1:J'.$row_count cell range
+                 $styleArray = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => str_replace('#','',config('app.theme_color.color'))],
+                        ]
+                    ]
+                ];
+                $event->sheet->getDelegate()->getStyle('A1:J'.$row_count)->applyFromArray($styleArray);
 
                 // set dropdown column
                 $drop_column_gender = 'D';
                 $drop_column_marital = 'F';
 
                 // set dropdown options
-                $optionsGender = Gender::pluck('km')->toArray();
-                $optionsMarital = Marital::pluck('km')->toArray();
+                $options_gender = Gender::pluck('km')->toArray();
+                $options_marital = Marital::pluck('km')->toArray();
 
 
-                // set dropdown list for first data row
+                // set dropdown list for gender row
                 $validation = $event->sheet->getCell("{$drop_column_gender}2")->getDataValidation();
                 $validation->setType(DataValidation::TYPE_LIST);
                 $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
@@ -140,12 +150,12 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $validation->setShowDropDown(true);
                 $validation->setErrorTitle('ភេទ');
                 $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
-                $validation->setFormula1(sprintf('"%s"', implode(',', $optionsGender)));
+                $validation->setFormula1(sprintf('"%s"', implode(',', $options_gender)));
                 for ($i = 3; $i <= $row_count; $i++) {
                     $event->sheet->getCell("{$drop_column_gender}{$i}")->setDataValidation(clone $validation);
                 }
 
-                // set dropdown list for first data row
+                // set dropdown list for marital row
                 $validation = $event->sheet->getCell("{$drop_column_marital}2")->getDataValidation();
                 $validation->setType(DataValidation::TYPE_LIST);
                 $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
@@ -153,9 +163,9 @@ class StudentsReqisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $validation->setShowInputMessage(true);
                 $validation->setShowErrorMessage(true);
                 $validation->setShowDropDown(true);
-                $validation->setErrorTitle('ភេទ');
+                $validation->setErrorTitle('ស្ថានភាពគ្រួសារ');
                 $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
-                $validation->setFormula1(sprintf('"%s"', implode(',', $optionsMarital)));
+                $validation->setFormula1(sprintf('"%s"', implode(',', $options_marital)));
                 for ($i = 3; $i <= $row_count; $i++) {
                     $event->sheet->getCell("{$drop_column_marital}{$i}")->setDataValidation(clone $validation);
                 }

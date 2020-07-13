@@ -9,11 +9,13 @@ use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Marital;
 use App\Models\Communes;
+use App\Models\Students;
 use App\Models\Villages;
 use App\Models\Districts;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Models\Provinces;
+use App\Models\BloodGroup;
 use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
@@ -21,16 +23,17 @@ use App\Helpers\Translator;
 use App\Models\Nationality;
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
+use App\Imports\StaffsImport;
 use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
+use App\Models\StaffTeachSubject;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StaffsReqisterTemplateExport;
 use App\Http\Controllers\Staff\StaffCertificateController;
 use App\Http\Controllers\Staff\StaffDesignationController;
-use App\Models\BloodGroup;
-use App\Models\StaffTeachSubject;
-use App\Models\Students;
-use Illuminate\Support\Facades\Auth;
 
 class StaffRegisterController extends Controller
 {
@@ -67,7 +70,7 @@ class StaffRegisterController extends Controller
         $data['curr_districts']      = $data['districts'];
         $data['curr_communes']       = $data['communes'];
         $data['curr_villages']       = $data['villages'];
-        $data['formAction']          = '';
+        $data['formAction']          = 'add';
         $data['formName']            = '';
         $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
@@ -79,17 +82,56 @@ class StaffRegisterController extends Controller
 
         $data['listData']            = array();
 
+        if ($param1 == null || $param1 == 'add') {
+            if (request()->method() == 'POST') {
+                return Staff::register();
+            } else {
+                $data = $this->add($data);
+            }
+        } elseif ($param1 == 'excel') {
+            if ($param2 == 'import') {
+                if (request()->method() == 'POST') {
+                    if (request()->hasFile('file')) {
+                        $file = request()->file('file');
+                        $fileExtension    = pathinfo(str_replace('/', '.', $file->getClientOriginalName()), PATHINFO_EXTENSION);
+                        if (preg_match("/{$fileExtension}/i", '.xls,.xlsx')) {
+                            $import = new StaffsImport;
+                            $import->import($file);
+                            return [
+                                'success'   => true,
+                                'message'   => 'ប្រតិបត្តិនេះត្រូវបានបញ្ចប់',
+                            ];
+                        } else {
+                            return [
+                                'success'   => false,
+                                'message'   => 'ឯកសារដែលអ្នកបញ្ចូលមិនត្រឹមត្រូវទេ (.xls,.xlsx)!!',
+                            ];
+                        }
+                    } else {
+                        return array(
+                            'success'   => false,
+                            'type'      => 'import',
+                            'message'   => array(
+                                'title' => Translator::phrase('error'),
+                                'text'  => Translator::phrase('import.unsuccessful') . PHP_EOL
+                                    . Translator::phrase('( .excel. ) .empty'),
+                                'button'   => array(
+                                    'confirm' => Translator::phrase('ok'),
+                                    'cancel'  => Translator::phrase('cancel'),
+                                ),
+                            ),
+                        );
+                    }
+                }
+            } elseif ($param2 == 'template') {
+                return Excel::download(new StaffsReqisterTemplateExport, 'ទម្រង់បញ្ចូលទិន្នន័យបុគ្គលិក & គ្រូបង្រៀន.xlsx');
+            }
 
-        if (request()->method() == 'POST') {
-            request()->merge([
-                'institute' => 1,
-                'designation'   => 2,
-                'status'   =>  2,
-            ]);
-            return Staff::addToTable();
+            $data = $this->excel($data);
         } else {
-            $data = $this->add($data);
+            abort(404);
         }
+
 
 
         MetaHelper::setConfig(
@@ -144,6 +186,26 @@ class StaffRegisterController extends Controller
     public function add($data)
     {
         $data['view']  = 'StaffRegister.includes.form.index';
+        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['metaImage'] = asset('assets/img/icons/register.png');
+        $data['metaLink']  = url(Users::role() . '/add/');
+        return $data;
+    }
+    public function excel($data)
+    {
+        $export = new StaffsReqisterTemplateExport;
+
+        $data['response'] = [
+            'data' => $export->collection()->toArray(),
+            'heading' => $export->headings(),
+        ];
+
+        $data['designation'] = StaffDesignations::pluck('km')->toArray();
+        $data['status'] = StaffStatus::pluck('km')->toArray();
+        $data['gender'] = Gender::pluck('km')->toArray();
+        $data['marital'] = Marital::pluck('km')->toArray();
+
+        $data['view']  = 'StaffRegister.includes.excel.index';
         $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');

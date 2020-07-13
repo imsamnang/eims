@@ -3,10 +3,13 @@
 namespace App\Imports;
 
 use App\Events\Import;
-use App\Exports\StudentsRegisterTemplateExport;
+use App\Exports\StaffsReqisterTemplateExport;
 use App\Helpers\DateHelper;
 use App\Models\Gender;
 use App\Models\Marital;
+use App\Models\Staff;
+use App\Models\StaffDesignations;
+use App\Models\StaffStatus;
 use App\Models\Students;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
@@ -25,7 +28,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 HeadingRowFormatter::
     default('none');
 
-class StudentsImport implements
+class StaffsImport implements
     ToCollection,
     WithHeadingRow,
     SkipsOnError,
@@ -50,43 +53,63 @@ class StudentsImport implements
             'total' => count($rows),
 
         ], request('console', '#console')));
-        $_template = new StudentsRegisterTemplateExport;
-
+        $_template = new StaffsReqisterTemplateExport;
         foreach ($rows->toArray() as $row) {
             ++$this->row;
-            $row = array_values($row);
 
+            $row = array_values($row);
             if ($row && count($row) >= count($_template->headings())) {
 
-                $fullname_km = explode(' ', $row[1]);
-                $fullname_en = explode(' ', $row[2]);
+                $fullname_km = explode(' ', $row[3]);
+                $fullname_en = explode(' ', $row[4]);
 
-                if (Gender::where('km', $row[3])->first() && Marital::where('km', $row[5])->first()) {
+                if (StaffDesignations::where('km', $row[1])->first() && StaffStatus::where('km', $row[2])->first() && Gender::where('km', $row[5])->first() && Marital::where('km', $row[7])->first()) {
                     request()->merge([
                         'first_name_km' => $fullname_km[0],
                         'last_name_km' => $fullname_km[1],
                         'first_name_en' => $fullname_en[0],
                         'last_name_en' => $fullname_en[1],
-                        'gender' => Gender::where('km', $row[3])->first()->id,
-                        'date_of_birth' => DateHelper::convert($row[4]),
-                        'marital'    => Marital::where('km', $row[5])->first()->id,
-                        'permanent_address' =>  $row[6],
-                        'temporaray_address' =>  $row[7],
-                        'phone' =>  $row[8],
-                        'email' =>  $row[9],
+                        'gender' => Gender::where('km', $row[5])->first()->id,
+                        'date_of_birth' => DateHelper::convert($row[6]),
+                        'marital'    => Marital::where('km', $row[7])->first()->id,
+                        'permanent_address' =>  $row[8],
+                        'temporaray_address' =>  $row[9],
+                        'phone' =>  $row[10],
+                        'email' =>  $row[11],
                         'nationality'   => 1,
-                        'mother_tong'   => 1
+                        'mother_tong'   => 1,
+                        //
+                        'institute' => 1,
+                        'designation' => StaffDesignations::where('km', $row[1])->first()->id,
+                        'status' => StaffStatus::where('km', $row[2])->first()->id,
+                        //
+                        'father_fullname'     => $row[12],
+                        'father_occupation'   => $row[13],
+                        'father_phone'        => $row[14],
+
+                        'mother_fullname'     => $row[15],
+                        'mother_occupation'   => $row[16],
+                        'mother_phone'        => $row[17],
                     ]);
-                    $add = Students::register();
+
+                    $add = Staff::register();
                     $add['data'] = $row;
                     $add['row'] = $this->row;
                     event(new Import($add, request('console', '#console')));
                 } else {
-                    if (!Gender::where('km', $row[3])->first()) {
-                        $errors[] = 'ភេទ : ' . $row[3] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+
+                    if (!StaffDesignations::where('km', $row[1])->first()) {
+                        $errors[] = 'ផ្នែក & តួនាទី : ' . $row[1] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
                     }
-                    if (!Marital::where('km', $row[5])->first()) {
-                        $errors[] = 'ស្ថានភាពគ្រួសារ : ' . $row[5] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    if (!StaffStatus::where('km', $row[2])->first()) {
+                        $errors[] = 'ស្ថានភាព : ' . $row[2] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    }
+                    if (!Gender::where('km', $row[5])->first()) {
+                        $errors[] = 'ភេទ : ' . $row[5] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    }
+
+                    if (!Marital::where('km', $row[7])->first()) {
+                        $errors[] = 'ស្ថានភាពគ្រួសារ : ' . $row[7] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
                     }
 
                     event(new Import([

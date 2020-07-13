@@ -546,6 +546,89 @@ class Staff extends Model
         return $response;
     }
 
+    public static function register()
+    {
+
+        $rules = FormStaff::rulesField();
+
+        unset($rules['pob_province_fk']);
+        unset($rules['pob_district_fk']);
+        unset($rules['pob_commune_fk']);
+        unset($rules['pob_village_fk']);
+        unset($rules['curr_province_fk']);
+        unset($rules['curr_district_fk']);
+        unset($rules['curr_commune_fk']);
+        unset($rules['curr_village_fk']);
+        unset($rules['father_fullname']);
+        unset($rules['father_occupation']);
+        unset($rules['father_phone']);
+        unset($rules['mother_fullname']);
+        unset($rules['mother_occupation']);
+        unset($rules['mother_phone']);
+        unset($rules['guardian']);
+        unset($rules['__guardian']);
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
+        $rules['email'] = 'required|email|unique:staff,email';
+
+        $validator          = Validator::make(request()->all(), $rules, FormStaff::customMessages(), FormStaff::attributeField());
+        if ($validator->fails()) {
+            $response       = array(
+                'success'   => false,
+                'errors'    => $validator->getMessageBag(),
+            );
+        } else {
+
+            $values = [
+                'first_name_km'    => trim(request('first_name_km')),
+                'last_name_km'     => trim(request('last_name_km')),
+                'first_name_en'    => trim(request('first_name_en')),
+                'last_name_en'     => trim(request('last_name_en')),
+                'nationality_id'   => request('nationality'),
+                'mother_tong_id'   => request('mother_tong'),
+                'national_id'      => trim(request('national_id')),
+                'gender_id'        => request('gender'),
+                'date_of_birth'    => DateHelper::convert(trim(request('date_of_birth'))),
+                'marital_id'       => request('marital'),
+
+                'permanent_address'  => trim(request('permanent_address')),
+                'temporaray_address' => trim(request('temporaray_address')),
+                'phone'              => trim(request('phone')),
+                'email'              => strtolower(trim(request('email'))),
+                'extra_info'         => trim(request('student_extra_info')),
+                'photo'              => (request('gender') == '1') ? 'male.jpg' : 'female.jpg',
+            ];
+            $add = Staff::insertGetId($values);
+
+            if ($add) {
+                StaffInstitutes::addToTable($add);
+                StaffGuardians::addToTable($add);
+                StaffQualifications::addToTable($add);
+                StaffExperience::insert([
+                    'staff_id'  => $add
+                ]);
+                
+                if (request()->hasFile('photo')) {
+                    $photo      = request()->file('photo');
+                    Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::$path['image']));
+                }
+
+                $response       = array(
+                    'success'   => true,
+                    'type'      => 'add',
+                    'message'   => array(
+                        'title' => Translator::phrase('success'),
+                        'text'  => Translator::phrase('register.successfully'),
+                        'button'   => array(
+                            'confirm' => Translator::phrase('ok'),
+                            'cancel'  => Translator::phrase('cancel'),
+                        ),
+                    ),
+                );
+            }
+        }
+
+        return $response;
+    }
 
     public static function updateToTable($id)
     {
@@ -784,9 +867,9 @@ class Staff extends Model
                     'role_id'       => request('role', Staff::$path['roleId']),
                     'node_id'       => $staff['id'],
                     'institute_id'  => $staffInstitute['institute_id'],
-                ]);                
+                ]);
                 if ($create) {
-                                  
+
                     if ($staff['photo'] && File::exists($filePath . '/original/' . $staff['photo'])) {
                         $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath  . '/original/' . $staff['photo']);
                         Users::updateImageToTable($create, $profile);

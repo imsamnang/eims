@@ -50,24 +50,6 @@
                             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                     <li class="breadcrumb-item text-white"><i class="fas fa-home"></i></li>
-                                    @if (config("pages.parameters.param1") == null)
-                                    @elseif (config("pages.parameters.param1") == "list")
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        {{Translator::phrase(config("pages.parameters.param1").".staff")}}
-                                    </li>
-                                    @else
-                                    <li class="breadcrumb-item">
-                                        <a
-                                            href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}">
-                                            {{Translator::phrase("list.staff")}}
-                                        </a>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        {{Translator::phrase(config("pages.parameters.param1"))}}
-                                    </li>
-                                    @endif
-
-
                                 </ol>
                             </nav>
                         </div>

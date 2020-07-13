@@ -78,7 +78,7 @@ class FormStaff extends FormRequest
 
             'phone'                => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
             'email'                   => 'required|email',
-            'password'                => 'required|min:6',
+            // 'password'                => 'required|min:6',
             // 'staff_extra_info'   => 'required',
             //  'photo'                => 'required|image|mimes:jpeg,jpg,bmp,png|max:1024',
         ];
