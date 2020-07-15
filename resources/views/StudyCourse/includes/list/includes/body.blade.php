@@ -22,12 +22,6 @@
 
                     <th data-type="text" data-key="study_program.name" width="1" class="sort" data-sort="program">
                         {{Translator::phrase("study_program")}}​ </th>
-                    <th data-type="text" data-key="course_type.name" width="1">
-                        {{Translator::phrase("course_type")}}​
-                    </th>
-                    <th data-type="text" data-key="study_modality.name" width="1" class="sort" data-sort="modality">
-                        {{Translator::phrase("study_modality")}}​
-                    </th>
                     <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
                     <th data-type="image" data-key="image" width="1">{{Translator::phrase("image")}}​</th>
 

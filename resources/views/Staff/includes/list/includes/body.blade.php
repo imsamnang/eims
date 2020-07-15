@@ -17,11 +17,11 @@
                         {{Translator::phrase("numbering")}}​</th>
                     <th data-type="text" data-searchable="true" data-key="name" class="sort" data-sort="name">
                         {{Translator::phrase("name")}}​</th>
-                    <th data-type="text" data-key="gender.name">{{Translator::phrase("gender")}}</th>
+                    <th data-type="text" data-key="gender">{{Translator::phrase("gender")}}</th>
                     <th data-type="text" data-key="date_of_birth">{{Translator::phrase("date_of_birth")}}</th>
                     <th data-type="text" data-key="email,phone" data-join="<br>">
                         {{Translator::phrase("email. & .phone")}}</th>
-                    <th data-type="text" data-key="staff_institute.designation.name">
+                    <th data-type="text" data-key="staff_institute.designation">
                         {{Translator::phrase("designation")}}</th>
                     <th data-type="icon" data-key="account">{{Translator::phrase("account")}}</th>
                     <th data-type="image" data-key="photo">{{Translator::phrase("photo")}}</th>

@@ -29,7 +29,6 @@ class StudentsRequestController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
         App::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
@@ -42,13 +41,13 @@ class StudentsRequestController extends Controller
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
-        $data['institute']         = Institute::getData(Auth::user()->institute_id);
-        $data['study_program']     = StudyPrograms::getData('null');
-        $data['study_course']      = StudyCourse::getData('null');
-        $data['study_generation']  = StudyGeneration::getData('null');
-        $data['study_academic_year']  = StudyAcademicYears::getData('null');
-        $data['study_semester']       = StudySemesters::getData('null');
-        $data['study_session']       = StudySession::getData('null');
+        $data['institute']         = Institute::getData();
+        $data['study_program']     = StudyPrograms::getData();
+        $data['study_course']      = StudyCourse::getData();
+        $data['study_generation']  = StudyGeneration::getData();
+        $data['study_academic_year']  = StudyAcademicYears::getData();
+        $data['study_semester']       = StudySemesters::getData();
+        $data['study_session']       = StudySession::getData();
 
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . StudentsRequest::$path['url'];

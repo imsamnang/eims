@@ -72,13 +72,13 @@ class StudentController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
     {
-        
+
         if (Auth::user()->role_id != 6) {
-            $data['blood_group']         = BloodGroup::getData('null');
-            $data['mother_tong']         = MotherTong::getData('null');
-            $data['gender']              = Gender::getData('null');
-            $data['nationality']         = Nationality::getData('null');
-            $data['marital']             = Marital::getData('null');
+            $data['blood_group']         = BloodGroup::getData();
+            $data['mother_tong']         = MotherTong::getData();
+            $data['gender']              = Gender::getData();
+            $data['nationality']         = Nationality::getData();
+            $data['marital']             = Marital::getData();
             $data['provinces']           = Provinces::getData();
             $data['districts']           = Districts::getData('null', 'null');
             $data['communes']            = Communes::getData('null', 'null');
@@ -126,57 +126,77 @@ class StudentController extends Controller
             }
         } else {
             if (strtolower($param1)  == null) {
-                $data['shortcut'] = [
+                $data['shortcuts'] = [
                     [
-                        'name'  => Translator::phrase('add.student'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
-                        'icon'  => 'fas fa-user-plus',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.student.all'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-users-class',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.student_study_course'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-user-graduate',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.request_study'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-users-medical',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.student.attendance'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-calendar-edit',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.student.score'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-trophy-alt',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.card'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-id-card',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.certificate'),
-                        'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-file-certificate',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
+                        'title' => null,
+                        'children'  => [
+                            [
+                                'name'  => Translator::phrase('add.student'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
+                                'icon'  => 'fas fa-user-plus',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                            [
+                                'name'  => Translator::phrase('register.student.short_form'),
+                                'link'  => url('student-register'),
+                                'target' => '_blank',
+                                'icon'  => 'fas fa-user-plus',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.all'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-users-class',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.card'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-id-card',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.certificate'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-file-certificate',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
                     ],
+                    [
+                        'title' => Translator::phrase('long_course'),
+                        'children' => [
+                            [
+                                'name'  => Translator::phrase('list.student_study_course'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-user-graduate',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.request_study'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-users-medical',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.attendance'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-calendar-edit',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.score'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-trophy-alt',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
+                    ]
                 ];
+
 
                 $data['view']  = Students::$path['view'] . '.includes.dashboardAdmin.index';
                 $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
@@ -197,8 +217,8 @@ class StudentController extends Controller
                 if (request()->method() === 'POST') {
                     return Students::addToTable();
                 }
-
                 $data = $this->add($data);
+
             } elseif (strtolower($param1)  == 'view') {
                 if ($param2) {
                     $data = $this->show($data, $param2, $param1);
@@ -319,6 +339,7 @@ class StudentController extends Controller
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
     }
+
     public function account($data, $id, $type)
     {
         $response           = Students::getData($id);
@@ -342,11 +363,11 @@ class StudentController extends Controller
         $data['metaLink']   = url(Users::role() . $data['formAction']);
         $pob                = $data['formData']['place_of_birth'];
         $cur                = $data['formData']['current_resident'];
-        $data['blood_group']         = BloodGroup::getData($data['formData']['blood_group']['id']);
-        $data['mother_tong']         = MotherTong::getData($data['formData']['mother_tong']['id']);
-        $data['gender']              = Gender::getData($data['formData']['gender']['id']);
-        $data['nationality']         = Nationality::getData($data['formData']['nationality']['id']);
-        $data['marital']             = Marital::getData($data['formData']['marital']['id']);
+        $data['blood_group']         = BloodGroup::getData();
+        $data['mother_tong']         = MotherTong::getData();
+        $data['gender']              = Gender::getData();
+        $data['nationality']         = Nationality::getData();
+        $data['marital']             = Marital::getData();
 
         if ($pob['province']) {
             $data['districts'] = Districts::getData($pob['province']['id']);
@@ -428,6 +449,7 @@ class StudentController extends Controller
     public function study($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
 
+
         $data['study_course_session'] = StudentsStudyCourse::getStudy(Auth::user()->node_id);
         $data['course_routine'] = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
@@ -448,13 +470,13 @@ class StudentController extends Controller
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
-        $data['institute']         = Institute::getData(Auth::user()->institute_id);
-        $data['study_program']     = StudyPrograms::getData('null');
-        $data['study_course']      = StudyCourse::getData('null');
-        $data['study_generation']  = StudyGeneration::getData('null');
-        $data['study_academic_year']  = StudyAcademicYears::getData('null');
-        $data['study_semester']       = StudySemesters::getData('null');
-        $data['study_session']       = StudySession::getData('null');
+        $data['institute']         = Institute::getData();
+        $data['study_program']     = StudyPrograms::getData();
+        $data['study_course']      = StudyCourse::getData();
+        $data['study_generation']  = StudyGeneration::getData();
+        $data['study_academic_year']  = StudyAcademicYears::getData();
+        $data['study_semester']       = StudySemesters::getData();
+        $data['study_session']       = StudySession::getData();
 
         $data['listData']            = array();
 
@@ -522,11 +544,11 @@ class StudentController extends Controller
             $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .study');
             $data['view']  = Students::$path['view'] . '.includes.study.includes.dashboard.index';
         } elseif (strtolower($param1) == 'register') {
-            $data['mother_tong']         = MotherTong::getData('null');
-            $data['blood_group']         = BloodGroup::getData('null');
-            $data['gender']              = Gender::getData('null');
-            $data['nationality']         = Nationality::getData('null');
-            $data['marital']             = Marital::getData('null');
+            $data['mother_tong']         = MotherTong::getData();
+            $data['blood_group']         = BloodGroup::getData();
+            $data['gender']              = Gender::getData();
+            $data['nationality']         = Nationality::getData();
+            $data['marital']             = Marital::getData();
             $data['provinces']           = Provinces::getData();
             $data['districts']           = Districts::getData('null', 'null');
             $data['communes']            = Communes::getData('null', 'null');
@@ -537,11 +559,6 @@ class StudentController extends Controller
             $data = $this->add($data);
             $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .register');
         } elseif (strtolower($param1) == 'edit') {
-            $data['blood_group']         = BloodGroup::getData('null');
-            $data['mother_tong']         = MotherTong::getData('null');
-            $data['gender']              = Gender::getData('null');
-            $data['nationality']         = Nationality::getData('null');
-            $data['marital']             = Marital::getData('null');
             $data['provinces']           = Provinces::getData();
             $data['districts']           = Districts::getData('null', 'null');
             $data['communes']            = Communes::getData('null', 'null');
@@ -599,15 +616,16 @@ class StudentController extends Controller
                     $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.requesting.form.index';
                     $response  = StudentsRequest::getData(request('id', $param3));
+
                     $data['formData'] = $response['data'][0];
                     $data['listData'] = $response['pages']['listData'];
-                    $data['institute']         = Institute::getData($data['formData']['institute']['id']);
-                    $data['study_program']     = StudyPrograms::getData($data['formData']['study_program']['id']);
-                    $data['study_course']      = StudyCourse::getData($data['formData']['study_course']['id']);
-                    $data['study_generation']  = StudyGeneration::getData($data['formData']['study_generation']['id']);
-                    $data['study_academic_year']  = StudyAcademicYears::getData($data['formData']['study_academic_year']['id']);
-                    $data['study_semester']       = StudySemesters::getData($data['formData']['study_semester']['id']);
-                    $data['study_session']       = StudySession::getData($data['formData']['study_session']['id']);
+                    $data['institute']         = Institute::getData();
+                    $data['study_program']     = StudyPrograms::getData();
+                    $data['study_course']      = StudyCourse::getData();
+                    $data['study_generation']  = StudyGeneration::getData();
+                    $data['study_academic_year']  = StudyAcademicYears::getData();
+                    $data['study_semester']       = StudySemesters::getData();
+                    $data['study_session']       = StudySession::getData();
                 }
             } elseif (strtolower($param2) == 'delete') {
                 return StudentsRequest::deleteFromTable(request('id', $param3));

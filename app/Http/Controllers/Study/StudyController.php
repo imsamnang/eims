@@ -75,152 +75,179 @@ class StudyController extends Controller
 
         if ($param1 == null) {
             $data['shortcut'] = [];
-            if (Auth::user()->role_id == 1) {
-                $data['shortcut'] = array([
-                    'name'  => Translator::phrase('list.institute'),
-                    'link'  => url(Users::role() . '/study/' . Institute::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-school',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ]);
-            }
-            $data['shortcut'] = array_merge($data['shortcut'], array(
+
+            $data['shortcuts'] = [
                 [
-                    'name'  => Translator::phrase('list.study_program'),
-                    'link'  => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-graduation-cap',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_course'),
-                    'link'  => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-user-hard-hat',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.course_type'),
-                    'link'  => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-hard-hat',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_course_schedule'),
-                    'link'  => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-calendar-alt',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_course_session'),
-                    'link'  => url(Users::role() . '/study/' . StudyCourseSession::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-table',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_course_routine'),
-                    'link'  => url(Users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/list'),
-                    'icon'  => 'fal fa-table',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_modality'),
-                    'link'  => url(Users::role() . '/study/' . StudyModality::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-chalkboard',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_overall_fund'),
-                    'link'  => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-donate',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_faculty'),
-                    'link'  => url(Users::role() . '/study/' . StudyFaculty::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-industry-alt',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_generation'),
-                    'link'  => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('study_generation'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_academic_year'),
-                    'link'  => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('study_academic_year'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_semester'),
-                    'link'  => url(Users::role() . '/study/' . StudySemesters::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('study_semester'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_status'),
-                    'link'  => url(Users::role() . '/study/' . StudyStatus::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-question-square',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_session'),
-                    'link'  => url(Users::role() . '/study/' . StudySession::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-hourglass-start',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.curriculum_author'),
-                    'link'  => url(Users::role() . '/study/' . CurriculumAuthor::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-book-user',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.curriculum_endorsement'),
-                    'link'  => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-people-carry',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_subject'),
-                    'link'  => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-books',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
+                    'title' => null,
+                    'children' => [
+                        [
+                            'name'  => Translator::phrase('list.institute'),
+                            'link'  => url(Users::role() . '/study/' . Institute::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-school',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_program'),
+                            'link'  => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-graduation-cap',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_course'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-user-hard-hat',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.course_type'),
+                            'link'  => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-hard-hat',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_generation'),
+                            'link'  => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_generation'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_academic_year'),
+                            'link'  => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_academic_year'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_semester'),
+                            'link'  => url(Users::role() . '/study/' . StudySemesters::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_semester'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ]
+                    ]
+                ],
+
+                [
+                    'title' => Translator::phrase('study_course_schedule'),
+                    'children'  => [
+                        [
+                            'name'  => Translator::phrase('list.study_course_schedule'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-calendar-alt',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_session'),
+                            'link'  => url(Users::role() . '/study/' . StudySession::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-hourglass-start',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_course_session'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseSession::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-table',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_class'),
+                            'link'  => url(Users::role() . '/study/' . StudyClass::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_class'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],[
+                            'name'  => Translator::phrase('list.study_course_routine'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/list'),
+                            'icon'  => 'fal fa-table',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ]
+                    ]
                 ],
                 [
-                    'name'  => Translator::phrase('list.study_subject_lesson'),
-                    'link'  => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/list'),
-                    'icon'  => 'fas fa-book-alt',
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
+                    'title' => Translator::phrase('study_subject'),
+                    'children'  => [
+                        [
+                            'name'  => Translator::phrase('list.study_subject'),
+                            'link'  => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-books',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_subject_lesson'),
+                            'link'  => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-book-alt',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                    ]
                 ],
                 [
-                    'name'  => Translator::phrase('list.study_grade'),
-                    'link'  => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('study_grade'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.study_class'),
-                    'link'  => url(Users::role() . '/study/' . StudyClass::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('study_class'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ], [
-                    'name'  => Translator::phrase('list.attendance_type'),
-                    'link'  => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/list'),
-                    'icon'  => null,
-                    'text'  => Translator::phrase('attendance_type'),
-                    'image' => null,
-                    'color' => 'bg-' . config('app.theme_color.name'),
-                ],
-            ));
+                    'title' => null,
+                    'children'  => [
+                        [
+                            'name'  => Translator::phrase('list.study_modality'),
+                            'link'  => url(Users::role() . '/study/' . StudyModality::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-chalkboard',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_overall_fund'),
+                            'link'  => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-donate',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_faculty'),
+                            'link'  => url(Users::role() . '/study/' . StudyFaculty::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-industry-alt',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.study_status'),
+                            'link'  => url(Users::role() . '/study/' . StudyStatus::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-question-square',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],  [
+                            'name'  => Translator::phrase('list.curriculum_author'),
+                            'link'  => url(Users::role() . '/study/' . CurriculumAuthor::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-book-user',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ], [
+                            'name'  => Translator::phrase('list.curriculum_endorsement'),
+                            'link'  => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-people-carry',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_grade'),
+                            'link'  => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_grade'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],  [
+                            'name'  => Translator::phrase('list.attendance_type'),
+                            'link'  => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('attendance_type'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ]
+                    ]
+                ]
+
+            ];
+
 
 
 
@@ -271,7 +298,6 @@ class StudyController extends Controller
         } elseif (strtolower($param1) == StudySession::$path['url']) {
             $view = new StudySessionController();
             return $view->index($param2, $param3);
-
         } elseif (strtolower($param1) == CurriculumAuthor::$path['url']) {
             $view = new CurriculumAuthorController();
             return $view->index($param2, $param3);

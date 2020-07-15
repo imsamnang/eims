@@ -23,7 +23,6 @@
                     </label>
 
                     <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                        data-ajax="{{str_replace("add","list",$institute["pages"]["form"]["action"]["add"])}}"
                         data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                         data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
                         {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
@@ -49,7 +48,6 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
-                    data-ajax="{{str_replace("add","list",$study_program["pages"]["form"]["action"]["add"])}}"
                     data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
                     data-select-value="{{config("pages.form.data.study_program.id",request("programId"))}}" data-append-to="#study_course"
                     data-append-url="{{str_replace("add","list?programId=",$study_course["pages"]["form"]["action"]["add"])}}">
@@ -74,9 +72,9 @@
                     @endif
                 </label>
 
-                <select {{$study_program['success']? "" : "disabled" }} class="form-control" data-toggle="select"
+                <select disabled {{$study_program['success']? "" : "disabled" }} class="form-control" data-toggle="select"
                     id="study_course" title="Simple select"
-                    data-ajax="{{str_replace("add","list?programId=".request('programId'),$study_course["pages"]["form"]["action"]["add"])}}"
+
                     data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"
                     data-select-value="{{config("pages.form.data.study_course.id",request("courseId"))}}">
                     @foreach($study_course["data"] as $o)
@@ -100,7 +98,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
-                    data-ajax="{{str_replace("add","list",$study_generation["pages"]["form"]["action"]["add"])}}"
+
                     data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
                     data-select-value="{{config("pages.form.data.study_generation.id",request("generationId"))}}">
                     @foreach($study_generation["data"] as $o)
@@ -124,7 +122,7 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
-                    data-ajax="{{str_replace("add","list",$study_academic_year["pages"]["form"]["action"]["add"])}}"
+
                     data-placeholder="{{ Translator::phrase("choose.study_academic_year") }}" name="study_academic_year"
                     data-select-value="{{config("pages.form.data.study_academic_year.id",request("yearId"))}}">
                     @foreach($study_academic_year["data"] as $o)
@@ -146,7 +144,7 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
-                    data-ajax="{{str_replace("add","list",$study_semester["pages"]["form"]["action"]["add"])}}"
+
                     data-placeholder="{{ Translator::phrase("choose.study_semester") }}" name="study_semester"
                     data-select-value="{{config("pages.form.data.study_semester.id",request("semesterId"))}}">
                     @foreach($study_semester["data"] as $o)
@@ -169,7 +167,7 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
-                    data-ajax="{{str_replace("add","list",$study_session["pages"]["form"]["action"]["add"])}}"
+
                     data-placeholder="{{ Translator::phrase("choose.study_session") }}" name="study_session"
                     data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">
                     @foreach($study_session["data"] as $o)

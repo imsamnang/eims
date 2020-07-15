@@ -41,7 +41,7 @@ class StaffRegisterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+
         App::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
@@ -50,9 +50,9 @@ class StaffRegisterController extends Controller
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
 
-        // $data['institute']           = Institute::getData(1);
-        // $data['status']              = StaffStatus::getData();
-        // $data['designation']         = StaffDesignations::getData();
+        $data['institute']           = Institute::getData();
+        $data['status']              = StaffStatus::getData();
+        $data['designation']         = StaffDesignations::getData();
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
@@ -62,14 +62,7 @@ class StaffRegisterController extends Controller
         $data['nationality']         = Nationality::getData();
         $data['marital']             = Marital::getData();
         $data['blood_group']         = BloodGroup::getData();
-        $data['provinces']           = Provinces::getData();
-        $data['districts']           = Districts::getData('null');
-        $data['communes']            = Communes::getData('null');
-        $data['villages']            = Villages::getData('null');
         $data['staff_certificate']   = StaffCertificate::getData();
-        $data['curr_districts']      = $data['districts'];
-        $data['curr_communes']       = $data['communes'];
-        $data['curr_villages']       = $data['villages'];
         $data['formAction']          = 'add';
         $data['formName']            = '';
         $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
@@ -162,9 +155,24 @@ class StaffRegisterController extends Controller
         );
 
         $rules = FormStaff::rulesField();
-        unset($rules['institute']);
-        unset($rules['designation']);
-        unset($rules['status']);
+
+        unset($rules['pob_province_fk']);
+        unset($rules['pob_district_fk']);
+        unset($rules['pob_commune_fk']);
+        unset($rules['pob_village_fk']);
+        unset($rules['curr_province_fk']);
+        unset($rules['curr_district_fk']);
+        unset($rules['curr_commune_fk']);
+        unset($rules['curr_village_fk']);
+        unset($rules['father_fullname']);
+        unset($rules['father_occupation']);
+        unset($rules['father_phone']);
+        unset($rules['mother_fullname']);
+        unset($rules['mother_occupation']);
+        unset($rules['mother_phone']);
+        unset($rules['guardian']);
+        unset($rules['__guardian']);
+
 
         $pages['form']['validate'] = [
             'rules'       => $rules,
@@ -200,6 +208,7 @@ class StaffRegisterController extends Controller
             'heading' => $export->headings(),
         ];
 
+        $data['institute'] = Institute::pluck('km')->toArray();
         $data['designation'] = StaffDesignations::pluck('km')->toArray();
         $data['status'] = StaffStatus::pluck('km')->toArray();
         $data['gender'] = Gender::pluck('km')->toArray();

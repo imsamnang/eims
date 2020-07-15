@@ -17,16 +17,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         @csrf
-                                        @if (Auth::user()->role_id !== 8)
-                                        {{-- @include(config("pages.parent").".includes.form.includes.a") --}}
-                                        @endif
+                                        @include(config("pages.parent").".includes.form.includes.a")
                                         @include(config("pages.parent").".includes.form.includes.b")
-                                        @include(config("pages.parent").".includes.form.includes.c")
-                                        @include(config("pages.parent").".includes.form.includes.d")
+
+
                                     </div>
                                     <div class="col-md-6">
+                                        @include(config("pages.parent").".includes.form.includes.c")
                                         @include(config("pages.parent").".includes.form.includes.e")
-                                        @include(config("pages.parent").".includes.form.includes.f")
                                     </div>
                                 </div>
 

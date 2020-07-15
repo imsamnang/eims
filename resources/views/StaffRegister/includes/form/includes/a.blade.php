@@ -26,7 +26,7 @@
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                     data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$institute["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                     data-select-value="1"
@@ -54,7 +54,7 @@
 
                 <select class="form-control" data-toggle="select" id="designation" title="Simple select"
                     data-url="{{$designation["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$designation["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
                     data-select-value="{{config("pages.form.data.staff_institute.designation.id")}}"
                     data-placeholder="{{ Translator::phrase("choose.designation") }}" name="designation">
@@ -79,7 +79,7 @@
 
                 <select class="form-control" data-toggle="select" id="status" title="Simple select"
                     data-url="{{$status["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$status["pages"]["form"]["action"]["add"])}}"
+                   
                     data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
                     data-select-value="{{config("pages.form.data.staff_status.id")}}"
                     data-placeholder="{{ Translator::phrase("choose.status") }}" name="status">

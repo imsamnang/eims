@@ -12,6 +12,23 @@ class MetaHelper
         Config::set("app.meta", MetaHelper::all($arrayObject));
     }
 
+    /**
+     * @param array $arrayObject
+     *
+     * title => string
+     *
+     * author => string
+     *
+     * keywords => string
+     *
+     * description => string
+     *
+     * link  => string url
+     *
+     * image  => string url
+     *
+     * @return array
+     */
     public static function all(array $arrayObject)
     {
         return [
@@ -22,6 +39,18 @@ class MetaHelper
         ];
     }
 
+
+     /**
+     * @param array $arrayObject
+     *
+     * author => string
+     *
+     * keywords => string
+     *
+     * description => string
+     *
+     * @return array
+     */
 
     public static function simple(array $arrayObject)
     {
@@ -56,6 +85,22 @@ class MetaHelper
         ];
     }
 
+
+     /**
+     * @param array $arrayObject
+     *
+     * title => string
+     *
+     * author => string
+     *
+     * description => string
+     *
+     * link  => string url
+     *
+     * image  => string url
+     *
+     * @return array
+     */
     public static function twitter(array $arrayObject)
     {
         return [
@@ -86,6 +131,21 @@ class MetaHelper
         ];
     }
 
+     /**
+     * @param array $arrayObject
+     *
+     * title => string
+     *
+     * author => string
+     *
+     * description => string
+     *
+     * link  => string url
+     *
+     * image  => string url
+     *
+     * @return array
+     */
     public static function graphData(array $arrayObject)
     {
         return [
@@ -120,6 +180,17 @@ class MetaHelper
         ];
     }
 
+     /**
+     * @param array $arrayObject
+     *
+     * title => string
+     *
+     * description => string
+     *
+     * image  => string url
+     *
+     * @return array
+     */
     public static function googlePlus(array $arrayObject)
     {
         return [

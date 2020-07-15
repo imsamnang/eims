@@ -17,7 +17,7 @@
                         {{Translator::phrase("numbering")}}​</th>
                     <th data-type="text" data-key="name" class="sort" data-sort="name">
                         {{Translator::phrase("name")}}​</th>
-                    <th data-type="text" data-key="gender.name">{{Translator::phrase("gender")}}</th>
+                    <th data-type="text" data-key="gender">{{Translator::phrase("gender")}}</th>
                     <th data-type="text" data-key="date_of_birth">{{Translator::phrase("date_of_birth")}}</th>
                     <th data-type="text" data-key="email,phone" data-join="<br>">
                         {{Translator::phrase("email. & .phone")}}</th>

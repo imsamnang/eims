@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Gender;
+use App\Models\Institute;
 use App\Models\Marital;
 use App\Models\StaffDesignations;
 use App\Models\StaffStatus;
@@ -29,6 +30,7 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
 
         $stuents[] =  [
             'id'                     => 1,
+            'institute'              => 'វិទ្យាស្ថានពហុបច្ចេកទេសភូមិភាគតេជោសែនសៀមរាប',
             'designation'            => 'គ្រូបច្ចេកទេស',
             'status'                 => 'បុគ្គលិកចាស់',
             'fullname_km'            => 'សេង ស៊ង់',
@@ -58,6 +60,7 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
     {
         $heading = [
             'ល.រ',
+            'វិទ្យាស្ថាន',
             'ផ្នែក & តួនាទី',
             'ស្ថានភាព',
             'ឈ្មោះពេញ (ជាភាសាខ្មែរ)',
@@ -86,7 +89,7 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A1:R1')
+                $event->sheet->getDelegate()->getStyle('A1:S1')
                     ->applyFromArray(
                         [
                             'font' => [
@@ -118,10 +121,10 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
                 $column_count = count($this->headings());
 
                 for ($i = 2; $i <= $row_count; $i++) {
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':R' . $i)->getFont()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':S' . $i)->getFont()
                         ->setName('Khmer OS Battambang')
                         ->setSize(11);
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':R' . $i)->getAlignment()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':S' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
 
                 }
@@ -134,22 +137,24 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
                         ]
                     ]
                 ];
-                $event->sheet->getDelegate()->getStyle('A1:R'.$row_count)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A1:S'.$row_count)->applyFromArray($styleArray);
 
                 // set dropdown column
-                $drop_column_designation = 'B';
-                $drop_column_status = 'C';
-                $drop_column_gender = 'F';
-                $drop_column_marital = 'H';
+                $drop_column_institute = 'B';
+                $drop_column_designation = 'C';
+                $drop_column_status = 'D';
+                $drop_column_gender = 'I';
+                $drop_column_marital = 'K';
 
                 // set dropdown options
+                $options_institute = Institute::pluck('km')->toArray();
                 $options_designation = StaffDesignations::pluck('km')->toArray();
                 $options_status = StaffStatus::pluck('km')->toArray();
                 $options_gender = Gender::pluck('km')->toArray();
                 $options_marital = Marital::pluck('km')->toArray();
 
-                // set dropdown list for designation row
-                $validation = $event->sheet->getCell("{$drop_column_designation}2")->getDataValidation();
+                // set dropdown list for institute row
+                $validation = $event->sheet->getCell("{$drop_column_institute}2")->getDataValidation();
                 $validation->setType(DataValidation::TYPE_LIST);
                 $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
                 $validation->setAllowBlank(false);
@@ -158,10 +163,24 @@ class StaffsReqisterTemplateExport implements FromCollection, ShouldAutoSize, Wi
                 $validation->setShowDropDown(true);
                 $validation->setErrorTitle('ផ្នែក & តួនាទី');
                 $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
-                $validation->setFormula1(sprintf('"%s"', implode(',', $options_designation)));
+                $validation->setFormula1(sprintf('"%s"', implode(',', $options_institute)));
                 for ($i = 3; $i <= $row_count; $i++) {
-                    $event->sheet->getCell("{$drop_column_designation}{$i}")->setDataValidation(clone $validation);
+                    $event->sheet->getCell("{$drop_column_institute}{$i}")->setDataValidation(clone $validation);
                 }
+                 // set dropdown list for designation row
+                 $validation = $event->sheet->getCell("{$drop_column_designation}2")->getDataValidation();
+                 $validation->setType(DataValidation::TYPE_LIST);
+                 $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+                 $validation->setAllowBlank(false);
+                 $validation->setShowInputMessage(true);
+                 $validation->setShowErrorMessage(true);
+                 $validation->setShowDropDown(true);
+                 $validation->setErrorTitle('ផ្នែក & តួនាទី');
+                 $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
+                 $validation->setFormula1(sprintf('"%s"', implode(',', $options_designation)));
+                 for ($i = 3; $i <= $row_count; $i++) {
+                     $event->sheet->getCell("{$drop_column_designation}{$i}")->setDataValidation(clone $validation);
+                 }
 
                 // set dropdown list for status row
                 $validation = $event->sheet->getCell("{$drop_column_status}2")->getDataValidation();

@@ -85,7 +85,7 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
-                    'file'                     => FileHelper::site(StudySubjects::$path['file'], $row['file']),
+                    'file'                     => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
                     'image'                    =>  $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
                     'action'                   => [
                         'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
@@ -145,8 +145,8 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
-                    'image'                    =>  $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
-                    'file'                     => FileHelper::site(StudySubjects::$path['file'], $row['file']),
+                    'image'                    => $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'file'                     => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
                     'action'                   => [
                         'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
                         'view' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/view/' . $row['id']), //?id

@@ -32,7 +32,6 @@
                 <select class="form-control" data-toggle="select" id="pob_province_fk" title="Simple select"
                     data-url="{{$provinces["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$provinces["pages"]["form"]["action"]["add"])}}"
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
                     name="pob_province_fk" data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
                     data-append-to="#pob_district_fk"
@@ -58,11 +57,10 @@
                 </label>
 
 
-                <select {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_district_fk" title="Simple select"
                     data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$districts["pages"]["form"]["action"]["add"])}}"
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
                     name="pob_district_fk" data-select-value="{{config("pages.form.data.place_of_birth.district.id")}}"
                     data-append-to="#pob_commune_fk"
@@ -88,11 +86,11 @@
                 </label>
 
 
-                <select {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_commune_fk" title="Simple select"
                     data-url="{{$communes["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$communes["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
                     name="pob_commune_fk" data-select-value="{{config("pages.form.data.place_of_birth.commune.id")}}"
                     data-append-to="#pob_village_fk"
@@ -119,11 +117,11 @@
                 </label>
 
 
-                <select {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_village_fk" title="Simple select"
                     data-url="{{$villages["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$villages["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
                     name="pob_village_fk" data-select-value="{{config("pages.form.data.place_of_birth.village.id")}}"
                     {{config("pages.form.validate.rules.pob_village_fk") ? "required" : ""}}>
@@ -204,7 +202,7 @@
                 <select class="form-control" data-toggle="select" id="curr_province_fk" title="Simple select"
                     data-url="{{$provinces["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$provinces["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
                     name="curr_province_fk"
                     data-select-value="{{config("pages.form.data.current_resident.province.id")}}"
@@ -232,11 +230,11 @@
                 </label>
 
 
-                <select {{config("pages.form.data.current_resident.district.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.current_resident.district.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_district_fk" title="Simple select"
                     data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$districts["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
                     name="curr_district_fk"
                     data-select-value="{{config("pages.form.data.current_resident.district.id")}}"
@@ -263,11 +261,11 @@
                 </label>
 
 
-                <select {{config("pages.form.data.current_resident.commune.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.current_resident.commune.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_commune_fk" title="Simple select"
                     data-url="{{$communes["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$communes["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
                     name="curr_commune_fk" data-select-value="{{config("pages.form.data.current_resident.commune.id")}}"
                     data-append-to="#curr_village_fk"
@@ -294,11 +292,11 @@
                 </label>
 
 
-                <select {{config("pages.form.data.current_resident.village.id")? "" :"disabled"}} class="form-control"
+                <select disabled {{config("pages.form.data.current_resident.village.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_village_fk" title="Simple select"
                     data-url="{{$villages["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-ajax="{{str_replace("add","list",$villages["pages"]["form"]["action"]["add"])}}"
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
                     name="curr_village_fk" data-select-value="{{config("pages.form.data.current_resident.village.id")}}"
                     {{config("pages.form.validate.rules.curr_village_fk") ? "required" : ""}}>

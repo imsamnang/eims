@@ -72,8 +72,8 @@
 
                 </select>
             </div>
-            
-            <div class="col-md-3 mb-3">
+
+            {{-- <div class="col-md-3 mb-3">
                 <label class="form-control-label" for="course_type">
                     {{ Translator:: phrase("course_type") }}
 
@@ -96,8 +96,6 @@
 
                 </select>
             </div>
-
-
             <div class="col-md-3 mb-3">
                 <label class="form-control-label" for="study_modality">
                     {{ Translator:: phrase("study_modality") }}
@@ -166,7 +164,7 @@
                     @endforeach
 
                 </select>
-            </div>
+            </div> --}}
         </div>
 
 

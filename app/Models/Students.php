@@ -189,7 +189,18 @@ class Students extends Model
     public static function getDataTable()
     {
 
-        $model = Students::query();
+        $model = Students::select([
+            'id',
+            'first_name_km',
+            'last_name_km',
+            'first_name_en',
+            'last_name_en',
+            'gender_id',
+            'date_of_birth',
+            'email',
+            'phone',
+            'photo',
+        ]);
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
@@ -210,11 +221,8 @@ class Students extends Model
 
                 return [
                     'id'      => $row['id'],
-                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'nationality'        => $row['nationality_id'] ? (Nationality::getData($row['nationality_id'])['data'][0]) : null,
-                    'mother_tong'        => $row['mother_tong_id'] ? (MotherTong::getData($row['mother_tong_id'])['data'][0]) : null,
-                    'national_id'        => $row['national_id'],
-                    'gender'             => $row['gender_id'] ? (Gender::getData($row['gender_id'])['data'][0]) : null,
+                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],                    
+                    'gender'             =>  Gender::where('id',$row['gender_id'])->pluck(app()->getLocale())->first(),
                     'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
                     'account'            => $account ? Users::getData($account->id)['data'][0] : null,
                     'photo'             =>  $photo,
@@ -448,7 +456,7 @@ class Students extends Model
 
     public static function register()
     {
-        
+
         $rules = FormStudents::rulesField();
 
         unset($rules['pob_province_fk']);
@@ -471,13 +479,13 @@ class Students extends Model
         $rules['email'] = 'required|email|unique:students,email';
 
         $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
-        if ($validator->fails()) {            
+        if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
-                'errors'    => $validator->getMessageBag(),                
+                'errors'    => $validator->getMessageBag(),
             );
-        } else {         
-               
+        } else {
+
             $values = [
                 'first_name_km'    => trim(request('first_name_km')),
                 'last_name_km'     => trim(request('last_name_km')),
@@ -508,7 +516,7 @@ class Students extends Model
 
                 $response       = array(
                     'success'   => true,
-                    'type'      => 'add',                    
+                    'type'      => 'add',
                     'message'   => array(
                         'title' => Translator::phrase('success'),
                         'text'  => Translator::phrase('register.successfully'),
@@ -519,8 +527,8 @@ class Students extends Model
                     ),
                 );
             }
-        }     
-       
+        }
+
         return $response;
     }
 

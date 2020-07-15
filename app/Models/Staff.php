@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Validator;
 class Staff extends Model
 {
 
+
+
     public static $path = [
         'image'   => 'staff',
         'url'     => 'staff',
@@ -215,9 +217,27 @@ class Staff extends Model
 
     public static function getDataTable()
     {
+        $_staff = (new Staff)->getTable();
+        $_staff_institute = (new StaffInstitutes)->getTable();
 
-        $model = Staff::select((new Staff())->getTable() . '.*')
-            ->join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id');
+        $model = Staff::select([
+            $_staff.'.id',
+            $_staff.'.first_name_km',
+            $_staff.'.last_name_km',
+            $_staff.'.first_name_en',
+            $_staff.'.last_name_en',
+            $_staff.'.gender_id',
+            $_staff.'.date_of_birth',
+            $_staff.'.email',
+            $_staff.'.phone',
+            $_staff.'.photo',
+            $_staff.'.staff_status_id',
+            $_staff_institute.'.institute_id',
+            $_staff_institute.'.designation_id',
+
+        ])
+        ->join($_staff_institute, $_staff_institute.'.staff_id', $_staff . '.id');
+         
 
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
@@ -226,17 +246,17 @@ class Staff extends Model
                 return [
                     'id'      => $row['id'],
                     'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'nationality'        => $row['nationality_id'] ? (Nationality::getData($row['nationality_id'])['data'][0]) : null,
-                    'mother_tong'        => $row['mother_tong_id'] ? (MotherTong::getData($row['mother_tong_id'])['data'][0]) : null,
-                    'national_id'        => $row['national_id'],
-                    'gender'             => $row['gender_id'] ? (Gender::getData($row['gender_id'])['data'][0]) : null,
+                    'gender'             =>  Gender::where('id',$row['gender_id'])->pluck(app()->getLocale())->first(),
                     'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
                     'account'            => $account ? Users::getData($account->id)['data'][0] : null,
-                    'status'            => StaffStatus::getData($row['staff_status_id'])['data'][0],
+                    'status'            => Gender::where('id',$row['staff_status_id'])->pluck(app()->getLocale())->first(),
                     'photo'             => ImageHelper::site(Staff::$path['image'], $row['photo']),
                     'email'      => $row['email'],
                     'phone'      => $row['phone'],
-                    'staff_institute'         => StaffInstitutes::getData($row['id'])['data'][0],
+                    'staff_institute'         => [
+                        'institute' =>  Institute::where('id',$row['institute_id'])->pluck(app()->getLocale())->first(),
+                        'designation' =>  StaffDesignations::where('id',$row['designation_id'])->pluck(app()->getLocale())->first(),
+                    ],
                     'action'                   => [
                         'edit'                 => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']), //?id
                         'view'                 => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']), //?id
@@ -606,7 +626,7 @@ class Staff extends Model
                 StaffExperience::insert([
                     'staff_id'  => $add
                 ]);
-                
+
                 if (request()->hasFile('photo')) {
                     $photo      = request()->file('photo');
                     Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::$path['image']));

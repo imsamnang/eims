@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
         <div class="form-row">
-            <div class="col-md-6 mb-3">
+            {{-- <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="curriculum_author">
                     {{ Translator:: phrase("curriculum_author") }}
 
@@ -52,7 +52,7 @@
                     @endforeach
 
                 </select>
-            </div>
+            </div> --}}
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="description">
                     {{ Translator:: phrase("description") }}

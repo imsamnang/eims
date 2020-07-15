@@ -29,9 +29,9 @@
                     @foreach ($response["heading"] as $key => $heading)
                     <th>
 
-                        @if($key == 1 || $key == 2 || $key == 5 || $key == 7)
+                        @if($key == 1 || $key == 2 || $key == 3 || $key == 6 || $key == 8)
                         <i class="fas text-green fa-key"></i>
-                        @elseif($key == 10 || $key == 11)
+                        @elseif($key == 11 || $key == 12)
                         <i class="fas text-red fa-key"></i>
                         @endif
                         {{$heading}}
@@ -47,7 +47,7 @@
                         @if($key == 1)
                         <td>
                             <select style="height: 30px" class="border">
-                                @foreach ($designation as $o)
+                                @foreach ($institute as $o)
                                 <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
                                 @endforeach
                             </select>
@@ -55,12 +55,20 @@
                         @elseif($key == 2)
                         <td>
                             <select style="height: 30px" class="border">
+                                @foreach ($designation as $o)
+                                <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        @elseif($key == 3)
+                        <td>
+                            <select style="height: 30px" class="border">
                                 @foreach ($status as $o)
                                 <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
                                 @endforeach
                             </select>
                         </td>
-                        @elseif($key == 5)
+                        @elseif($key == 6)
                         <td>
                             <select style="height: 30px" class="border">
                                 @foreach ($gender as $o)
@@ -68,7 +76,7 @@
                                 @endforeach
                             </select>
                         </td>
-                        @elseif($key == 7)
+                        @elseif($key == 8)
                         <td>
                             <select style="height: 30px" class="border">
                                 @foreach ($marital as $o)

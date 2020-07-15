@@ -33,13 +33,13 @@ class FormStudyCourse extends FormRequest
         }
 
         $rules['institute']                = 'required';
-        $rules['study_faculty']            = 'required';
-        $rules['course_type']              = 'required';
-        $rules['study_modality']           = 'required';
+        //$rules['study_faculty']            = 'required';
+        //$rules['course_type']              = 'required';
+        //$rules['study_modality']           = 'required';
         $rules['study_program']            = 'required';
-        $rules['study_overall_fund']       = 'required';
-        $rules['curriculum_author']        = 'required';
-        $rules['curriculum_endorsement']   = 'required';
+        //$rules['study_overall_fund']       = 'required';
+        //$rules['curriculum_author']        = 'required';
+        //$rules['curriculum_endorsement']   = 'required';
         //$rules['description']            = 'required';
         //$rules['image']                  = 'required';
 
