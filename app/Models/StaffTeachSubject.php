@@ -165,7 +165,7 @@ class StaffTeachSubject extends Model
                 }
 
                 if (request('t-subjectId')) {
-                    $query =  $query->where((new StaffTeachSubject())->getTable() . '.id', request('t-subjectId'));
+                    $query =  $query->where((new StaffTeachSubject())->getTable() . '.study_subject_id', request('t-subjectId'));
                 }
 
 
