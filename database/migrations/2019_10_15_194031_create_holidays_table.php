@@ -15,6 +15,7 @@ class CreateHolidaysTable extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->integer('year')->nullable();
             $table->integer('month')->nullable();
             $table->integer('date')->nullable();
@@ -23,7 +24,7 @@ class CreateHolidaysTable extends Migration
             $table->text('km')->nullable();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
-             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

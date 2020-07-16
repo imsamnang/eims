@@ -44,6 +44,10 @@ class CardFrames extends Model
 
         if ($id) {
             $get = $get->whereIn('id', $id);
+        } else {
+            if (request('instituteId')) {
+                $get = $get->where('institute_id', request('instituteId'));
+            }
         }
 
         if ($paginate) {
@@ -139,8 +143,9 @@ class CardFrames extends Model
                 ];
             })
             ->filter(function ($query) {
-                if (Auth::user()->role_id == 2) {
-                    $query =  $query->where('institute_id', Auth::user()->institute_id);
+
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {

@@ -15,6 +15,7 @@ class CreateStudySessionsTable extends Migration
     {
         Schema::create('study_sessions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->string('name')->nullable();
             $table->string('en')->nullable();
             $table->string('km')->nullable();
@@ -22,8 +23,6 @@ class CreateStudySessionsTable extends Migration
             $table->text('image')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
-
-
         });
     }
 

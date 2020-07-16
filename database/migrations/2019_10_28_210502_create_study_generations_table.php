@@ -15,12 +15,13 @@ class CreateStudyGenerationsTable extends Migration
     {
         Schema::create('study_generations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->string('name')->unique();
             $table->string('en')->nullable();
             $table->string('km')->nullable();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
-             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

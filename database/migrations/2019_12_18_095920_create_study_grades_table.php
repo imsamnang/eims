@@ -15,6 +15,7 @@ class CreateStudyGradesTable extends Migration
     {
         Schema::create('study_grades', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->string('name')->nullable();
             $table->string('en')->nullable();
             $table->string('km')->nullable();

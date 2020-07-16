@@ -14,6 +14,7 @@ class StudySubjectsTableSeeder extends Seeder
     {
         StudySubjects::insert([
             [
+                'institute_id'  => 1,
                 'name'                     => 'English',
                 'en'                       => 'English',
                 'km'                       => 'ភាសាអង់គ្លេស',
@@ -27,6 +28,7 @@ class StudySubjectsTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'                     => 'C++ PROGRAMMING UPDATE 2018',
                 'en'                       => 'C++ PROGRAMMING UPDATE 2018',
                 'km'                       => 'កម្មវិធី C ++ ឆ្នាំ២០១៨',
@@ -40,6 +42,7 @@ class StudySubjectsTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'                    => 'VB.NET PROGRAMMING',
                 'en'                       => 'VB.NET PROGRAMMING',
                 'km'                       => 'កម្មវិធី VB.NET',
@@ -53,6 +56,7 @@ class StudySubjectsTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'                    => 'DATA STRUCTURE AND ALGORITHM',
                 'en'                       => 'DATA STRUCTURE AND ALGORITHM',
                 'km'                       => 'រចនាសម្ព័ន្ធទិន្នន័យនិងក្បួនដោះស្រាយ',
@@ -66,6 +70,7 @@ class StudySubjectsTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'                    => 'JAVA PROGRAMMING',
                 'en'                       => 'JAVA PROGRAMMING',
                 'km'                       => 'កម្មវិធី JAVA',

@@ -14,6 +14,7 @@ class StudyGenerationsTableSeeder extends Seeder
     {
         StudyGeneration::insert([
             [
+                'institute_id'  => 1,
                 'name' => 'I',
                 'en'   => 'First Generation',
                 'km'   => 'ជំនាន់ ១',

@@ -14,12 +14,14 @@ class StaffStatusTableSeeder extends Seeder
     {
         StaffStatus::insert([
             [
+                'institute_id'  => 1,
                 'name'    => 'Apply for staff',
                 'en'      => 'Apply for staff',
                 'km'      => 'ស្នើសុំចូលធ្វើការ',
                 'color'   => 'bg-yellow text-black',
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'New staff',
                 'en'      => 'New staff',
                 'km'      => 'បុគ្គលិកថ្មី',
@@ -27,6 +29,7 @@ class StaffStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Old staff',
                 'en'      => 'Old staff',
                 'km'      => 'បុគ្គលិកចាស់',
@@ -35,6 +38,7 @@ class StaffStatusTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'name'    => 'Resign',
                 'en'      => 'Resign',
                 'km'      => 'ឈប់ធ្វើការ',
@@ -42,6 +46,7 @@ class StaffStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Transfer In',
                 'en'      => 'Transfer In',
                 'km'      => 'ផ្ទេរចូល',
@@ -49,6 +54,7 @@ class StaffStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Transfer Out',
                 'en'      => 'Transfer Out',
                 'km'      => 'ផ្ទេរចេញ',

@@ -14,6 +14,7 @@ class StaffCertificateTableSeeder extends Seeder
     {
         StaffCertificate::insert([
             [
+                'institute_id'  => 1,
                 'name'        => 'Ministry of Labor Medium Education',
                 'en'          => 'Ministry of Labor Medium Education',
                 'km'          => 'ក្រសួងការងារមធ្យម',
@@ -21,6 +22,7 @@ class StaffCertificateTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'        => 'Ministry of Labor Higher Education',
                 'en'          => 'Ministry of Labor Higher Education',
                 'km'          => 'ក្រសួងការងារ ឧត្តម',
@@ -28,6 +30,7 @@ class StaffCertificateTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'        => 'Ministry of Primary Education',
                 'en'          => 'Ministry of Primary Education',
                 'km'          => 'ក្រសួងអប់រំ បឋម',
@@ -35,6 +38,7 @@ class StaffCertificateTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'        => 'Ministry of Secondary Education',
                 'en'          => 'Ministry of Secondary Education',
                 'km'          => 'ក្រសួងអប់រំ មធ្យម',
@@ -42,12 +46,13 @@ class StaffCertificateTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'        => 'Ministry of Higher Education',
                 'en'          => 'Ministry of Higher Education',
                 'km'          => 'ក្រសួងអប់រំ ឧត្តម',
                 'description' => 'Ministry of Higher Education',
 
-            ],           
+            ],
 
         ]);
     }

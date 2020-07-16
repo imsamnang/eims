@@ -14,7 +14,7 @@ class YearsTableSeeder extends Seeder
     {
        Years::insert([
             [
-                'name' => '2019',
+                'name' => '2020',
             ],
         ]);
     }

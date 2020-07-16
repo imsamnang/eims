@@ -72,7 +72,7 @@ class Users extends Model
             if ($search) {
                 $get = $get->where('name', 'LIKE', '%' . $search . '%');
             }
-            if(request('selected')){
+            if (request('selected')) {
                 $get = $get->whereNotIn('id', request('selected'));
             }
         }
@@ -218,6 +218,10 @@ class Users extends Model
                 ];
             })
             ->filter(function ($query) {
+                $query->whereNotIn('id', [ Auth::user()->id]);
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
+                }
                 foreach (request('columns') as $i => $value) {
                     if ($value['searchable']) {
                         if ($value['data'] == 'name') {
@@ -225,6 +229,7 @@ class Users extends Model
                         }
                     }
                 }
+
             })
             ->order(function ($query) {
                 if (request('order')) {

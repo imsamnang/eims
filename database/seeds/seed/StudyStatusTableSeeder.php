@@ -14,6 +14,7 @@ class StudyStatusTableSeeder extends Seeder
     {
         StudyStatus::insert([
             [
+                'institute_id'  => 1,
                 'name'    => 'New Admission',
                 'en'      => 'New Admission',
                 'km'      => 'សិស្សថ្មី',
@@ -21,6 +22,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Old Student',
                 'en'      => 'Old Student',
                 'km'      => 'សិស្សចាស់',
@@ -28,6 +30,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Continue',
                 'en'      => 'Continue',
                 'km'      => 'បន្តការសិក្សា',
@@ -35,6 +38,8 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+
+                'institute_id'  => 1,
                 'name'    => 'Pass Out',
                 'en'      => 'Pass Out',
                 'km'      => 'ចេញពីសាលា',
@@ -42,6 +47,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Back Continue',
                 'en'      => 'Back Continue',
                 'km'      => 'ត្រឡប់មកបន្ត',
@@ -49,6 +55,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Drop Out',
                 'en'      => 'Drop Out',
                 'km'      => 'ឈប់រៀន',
@@ -56,6 +63,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Transfer In',
                 'en'      => 'Transfer In',
                 'km'      => 'ផ្ទេរចូល',
@@ -63,6 +71,7 @@ class StudyStatusTableSeeder extends Seeder
 
             ],
             [
+                'institute_id'  => 1,
                 'name'    => 'Transfer Out',
                 'en'      => 'Transfer Out',
                 'km'      => 'ផ្ទេរចេញ',

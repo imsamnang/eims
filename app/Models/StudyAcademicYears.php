@@ -43,6 +43,10 @@ class StudyAcademicYears extends Model
 
         if ($id) {
             $get = $get->whereIn('id', $id);
+        }else{
+            if(request('instituteId')){
+                $get = $get->where('institute_id',request('instituteId'));
+            }
         }
         if ($search) {
             $get = $get->where('name', 'LIKE', '%' . $search . '%');
@@ -138,6 +142,11 @@ class StudyAcademicYears extends Model
             })
             ->filter(function ($query) {
 
+
+                if(request('instituteId')){
+                    $query = $query->where('institute_id',request('instituteId'));
+                }
+                
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
                         if ($value['searchable']) {

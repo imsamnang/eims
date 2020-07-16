@@ -15,6 +15,7 @@ class CreateStudyProgramsTable extends Migration
     {
         Schema::create('study_programs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->text('name')->nullable();
             $table->text('en')->nullable();
             $table->text('km')->nullable();

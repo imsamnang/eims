@@ -14,6 +14,7 @@ class HolidaysTableSeeder extends Seeder
     {
         Holidays::insert([
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 1,
                 'date'        => 1,
@@ -24,6 +25,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 1,
                 'date'        => 7,
@@ -34,6 +36,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 2,
                 'date'        => 19,
@@ -44,6 +47,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 3,
                 'date'        => 8,
@@ -54,6 +58,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 4,
                 'date'        => 13,
@@ -63,6 +68,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ពិធីបុណ្យចូលឆ្នាំថ្មី ប្រពៃណីជាតិ​​',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 4,
                 'date'        => 14,
@@ -73,6 +79,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 4,
                 'date'        => 15,
@@ -82,6 +89,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ពិធីបុណ្យចូលឆ្នាំថ្មី ប្រពៃណីជាតិ',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 4,
                 'date'        => 16,
@@ -93,6 +101,7 @@ class HolidaysTableSeeder extends Seeder
 
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 5,
                 'date'        => 1,
@@ -103,6 +112,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 5,
                 'date'        => 6,
@@ -112,6 +122,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ពិធីបុណ្យវិសាខបូជា',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 5,
                 'date'        => 10,
@@ -122,6 +133,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 5,
                 'date'        => 14,
@@ -132,6 +144,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 6,
                 'date'        => 18,
@@ -142,6 +155,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 9,
                 'date'        => 16,
@@ -151,6 +165,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ពិធីបុណ្យភ្ជុំបិណ្ឌ​​​',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 9,
                 'date'        => 17,
@@ -160,6 +175,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ពិធីបុណ្យភ្ជុំបិណ្ឌ​​​',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 9,
                 'date'        => 18,
@@ -170,6 +186,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 9,
                 'date'        => 24,
@@ -181,6 +198,7 @@ class HolidaysTableSeeder extends Seeder
 
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 10,
                 'date'        => 15,
@@ -191,6 +209,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 10,
                 'date'        => 29,
@@ -200,6 +219,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បតិ្ត​របស់ ព្រះករុណា ព្រះបាទសម្តេច ព្រះបរមនាថ នរោត្តម សីហមុនី',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 10,
                 'date'        => 30,
@@ -209,6 +229,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ព្រះរាជពិធីបុណ្យអុំទូក បណ្តែតប្រទីប និងសំពះព្រះខែ អកអំបុក​',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 10,
                 'date'        => 31,
@@ -218,6 +239,7 @@ class HolidaysTableSeeder extends Seeder
                 'name'        => 'ព្រះរាជពិធីបុណ្យអុំទូក បណ្តែតប្រទីប និងសំពះព្រះខែ អកអំបុក​',
             ],
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 11,
                 'date'        => 1,
@@ -228,6 +250,7 @@ class HolidaysTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'  => 1,
                 'year'        => 2020,
                 'month'       => 11,
                 'date'        => 9,

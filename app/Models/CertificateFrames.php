@@ -44,6 +44,10 @@ class CertificateFrames extends Model
         $get = CertificateFrames::orderBy('id', $orderBy);
         if ($id) {
             $get = $get->whereIn('id', $id);
+        } else {
+            if (request('instituteId')) {
+                $get = $get->where('institute_id', request('instituteId'));
+            }
         }
         if ($paginate) {
             $get = $get->paginate($paginate)->toArray();
@@ -135,8 +139,9 @@ class CertificateFrames extends Model
                 ];
             })
             ->filter(function ($query) {
-                if (Auth::user()->role_id == 2) {
-                    $query =  $query->where('institute_id', Auth::user()->institute_id);
+
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
@@ -205,7 +210,7 @@ class CertificateFrames extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']),'front');
+                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'front');
                     } else {
                         ImageHelper::uploadImage(false, CertificateFrames::$path['image'], CertificateFrames::$path['image'], public_path('/assets/img/icons/image.jpg'));
                     }
@@ -252,7 +257,7 @@ class CertificateFrames extends Model
                 if ($update) {
                     if (request()->hasFile('front')) {
                         $image      = request()->file('front');
-                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']),'front');
+                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'front');
                     }
                     $response       = array(
                         'success'   => true,
@@ -275,7 +280,7 @@ class CertificateFrames extends Model
         return $response;
     }
 
-    public static function updateImageToTable($id, $image ,$column)
+    public static function updateImageToTable($id, $image, $column)
     {
         $response = array(
             'success'   => false,
