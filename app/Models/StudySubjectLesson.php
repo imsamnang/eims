@@ -169,6 +169,10 @@ class StudySubjectLesson extends Model
             })
             ->filter(function ($query) {
 
+                if (request('t-subjectId')) {
+                    $query =  $query->where('staff_teach_subject_id', request('t-subjectId'));
+                }
+
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
                         if ($value['searchable']) {
