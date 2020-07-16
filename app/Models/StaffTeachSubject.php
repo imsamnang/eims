@@ -164,11 +164,6 @@ class StaffTeachSubject extends Model
                     $query =  $query->where((new StaffInstitutes())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
-                if (request('t-subjectId')) {
-                    $query =  $query->where((new StaffTeachSubject())->getTable() . '.study_subject_id', request('t-subjectId'));
-                }
-
-
 
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {

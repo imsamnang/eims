@@ -38,7 +38,7 @@ class StudySubjectLessonController extends Controller
             'ref'   => StudySubjectLesson::$path['url']
         ]);
 
-        $data['staff_teach_subject'] = StaffTeachSubject::getData(null, null, 10);
+        $data['staff_teach_subject'] = StaffTeachSubject::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/pdf.png'),
         );
@@ -154,7 +154,7 @@ class StudySubjectLessonController extends Controller
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];
         $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
-        $data['staff_teach_subject'] = StaffTeachSubject::getData($response['data'][0]['staff_teach_subject']['id'], null, 10);
+        
         return $data;
     }
 }
