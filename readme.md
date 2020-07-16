@@ -44,7 +44,7 @@
 <b>Department</b>
 
 <pre>
-    Email    : department@info.edu
+    Email    : kolseryrith@gmail.com
     Password : 123456
 </pre> 
 
