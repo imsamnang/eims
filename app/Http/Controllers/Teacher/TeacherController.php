@@ -371,7 +371,7 @@ class TeacherController extends Controller
                 if (request()->method() == 'POST') {
                     return StudySubjectLesson::addToTable();
                 }
-                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects(request('t-subjectId'), Auth::user()->node_id, null, true, false);
+                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'edit') {
@@ -384,7 +384,7 @@ class TeacherController extends Controller
                 $data['formData']   = $response['data'][0];
                 $data['formAction']          = '/edit/' . $response['data'][0]['id'];
                 $data['listData']   = $response['pages']['listData'];
-                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
+                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'view') {
@@ -393,7 +393,7 @@ class TeacherController extends Controller
                 $response = StudySubjectLesson::getData($id);
                 $data['formData']   = $response['data'][0];
                 $data['listData']   = $response['pages']['listData'];
-                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
+                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'list-datatable') {
@@ -402,7 +402,7 @@ class TeacherController extends Controller
                 }
             } else {
                 $staff_teach_subject_id = request('t-subjectId', $param3);
-                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($staff_teach_subject_id, Auth::user()->node_id, null, true, false);
+                $data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['response'] = StudySubjectLesson::getData(null, $staff_teach_subject_id, 10);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
                 $data['view']     = 'Teacher.includes.teaching.includes.lesson.includes.list.index';
