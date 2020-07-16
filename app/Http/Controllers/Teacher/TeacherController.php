@@ -394,7 +394,7 @@ class TeacherController extends Controller
                 $data['listData']   = $response['pages']['listData'];
                 //$data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
 
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->map(function ($row) {
+                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
                     $study_subject = StudySubjects::where('id', $row['study_subject_id'])->get([app()->getLocale() . '. as name', 'image']);
                     return [
                         'id'    => $row['id'],
@@ -410,7 +410,7 @@ class TeacherController extends Controller
                 $response = StudySubjectLesson::getData($id);
                 $data['formData']   = $response['data'][0];
                 $data['listData']   = $response['pages']['listData'];
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->map(function ($row) {
+                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
                     $study_subject = StudySubjects::where('id', $row['study_subject_id'])->get([app()->getLocale() . '. as name', 'image']);
                     return [
                         'id'    => $row['id'],
@@ -428,7 +428,7 @@ class TeacherController extends Controller
                 $staff_teach_subject_id = request('t-subjectId', $param3);
 
 
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->map(function ($row) {
+                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
                     $study_subject = StudySubjects::where('id', $row['study_subject_id'])->get([app()->getLocale() . '. as name', 'image']);
                     return [
                         'id'    => $row['id'],
