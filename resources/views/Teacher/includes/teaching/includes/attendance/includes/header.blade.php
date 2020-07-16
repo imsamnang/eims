@@ -61,7 +61,7 @@
                                 title="Simple select"
                                 data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
                                 data-allow-clear="true"
-                                data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
+                                
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
                                 name="course-sessionId" data-select-value="{{request('course-sessionId')}}">

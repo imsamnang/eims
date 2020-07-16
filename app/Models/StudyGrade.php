@@ -19,7 +19,7 @@ class StudyGrade extends Model
         'view'   => 'StudyGrade'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -75,7 +75,7 @@ class StudyGrade extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'marks'         => $row['marks'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),
@@ -118,7 +118,7 @@ class StudyGrade extends Model
         return $response;
     }
 
-     public static function getDataTable()
+    public static function getDataTable()
     {
         $model = StudyGrade::query();
         return DataTables::eloquent($model)
@@ -128,7 +128,7 @@ class StudyGrade extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),

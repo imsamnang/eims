@@ -91,7 +91,7 @@ class Quiz extends Model
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/view/' . $row['id']),
@@ -148,14 +148,14 @@ class Quiz extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
                     'question'      => [
-                        'total' => '('.Translator::phrase($question.'.question'). ')',
+                        'total' => '(' . Translator::phrase($question . '.question') . ')',
                         'link_view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list/?quizId=' . $row['id']),
                     ],
                     'student'       => [
                         'total'  => Translator::phrase('student') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
                         'link_view'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/list?quizId=' . $row['id']),
                     ],
-                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/view/' . $row['id']),

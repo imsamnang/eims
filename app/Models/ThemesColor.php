@@ -67,7 +67,7 @@ class ThemesColor extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(ThemesColor::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(ThemesColor::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'color'         => $row['color'],
                     'color_name'    => $row['name'],
                     'action'        => [

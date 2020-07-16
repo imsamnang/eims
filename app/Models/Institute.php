@@ -19,7 +19,7 @@ class Institute extends Model
         'view'   => 'Institute'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -39,7 +39,6 @@ class Institute extends Model
             } else {
                 $orderBy = 'DESC';
             }
-
         }
         $get = Institute::orderBy('id', $orderBy);
 
@@ -83,7 +82,7 @@ class Institute extends Model
                     'address'       => $row['address'],
                     'location'      => $row['location'],
                     'description'   => $row['description'],
-                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
@@ -138,7 +137,7 @@ class Institute extends Model
                     'address'       => $row['address'],
                     'location'      => $row['location'],
                     'description'   => $row['description'],
-                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),

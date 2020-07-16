@@ -92,7 +92,7 @@ class Villages extends Model
                     'commune'       => ['id'  => $row['commune_id']],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Villages::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Villages::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit'      => url(Users::role() . '/general/' . Villages::$path['url'] . '/edit/' . $row['id']),
                         'view'      => url(Users::role() . '/general/' . Villages::$path['url'] . '/view/' . $row['id']),
@@ -151,7 +151,7 @@ class Villages extends Model
                     'district'      => $commune['district'],
                     'commune'       => $commune,
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),

@@ -22,7 +22,7 @@ class StudyCourse extends Model
 
 
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -97,7 +97,7 @@ class StudyCourse extends Model
                         'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                         'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
                         'study_generation'        => $row['study_generation_id'] == null ? null : StudyGeneration::getData($row['study_generation_id'])['data'][0],
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     ];
 
                     if (request('ref') != StudentsStudyCourse::$path['image'] . '-certificate') {
@@ -125,7 +125,7 @@ class StudyCourse extends Model
                         'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
                         'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
 
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
                         'action'                   => [
                             'edit' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']), //?id
                             'view' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/view/' . $row['id']), //?id
@@ -184,24 +184,24 @@ class StudyCourse extends Model
                 $row = $row->toArray();
                 return [
                     'id'                      => $row['id'],
-                        'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                        '_name'                   => $row['en'],
-                        'description'             => $row['description'],
-                        'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
-                        'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
-                        'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
-                        'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
-                        'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
-                        'study_overall_fund'      => $row['study_overall_fund_id'] == null ? null : StudyOverallFund::getData($row['study_overall_fund_id'])['data'][0],
-                        'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
-                        'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
+                    'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    '_name'                   => $row['en'],
+                    'description'             => $row['description'],
+                    'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
+                    'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
+                    'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
+                    'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
+                    'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
+                    'study_overall_fund'      => $row['study_overall_fund_id'] == null ? null : StudyOverallFund::getData($row['study_overall_fund_id'])['data'][0],
+                    'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
+                    'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
 
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
-                        'action'                   => [
-                            'edit' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']), //?id
-                            'view' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/view/' . $row['id']), //?id
-                            'delete' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/delete/' . $row['id']), //?id
-                        ]
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'action'                   => [
+                        'edit' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/delete/' . $row['id']), //?id
+                    ]
 
                 ];
             })

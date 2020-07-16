@@ -86,6 +86,7 @@ class ForeignKey extends Migration
     public function up()
     {
         Schema::table((new Students())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
             $table->foreign('nationality_id')->references('id')->on((new Nationality())->getTable())->onDelete('cascade');
             $table->foreign('mother_tong_id')->references('id')->on((new MotherTong())->getTable())->onDelete('cascade');
             $table->foreign('gender_id')->references('id')->on((new Gender())->getTable())->onDelete('cascade');
@@ -96,9 +97,6 @@ class ForeignKey extends Migration
         Schema::table((new StudentsGuardians())->getTable(), function (Blueprint $table) {
             $table->foreign('student_id')->references('id')->on((new Students())->getTable())->onDelete('cascade');
         });
-
-
-
 
         Schema::table((new StudyCourse())->getTable(), function (Blueprint $table) {
             $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
@@ -111,8 +109,6 @@ class ForeignKey extends Migration
             $table->foreign('curriculum_author_id')->references('id')->on((new CurriculumAuthor())->getTable())->onDelete('cascade');
             $table->foreign('study_generation_id')->references('id')->on((new StudyGeneration())->getTable())->onDelete('cascade');
         });
-
-
 
         Schema::table((new StudyCourseSchedule())->getTable(), function (Blueprint $table) {
             $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');

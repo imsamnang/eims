@@ -11,18 +11,18 @@
         enctype="multipart/form-data">
 
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 p-0"
-                id="filter">
+            <div class="col-12 collapse mb-3 p-0" id="filter">
                 <div class="col-xl-8 col-12">
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                                data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
+                            <select class="form-control" data-toggle="select" id="study_course_session"
+                                title="Simple select"
+                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                                data-allow-clear="true"
+                                {{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
-                                name="course-sessionId"
-                                data-select-value="{{request('course-sessionId')}}">
+                                name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                                 @foreach($study_course_session["data"] as $o)
                                 <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                                 @endforeach

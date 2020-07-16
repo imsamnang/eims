@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            (E) {{ Translator:: phrase("personal_contact") }}
+            (D) {{ Translator:: phrase("personal_contact") }}
         </label>
     </div>
     <div class="card-body">

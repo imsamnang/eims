@@ -22,7 +22,7 @@
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                     data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$institute["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                     data-select-value="{{config("pages.form.data.institute.id")}}"
@@ -51,7 +51,7 @@
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
                     data-url="{{$study_program["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_program["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
                     data-select-value="{{config("pages.form.data.study_program.id")}}" data-append-to="#study_course"
@@ -75,7 +75,7 @@
                 <select {{$study_course['success']? "" : "disabled" }} class="form-control"
                     data-toggle="select" id="study_course" title="Simple select"
                     data-url="{{$study_course["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list?programId=".config("pages.form.data.study_program.id"),$study_course["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"
                     data-select-value="{{config("pages.form.data.study_course.id")}}">
@@ -101,7 +101,7 @@
 
                 <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
                     data-url="{{$study_generation["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_generation["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
                     data-select-value="{{config("pages.form.data.study_generation.id")}}">
@@ -123,7 +123,7 @@
 
                 <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
                     data-url="{{$study_academic_year["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_academic_year["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_academic_year") }}" name="study_academic_year"
                     data-select-value="{{config("pages.form.data.study_academic_year.id")}}">
@@ -143,7 +143,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
                     data-url="{{$study_semester["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_semester["pages"]["form"]["action"]["add"])}}"
+                    
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_semester") }}" name="study_semester"
                     data-select-value="{{config("pages.form.data.study_semester.id")}}">

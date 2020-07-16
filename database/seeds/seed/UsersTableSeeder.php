@@ -104,6 +104,42 @@ class UsersTableSeeder extends Seeder
 
         ]);
 
+        #Departments
+        Users::insert([
+            [
+                'name'           => 'គុល សេរីរិទ្ធ',
+                'email'          => 'kolseryrith@gmail.com',
+                'password'       => Hash::make(123456),
+                'phone'          => '0123456789',
+                'address'        => null,
+                'location'       => null,
+                'profile'        => '83117194_558111205170220_1206817002021432751_n.png',
+                'role_id'        => 10,
+                'node_id'        => 3,
+                'institute_id'   => 1,
+                'status'         => 'active',
+            ],
+
+        ]);
+
+         #Teacher
+         Users::insert([
+            [
+                'name'           => 'សេង ស៊ង់',
+                'email'          => 'sengsourng@gmail.com',
+                'password'       => Hash::make(123456),
+                'phone'          => '0123456789',
+                'address'        => null,
+                'location'       => null,
+                'profile'        => '22114111_015214419441801_7021515114051515609_n.jpg',
+                'role_id'        => 8,
+                'node_id'        => 2,
+                'institute_id'   => 1,
+                'status'         => 'active',
+            ],
+
+        ]);
+
         # Students
         Users::insert([
 

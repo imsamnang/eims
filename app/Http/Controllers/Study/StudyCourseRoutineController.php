@@ -13,6 +13,7 @@ use App\Models\SocailsMedia;
 use App\Models\StudyCourseRoutine;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStudyCourseRoutine;
+use App\Models\Days;
 use App\Models\Staff;
 use App\Models\StudyClass;
 use App\Models\StudyCourseSession;
@@ -38,6 +39,7 @@ class StudyCourseRoutineController extends Controller
         $data['teacher'] = Staff::getData();
         $data['study_subject'] = StudySubjects::getData();
         $data['study_class'] = StudyClass::getData();
+        $data['days'] = Days::getData();
 
         $data['formData']       = [];
         $data['formName']       = 'study/' . StudyCourseRoutine::$path['url'];

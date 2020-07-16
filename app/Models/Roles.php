@@ -72,7 +72,7 @@ class Roles extends Model
                     'view_path'     => $row['view_path'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . Roles::$path['url'] . '/view/' . $row['id']),
@@ -123,7 +123,7 @@ class Roles extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'view_path'     => $row['view_path'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
@@ -188,8 +188,9 @@ class Roles extends Model
                     'name'        => trim(request('name')),
                     'en'          => trim(request('en')),
                     'km'          => trim(request('km')),
+                    'view_path'   => request('view_path'),
                     'description' => request('description'),
-                    'image'       => Roles::$path['image'] . 'jpg',
+
                 ]);
                 if ($add) {
 
@@ -239,6 +240,7 @@ class Roles extends Model
                     'name' => trim(request('name')),
                     'en' => trim(request('en')),
                     'km' =>  trim(request('km')),
+                    'view_path'   => request('view_path'),
                     'description' =>  request('description'),
                 ]);
                 if ($update) {

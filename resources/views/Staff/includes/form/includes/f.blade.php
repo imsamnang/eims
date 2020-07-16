@@ -7,7 +7,7 @@
     <div class="card-body">
 
         <div class="form-row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.phone")}}" class="form-control-label"
                     for="phone">
@@ -34,7 +34,7 @@
 
             </div>
 
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.email")}}" class="form-control-label"
                     for="email">
@@ -58,33 +58,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.password")}}" class="form-control-label"
-                    for="password">
 
-                    {{ Translator:: phrase("password") }}
-                    @if(array_key_exists("password",config("pages.form.validate.rules")))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
-                            class="fas fa-asterisk fa-xs"></i></span> @endif
-
-                </label>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        </div>
-                        <input type="password" class="form-control" id="password"
-                            placeholder=" {{ Translator:: phrase("set.password") }}"
-                            value="{{config("pages.form.data.password")}}"
-                            {{(array_key_exists("password", config("pages.form.validate.rules"))) ? "required" : ""}}
-                            name="password" />
-
-                    </div>
-                </div>
-
-            </div>
         </div>
 
         <div class="form-row">

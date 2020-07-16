@@ -295,10 +295,13 @@ class Users extends Model
                         'address'     => trim(request('address')),
                         'location'    => trim(request('location')),
                         'role_id'     => trim(request('role')),
+                        'node_id'     => trim(request('reference')),
                         'profile'     => null,
                     ]);
 
                     if ($add) {
+
+
 
                         if (request()->hasFile('profile')) {
                             $image      = request()->file('profile');
@@ -356,6 +359,7 @@ class Users extends Model
                     'address'     => trim(request('address')),
                     'location'    => trim(request('location')),
                     'role_id'     => trim(request('role')),
+                    'node_id'     => trim(request('reference')),
                 ];
                 if (request('password')) {
                     $value['password'] += Hash::make(trim(request('password')));

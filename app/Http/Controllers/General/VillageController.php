@@ -42,9 +42,9 @@ class VillageController extends Controller
         // }
         // dd();
 
-        $data['provinces']   = Provinces::getData(request('provinceId'),null,10);
-        $data['districts']   = Districts::getData(request('provinceId','null'),request('districtId','null'),null,10);
-        $data['communes']    = Communes::getData(request('districtId','null'),request('communeId','null'),null,10);
+        $data['provinces']   = Provinces::getData();
+        $data['districts']   = Districts::getData('null','null');
+        $data['communes']    = Communes::getData('null','null');
 
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),

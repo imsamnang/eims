@@ -85,7 +85,7 @@ class Holidays extends Model
                         'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                         'date'          => $row['date'] . '-' . Months::getData($row['month'])['data'][0]['name'] . '-' . $row['year'],
                         'description'   => $row['description'],
-                        'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                        'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : ImageHelper::prefix(),
                         'action'        => [
                             'edit' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
                             'view' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/view/' . $row['id']),
@@ -145,7 +145,7 @@ class Holidays extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'date'          => DateHelper::convert($row['date'] . '-' . $row['month'] . '-' . $row['year'], 'd-M-Y'),
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/view/' . $row['id']),

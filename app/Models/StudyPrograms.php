@@ -19,7 +19,7 @@ class StudyPrograms extends Model
         'view'   => 'StudyProgram'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -77,7 +77,7 @@ class StudyPrograms extends Model
                     '_name'         => $row['en'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/view/' . $row['id']),
@@ -131,7 +131,7 @@ class StudyPrograms extends Model
                     '_name'         => $row['en'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/view/' . $row['id']),

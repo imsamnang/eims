@@ -41,6 +41,25 @@
 </pre> 
 <br/> 
 
+<b>Department</b>
+
+<pre>
+    Email    : department@info.edu
+    Password : 123456
+</pre> 
+
+<br/>   
+
+
+<b>Teacher</b>
+
+<pre>
+    Email    : sengsourng@gmail.com
+    Password : 123456
+</pre> 
+
+<br/>   
+
 <b>Student</b>
 
 <pre>

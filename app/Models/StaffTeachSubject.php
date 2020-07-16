@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\Exception;
+use App\Helpers\ImageHelper;
 use App\Helpers\Translator;
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
@@ -66,6 +67,18 @@ class StaffTeachSubject extends Model
 
             foreach ($get as $key => $row) {
                 $staff = Staff::getData($row['staff_id'])['data'][0];
+
+                $action = [
+                    'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
+                    'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
+                ];
+                if(Auth::user()->role_id == 10){
+                    $action['edit'] =  str_replace( Staff::$path['url'],'teaching', $action['edit']);
+                    $action['view'] =  str_replace( Staff::$path['url'],'teaching', $action['view']);
+                    $action['delete'] =  str_replace( Staff::$path['url'],'teaching', $action['delete']);
+                }
+
                 $data[$key]         = array(
                     'id'            => $row['id'],
                     'name'          => $staff['first_name'] . ' ' . $staff['last_name'],
@@ -73,11 +86,7 @@ class StaffTeachSubject extends Model
                     'study_subject' => StudySubjects::getData($row['study_subject_id'])['data'][0],
                     'year'          => $row['year'],
                     'image'         => $staff['photo'],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
-                    ]
+                    'action'        => $action,
                 );
                 if (request('ref') == StudySubjectLesson::$path['url']) {
                     $data[$key]['name'] = $data[$key]['name'] . ' - ' . $data[$key]['study_subject']['name'] . ' - ' . $data[$key]['year'];
@@ -114,7 +123,7 @@ class StaffTeachSubject extends Model
     public static function getDataTable()
     {
 
-        $model = StaffTeachSubject::select((new StaffTeachSubject())->getTable() . '.*')
+        $model = StaffTeachSubject::select([(new StaffTeachSubject())->getTable() . '.*', (new StaffInstitutes())->getTable() . '.institute_id'])
             ->join((new Staff())->getTable(), (new Staff())->getTable() . '.id', (new StaffTeachSubject())->getTable() . '.staff_id')
             ->join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')
             ->join((new StudySubjects())->getTable(), (new StudySubjects())->getTable() . '.id', (new StaffTeachSubject())->getTable() . '.study_subject_id');
@@ -122,26 +131,37 @@ class StaffTeachSubject extends Model
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
-                $staff = Staff::getData($row['staff_id'])['data'][0];
+                $staff = Staff::where('id', $row['staff_id'])->first(['first_name_' . app()->getLocale() . ' as first_name', 'last_name_' . app()->getLocale() . ' as last_name', 'photo']);
+                $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
+                $action = [
+                    'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
+                    'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
+                ];
+                if(Auth::user()->role_id == 10){
+                    $action['edit'] =  str_replace( Staff::$path['url'],'teaching', $action['edit']);
+                    $action['view'] =  str_replace( Staff::$path['url'],'teaching', $action['view']);
+                    $action['delete'] =  str_replace( Staff::$path['url'],'teaching', $action['delete']);
+                }
+
                 return [
                     'id'            => $row['id'],
-                    'name'          => $staff['first_name'] . ' ' . $staff['last_name'],
-                    'staff'         => $staff,
-                    'study_subject' => StudySubjects::getData($row['study_subject_id'])['data'][0],
+                    'name'          => $staff->first_name . ' ' . $staff->last_name,
+                    'institute'     => Institute::where('id', $row['institute_id'])->pluck(app()->getLocale()),
+                    'study_subject' => [
+                        'name'  => $study_subject->name,
+                        'image'  => $study_subject->image ? (ImageHelper::site(StudySubjects::$path['image'], $study_subject->image)) : ImageHelper::prefix(),
+                    ],
                     'year'          => $row['year'],
-                    'image'         => $staff['photo'],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
-                    ]
+                    'image'         => ImageHelper::site(Staff::$path['image'], $staff->photo),
+                    'action'        => $action,
 
                 ];
             })
             ->filter(function ($query) {
 
                 if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StaffInstitutes())->getTable().'.institute_id', Auth::user()->institute_id);
+                    $query =  $query->where((new StaffInstitutes())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
                 if (request('search.value')) {
@@ -150,12 +170,14 @@ class StaffTeachSubject extends Model
                             if ($value['data'] == 'name') {
                                 $query =  Staff::searchName($query, request('search.value'));
                             } elseif ($value['data'] == 'study_subject.name') {
-                                $query = $query->orWhere((new StudySubjects())->getTable().'.name', 'LIKE', '%' . request('search.value') . '%');
+                                $query = $query->orWhere((new StudySubjects())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
                                 if (config('app.languages')) {
                                     foreach (config('app.languages') as $lang) {
-                                        $query->orWhere((new StudySubjects())->getTable().'.'.$lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
+                                        $query->orWhere((new StudySubjects())->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
                                     }
                                 }
+                            } elseif ($value['data'] == 'year') {
+                                $query->orWhere('year', 'LIKE', '%' . request('search.value') . '%');
                             }
                         }
                     }

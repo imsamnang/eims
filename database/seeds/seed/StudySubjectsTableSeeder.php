@@ -15,7 +15,6 @@ class StudySubjectsTableSeeder extends Seeder
         StudySubjects::insert([
             [
                 'name'                     => 'English',
-                'code'                     => '',
                 'en'                       => 'English',
                 'km'                       => 'ភាសាអង់គ្លេស',
                 'full_mark_theory'         => 50,
@@ -29,7 +28,6 @@ class StudySubjectsTableSeeder extends Seeder
             ],
             [
                 'name'                     => 'C++ PROGRAMMING UPDATE 2018',
-                'code'                     => '',
                 'en'                       => 'C++ PROGRAMMING UPDATE 2018',
                 'km'                       => 'កម្មវិធី C ++ ឆ្នាំ២០១៨',
                 'full_mark_theory'         => 50,
@@ -43,7 +41,6 @@ class StudySubjectsTableSeeder extends Seeder
             ],
             [
                 'name'                    => 'VB.NET PROGRAMMING',
-                'code'                     => '',
                 'en'                       => 'VB.NET PROGRAMMING',
                 'km'                       => 'កម្មវិធី VB.NET',
                 'full_mark_theory'         => 50,
@@ -57,7 +54,6 @@ class StudySubjectsTableSeeder extends Seeder
             ],
             [
                 'name'                    => 'DATA STRUCTURE AND ALGORITHM',
-                'code'                     => '',
                 'en'                       => 'DATA STRUCTURE AND ALGORITHM',
                 'km'                       => 'រចនាសម្ព័ន្ធទិន្នន័យនិងក្បួនដោះស្រាយ',
                 'full_mark_theory'         => 50,
@@ -71,7 +67,6 @@ class StudySubjectsTableSeeder extends Seeder
             ],
             [
                 'name'                    => 'JAVA PROGRAMMING',
-                'code'                     => '',
                 'en'                       => 'JAVA PROGRAMMING',
                 'km'                       => 'កម្មវិធី JAVA',
                 'full_mark_theory'         => 50,

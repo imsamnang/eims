@@ -74,7 +74,6 @@ class StudyController extends Controller
 
 
         if ($param1 == null) {
-            $data['shortcut'] = [];
 
             $data['shortcuts'] = [
                 [
@@ -160,7 +159,7 @@ class StudyController extends Controller
                             'text'  => Translator::phrase('study_class'),
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
-                        ],[
+                        ], [
                             'name'  => Translator::phrase('list.study_course_routine'),
                             'link'  => url(Users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/list'),
                             'icon'  => 'fal fa-table',
@@ -248,7 +247,9 @@ class StudyController extends Controller
 
             ];
 
-
+            if (Auth::user()->role_id != 1) {
+                unset($data['shortcuts'][0]['children'][0]);
+            }
 
 
             $data['view']  = 'Study.includes.dashboard.index';

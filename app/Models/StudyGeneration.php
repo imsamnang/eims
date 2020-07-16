@@ -19,7 +19,7 @@ class StudyGeneration extends Model
         'view'   => 'StudyGeneration'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -77,7 +77,7 @@ class StudyGeneration extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/view/' . $row['id']),
@@ -130,7 +130,7 @@ class StudyGeneration extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/view/' . $row['id']),

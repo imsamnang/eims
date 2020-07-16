@@ -47,59 +47,48 @@
 
 
 </div>
-<div class="card-header border-0 pb-0">
+<div class="card-header border-0 pb-0 collapse"  id="filter">
     <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-search"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 p-0 {{array_intersect(request()->all(), array_keys(['instituteId','programId','courseId','generationId','yearId','semesterId','sessionId'])) ? "" : ""}}"
-                id="filter">
-                <div class="col-xl-8 col-12">
+            <div class="col-md-6 mb-3">
+                <select class="form-control" data-toggle="select" id="study_course_session"
+                    title="Simple select"
+                    data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                    data-allow-clear="true"
 
-                    <div class="form-row">
-
-                        <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="study_course_session"
-                                title="Simple select"
-                                data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
-                                data-allow-clear="true"
-                                data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
-                                data-text="{{ Translator::phrase("add_new_option") }}"
-                                data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
-                                name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
-                                @foreach($study_course_session["data"] as $o)
-                                <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control datepicker" data-start-date=""
-                                        data-end-date="+1" placeholder="{{ Translator:: phrase("mm_yyyy") }}"
-                                        type="text" id="month_year" name="month_year"
-                                        value="{{request('month').'-'.request('year')}}" data-format="mm-yyyy"
-                                        data-min-view="true" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 col-xs-12 offset-md-8">
-                            <button type="submit" class="btn btn-primary float-right"><i
-                                    class="fa fa-filter-search"></i> {{Translator::phrase("search_filter")}}</button>
-                        </div>
-                    </div>
-                </div>
-
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
+                    name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
+                    @foreach($study_course_session["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    @endforeach
+                </select>
             </div>
 
+            <div class="col-md-3 mb-3">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                        </div>
+                        <input type="text" class="form-control datepicker" data-start-date=""
+                            data-end-date="+1" placeholder="{{ Translator:: phrase("mm_yyyy") }}"
+                            type="text" id="month_year" name="month_year"
+                            value="{{request('month').'-'.request('year')}}" data-format="mm-yyyy"
+                            data-min-view="true" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-12">
+                <button type="submit" class="btn btn-primary float-right"><i
+                        class="fa fa-filter-search"></i> {{Translator::phrase("search_filter")}}</button>
+            </div>
             <div class="col-xl-12">
                 <div class="form-row">
                     @if (request("search"))
-                    <div class=" col-lg-8 col-md-12 col-sm-12 col-xs-12 mb-3">
+                    <div class=" col-lg-9 col-md-12 col-sm-12 col-xs-12 mb-3">
                         <div class="search text-center">
                             <span class="">{{Translator::phrase("search_results")}} :</span>
                             <span
@@ -109,7 +98,7 @@
                     @endif
 
                     <div
-                        class="{{request("search") ? "col-lg-4" : "col-lg-4 offset-lg-8"}} col-md-12 col-sm-12 col-xs-12 mb-3">
+                        class="{{request("search") ? "col-lg-3" : "col-lg-3 offset-lg-9"}} col-md-12 col-sm-12 col-xs-12 mb-3">
                         <div class="form-group w-100">
                             <div class="input-group">
                                 <div class="input-group-prepend">

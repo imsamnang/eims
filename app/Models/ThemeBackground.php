@@ -77,7 +77,7 @@ class ThemeBackground extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(ThemeBackground::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(ThemeBackground::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'status'        => $row['status'],
                     'action'        => [
                         'set' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/set/' . $row['id']),
@@ -129,7 +129,7 @@ class ThemeBackground extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(ThemeBackground::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(ThemeBackground::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'status'        => $row['status'],
                     'action'        => [
                         'set' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/set/' . $row['id']),
@@ -205,7 +205,7 @@ class ThemeBackground extends Model
                     'message'   => array(
                         'title' => Translator::phrase('error'),
                         'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
-                            . Translator::phrase('( .image. ) .allow. ').' ( '.str_replace('image/','',implode(',',ImageHelper::$path['mime'])) .' )',
+                            . Translator::phrase('( .image. ) .allow. ') . ' ( ' . str_replace('image/', '', implode(',', ImageHelper::$path['mime'])) . ' )',
                         'button'   => array(
                             'confirm' => Translator::phrase('ok'),
                             'cancel'  => Translator::phrase('cancel'),

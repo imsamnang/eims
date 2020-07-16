@@ -15,7 +15,7 @@
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
-                    <th data-type="text" data-searchable="true" data-key="name" class="sort" data-sort="name">
+                    <th data-type="modal" data-searchable="true" data-key="name" data-url="action.view" class="sort" data-sort="name">
                         {{Translator::phrase("name")}}​</th>
                     <th data-type="text" data-key="gender">{{Translator::phrase("gender")}}</th>
                     <th data-type="text" data-key="date_of_birth">{{Translator::phrase("date_of_birth")}}</th>

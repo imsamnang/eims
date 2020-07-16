@@ -84,7 +84,7 @@ class Districts extends Model
                     'province'      => Provinces::getData($row['province_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Districts::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Districts::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit'      => url(Users::role() . '/general/' . Districts::$path['url'] . '/edit/' . $row['id']),
                         'view'      => url(Users::role() . '/general/' . Districts::$path['url'] . '/view/' . $row['id']),
@@ -138,7 +138,7 @@ class Districts extends Model
                     'province'      => Provinces::getData($row['province_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),

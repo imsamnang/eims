@@ -80,7 +80,7 @@ class SocailsMedia extends Model
                     'link'          => $row['link'],
                     'icon'          => $row['icon'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(SocailsMedia::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(SocailsMedia::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/view/' . $row['id']),

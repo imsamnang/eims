@@ -18,7 +18,7 @@
                         <div class="col-md-12 mb-3">
                             <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
                                 data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                                data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
+                                
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
                                 name="course-sessionId"

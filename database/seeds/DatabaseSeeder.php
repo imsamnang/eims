@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             GenderTableSeeder::class,
             MaritalTableSeeder::class,
             BloodGroupTableSeeder::class,
-            StudentTableSeeder::class,
-
             InstituteTableSeeder::class,
+            
+            StudentTableSeeder::class,
             FeatureSliderTableSeeder::class,
             SponsoredSeeder::class,
             StudyProgramsTableSeeder::class,

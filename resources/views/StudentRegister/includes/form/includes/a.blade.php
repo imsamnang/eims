@@ -135,7 +135,7 @@
                         <select class="form-control" data-toggle="select" id="nationality" title="Simple select"
                             data-url="{{$nationality["pages"]["form"]["action"]["add"]}}"
                             data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                            {{-- data-ajax="{{str_replace("add","list",$nationality["pages"]["form"]["action"]["add"])}}" --}}
+
                             data-placeholder="{{ Translator::phrase("choose.nationality") }}" name="nationality"
                             data-select-value="{{config("pages.form.data.nationality.id")}}">
                             @foreach($nationality["data"] as $o)
@@ -161,7 +161,7 @@
                 <select class="form-control" data-toggle="select" id="mother_tong" title="Simple select"
                     data-url="{{$mother_tong["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    {{-- data-ajax="{{str_replace("add","list",$mother_tong["pages"]["form"]["action"]["add"])}}" --}}
+
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.mother_tong") }}"
                     name="mother_tong" data-select-value="{{config("pages.form.data.mother_tong.id")}}">
                     @foreach($mother_tong["data"] as $o)
@@ -292,7 +292,7 @@
                 <select class="form-control" data-toggle="select" id="marital" title="Simple select"
                     data-url="{{$marital["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
-                    {{-- data-ajax="{{str_replace("add","list",$marital["pages"]["form"]["action"]["add"])}}" --}}
+                    
                     data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.marital") }}"
                     name="marital" data-select-value="{{config("pages.form.data.marital.id")}}">
                     @foreach($marital["data"] as $o)

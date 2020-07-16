@@ -25,6 +25,13 @@ class ImageHelper
             'image/x-webp',
         ],
     ];
+    /**
+     * @return asset('/assets/img/icons/image.jpg');
+     */
+    public static function prefix()
+    {
+        return asset('/assets/img/icons/image.jpg');
+    }
 
     public static function uploadImage($photo, $destination, $rename = null, $file = null, $slide = null, $resize = true)
     {

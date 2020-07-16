@@ -138,7 +138,7 @@ class StudentController extends Controller
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                             [
-                                'name'  => Translator::phrase('register.student.short_form'),
+                                'name'  => Translator::phrase('add.student.short_form'),
                                 'link'  => url('student-register'),
                                 'target' => '_blank',
                                 'icon'  => 'fas fa-user-plus',
@@ -323,9 +323,10 @@ class StudentController extends Controller
     public function list($data)
     {
 
-
-
-        $data['response'] = Students::getData(null, null, 10);
+        $student = Students::orderBy('id','DESC');
+        $data['response'] = [
+            'gender'      => Students::gender($student)
+        ];
         $data['view']  = Students::$path['view'] . '.includes.list.index';
         $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName']);
         return $data;

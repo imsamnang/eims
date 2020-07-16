@@ -77,7 +77,7 @@ class Nationality extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/view/' . $row['id']),
@@ -130,7 +130,7 @@ class Nationality extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/view/' . $row['id']),

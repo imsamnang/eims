@@ -67,7 +67,7 @@
                             <div class="col-md-8">
                                 <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
                                     data-url="{{$quiz["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                                    data-ajax="{{str_replace("add","list",$quiz["pages"]["form"]["action"]["add"])}}"
+                                    
                                     data-text="{{ Translator::phrase("add_new_option") }}"
                                     data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quizId"
                                     data-select-value="{{request('quizId')}}">

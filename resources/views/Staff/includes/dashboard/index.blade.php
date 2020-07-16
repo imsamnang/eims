@@ -5,7 +5,8 @@
                 <div class="row shortcuts">
 
                     @foreach ($shortcut as $item)
-                    <a data-loadscript='["{{asset("/assets/vendor/list.js/dist/list.min.js")}}","{{asset("/assets/vendor/pagination/simplePagination.js")}}"]' data-toggle="shortcut-icon" href="{{$item['link']}}" class="col-lg-2 col-6 shortcut-item">
+                    <a data-loadscript='["{{asset("/assets/vendor/list.js/dist/list.min.js")}}","{{asset("/assets/vendor/pagination/simplePagination.js")}}"]' data-toggle="shortcut-icon" href="{{$item['link']}}" class="col-lg-2 col-6 shortcut-item"
+                    {{isset($item['target']) ? 'target='.$item['target'] : ""}}>
                         <span class="shortcut-media avatar avatar-xl rounded mb-3 {{$item['color']}}">
                             @if ($item['icon'])
                             <i class="fa-2x {{$item['icon']}}"></i>

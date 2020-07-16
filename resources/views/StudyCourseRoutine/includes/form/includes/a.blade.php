@@ -65,7 +65,6 @@
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
                     data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_session") }}" name="study_course_session"
                     data-select-value="{{config("pages.form.data.study_course_session.id")}}">
@@ -81,20 +80,10 @@
                     <th width=1 class="font-weight-bold">
                         {{Translator::phrase("time")}}
                     </th>
-                    <th data-name="day[]" data-value="1" width=170 class="font-weight-bold">
-                        {{Translator::day("monday")}}</th>
-                    <th data-name="day[]" data-value="2" width=170 class="font-weight-bold">
-                        {{Translator::day("tuesday")}}</th>
-                    <th data-name="day[]" data-value="3" width=170 class="font-weight-bold">
-                        {{Translator::day("wednesday")}}</th>
-                    <th data-name="day[]" data-value="4" width=170 class="font-weight-bold">
-                        {{Translator::day("thursday")}}</th>
-                    <th data-name="day[]" data-value="5" width=170 class="font-weight-bold">
-                        {{Translator::day("friday")}}</th>
-                    <th data-name="day[]" data-value="6" width=170 class="font-weight-bold">
-                        {{Translator::day("saturday")}}</th>
-                    <th data-name="day[]" data-value="7" width=170 class="font-weight-bold">
-                        {{Translator::day("sunday")}}</th>
+                    @foreach ($days['data'] as $day)
+                    <th data-name="day[]" data-value="1" width=500 class="font-weight-bold">
+                        {{$day['name']}}</th>
+                    @endforeach
 
                 </thead>
                 <tbody>

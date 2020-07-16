@@ -30,6 +30,9 @@ class StudyCourseSessionController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        request()->merge([
+            'ref'   => StudyCourseSession::$path['url']
+        ]);
         $data['study_course_schedule'] = StudyCourseSchedule::getData();
         $data['study_session'] = StudySession::getData();
 

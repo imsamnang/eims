@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         @include(config("pages.parent").".includes.form.includes.c")
-                                        @include(config("pages.parent").".includes.form.includes.e")
+                                        @include(config("pages.parent").".includes.form.includes.d")
                                     </div>
                                 </div>
 

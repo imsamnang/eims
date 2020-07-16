@@ -35,7 +35,7 @@
 
                         <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
                             data-url="{{$staff_teach_subject["pages"]["form"]["action"]["add"]}}"
-                            data-ajax="{{str_replace("add","list",$staff_teach_subject["pages"]["form"]["action"]["add"])}}"
+                            
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.subject") }}" name="staff_teach_subject"
                             data-select-value="{{request("t-subjectId",config("pages.form.data.staff_teach_subject.id"))}}"

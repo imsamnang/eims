@@ -18,7 +18,7 @@
 
                 <select class="form-control" data-toggle="select" id="student" title="Simple select"
                     data-url="{{$student["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$student["pages"]["form"]["action"]["add"])}}"
+                    
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.student") }}" name="student"
                     data-select-value="{{config("pages.form.data.node.id")}}"

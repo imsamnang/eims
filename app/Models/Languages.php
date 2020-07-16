@@ -75,7 +75,7 @@ class Languages extends Model
                     'code_name'      => $row['code_name'],
                     'country_code'   => $row['country_code'],
                     'description'    => $row['description'],
-                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : asset('/assets/img/icons/image.jpg')),
+                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : ImageHelper::prefix()),
                     'action'        => [
                         'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
                         'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
@@ -128,7 +128,7 @@ class Languages extends Model
                     'code_name'      => $row['code_name'],
                     'country_code'   => $row['country_code'],
                     'description'    => $row['description'],
-                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : asset('/assets/img/icons/image.jpg')),
+                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : ImageHelper::prefix()),
                     'action'        => [
                         'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
                         'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
@@ -186,14 +186,14 @@ class Languages extends Model
         $get = $get->get()->toArray();
         if ($get) {
             foreach ($get as $key => $row) {
-                
+
                 $image = $row['image'] ? (ImageHelper::getImage($row['image'], Languages::$path['image'])) : null;
                 $data[$row['code_name']] = array(
                     'id'             => $row['id'],
                     'name'           => $row['name'],
                     'translate_name' => array_key_exists(app()->getLocale(), $row) ? $row[app()->getLocale()] : $row['name'],
                     'code_name'      => $row['code_name'],
-                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : asset('/assets/img/icons/image.jpg')),
+                    'image'         => $image ? ImageHelper::site(Languages::$path['image'], $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : ImageHelper::prefix()),
                     'action'        => [
                         'set'       => url(Languages::$path['url'] . '/set/' . $row['code_name']),
                     ]

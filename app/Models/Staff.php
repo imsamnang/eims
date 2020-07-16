@@ -68,6 +68,10 @@ class Staff extends Model
         if ($id) {
             $get = $get->whereIn((new Staff())->getTable() . '.id', $id);
         } else {
+            if(request('ref') == Users::$path['url']){                
+                $get = $get->whereNotIn((new Staff())->getTable() . '.id',Users::select('node_id')->whereNotNull('node_id')->whereNotIn('role_id',[1,6,7,9])->get());                
+            }
+            
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'))
                     ->whereNotIn('designation_id', [1]);

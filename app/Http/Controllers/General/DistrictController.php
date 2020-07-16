@@ -26,7 +26,7 @@ class DistrictController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
-        $data['provinces']   = Provinces::getData(request('provinceId'),null,10);
+        $data['provinces']   = Provinces::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );

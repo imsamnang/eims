@@ -70,6 +70,10 @@ class Students extends Model
 
         if ($id) {
             $get = $get->whereIn((new Students())->getTable() . '.id', $id);
+        }else{
+            if(request('ref') == Users::$path['url']){
+                $get = $get->whereNotIn((new Students())->getTable() . '.id',Users::select('node_id')->whereNotNull('node_id')->where('role_id',Students::$path['roleId'])->get());
+            }            
         }
 
 

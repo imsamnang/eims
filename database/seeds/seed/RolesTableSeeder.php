@@ -14,6 +14,7 @@ class RolesTableSeeder extends Seeder
     {
         Roles::insert([
             [
+                'id'          => 1,
                 'name'        => 'administrator',
                 'en'          => 'Administrator',
                 'km'          => 'អ្នកគ្រប់គ្រងជាន់ខ្ពស់',
@@ -22,6 +23,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 2,
                 'name'        => 'manager',
                 'en'          => 'Manager',
                 'km'          => 'អ្នកគ្រប់គ្រង',
@@ -30,6 +32,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 3,
                 'name'        => 'account',
                 'en'          => 'Accountant',
                 'km'          => 'គណនេយ្យករ',
@@ -38,6 +41,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 4,
                 'name'        => 'library',
                 'en'          => 'Librarian',
                 'km'          => 'បណ្ណារក្ស',
@@ -46,6 +50,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 5,
                 'name'        => 'staff',
                 'en'          => 'Staff',
                 'km'          => 'បុគ្គលិក',
@@ -54,6 +59,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 6,
                 'name'        => 'student',
                 'en'          => 'Student',
                 'km'          => 'និស្សិត',
@@ -62,6 +68,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 7,
                 'name'        => 'guardian',
                 'en'          => 'Guardian',
                 'km'          => 'អាណាព្យាបាល',
@@ -70,6 +77,7 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 8,
                 'name'        => 'teacher',
                 'en'          => 'Teacher',
                 'km'          => 'គ្រូ',
@@ -78,11 +86,22 @@ class RolesTableSeeder extends Seeder
 
             ],
             [
+                'id'          => 9,
                 'name'        => 'user',
                 'en'          => 'User',
                 'km'          => 'អ្នកប្រើប្រាស់',
                 'description' => 'User',
                 'view_path'   => 'Users',
+
+            ],
+
+            [
+                'id'          => 10,
+                'name'        => 'department',
+                'en'          => 'Department',
+                'km'          => 'ដេប៉ាតឺម៉ង់',
+                'description' => 'Department',
+                'view_path'   => 'Department',
 
             ],
 

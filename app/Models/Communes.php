@@ -85,7 +85,7 @@ class Communes extends Model
                     'district'      => $district,
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
 
                         'edit'      => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
@@ -143,7 +143,7 @@ class Communes extends Model
                     'province'      => $district['province'],
                     'district'      => $district,
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),

@@ -33,9 +33,9 @@ class QuizQuestionController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['quiz'] = Quiz::getData(request('quizId'), null, 10);
-        $data['quiz_type'] = QuizQuestionType::getData(null, null, 10);
-        $data['quiz_answer_type'] = QuizAnswerType::getData(null, null, 10);
+        $data['quiz'] = Quiz::getData();
+        $data['quiz_type'] = QuizQuestionType::getData();
+        $data['quiz_answer_type'] = QuizAnswerType::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
@@ -44,7 +44,7 @@ class QuizQuestionController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return QuizQuestion::getData(null, null, 10);
+                return QuizQuestion::getData();
             } else {
                 $data = $this->list($data);
             }

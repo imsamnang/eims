@@ -44,11 +44,10 @@ class StudentsStudyCourseController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        request()->merge(['ref' => request('ref',StudentsStudyCourse::$path['url'])]);
+        request()->merge(['ref' => request('ref', StudentsStudyCourse::$path['url'])]);
 
-        $data['study_course_session'] = StudyCourseSession::getData(request('course-sessionId'));
-        $data['study_status']         = StudyStatus::getData(request('statusId', 'null'));
-        $data['student']              = StudentsRequest::getData(request('studRequestId','null'));
+        $data['study_course_session'] = StudyCourseSession::getData();
+        $data['study_status']         = StudyStatus::getData();
         $data['formAction']           = '/add';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
         $data['title']                = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
@@ -80,7 +79,7 @@ class StudentsStudyCourseController extends Controller
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::addToTable();
             }
-            $data  = $this->add($data);
+            $data  = $this->show($data, null, $param1);
         } elseif (strtolower($param1) == 'edit') {
             request()->merge(['id' => $id]);
             if (request()->method() === 'POST') {
@@ -92,7 +91,7 @@ class StudentsStudyCourseController extends Controller
         } elseif (strtolower($param1) == 'photo') {
             $id = $param3 ? $param3 : request('id');
             request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'].'-photo']);
+            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-photo']);
             $view = new PhotoController();
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::makeImageToTable($id);
@@ -100,7 +99,7 @@ class StudentsStudyCourseController extends Controller
             return $view->index($param2, $param3, StudentsStudyCourse::getData($id));
         } elseif (strtolower($param1) == 'qrcode') {
             $id = $param3 ? $param3 : request('id');
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'].'-qrcode']);
+            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-qrcode']);
             request()->merge(['id' => $id, 'qrcode_type' => Students::$path['role']]);
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::makeQrcodeToTable($id);
@@ -110,7 +109,7 @@ class StudentsStudyCourseController extends Controller
         } elseif (strtolower($param1) == CardFrames::$path['url']) {
             $id = $param3 ? $param3 : request('id');
             request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'].'-card']);
+            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-card']);
             if (request()->method() == "POST") {
                 if ($param2 == "save") {
                     return StudentsStudyCourse::makeCardToTable();
@@ -124,7 +123,7 @@ class StudentsStudyCourseController extends Controller
         } elseif (strtolower($param1) == CertificateFrames::$path['url']) {
             $id = $param3 ? $param3 : request('id');
             request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'].'-certificate']);
+            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-certificate']);
             if (request()->method() == "POST") {
                 if ($param2 == "save") {
                     return StudentsStudyCourse::makeCardToTable();
@@ -198,36 +197,39 @@ class StudentsStudyCourseController extends Controller
 
     public function list($data)
     {
-        $data['response'] = StudentsStudyCourse::getData(null, null, 10);
         $data['view']     = StudentsStudyCourse::$path['view'] . '.includes.list.index';
         $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Student_Study_Course');
         return $data;
     }
 
 
-    public function add($data)
-    {
-        $data['view']  = StudentsStudyCourse::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
 
     public function show($data, $id, $type)
     {
-        $response           = StudentsStudyCourse::getData($id);
+
+        $student = StudentsRequest::where('status', 0)->pluck('id')->toArray();
+
+
 
         $data['view']       = StudentsStudyCourse::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_Study_Course');
         $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
-        $data['study_course_session'] = StudyCourseSession::getData($response['data'][0]['study_course_session']['id']);
-        $data['study_status']         = StudyStatus::getData($response['data'][0]['study_status']['id']);
-        $data['student']              = StudentsRequest::getData($response['data'][0]['request_id']);
+
+        if ($id) {
+            $student[] = $id;
+            $response           = StudentsStudyCourse::getData($id);
+            $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
+            $data['formData']   = $response['data'][0];
+            $data['listData']   = $response['pages']['listData'];
+            $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        }
+        $data['student']              = StudentsRequest::getData($student);
+        
+
+
+
+
+
         return $data;
     }
     public function account($data, $id, $type)

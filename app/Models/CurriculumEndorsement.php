@@ -19,7 +19,7 @@ class CurriculumEndorsement extends Model
         'view'   => 'CurriculumEndorsement'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -74,7 +74,7 @@ class CurriculumEndorsement extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/view/' . $row['id']),
@@ -128,7 +128,7 @@ class CurriculumEndorsement extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/view/' . $row['id']),
@@ -148,10 +148,8 @@ class CurriculumEndorsement extends Model
                                     if (config('app.languages')) {
                                         foreach (config('app.languages') as $lang) {
                                             $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-
                                         }
                                     }
-
                                 });
                             } elseif ($value['data'] == 'description') {
                                 $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
@@ -163,7 +161,7 @@ class CurriculumEndorsement extends Model
                 return $query;
             })
             ->order(function ($query) {
-                if(request('order')){
+                if (request('order')) {
                     foreach (request('order') as $order) {
                         $col = request('columns')[$order['column']];
                         if ($col['data'] == 'id') {

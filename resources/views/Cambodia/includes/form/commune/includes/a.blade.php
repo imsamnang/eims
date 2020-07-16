@@ -38,7 +38,6 @@
                         <select class="form-control" data-toggle="select" id="province" title="Simple select"
                             data-url="{{ $provinces["pages"]["form"]["action"]["add"]}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-ajax="{{str_replace("add","list",$provinces["pages"]["form"]["action"]["add"])}}"
                             data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
                             name="province" data-select-value="{{config("pages.form.data.province.id")}}"
                             data-append-to="#district"
@@ -68,11 +67,11 @@
                             @endif
                         </label>
 
-                        <select {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
+                        <select disabled {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="district" title="Simple select"
                             data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-ajax="{{str_replace("add","list",$districts["pages"]["form"]["action"]["add"])}}"
+
                             data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
                             name="district" data-select-value="{{config("pages.form.data.district.id")}}"
                             {{config("pages.form.validate.rules.district") ? "required" : ""}}>

@@ -28,8 +28,8 @@ class CommuneController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
-        $data['provinces']   = Provinces::getData(request('provinceId'), null, 10);
-        $data['districts']   = Districts::getData(request('provinceId', 'null'), request('districtId', 'null'), null, 10);
+        $data['provinces']   = Provinces::getData();
+        $data['districts']   = Districts::getData('null','null');
 
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),

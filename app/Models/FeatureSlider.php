@@ -73,7 +73,7 @@ class FeatureSlider extends Model
                     'title'         => $row['title'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),                    'status'        => $key == 0 ? 'active' : '',
+                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : ImageHelper::prefix(),                    'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
                         'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
@@ -117,7 +117,7 @@ class FeatureSlider extends Model
                     'title'         => $row['title'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
@@ -196,7 +196,7 @@ class FeatureSlider extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null,null, true));
+                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null, null, true));
                     }
 
                     $response       = array(
@@ -242,7 +242,7 @@ class FeatureSlider extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null,null, true));
+                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null, null, true));
                     }
                     $response       = array(
                         'success'   => true,

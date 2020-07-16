@@ -77,7 +77,7 @@ class AttendancesType extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'credit_absent' => $row['credit_absent'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(AttendancesType::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(AttendancesType::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/view/' . $row['id']),
@@ -131,7 +131,7 @@ class AttendancesType extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'credit_absent' => $row['credit_absent'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(AttendancesType::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(AttendancesType::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/view/' . $row['id']),

@@ -29,6 +29,7 @@ use App\Models\StaffTeachSubject;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Staff\StaffCertificateController;
 use App\Http\Controllers\Staff\StaffDesignationController;
+use App\Models\StaffInstitutes;
 
 class StaffController extends Controller
 {
@@ -44,23 +45,6 @@ class StaffController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
-
-        $data['institute']           = Institute::getData();
-        $data['status']              = StaffStatus::getData();
-        $data['designation']         = StaffDesignations::getData();
-        $data['mother_tong']         = MotherTong::getData();
-        $data['gender']              = Gender::getData();
-        $data['nationality']         = Nationality::getData();
-        $data['marital']             = Marital::getData();
-        $data['blood_group']         = BloodGroup::getData();
-        $data['provinces']           = Provinces::getData();
-        $data['districts']           = Districts::getData('null');
-        $data['communes']            = Communes::getData('null');
-        $data['villages']            = Villages::getData('null');
-        $data['staff_certificate']   = StaffCertificate::getData();
-        $data['curr_districts']      = $data['districts'];
-        $data['curr_communes']       = $data['communes'];
-        $data['curr_villages']       = $data['villages'];
         $data['formAction']          = '/add';
         $data['formName']            = Staff::$path['url'];
         $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
@@ -76,6 +60,13 @@ class StaffController extends Controller
                 [
                     'name'  => Translator::phrase('add.staff'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/add'),
+                    'icon'  => 'fas fa-user-plus',
+                    'image' => null,
+                    'color' => 'bg-' . config('app.theme_color.name'),
+                ], [
+                    'name'  => Translator::phrase('add.staff.short_form'),
+                    'link'  => url('staff-register'),
+                    'target' => '_blank',
                     'icon'  => 'fas fa-user-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -133,7 +124,7 @@ class StaffController extends Controller
             }
 
 
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
         } elseif (strtolower($param1) == 'view') {
             $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
@@ -224,23 +215,45 @@ class StaffController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Staff::getData();
+        $staff = Staff::join((new StaffInstitutes())->getTable(), (new StaffInstitutes())->getTable() . '.staff_id', (new Staff())->getTable() . '.id');
+        if (request('instituteId')) {
+            $staff = $staff->where('institute_id', request('instituteId'))
+                ->whereNotIn('designation_id', [1]);
+        }
+        $data['response'] = [
+            'gender'      => Staff::gender($staff),
+            'staffStatus' => Staff::staffStatus($staff),
+        ];
+    
+
+
         $data['view']  = Staff::$path['view'] . '.includes.list.index';
         $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName']);
         return $data;
     }
 
-    public function add($data)
-    {
-        $data['view']  = Staff::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
-
     public function show($data, $id, $type)
     {
+
+        $data['institute']           = Institute::getData();
+        $data['status']              = StaffStatus::getData();
+        $data['designation']         = StaffDesignations::getData();
+        $data['mother_tong']         = MotherTong::getData();
+        $data['gender']              = Gender::getData();
+        $data['nationality']         = Nationality::getData();
+        $data['marital']             = Marital::getData();
+        $data['blood_group']         = BloodGroup::getData();
+        $data['provinces']           = Provinces::getData();
+        $data['districts']           = Districts::getData('null');
+        $data['communes']            = Communes::getData('null');
+        $data['villages']            = Villages::getData('null');
+        $data['staff_certificate']   = StaffCertificate::getData();
+        $data['curr_districts']      = $data['districts'];
+        $data['curr_communes']       = $data['communes'];
+        $data['curr_villages']       = $data['villages'];
+
+
+
         $response           = Staff::getData($id, true);
         $data['view']       = Staff::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . $data['formName']);
@@ -251,14 +264,7 @@ class StaffController extends Controller
         $data['metaLink']   = url(Users::role() . $data['formAction']);
         $pob                = $data['formData']['place_of_birth'];
         $cur                = $data['formData']['current_resident'];
-        $data['mother_tong']         = MotherTong::getData($data['formData']['mother_tong']['id']);
-        $data['gender']              = Gender::getData($data['formData']['gender']['id']);
-        $data['nationality']         = Nationality::getData($data['formData']['nationality']['id']);
-        $data['marital']             = Marital::getData($data['formData']['marital']['id']);
-        $data['blood_group']         = BloodGroup::getData($data['formData']['blood_group']['id']);
-        if ($pob['province']) {
-            $data['districts'] = Districts::getData($pob['province']['id']);
-        }
+
         if ($pob['district']) {
             $data['communes'] = Communes::getData($pob['district']['id']);
         }
@@ -266,9 +272,6 @@ class StaffController extends Controller
             $data['villages'] = Villages::getData($pob['commune']['id']);
         }
 
-        if ($cur['province']) {
-            $data['curr_districts'] = Districts::getData($cur['province']['id']);
-        }
         if ($cur['district']) {
             $data['curr_communes'] = Communes::getData($cur['district']['id']);
         }

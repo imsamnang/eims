@@ -80,7 +80,7 @@ class QuizQuestionType extends Model
                 $data[$key]         = array(
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'image'         => $row['image'] ? (ImageHelper::site(QuizQuestionType::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(QuizQuestionType::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'description'   => $row['description'],
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/edit/' . $row['id']),
@@ -131,7 +131,7 @@ class QuizQuestionType extends Model
                 return [
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'image'         => $row['image'] ? (ImageHelper::site(QuizQuestionType::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(QuizQuestionType::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'description'   => $row['description'],
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/edit/' . $row['id']),

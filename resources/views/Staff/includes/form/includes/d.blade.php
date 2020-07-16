@@ -20,7 +20,7 @@
 
                 <select class="form-control" data-toggle="select" id="staff_certificate" title="Simple select"
                     data-url="{{$staff_certificate["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$staff_certificate["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.staff_certificate") }}" name="staff_certificate"
                     data-select-value="{{config("pages.form.data.staff_qualification.certificate.id")}}"
@@ -69,8 +69,8 @@
                 {{config("pages.form.validate.rules.experience") ? "required" : ""}}></textarea>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <a href="#" data-toggle="clone" data-clone-from="_experience"  data-clone-target="taget_experience"  class="btn btn-default"><i class="fas fa-plus"></i></a>
-                    <a href="#" data-clone-delete="_experience" class="btn btn-danger invisible"><i class="fas fa-trash"></i></a>
+                    <a href="#" data-toggle="clone" data-clone-from="_experience"  data-clone-target="taget_experience"  class="btn btn-default btn-sm"><i class="fas fa-plus"></i></a>
+                    <a href="#" data-clone-delete="_experience" class="btn btn-danger btn-sm invisible"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
             @endif

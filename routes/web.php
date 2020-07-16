@@ -55,7 +55,7 @@ Route::group(['prefix' => 'mailbox', 'namespace' => 'Mailbox\\'], function () {
 
 Route::group(['middleware' => ['web']], function () {
     // For Adminitrator
-    Route::group(['prefix' => Roles::find(1)->name, 'namespace' => 'Administrator\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+    Route::group(['prefix' => Roles::find(1)->name, 'namespace' => Roles::find(1)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
         Route::any('/', ['uses'  => 'AdministratorController@index']);
         Route::any('/{param1}', ['uses'  => 'AdministratorController@index']);
         Route::any('/{param1}/{param2}', ['uses'  => 'AdministratorController@index']);
@@ -66,7 +66,7 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     // For Manager
-    Route::group(['prefix' => Roles::find(2)->name, 'namespace' => 'Manager\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+    Route::group(['prefix' => Roles::find(2)->name, 'namespace' => Roles::find(2)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
 
         Route::any('/', ['uses'  => 'ManagerController@index']);
         Route::any('/{param1}', ['uses'  => 'ManagerController@index']);
@@ -77,10 +77,22 @@ Route::group(['middleware' => ['web']], function () {
         Route::any('/{param1}/{param2}/{param3}/{param4}/{param5}/{param6}', ['uses'  => 'ManagerController@index']);
     });
 
+     // For Department
+     Route::group(['prefix' => Roles::find(10)->name, 'namespace' => Roles::find(10)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+
+        Route::any('/', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}/{param2}', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}/{param2}/{param3}', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}/{param2}/{param3}/{param4}', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}/{param2}/{param3}/{param4}/{param5}', ['uses'  => 'DepartmentController@index']);
+        Route::any('/{param1}/{param2}/{param3}/{param4}/{param5}/{param6}', ['uses'  => 'DepartmentController@index']);
+    });
+
 
 
     // For Student
-    Route::group(['prefix' => Roles::find(6)->name, 'namespace' => 'Student\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+    Route::group(['prefix' => Roles::find(6)->name, 'namespace' => Roles::find(6)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
         Route::any('/', ['uses' => 'StudentController@index']);
         Route::any('/{param1}', ['uses' => 'StudentController@index']);
         Route::any('/{param1}/{param2}', ['uses' => 'StudentController@index']);
@@ -95,7 +107,7 @@ Route::group(['middleware' => ['web']], function () {
     });
 
     // For Teacher
-    Route::group(['prefix' => Roles::find(8)->name, 'namespace' => 'Teacher\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+    Route::group(['prefix' => Roles::find(8)->name, 'namespace' => Roles::find(8)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
         Route::any('/', ['uses' => 'TeacherController@index']);
         Route::any('/{param1}', ['uses' => 'TeacherController@index']);
         Route::any('/{param1}/{param2}', ['uses' => 'TeacherController@index']);
@@ -149,7 +161,7 @@ Route::group(['middleware' => ['web']], function () {
 
 
     // For User
-    Route::group(['prefix' => Roles::find(9)->name, 'namespace' => 'Users\\', 'middleware' => 'CheckUserLoginRoles'], function () {
+    Route::group(['prefix' => Roles::find(9)->name, 'namespace' => Roles::find(9)->view_path.'\\', 'middleware' => 'CheckUserLoginRoles'], function () {
         Route::any('/', ['uses' => 'UsersController@index']);
         Route::any('/{param1}', ['uses' => 'UsersController@index']);
         Route::any('/{param1}/{param2}', ['uses' => 'UsersController@index']);

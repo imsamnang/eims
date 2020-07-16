@@ -19,7 +19,7 @@
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
                     data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_course_session["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
                     name="study_course_session"
@@ -44,8 +44,8 @@
                     data-url="{{$student["pages"]["form"]["action"]["add"]}}"
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.student") }}" name="student[]"
-                    data-select-value="{{config("pages.form.data.node.id",request("studRequestId"))}}"
-                    data-ajax="{{str_replace("add","list",$student["pages"]["form"]["action"]["add"])}}"
+                    data-select-value="{{config("pages.form.data.request_id",request("studRequestId"))}}"
+
                     {{(array_key_exists("student[]",config("pages.form.validate.rules"))) ? "required" : ""}}>
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
@@ -68,7 +68,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
                     data-url="{{$study_status["pages"]["form"]["action"]["add"]}}"
-                    data-ajax="{{str_replace("add","list",$study_status["pages"]["form"]["action"]["add"])}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_status") }}" name="study_status"
                     data-select-value="{{config("pages.form.data.study_status.id")}}">

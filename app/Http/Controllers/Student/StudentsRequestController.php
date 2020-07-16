@@ -41,13 +41,7 @@ class StudentsRequestController extends Controller
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
-        $data['institute']         = Institute::getData();
-        $data['study_program']     = StudyPrograms::getData();
-        $data['study_course']      = StudyCourse::getData();
-        $data['study_generation']  = StudyGeneration::getData();
-        $data['study_academic_year']  = StudyAcademicYears::getData();
-        $data['study_semester']       = StudySemesters::getData();
-        $data['study_session']       = StudySession::getData();
+
 
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . StudentsRequest::$path['url'];
@@ -68,7 +62,7 @@ class StudentsRequestController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'view') {
             $data = $this->show($data, request('id', $param2), $param1);
         } elseif ($param1 == 'edit') {
@@ -124,34 +118,29 @@ class StudentsRequestController extends Controller
         return $data;
     }
 
-    public function add($data)
-    {
-        $data['view']  = StudentsRequest::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.request_study');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
+
     public function show($data, $id, $type)
     {
-        $response = StudentsRequest::getData($id, true);
+        $data['institute']         = Institute::getData();
+        $data['study_program']     = StudyPrograms::getData();
+        $data['study_course']      = StudyCourse::getData();
+        $data['study_generation']  = StudyGeneration::getData();
+        $data['study_academic_year']  = StudyAcademicYears::getData();
+        $data['study_semester']       = StudySemesters::getData();
+        $data['study_session']       = StudySession::getData();
+
 
         $data['view']       = StudentsRequest::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.request_study');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
 
-
-        $data['institute']         = Institute::getData($data['formData']['institute']['id']);
-        $data['study_program']     = StudyPrograms::getData($data['formData']['study_program']['id']);
-        $data['study_course']      = StudyCourse::getData($data['formData']['study_course']['id']);
-        $data['study_generation']  = StudyGeneration::getData($data['formData']['study_generation']['id']);
-        $data['study_academic_year']  = StudyAcademicYears::getData($data['formData']['study_academic_year']['id']);
-        $data['study_semester']       = StudySemesters::getData($data['formData']['study_semester']['id']);
-        $data['study_session']       = StudySession::getData($data['formData']['study_session']['id']);
+        if($id){
+            $response = StudentsRequest::getData($id, true);
+            $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
+            $data['formData']   = $response['data'][0];
+            $data['listData']   = $response['pages']['listData'];
+            $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        }
         return $data;
     }
 }

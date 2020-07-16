@@ -15,6 +15,7 @@ class StudentTableSeeder extends Seeder
     {
         Students::insert([
             [
+                'institute_id'          => 1,
                 'id'                    => 1,
                 'first_name_km'         => 'សែម',
                 'last_name_km'          => 'គឹមសាន',
@@ -47,6 +48,7 @@ class StudentTableSeeder extends Seeder
                 'extra_info'            => null
             ],
             [
+                'institute_id'          => 1,
                 'id'                    => 2,
                 'first_name_km'         => 'ផយ',
                 'last_name_km'          => 'កញ្ញា',
@@ -80,6 +82,7 @@ class StudentTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'          => 1,
                 'id'                    => 3,
                 'first_name_km'         => 'កែវ',
                 'last_name_km'          => 'រតនៈ',
@@ -113,6 +116,7 @@ class StudentTableSeeder extends Seeder
             ],
 
             [
+                'institute_id'          => 1,
                 'id'                    => 4,
                 'first_name_km'         => 'អ៊ាន',
                 'last_name_km'          => 'ស៊ីណា',

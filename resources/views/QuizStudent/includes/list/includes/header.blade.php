@@ -46,7 +46,7 @@
 </div>
 
 <div class="card-header border-0 pb-0">
-    <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatale-filter"
+    <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
             <div class="col-12 collapse mb-3 {{request("quizId") ? "show" : ""}}" id="filter">
@@ -54,7 +54,6 @@
                     <div class="col-md-8">
                         <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
                             data-url="{{$quiz["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                            data-ajax="{{str_replace("add","list",$quiz["pages"]["form"]["action"]["add"])}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quizId"
                             data-select-value="{{request('quizId')}}">

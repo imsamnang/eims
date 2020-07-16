@@ -39,7 +39,7 @@
 
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                             data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
-                            data-ajax="{{str_replace("add","list",$institute["pages"]["form"]["action"]["add"])}}"
+
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                             data-select-value="{{config("pages.form.data.institute.id")}}"

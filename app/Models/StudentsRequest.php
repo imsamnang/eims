@@ -28,10 +28,6 @@ class StudentsRequest extends Model
             ),
         );
 
-       
-
-
-
         $data = array();
         $orderBy = 'DESC';
         if ($id) {

@@ -53,13 +53,13 @@
                                     @if (config("pages.parameters.param1") != null && config("pages.parameters.param1")
                                     == "list")
                                     <li class="breadcrumb-item active" aria-current="page">
-                                        {{Translator::phrase(config("pages.parameters.param1").'.student_study_course')}}
+                                        {{Translator::phrase(config("pages.parameters.param1").'.certificate')}}
                                     </li>
                                     @else
                                     <li class="breadcrumb-item">
                                         <a
                                             href="{{url(config("pages.host").config("pages.path").str_replace("card/","",config("pages.pathview"))."list")}}">
-                                            {{Translator::phrase("list.student_study_course")}}
+                                            {{Translator::phrase("list.certificate")}}
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">

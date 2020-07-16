@@ -19,7 +19,7 @@ class CourseTypes extends Model
         'view'   => 'CourseType'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null,$search = null)
+    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
@@ -74,7 +74,7 @@ class CourseTypes extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),
@@ -127,7 +127,7 @@ class CourseTypes extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),

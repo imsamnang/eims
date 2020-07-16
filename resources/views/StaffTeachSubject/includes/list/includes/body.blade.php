@@ -9,14 +9,14 @@
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
-                                data-checked-show-controls='["view","edit","delete"]' type="checkbox">
+                                data-checked-show-controls='["edit","delete"]' type="checkbox">
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
                     @if (Auth::user()->role_id == 1)
-                    <th data-type="text" data-key="staff.staff_institute.institute.name" width="1" class="sort"
+                    <th data-type="text" data-key="institute" width="1" class="sort"
                         data-sort="institute">
                         {{Translator::phrase('institute')}}​</th>
                     @endif
@@ -40,7 +40,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
+                    <a  data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item disabled" href="">
                         <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                     </a>
 

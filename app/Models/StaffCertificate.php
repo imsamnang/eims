@@ -70,7 +70,7 @@ class StaffCertificate extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StaffCertificate::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StaffCertificate::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/'  . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/'  . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $row['id']),
@@ -124,7 +124,7 @@ class StaffCertificate extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StaffCertificate::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StaffCertificate::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
                         'edit' => url(Users::role() . '/'  . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/'  . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $row['id']),

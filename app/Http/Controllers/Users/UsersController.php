@@ -43,9 +43,9 @@ class usersController extends Controller
         request()->merge([
             'ref'   => Users::$path['url'],
         ]);
-        $data['institute'] = Institute::getData(request('instituteId', 'null'));
-        $data['student'] = Students::getData(request('studentId', 'null'));
-        $data['staff'] = Staff::getData(request('staffId', 'null'));
+        $data['institute'] = Institute::getData();
+        $data['student'] = Students::getData();
+        $data['staff'] = Staff::getData();
 
 
         $data['listData']       = array();

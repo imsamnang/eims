@@ -32,14 +32,12 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="staff" title="Simple select"
-                            data-url="{{$staff["pages"]["form"]["action"]["add"]}}"
-                            data-ajax="{{str_replace("add","list",$staff["pages"]["form"]["action"]["add"])}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.staff") }}" name="staff"
                             data-select-value="{{config("pages.form.data.staff.id")}}">
                             @foreach($staff["data"] as $o)
                             <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
-                                {{ $o["first_name"].' '.$o["last_name"]}}</option>
+                                {{ $o["name"]}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -55,8 +53,6 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="study_subject" title="Simple select"
-                            data-url="{{$study_subject["pages"]["form"]["action"]["add"]}}"
-                            data-ajax="{{str_replace("add","list",$study_subject["pages"]["form"]["action"]["add"])}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.study_subject") }}" name="study_subject"
                             data-select-value="{{config("pages.form.data.study_subject.id")}}">

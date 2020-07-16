@@ -15,6 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned()->nullable();
             $table->string('first_name_km')->nullable();
             $table->string('last_name_km')->nullable();
             $table->string('first_name_en')->nullable();
@@ -37,7 +38,7 @@ class CreateStudentsTable extends Migration
             $table->string('password')->nullable();
             $table->string('extra_info')->nullable();
             $table->text('photo')->nullable();
-             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

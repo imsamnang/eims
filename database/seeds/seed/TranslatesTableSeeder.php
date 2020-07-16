@@ -15,8 +15,8 @@ class TranslatesTableSeeder extends Seeder
         Translates::insert([
             [
                 'phrase' => 'about',
-                'en' => 'About',
-                'km' => 'អំពីយើង'
+                'en' => 'About Institute',
+                'km' => 'អំពីវិទ្យាស្ថាន'
             ],
             [
                 'phrase' => 'absent',
@@ -979,6 +979,11 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'វគ្គវែង'
             ],
             [
+                'phrase' => 'long_course',
+                'en' => 'Long course',
+                'km' => 'សិក្សាវគ្គវែង'
+            ],
+            [
                 'phrase' => 'love',
                 'en' => 'Love',
                 'km' => 'ស្រលាញ់​'
@@ -1509,11 +1514,6 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'លេខចុះឈ្មោះ'
             ],
             [
-                'phrase' => 'reload_page',
-                'en' => 'Reload Page',
-                'km' => 'ផ្ទុកទំព័រឡើងវិញ'
-            ],
-            [
                 'phrase' => 'remember_me',
                 'en' => 'Remember me',
                 'km' => 'ធ្វើការចងចាំ'
@@ -1677,6 +1677,16 @@ class TranslatesTableSeeder extends Seeder
                 'phrase' => 'short',
                 'en' => 'Short',
                 'km' => 'វគ្គខ្លី'
+            ],
+            [
+                'phrase' => 'short_course',
+                'en' => 'Short Course',
+                'km' => 'សិក្សាវគ្គខ្លី'
+            ],
+            [
+                'phrase' => 'short_form',
+                'en' => 'Short form',
+                'km' => 'ទម្រង់ខ្លី'
             ],
             [
                 'phrase' => 'short_name',

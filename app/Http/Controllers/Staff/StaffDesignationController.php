@@ -58,9 +58,9 @@ class StaffDesignationController extends Controller
             if (request()->method() === 'POST') {
                 return StaffDesignations::updateToTable($id);
             }
-            $data = $this->edit($data, $id);
+            $data = $this->show($data, $id, $param1);
         } elseif ($param1 == 'view') {
-            $data = $this->view($data, $id);
+            $data = $this->show($data, $id, $param1);
         } elseif ($param1 == 'delete') {
             return StaffDesignations::deleteFromTable($id);
         } else {
@@ -103,44 +103,30 @@ class StaffDesignationController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  StaffDesignations::getData(null, null, 10);
         $data['view']     = StaffDesignations::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.designation');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StaffDesignations::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
+        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.designation');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
     }
 
-    public function edit($data, $id)
+    public function show($data, $id, $type)
     {
         $response = StaffDesignations::getData($id, true);
         $data['view']       = StaffDesignations::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.' . str_replace('-', '_', $data['formName']));
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
+        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.designation');
+        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
+        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
-        return $data;
-    }
-
-    public function view($data, $id)
-    {
-        $response = StaffDesignations::getData($id, true);
-        $data['view']       = StaffDesignations::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.' . str_replace('-', '_', $data['formName']));
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
+        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
         return $data;
     }
 }

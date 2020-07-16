@@ -33,8 +33,8 @@ class StudentsStudyCourseScoreController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
 
-        $data['study_course_session'] = StudyCourseSession::getData(request('course-sessionId', 'null'));
-        $data['student']    = StudentsStudyCourse::getData('null');
+        $data['study_course_session'] = StudyCourseSession::getData();
+        $data['student']    = StudentsStudyCourse::getData();
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );

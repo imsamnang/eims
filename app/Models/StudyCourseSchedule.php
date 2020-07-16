@@ -47,6 +47,9 @@ class StudyCourseSchedule extends Model
         if ($id) {
             $get = $get->whereIn('id', $id);
         } else {
+            if(request('ref') == StudyCourseSession::$path['url']){
+                $get = $get->whereNotIn('id',StudyCourseSession::select('study_course_schedule_id')->get());
+            }
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));
             }

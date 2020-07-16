@@ -69,7 +69,7 @@ class StaffStatus extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(StaffStatus::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(StaffStatus::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'color'         => $row['color'],
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $row['id']),
@@ -124,7 +124,7 @@ class StaffStatus extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(StaffStatus::$path['image'], $row['image'])) : asset('/assets/img/icons/image.jpg'),
+                    'image'         => $row['image'] ? (ImageHelper::site(StaffStatus::$path['image'], $row['image'])) : ImageHelper::prefix(),
                     'color'         => $row['color'],
                     'action'        => [
                         'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $row['id']),

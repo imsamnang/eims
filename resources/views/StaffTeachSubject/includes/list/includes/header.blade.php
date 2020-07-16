@@ -4,7 +4,7 @@
             data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("add.".str_replace("-","_",config("pages.form.name")))}}
+                {{Translator::phrase("add")}}
             </span>
         </a>
         <a href="#" data-href="{{config("pages.form.action.view")}}" class="btn btn-primary disabled"

@@ -8,6 +8,7 @@ use App\Models\Users;
 use App\Models\Years;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\SocailsMedia;
@@ -32,8 +33,24 @@ class StaffTeachSubjectController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['staff'] = Staff::getData();
-        $data['study_subject'] = StudySubjects::getData();
+        $data['staff']['data'] = Staff::all()->map(function ($row) {
+            return [
+                'id'    => $row['id'],
+                'name'   => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - '
+                    . $row['first_name_en'] . ' ' . $row['last_name_en'] . ' - '
+                    . $row['phone'],
+                'photo' => ImageHelper::site(Staff::$path['image'], $row['photo'])
+
+            ];
+        })->toArray();
+
+        $data['study_subject']['data'] = StudySubjects::all()->map(function ($row) {
+            return [
+                'id'    => $row['id'],
+                'name'   => $row[app()->getLocale()],
+                'image' => $row['image'] ? ImageHelper::site(StudySubjects::$path['image'], $row['image']) : ImageHelper::prefix()
+            ];
+        })->toArray();
         $data['formData'] = array(
             'year' => Years::now(),
         );

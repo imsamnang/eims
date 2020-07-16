@@ -19,7 +19,7 @@
                     @endif
                 </div>
                 <div class="form-row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-12 mb-3">
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.staff_teach_subject")}}"
                             class="form-control-label" for="staff_teach_subject">
@@ -35,7 +35,7 @@
 
                         <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
                             data-url="{{$staff_teach_subject["pages"]["form"]["action"]["add"]}}"
-                            data-ajax="{{str_replace("add","list",$staff_teach_subject["pages"]["form"]["action"]["add"])}}"
+
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.staff_teach_subject") }}" name="staff_teach_subject"
                             data-select-value="{{config("pages.form.data.staff_teach_subject.id")}}"
