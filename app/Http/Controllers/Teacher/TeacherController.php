@@ -364,6 +364,15 @@ class TeacherController extends Controller
                 $data['view']    = 'Teacher.includes.teaching.includes.subject.index';
             }
         } elseif (strtolower($param1) == StudySubjectLesson::$path['url']) {
+            $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
+                $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
+                return [
+                    'id'    => $row['id'],
+                    'name'  => $study_subject->name,
+                    'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
+                ];
+            })->toArray();
+
             $data['formName']            = 'teaching/' . StudySubjectLesson::$path['url'];
             $data['formData'] = array(
                 'image' => asset('/assets/img/icons/pdf.png'),
@@ -373,13 +382,6 @@ class TeacherController extends Controller
                     return StudySubjectLesson::addToTable();
                 }
 
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->map(function ($row) {
-                    $study_subject = StudySubjects::where('id', $row['study_subject_id'])->get([app()->getLocale() . '. as name', 'image']);
-                    return [
-                        'name'  => $study_subject->name,
-                        'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
-                    ];
-                })->toArray();
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'edit') {
@@ -394,14 +396,7 @@ class TeacherController extends Controller
                 $data['listData']   = $response['pages']['listData'];
                 //$data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
 
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
-                    $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
-                    return [
-                        'id'    => $row['id'],
-                        'name'  => $study_subject->name,
-                        'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
-                    ];
-                })->toArray();
+
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'view') {
@@ -410,14 +405,7 @@ class TeacherController extends Controller
                 $response = StudySubjectLesson::getData($id);
                 $data['formData']   = $response['data'][0];
                 $data['listData']   = $response['pages']['listData'];
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
-                    $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
-                    return [
-                        'id'    => $row['id'],
-                        'name'  => $study_subject->name,
-                        'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
-                    ];
-                })->toArray();
+
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'list-datatable') {
@@ -426,16 +414,6 @@ class TeacherController extends Controller
                 }
             } else {
                 $staff_teach_subject_id = request('t-subjectId', $param3);
-
-
-                $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id','study_subject_id'])->map(function ($row) {
-                    $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
-                    return [
-                        'id'    => $row['id'],
-                        'name'  => $study_subject->name,
-                        'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
-                    ];
-                })->toArray();
 
                 $data['response'] = StudySubjectLesson::getData(null, $staff_teach_subject_id, 10);
                 $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
