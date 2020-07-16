@@ -49,16 +49,15 @@ class StudyCourse extends Model
         if ($id) {
             $get = $get->whereIn('id', $id);
         } else {
-            if ($type) {
-                $get = $get->where('course_type_id', $type);
-            }
+            
+            
 
             if ($program) {
                 $get = $get->where('study_program_id', $program);
             }
 
-            if (Auth::user() && Auth::user()->institute_id) {
-                $get = $get->where('institute_id', Auth::user()->institute_id);
+            if(request('instituteId')){
+                $get = $get->where('institute_id',request('instituteId'));
             }
         }
 
@@ -206,6 +205,10 @@ class StudyCourse extends Model
                 ];
             })
             ->filter(function ($query) {
+
+                if(request('instituteId')){
+                    $query = $query->where('institute_id',request('instituteId'));
+                }
 
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {

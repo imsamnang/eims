@@ -131,7 +131,7 @@ class UsersTableSeeder extends Seeder
                 'phone'          => '0123456789',
                 'address'        => null,
                 'location'       => null,
-                'profile'        => '22114111_015214419441801_7021515114051515609_n.jpg',
+                'profile'        => '10115193_362078101681913_1321939736321056119_n.jpg',
                 'role_id'        => 8,
                 'node_id'        => 2,
                 'institute_id'   => 1,

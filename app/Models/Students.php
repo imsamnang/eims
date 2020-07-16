@@ -73,9 +73,13 @@ class Students extends Model
         }else{
             if(request('ref') == Users::$path['url']){
                 $get = $get->whereNotIn((new Students())->getTable() . '.id',Users::select('node_id')->whereNotNull('node_id')->where('role_id',Students::$path['roleId'])->get());
-            }            
+            }    
+            if(request('instituteId')){
+                $get = $get->where('institute_id',request('instituteId'));
+            }
         }
 
+        $gender = Students::gender($get);
 
         if ($search) {
             $get = Students::searchName($get, $search);
@@ -185,7 +189,7 @@ class Students extends Model
                 'type'      => Students::$path['role'],
                 'pages'     => $pages,
                 'data'      => $data,
-                'gender'    => Students::gender(new Students),
+                'gender'    => $gender,
             );
         }
         return $response;
@@ -242,6 +246,9 @@ class Students extends Model
                 ];
             })
             ->filter(function ($query) {
+                if(request('instituteId')){
+                    $get = $get->where('institute_id',request('instituteId'));
+                }
                 foreach (request('columns') as $i => $value) {
                     if ($value['searchable']) {
                         if ($value['data'] == 'name') {

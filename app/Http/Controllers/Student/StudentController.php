@@ -324,6 +324,9 @@ class StudentController extends Controller
     {
 
         $student = Students::orderBy('id','DESC');
+        if(request('instituteId')){
+            $student = $student->where('institute_id',request('instituteId'));
+        }
         $data['response'] = [
             'gender'      => Students::gender($student)
         ];

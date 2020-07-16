@@ -142,7 +142,7 @@ class ManagerController extends Controller
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
-                'gender'      => Students::gender(new Students),
+                'gender'      => Students::gender(Students::where('institute_id',Auth::user()->institute_id)),
                 'status'      => [],
                 'color'       => 'green',
             ],
@@ -165,6 +165,7 @@ class ManagerController extends Controller
         );
 
         $studyPrograms = StudyPrograms::getData();
+        $data['studyProgram'] = [];
         if ($studyPrograms['success']) {
             foreach ($studyPrograms['data'] as $row) {
                 $data['studyProgram'][] = [
@@ -179,6 +180,7 @@ class ManagerController extends Controller
                             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
                             ->whereNotIn('study_status_id', [7])
                             ->where((new StudyCourseSchedule())->getTable().'.study_program_id', $row['id'])
+                            ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
                     ),
                     'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
                     'color'   => config('app.theme_color.name'),
