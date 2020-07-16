@@ -73,10 +73,10 @@ class StaffTeachSubject extends Model
                     'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
                     'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
                 ];
-                if(Auth::user()->role_id == 10){
-                    $action['edit'] =  str_replace( Staff::$path['url'],'teaching', $action['edit']);
-                    $action['view'] =  str_replace( Staff::$path['url'],'teaching', $action['view']);
-                    $action['delete'] =  str_replace( Staff::$path['url'],'teaching', $action['delete']);
+                if (Auth::user()->role_id == 10) {
+                    $action['edit'] =  str_replace(Staff::$path['url'], 'teaching', $action['edit']);
+                    $action['view'] =  str_replace(Staff::$path['url'], 'teaching', $action['view']);
+                    $action['delete'] =  str_replace(Staff::$path['url'], 'teaching', $action['delete']);
                 }
 
                 $data[$key]         = array(
@@ -138,10 +138,10 @@ class StaffTeachSubject extends Model
                     'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
                     'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
                 ];
-                if(Auth::user()->role_id == 10){
-                    $action['edit'] =  str_replace( Staff::$path['url'],'teaching', $action['edit']);
-                    $action['view'] =  str_replace( Staff::$path['url'],'teaching', $action['view']);
-                    $action['delete'] =  str_replace( Staff::$path['url'],'teaching', $action['delete']);
+                if (Auth::user()->role_id == 10) {
+                    $action['edit'] =  str_replace(Staff::$path['url'], 'teaching', $action['edit']);
+                    $action['view'] =  str_replace(Staff::$path['url'], 'teaching', $action['view']);
+                    $action['delete'] =  str_replace(Staff::$path['url'], 'teaching', $action['delete']);
                 }
 
                 return [
@@ -163,6 +163,12 @@ class StaffTeachSubject extends Model
                 if (Auth::user()->role_id == 2) {
                     $query =  $query->where((new StaffInstitutes())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
+
+                if (request('t-subjectId')) {
+                    $query =  $query->where((new StaffTeachSubject())->getTable() . '.id', request('t-subjectId'));
+                }
+
+
 
                 if (request('search.value')) {
                     foreach (request('columns') as $i => $value) {
