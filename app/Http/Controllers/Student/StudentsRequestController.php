@@ -8,6 +8,7 @@ use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\StudyCourse;
@@ -128,6 +129,18 @@ class StudentsRequestController extends Controller
         $data['study_academic_year']  = StudyAcademicYears::getData();
         $data['study_semester']       = StudySemesters::getData();
         $data['study_session']       = StudySession::getData();
+
+        $student = Students::orderBy('first_name_km', 'ASC');
+        if (request('instituteId')) {
+            $student->where('institute_id', request('instituteId'));
+        }
+        $data['student']['data'] =  $student->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
+            return [
+                'id'    => $row['id'],
+                'name'  => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
+                'photo' => ImageHelper::site(Students::$path['image'], $row['photo'])
+            ];
+        })->toArray();
 
 
         $data['view']       = StudentsRequest::$path['view'] . '.includes.form.index';

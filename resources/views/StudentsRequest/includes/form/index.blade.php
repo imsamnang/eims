@@ -14,13 +14,12 @@
                         <div class="row">
                             <div class="{{count($listData) <= 1 ? "col-md-12":"col-md-8"}}" data-list-group>
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         @csrf
                                         @include(config("pages.parent").".includes.form.includes.a")
-                                    </div>
-                                    <div class="col-md-4">
                                         @include(config("pages.parent").".includes.form.includes.b")
                                     </div>
+
                                 </div>
                             </div>
                             @if (count($listData) > 1)
