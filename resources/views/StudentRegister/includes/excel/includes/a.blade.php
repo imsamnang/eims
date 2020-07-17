@@ -1,18 +1,3 @@
-<style>
-    .table-xs td,
-    .table-xs th {
-        border: 1px solid #ccc;
-        padding: .3rem .07rem !important;
-        font-size: .8rem !important;
-        text-align: center;
-    }
-
-    .table-xs td,
-    .table-xs th {
-        vertical-align: middle;
-
-    }
-</style>
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
@@ -24,14 +9,14 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-sm table-xs table-bordered ">
+            <table class="table table-sm table-bordered ">
                 <thead>
                     @foreach ($response["heading"] as $key => $heading)
                     <th>
 
-                        @if($key == 3 || $key == 5)
+                        @if($key == 1 || $key == 4 || $key == 6)
                         <i class="fas text-green fa-key"></i>
-                        @elseif($key == 8 || $key == 9)
+                        @elseif($key == 9 || $key == 10)
                         <i class="fas text-red fa-key"></i>
                         @endif
                         {{$heading}}
@@ -44,19 +29,27 @@
                     <tr>
                         @foreach (array_values($columns)  as $key => $row)
 
-                        @if($key == 3)
+                        @if($key == 1)
                         <td>
                             <select style="height: 30px" class="border">
-                                @foreach ($gender as $o)
-                                <option value="{{$o}}">{{$o}}</option>
+                                @foreach ($institute as $o)
+                                <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
                                 @endforeach
                             </select>
                         </td>
-                        @elseif($key == 5)
+                        @elseif($key == 4)
+                        <td>
+                            <select style="height: 30px" class="border">
+                                @foreach ($gender as $o)
+                                <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        @elseif($key == 6)
                         <td>
                             <select style="height: 30px" class="border">
                                 @foreach ($marital as $o)
-                                <option value="{{$o}}">{{$o}}</option>
+                                <option {{$o == $row?"selected" : "" }} value="{{$o}}">{{$o}}</option>
                                 @endforeach
                             </select>
                         </td>

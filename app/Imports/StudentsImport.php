@@ -6,6 +6,7 @@ use App\Events\Import;
 use App\Exports\StudentsRegisterTemplateExport;
 use App\Helpers\DateHelper;
 use App\Models\Gender;
+use App\Models\Institute;
 use App\Models\Marital;
 use App\Models\Students;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -58,8 +59,8 @@ class StudentsImport implements
 
             if ($row && count($row) >= count($_template->headings())) {
 
-                $fullname_km = explode(' ', $row[1]);
-                $fullname_en = explode(' ', $row[2]);
+                $fullname_km = explode(' ', $row[2]);
+                $fullname_en = explode(' ', $row[3]);
 
                 if (Gender::where('km', $row[3])->first() && Marital::where('km', $row[5])->first()) {
                     request()->merge([
@@ -67,26 +68,30 @@ class StudentsImport implements
                         'last_name_km' => $fullname_km[1],
                         'first_name_en' => $fullname_en[0],
                         'last_name_en' => $fullname_en[1],
-                        'gender' => Gender::where('km', $row[3])->first()->id,
-                        'date_of_birth' => DateHelper::convert($row[4]),
-                        'marital'    => Marital::where('km', $row[5])->first()->id,
-                        'permanent_address' =>  $row[6],
-                        'temporaray_address' =>  $row[7],
-                        'phone' =>  $row[8],
-                        'email' =>  $row[9],
+                        'gender' => Gender::where('km', $row[4])->first()->id,
+                        'date_of_birth' => DateHelper::convert($row[5]),
+                        'marital'    => Marital::where('km', $row[6])->first()->id,
+                        'permanent_address' =>  $row[7],
+                        'temporaray_address' =>  $row[8],
+                        'phone' =>  $row[9],
+                        'email' =>  $row[10],
                         'nationality'   => 1,
-                        'mother_tong'   => 1
+                        'mother_tong'   => 1,
+                        'institute'   => Institute::where('km', $row[1])->first()->id,
                     ]);
                     $add = Students::register();
                     $add['data'] = $row;
                     $add['row'] = $this->row;
                     event(new Import($add, request('console', '#console')));
                 } else {
-                    if (!Gender::where('km', $row[3])->first()) {
-                        $errors[] = 'ភេទ : ' . $row[3] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    if (!Institute::where('km', $row[1])->first()) {
+                        $errors[] = 'វិទ្យា : ' . $row[1] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
                     }
-                    if (!Marital::where('km', $row[5])->first()) {
-                        $errors[] = 'ស្ថានភាពគ្រួសារ : ' . $row[5] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    if (!Gender::where('km', $row[4])->first()) {
+                        $errors[] = 'ភេទ : ' . $row[4] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
+                    }
+                    if (!Marital::where('km', $row[6])->first()) {
+                        $errors[] = 'ស្ថានភាពគ្រួសារ : ' . $row[6] . 'តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។';
                     }
 
                     event(new Import([

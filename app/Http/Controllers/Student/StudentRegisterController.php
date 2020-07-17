@@ -37,19 +37,15 @@ class StudentRegisterController extends Controller
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
 
-        $data['institute']           = Institute::getData(1);
-        // $data['status']              = StaffStatus::getData();
-        // $data['designation']         = StaffDesignations::getData();
-        $data['formData']            = array(
-            'photo'                  => asset('/assets/img/user/male.jpg'),
-        );
-
+        $data['institute']           = Institute::getData();
         $data['mother_tong']         = MotherTong::getData();
         $data['gender']              = Gender::getData();
         $data['nationality']         = Nationality::getData();
         $data['marital']             = Marital::getData();
-
         $data['formAction']          = 'add';
+        $data['formData']            = array(
+            'photo'                  => asset('/assets/img/user/male.jpg'),
+        );
         $data['formName']            = '';
         $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
@@ -190,6 +186,7 @@ class StudentRegisterController extends Controller
             'heading' => $export->headings(),
         ];
 
+        $data['institute'] = Institute::pluck('km')->toArray();
         $data['gender'] = Gender::pluck('km')->toArray();
         $data['marital'] = Marital::pluck('km')->toArray();
         $data['view']  = 'StudentRegister.includes.excel.index';

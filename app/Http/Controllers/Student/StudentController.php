@@ -59,6 +59,7 @@ use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Student\StudentsStudyCourseController;
 use App\Models\Days;
 use App\Models\Mailbox;
+use App\Models\StudentsStudyShortCourse;
 
 class StudentController extends Controller
 {
@@ -74,6 +75,7 @@ class StudentController extends Controller
     {
 
         if (Auth::user()->role_id != 6) {
+            $data['institute']            = Institute::getData();
             $data['blood_group']         = BloodGroup::getData();
             $data['mother_tong']         = MotherTong::getData();
             $data['gender']              = Gender::getData();
@@ -194,6 +196,36 @@ class StudentController extends Controller
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                         ]
+                    ],
+                    [
+                        'title' => Translator::phrase('short_course'),
+                        'children' => [
+                            [
+                                'name'  => Translator::phrase('list.student'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::path('url') . '/list'),
+                                'icon'  => 'fas fa-user-graduate',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.request_study'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-users-medical',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.attendance'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-calendar-edit',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.student.score'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-trophy-alt',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
                     ]
                 ];
 
@@ -218,7 +250,6 @@ class StudentController extends Controller
                     return Students::addToTable();
                 }
                 $data = $this->add($data);
-
             } elseif (strtolower($param1)  == 'view') {
                 if ($param2) {
                     $data = $this->show($data, $param2, $param1);
@@ -266,6 +297,8 @@ class StudentController extends Controller
             } elseif (strtolower($param1) == CertificateFrames::$path['url']) {
                 $view = new CertificateController();
                 return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == StudentsStudyShortCourse::path('url')) {
+                dd(StudentsStudyShortCourse::getData());
             } else {
                 abort(404);
             }
@@ -323,9 +356,9 @@ class StudentController extends Controller
     public function list($data)
     {
 
-        $student = Students::orderBy('id','DESC');
-        if(request('instituteId')){
-            $student = $student->where('institute_id',request('instituteId'));
+        $student = Students::orderBy('id', 'DESC');
+        if (request('instituteId')) {
+            $student = $student->where('institute_id', request('instituteId'));
         }
         $data['response'] = [
             'gender'      => Students::gender($student)

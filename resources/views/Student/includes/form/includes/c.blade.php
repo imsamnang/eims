@@ -1,510 +1,345 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            {{ Translator:: phrase("father_info") }}
+            (C) {{ Translator:: phrase("address") }}
         </label>
     </div>
-    <div class="card-body">
-        <div class="form-row">
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.father_fullname")}}" class="form-control-label"
-                    for="father_fullname">
 
-                    {{ Translator:: phrase("father_fullname") }}
-                    @if(config("pages.form.validate.rules.father_fullname"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="father_fullname"
-                            placeholder="{{ Translator::phrase("father_fullname") }}"
-                            value="{{config("pages.form.data.student_guardian.father.name")}}"
-                            {{config("pages.form.validate.rules.father_fullname") ? "required" : ""}}
-                            name="father_fullname" />
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.father_occupation")}}" class="form-control-label"
-                    for="father_occupation">
-
-                    {{ Translator:: phrase("occupation") }}
-                    @if(config("pages.form.validate.rules.father_occupation"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="father_occupation"
-                            placeholder="{{ Translator::phrase("occupation") }}"
-                            value="{{config("pages.form.data.student_guardian.father.occupation")}}"
-                            {{config("pages.form.validate.rules.father_occupation") ? "required" : ""}}
-                            name="father_occupation" />
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.father_phone")}}" class="form-control-label"
-                    for="father_phone">
-
-                    {{ Translator:: phrase("father_phone") }}
-                    @if(config("pages.form.validate.rules.father_phone"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="father_phone"
-                            placeholder="{{ Translator:: phrase("father_phone") }}"
-                            value="{{config("pages.form.data.student_guardian.father.phone")}}"
-                            {{config("pages.form.validate.rules.father_phone") ? "required" : ""}}
-                            name="father_phone" />
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.father_email")}}" class="form-control-label"
-                    for="father_phone">
-
-                    {{ Translator:: phrase("father_email") }}
-                    @if(config("pages.form.validate.rules.father_email"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="father_email"
-                            placeholder="{{ Translator:: phrase("father_email") }}"
-                            value="{{config("pages.form.data.student_guardian.father.email")}}"
-                            {{config("pages.form.validate.rules.father_email") ? "required" : ""}}
-                            name="father_email" />
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.father_extra_info")}}" class="form-control-label "
-                    for="father_extra_info">
-
-                    {{ Translator:: phrase("extra_info") }}
-
-                    @if(config("pages.form.validate.rules.father_extra_info")) <span
-                        class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-info"></i></span>
-                        </div>
-                        <textarea type="text" class="form-control" name="father_extra_info" id="father_extra_info"
-                            placeholder="{{ Translator::phrase("extra_info") }}"
-                            {{config("pages.form.validate.rules.father_extra_info") ? "required" : ""}}>{{config("pages.form.data.student_guardian.father.extra_info")}}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header p-2 px-3">
-        <label class="label-arrow label-primary label-arrow-right">
-            {{ Translator:: phrase("mother_info") }}
-        </label>
-    </div>
-    <div class="card-body">
-        <div class="form-row">
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.mother_fullname")}}" class="form-control-label"
-                    for="mother_fullname">
-
-                    {{ Translator:: phrase("mother_fullname") }}
-                    @if(config("pages.form.validate.rules.mother_fullname"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="mother_fullname"
-                            placeholder="{{ Translator::phrase("mother_fullname") }}"
-                            value="{{config("pages.form.data.student_guardian.mother.name")}}"
-                            {{config("pages.form.validate.rules.mother_fullname") ? "required" : ""}}
-                            name="mother_fullname" />
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.mother_occupation")}}" class="form-control-label"
-                    for="mother_occupation">
-
-                    {{ Translator:: phrase("occupation") }}
-                    @if(config("pages.form.validate.rules.mother_occupation"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="mother_occupation"
-                            placeholder="{{ Translator::phrase("occupation") }}"
-                            value="{{config("pages.form.data.student_guardian.mother.occupation")}}"
-                            {{config("pages.form.validate.rules.mother_occupation") ? "required" : ""}}
-                            name="mother_occupation" />
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.mother_phone")}}" class="form-control-label"
-                    for="mother_phone">
-
-                    {{ Translator:: phrase("mother_phone") }}
-                    @if(config("pages.form.validate.rules.mother_phone"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="mother_phone"
-                            placeholder="{{ Translator:: phrase("mother_phone") }}"
-                            value="{{config("pages.form.data.student_guardian.mother.phone")}}"
-                            {{config("pages.form.validate.rules.mother_phone") ? "required" : ""}}
-                            name="mother_phone" />
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.mother_email")}}" class="form-control-label"
-                    for="mother_phone">
-
-                    {{ Translator:: phrase("mother_email") }}
-                    @if(config("pages.form.validate.rules.mother_email"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="mother_email"
-                            placeholder="{{ Translator:: phrase("mother_email") }}"
-                            value="{{config("pages.form.data.student_guardian.mother.email")}}"
-                            {{config("pages.form.validate.rules.mother_email") ? "required" : ""}}
-                            name="mother_email" />
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-12">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.mother_extra_info")}}" class="form-control-label "
-                    for="mother_extra_info">
-
-                    {{ Translator:: phrase("extra_info") }}
-
-                    @if(config("pages.form.validate.rules.mother_extra_info")) <span
-                        class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-
-                </label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-info"></i></span>
-                        </div>
-                        <textarea type="text" class="form-control" name="mother_extra_info" id="mother_extra_info"
-                            placeholder="{{ Translator::phrase("extra_info") }}"
-                            {{config("pages.form.validate.rules.mother_extra_info") ? "required" : ""}}>{{config("pages.form.data.student_guardian.mother.extra_info")}}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header p-2 px-3">
-        <label class="label-arrow label-primary label-arrow-right">
-            (C) {{ Translator:: phrase("guardian") }}
-        </label>
-        @if(config("pages.form.validate.rules.guardian"))
-        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-            <i class="fas fa-asterisk fa-xs"></i>
-        </span>
-        @endif
-    </div>
     <div class="card-header p-2 px-4">
-        <div class="form-group form-control col" id="guardian">
-            @if (config('pages.parameters.param1') == "view")
-                @if(config("pages.form.data.student_guardian.guardian_is") == "father")
-                    <div class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.student_guardian.guardian_is") == "father" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian"
-                            name="guardian" value="father" class="custom-control-input">
-                        <label class="custom-control-label" for="father_is_guardian">
-                            <span class="d-none d-sm-block">{{Translator::phrase("father_is_guardian")}}</span>
-                            <span class="d-lg-none">{{Translator::phrase("father")}}</span>
-                        </label>
-                    </div>
-                @elseif(config("pages.form.data.student_guardian.guardian_is") == "mother")
-                    <div class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.student_guardian.guardian_is") == "mother" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian"
-                            name="guardian" value="mother" class="custom-control-input">
-                        <label class="custom-control-label" for="mother_is_guardian">
-                            <span class="d-none d-sm-block">{{Translator::phrase("mother_is_guardian")}}</span>
-                            <span class="d-lg-none">{{Translator::phrase("mother")}}</span>
-                        </label>
-                    </div>
-                @else
-                    <div  class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.student_guardian.guardian_is") !== "father" && config("pages.form.data.student_guardian.guardian_is") !== "mother"  ? "checked" : ""}} data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian"
-                            name="guardian" value="other" class="custom-control-input">
-                        <label class="custom-control-label" for="other_guardian"><span>{{Translator::phrase("other")}}</span>
-                        </label>
-                    </div>
-                @endif
-            @else
-                <div class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.student_guardian.guardian_is") == "father" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian"
-                        name="guardian" value="father" class="custom-control-input">
-                    <label class="custom-control-label" for="father_is_guardian">
-                        <span class="d-none d-sm-block">{{Translator::phrase("father_is_guardian")}}</span>
-                        <span class="d-lg-none">{{Translator::phrase("father")}}</span>
-                    </label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.student_guardian.guardian_is") == "mother" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian"
-                        name="guardian" value="mother" class="custom-control-input">
-                    <label class="custom-control-label" for="mother_is_guardian">
-                        <span class="d-none d-sm-block">{{Translator::phrase("mother_is_guardian")}}</span>
-                        <span class="d-lg-none">{{Translator::phrase("mother")}}</span>
-                    </label>
-                </div>
-                <div  class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.student_guardian.guardian_is") !== "father" && config("pages.form.data.student_guardian.guardian_is") !== "mother"  ? "checked" : ""}} data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian"
-                        name="guardian" value="other_guardian" class="custom-control-input">
-                    <label class="custom-control-label" for="other_guardian"><span>{{Translator::phrase("other")}}</span>
-                    </label>
-                </div>
-
+        <label class="form-control-label">
+            {{ Translator:: phrase("pob") }}
+            @if(config("pages.form.validate.rules.pob"))
+            <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                <i class="fas fa-asterisk fa-xs"></i>
+            </span>
             @endif
-
-        </div>
+        </label>
     </div>
     <div class="card-body">
-        <div class="collapse {{config("pages.form.data.student_guardian.guardian_is") !== "father" && config("pages.form.data.student_guardian.guardian_is") !== "mother"  ? "show" : ""}}" id="xguardian">
-            <div class="form-row">
-                <div class="col-md-6 mb-3">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.guardian_fullname")}}" class="form-control-label"
-                        for="guardian_fullname">
+        <div class="form-row" data-collapse="pob" data-control-value-id="pob">
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="pob_province_fk">
+                    {{ Translator:: phrase("province") }}
 
-                        {{ Translator:: phrase("guardian_fullname") }}
-                        @if(config("pages.form.validate.rules.guardian_fullname"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                            <i class="fas fa-asterisk fa-xs"></i>
-                        </span>
-                        @endif
-                    </label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user-md"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="guardian_fullname"
-                                placeholder="{{ Translator::phrase("guardian_fullname") }}"
-                                value="{{config("pages.form.data.student_guardian.guardian.name")}}"
-                                {{config("pages.form.validate.rules.guardian_fullname") ? "required" : ""}}
-                                name="guardian_fullname" />
+                    @if(config("pages.form.validate.rules.pob_province_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.guardian_occupation")}}"
-                        class="form-control-label" for="guardian_occupation">
+                <select class="form-control" data-toggle="select" id="pob_province_fk" title="Simple select"
+                    data-url="{{$provinces["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
+                    name="pob_province_fk" data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
+                    data-append-to="#pob_district_fk"
+                    data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.pob_province_fk") ? "required" : ""}}>
+                    @foreach($provinces["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
 
-                        {{ Translator:: phrase("occupation") }}
-                        @if(config("pages.form.validate.rules.guardian_occupation"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                            <i class="fas fa-asterisk fa-xs"></i>
-                        </span>
-                        @endif
-                    </label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user-md"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="guardian_occupation"
-                                placeholder="{{ Translator::phrase("occupation") }}"
-                                value="{{config("pages.form.data.student_guardian.guardian.occupation")}}"
-                                {{config("pages.form.validate.rules.guardian_occupation") ? "required" : ""}}
-                                name="guardian_occupation" />
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.guardian_phone")}}" class="form-control-label"
-                        for="guardian_phone">
-
-                        {{ Translator:: phrase("guardian_phone") }}
-                        @if(config("pages.form.validate.rules.guardian_phone"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                            <i class="fas fa-asterisk fa-xs"></i>
-                        </span>
-                        @endif
-
-                    </label>
-
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="guardian_phone"
-                                placeholder="{{ Translator:: phrase("guardian_phone") }}"
-                                value="{{config("pages.form.data.student_guardian.guardian.phone")}}"
-                                {{config("pages.form.validate.rules.guardian_phone") ? "required" : ""}}
-                                name="guardian_phone" />
-
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.guardian_email")}}" class="form-control-label"
-                        for="guardian_email">
-
-                        {{ Translator:: phrase("guardian_email") }}
-                        @if(config("pages.form.validate.rules.guardian_email"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger"
-                            style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
-
-                    </label>
-
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            </div>
-                            <input type="text" class="form-control" id="guardian_email"
-                                placeholder="{{ Translator:: phrase("guardian_email") }}"
-                                value="{{config("pages.form.data.student_guardian.guardian.email")}}"
-                                {{config("pages.form.validate.rules.guardian_email") ? "required" : ""}}
-                                name="guardian_email" />
-
-
-                        </div>
-                    </div>
-                </div>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="pob_district_fk">
+                    {{ Translator:: phrase("district") }}
+                    @if(config("pages.form.validate.rules.pob_district_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
+
+
+                <select disabled {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="pob_district_fk" title="Simple select"
+                    data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
+                    name="pob_district_fk" data-select-value="{{config("pages.form.data.place_of_birth.district.id")}}"
+                    data-append-to="#pob_commune_fk"
+                    data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.pob_district_fk") ? "required" : ""}}>
+                    @foreach($districts["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="pob_commune_fk">
+                    {{ Translator:: phrase("commune") }}
+                    @if(config("pages.form.validate.rules.pob_commune_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+
+                </label>
+
+
+                <select disabled {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="pob_commune_fk" title="Simple select"
+                    data-url="{{$communes["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
+                    name="pob_commune_fk" data-select-value="{{config("pages.form.data.place_of_birth.commune.id")}}"
+                    data-append-to="#pob_village_fk"
+                    data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.pob_commune_fk") ? "required" : ""}}>
+                    @foreach($communes["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="pob_village_fk">
+                    {{ Translator:: phrase("village") }}
+                    @if(config("pages.form.validate.rules.pob_village_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+
+                </label>
+
+
+                <select disabled {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="pob_village_fk" title="Simple select"
+                    data-url="{{$villages["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
+                    name="pob_village_fk" data-select-value="{{config("pages.form.data.place_of_birth.village.id")}}"
+                    {{config("pages.form.validate.rules.pob_village_fk") ? "required" : ""}}>
+                    @foreach($villages["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+        </div>
+        {{-- <a id="hide-show" class="badge badge-warning mb-3" data-toggle="collapse" href="#other_pob" role="button"
+            aria-expanded="false" aria-controls="other_pob">{{ Translator:: phrase("other") }}</a> --}}
+
+        <div class="collapse show" id="other_pob" data-control-value-id="other_pob"
+            data-toggle-collapse="{{request()->segment(3) == "view" ? "show" : "pob"}}">
             <div class="form-row">
                 <div class="col-md-12">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.guardian_extra_info")}}"
-                        class="form-control-label " for="guardian_extra_info">
+                    <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
+                        class="form-control-label" for="permanent_address">
 
-                        {{ Translator:: phrase("extra_info") }}
-
-                        @if(config("pages.form.validate.rules.guardian_extra_info"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                            <i class="fas fa-asterisk fa-xs"></i>
-                        </span>
-                        @endif
-
+                        {{ Translator:: phrase("permanent_address") }}
+                        @if (config("pages.form.validate.rules.permanent_address"))
+                        <span class="badge badge-md badge-circle badge-floating badge-danger"
+                            style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
                     </label>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-info"></i></span>
+                                <span class="input-group-text"><i class="fas fa-home"></i></span>
                             </div>
-                            <textarea type="text" class="form-control" name="guardian_extra_info"
-                                id="guardian_extra_info" placeholder="{{ Translator::phrase("extra_info") }}"
-                                {{config("pages.form.validate.rules.guardian_extra_info") ? "required" : ""}}>{{config("pages.form.data.student_guardian.guardian.extra_info")}}</textarea>
+                            <textarea type="text" class="form-control" id="permanent_address"
+                                placeholder="{{ Translator::phrase("permanent_address") }}" value=""
+                                {{config("pages.form.validate.rules.permanent_address") ? "required" : ""}}
+                                name="permanent_address">{{config("pages.form.data.permanent_address")}}</textarea>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-header p-2 px-4">
+        <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+            for="pob_resident">
+
+            {{ Translator:: phrase("current_resident") }}
+            @if(config("pages.form.validate.rules.pob_resident"))
+            <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                <i class="fas fa-asterisk fa-xs"></i>
+            </span>
+            @endif
+
+            @if (request()->segment(3) != "view")
+            <button type="button" class="btn btn-primary btn-sm" data-collapse="current" data-toggle="same-values"
+                data-same-value="pob" data-append-value="current">{{ Translator:: phrase("same.pob") }}</button>
+            @endif
+        </label>
+    </div>
+    <div class="card-body">
+        <div class="form-row" data-collapse="current" data-control-value-id="current">
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="curr_province_fk">
+                    {{ Translator:: phrase("province") }}
+
+                    @if(config("pages.form.validate.rules.curr_province_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
+
+                <select class="form-control" data-toggle="select" id="curr_province_fk" title="Simple select"
+                    data-url="{{$provinces["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
+                    name="curr_province_fk"
+                    data-select-value="{{config("pages.form.data.current_resident.province.id")}}"
+                    data-append-to="#curr_district_fk"
+                    data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.curr_province_fk") ? "required" : ""}}>
+                    @foreach($provinces["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="curr_district_fk">
+                    {{ Translator:: phrase("district") }}
+                    @if(config("pages.form.validate.rules.curr_district_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+
+                </label>
+
+
+                <select disabled {{config("pages.form.data.current_resident.district.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="curr_district_fk" title="Simple select"
+                    data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
+                    name="curr_district_fk"
+                    data-select-value="{{config("pages.form.data.current_resident.district.id")}}"
+                    data-append-to="#curr_commune_fk"
+                    data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.curr_district_fk") ? "required" : ""}}>
+                    @foreach($curr_districts["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="curr_commune_fk">
+                    {{ Translator:: phrase("commune") }}
+                    @if(config("pages.form.validate.rules.curr_commune_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+
+                </label>
+
+
+                <select disabled {{config("pages.form.data.current_resident.commune.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="curr_commune_fk" title="Simple select"
+                    data-url="{{$communes["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
+                    name="curr_commune_fk" data-select-value="{{config("pages.form.data.current_resident.commune.id")}}"
+                    data-append-to="#curr_village_fk"
+                    data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
+                    {{config("pages.form.validate.rules.curr_commune_fk") ? "required" : ""}}>
+                    @foreach($curr_communes["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
+                    for="curr_village_fk">
+                    {{ Translator:: phrase("village") }}
+                    @if(config("pages.form.validate.rules.curr_village_fk"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+
+                </label>
+
+
+                <select disabled {{config("pages.form.data.current_resident.village.id")? "" :"disabled"}} class="form-control"
+                    data-toggle="select" id="curr_village_fk" title="Simple select"
+                    data-url="{{$villages["pages"]["form"]["action"]["add"]}}"
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
+                    name="curr_village_fk" data-select-value="{{config("pages.form.data.current_resident.village.id")}}"
+                    {{config("pages.form.validate.rules.curr_village_fk") ? "required" : ""}}>
+                    @foreach($curr_villages["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                        {{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+
+            </div>
+        </div>
+        {{-- <a class="badge badge-warning mb-3" data-toggle="collapse" href="#other_current" role="button"
+            aria-expanded="false" aria-controls="other_current">{{ Translator:: phrase("other") }}</a> --}}
+
+        <div class="collapse show" id="other_current" data-control-value-id="other_current"
+            data-toggle-collapse="{{request()->segment(3) == "view" ? "show" : "current"}}">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
+                        class="form-control-label" for="temporaray_address">
+
+                        {{ Translator:: phrase("temporaray_address") }}
+                        @if(config("pages.form.validate.rules.temporaray_address"))
+                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                            <i class="fas fa-asterisk fa-xs"></i>
+                        </span>
+                        @endif
+                        @if (request()->segment(3) != "view")
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="same-values"
+                            data-same-value="other_pob"
+                            data-append-value="other_current">{{ Translator:: phrase("same.permanent_address") }}</button>
+                        @endif
+                    </label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                            </div>
+                            <textarea type="text" class="form-control" id="temporaray_address"
+                                placeholder="{{ Translator::phrase("temporaray_address") }}" value=""
+                                {{config("pages.form.validate.rules.temporaray_address") ? "required" : ""}}
+                                name="temporaray_address">{{config("pages.form.data.temporaray_address")}}</textarea>
+
                         </div>
                     </div>
                 </div>

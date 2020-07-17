@@ -25,13 +25,19 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         @csrf
+                                        @if (auth()->user()->institute_id)
+                                        <input type="hidden" name="institute" id="auth()->user()->institute_id">
+                                        @else
                                         @include(config("pages.parent").".includes.form.includes.a")
-                                        @include(config("pages.parent").".includes.form.includes.b")
+                                        @endif
 
+                                        @include(config("pages.parent").".includes.form.includes.b")
+                                        @include(config("pages.parent").".includes.form.includes.c")
                                     </div>
                                     <div class="col-md-6">
-                                        @include(config("pages.parent").".includes.form.includes.c")
+
                                         @include(config("pages.parent").".includes.form.includes.d")
+                                        @include(config("pages.parent").".includes.form.includes.e")
                                     </div>
                                 </div>
 

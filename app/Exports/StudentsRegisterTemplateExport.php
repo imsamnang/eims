@@ -3,20 +3,18 @@
 namespace App\Exports;
 
 use App\Models\Gender;
+use App\Models\Institute;
 use App\Models\Marital;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents
@@ -31,6 +29,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
 
         $stuents[] =  [
             'id'    => 1,
+            'institute' => 'វិទ្យាស្ថានពហុបច្ចេកទេសភូមិភាគតេជោសែនសៀមរាប',
             'fullname_km' => 'សែម គឹមសាន',
             'fullname_en' => 'Sem Keamsan',
             'gender'      => 'ប្រុស',
@@ -63,6 +62,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
 
         $heading = [
             'ល.រ',
+            'វិទ្យាស្ថាន',
             'ឈ្មោះពេញ (ជាភាសាខ្មែរ)',
             'ឈ្មោះពេញ (ជាភាសាឡាតាំង)',
             'ភេទ',
@@ -82,7 +82,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A1:J1')
+                $event->sheet->getDelegate()->getStyle('A1:K1')
                     ->applyFromArray(
                         [
                             'font' => [
@@ -114,10 +114,10 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $column_count = count($this->headings());
 
                 for ($i = 2; $i <= $row_count; $i++) {
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getFont()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getFont()
                         ->setName('Khmer OS Battambang')
                         ->setSize(11);
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':J' . $i)->getAlignment()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
                 }
                  // Apply array of styles to 'A1:J'.$row_count cell range
@@ -132,14 +132,30 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $event->sheet->getDelegate()->getStyle('A1:J'.$row_count)->applyFromArray($styleArray);
 
                 // set dropdown column
-                $drop_column_gender = 'D';
-                $drop_column_marital = 'F';
+                $drop_column_institute = 'B';
+                $drop_column_gender = 'E';
+                $drop_column_marital = 'G';
 
                 // set dropdown options
+                $options_institute = Institute::pluck('km')->toArray();
                 $options_gender = Gender::pluck('km')->toArray();
                 $options_marital = Marital::pluck('km')->toArray();
 
 
+                // set dropdown list for institute row
+                $validation = $event->sheet->getCell("{$drop_column_institute}2")->getDataValidation();
+                $validation->setType(DataValidation::TYPE_LIST);
+                $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setShowDropDown(true);
+                $validation->setErrorTitle('វិទ្យាស្ថាន');
+                $validation->setError('តម្លៃដែលអ្នកបានបញ្ចូលមិនមាននៅក្នុងបញ្ជីទេ។');
+                $validation->setFormula1(sprintf('"%s"', implode(',', $options_institute)));
+                for ($i = 3; $i <= $row_count; $i++) {
+                    $event->sheet->getCell("{$drop_column_institute}{$i}")->setDataValidation(clone $validation);
+                }
                 // set dropdown list for gender row
                 $validation = $event->sheet->getCell("{$drop_column_gender}2")->getDataValidation();
                 $validation->setType(DataValidation::TYPE_LIST);

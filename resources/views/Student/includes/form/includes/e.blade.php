@@ -1,225 +1,73 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            (E) {{ Translator:: phrase("institute_info") }}
+            (E) {{ Translator:: phrase("personal_contact") }}
         </label>
     </div>
     <div class="card-body">
+
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.phone")}}" class="form-control-label"
+                    for="phone">
+
+                    {{ Translator:: phrase("phone") }}
+                    @if(config("pages.form.validate.rules.phone"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
+                            class="fas fa-asterisk fa-xs"></i></span> @endif
+                </label>
+
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        </div>
+                        <input type="phone" class="form-control" placeholder="{{ Translator:: phrase("phone") }}"
+                            value="{{config("pages.form.data.phone")}}"
+                            {{config("pages.form.validate.rules.phone") ? "required" : ""}}
+                            id="phone" name="phone" />
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.email")}}" class="form-control-label"
+                    for="email">
+
+                    {{ Translator:: phrase("email") }}
+                    @if(config("pages.form.validate.rules.email"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
+                            class="fas fa-asterisk fa-xs"></i></span> @endif
+
+                </label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input type="email" class="form-control" id="email"
+                            placeholder="{{ Translator:: phrase("email") }}" value="{{config("pages.form.data.email")}}"
+                            {{config("pages.form.validate.rules.email") ? "required" : ""}}
+                            name="email" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
         <div class="form-row">
             <div class="col-md-12 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
-                    for="institute">
-
-                    {{ Translator:: phrase("institute") }}
-
-                    @if(config("pages.form.validate.rules.institute"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-
-                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                    data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
-                    data-select-value="{{config("pages.form.data.institute")}}"
-                    {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
-                    @foreach($institute["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_program")}}" class="form-control-label"
-                    for="study_program">
-
-                    {{ Translator:: phrase("study_program") }}
-
-                    @if(config("pages.form.validate.rules.study_program"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-
-                <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
-                    data-url="{{$study_program["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
-                    data-select-value="{{request('programId')}}" data-append-to="#study_course"
-                    data-append-url="{{str_replace("add","list?programId=",$study_course["pages"]["form"]["action"]["add"])}}">
-                    @foreach($study_program["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
-                        {{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-8 mb-3">
-
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_course")}}" class="form-control-label"
-                    for="study_course">
-
-                    {{ Translator:: phrase("study_course") }}
-
-                    @if(config("pages.form.validate.rules.study_course"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-
-                <select {{$study_program['success']? "" : "disabled" }} class="form-control" data-toggle="select"
-                    id="study_course" title="Simple select"
-                    data-url="{{$study_course["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"
-                    data-select-value="{{request('courseId')}}">
-                    @foreach($study_course["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_generation")}}" class="form-control-label"
-                    for="study_generation">
-
-                    {{ Translator:: phrase("study_generation") }}
-
-                    @if(config("pages.form.validate.rules.study_generation"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-
-                <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
-                    data-url="{{$study_generation["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
-                    data-select-value="{{request('generationId')}}">
-                    @foreach($study_generation["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_academic_year")}}" class="form-control-label"
-                    for="study_academic_year">
-
-                    {{ Translator:: phrase("study_academic_year") }}
-
-                    @if(config("pages.form.validate.rules.study_academic_year"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
-                    data-url="{{$study_academic_year["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_academic_year") }}" name="study_academic_year"
-                    data-select-value="{{request('yearId')}}">
-                    @foreach($study_academic_year["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_semester")}}" class="form-control-label"
-                    for="study_semester">
-
-                    {{ Translator:: phrase("study_semester") }}
-
-                    @if(config("pages.form.validate.rules.study_semester"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
-                    data-url="{{$study_semester["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_semester") }}" name="study_semester"
-                    data-select-value="{{request('semesterId')}}">
-                    @foreach($study_semester["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-4 mb-3">
-
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_session")}}" class="form-control-label"
-                    for="study_session">
-
-                    {{ Translator:: phrase("study_session") }}
-
-                    @if(config("pages.form.validate.rules.study_session"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
-                    data-url="{{$study_session["pages"]["form"]["action"]["add"]}}"
-
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_session") }}" name="study_session"
-                    data-select-value="{{request('sessionId')}}">
-                    @foreach($study_session["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_status")}}" class="form-control-label"
-                    for="study_status">
-                    {{ Translator:: phrase("study_status") }}
-
-                    @if(config("pages.form.validate.rules.study_status"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
-                    data-url="{{$study_status["pages"]["form"]["action"]["add"]}}"
-                    
-                    data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
-                    data-placeholder="{{ Translator::phrase("choose.study_status") }}" name="study_status"
-                    data-select-value="{{request('study_status')}}">
-                    @foreach($study_status["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-12 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.extra_info")}}" class="form-control-label"
-                    for="institute_extra_info">
+                    for="student_extra_info">
                     {{ Translator:: phrase("extra_info") }}
-                    @if(config("pages.form.validate.rules.institute_extra_info"))
+                    @if(config("pages.form.validate.rules.student_extra_info"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span> @endif
                 </label>
@@ -229,11 +77,43 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-info"></i></span>
                         </div>
-                        <textarea type="text" class="form-control" id="institute_extra_info"
+                        <textarea type="student_extra_info" class="form-control" id="student_extra_info"
                             placeholder="{{ Translator:: phrase("extra_info") }}" value=""
-                            {{config("pages.form.validate.rules.institute_extra_info") ? "required" : ""}}
-                            name="institute_extra_info">{{config("pages.form.data.extra_info")}}</textarea>
+                            {{config("pages.form.validate.rules.student_extra_info") ? "required" : ""}}
+                            name="student_extra_info">{{config("pages.form.data.extra_info")}}</textarea>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.photo")}}" class="form-control-label"
+                    for="photo">
+                    {{ Translator:: phrase("photo") }} (4 x 6)
+                    @if(config("pages.form.validate.rules.photo"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
+                            class="fas fa-asterisk fa-xs"></i></span> @endif
+                </label>
+                <div class="dropzone dropzone-single" id="photo" data-toggle="dropzone"
+                    data-dropzone-url="{{ config("pages.form.data.photo")}}">
+                    <div class="fallback">
+                        <div class="custom-file">
+                            <input type="file" placeholder="{{ Translator:: phrase("drop_photo_here") }}"
+                                class="custom-file-input" name="photo"
+                                {{config("pages.form.validate.rules.photo") ? "required" : ""}} />
+                            <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
+                                class="custom-file-label"
+                                for="photo">{{ Translator:: phrase("choose.photo") }}</label>
+                        </div>
+                    </div>
+
+                    <div class="dz-preview dz-preview-single">
+                        <div class="dz-preview-cover">
+                            <img class="dz-preview-img" data-src="{{ config("pages.form.data.photo")}}" alt
+                                data-dz-thumbnail>
+                        </div>
                     </div>
                 </div>
             </div>

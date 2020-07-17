@@ -1,18 +1,4 @@
-<style>
-    .table-xs td,
-    .table-xs th {
-        border: 1px solid #ccc;
-        padding: .3rem .07rem !important;
-        font-size: .8rem !important;
-        text-align: center;
-    }
 
-    .table-xs td,
-    .table-xs th {
-        vertical-align: middle;
-
-    }
-</style>
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">

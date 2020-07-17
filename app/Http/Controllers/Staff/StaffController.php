@@ -224,7 +224,7 @@ class StaffController extends Controller
             'gender'      => Staff::gender($staff),
             'staffStatus' => Staff::staffStatus($staff),
         ];
-    
+
 
 
         $data['view']  = Staff::$path['view'] . '.includes.list.index';
@@ -252,32 +252,39 @@ class StaffController extends Controller
         $data['curr_communes']       = $data['communes'];
         $data['curr_villages']       = $data['villages'];
 
-
-
-        $response           = Staff::getData($id, true);
         $data['view']       = Staff::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . $data['formName']);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $id;
-        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . $data['formAction']);
-        $pob                = $data['formData']['place_of_birth'];
-        $cur                = $data['formData']['current_resident'];
 
-        if ($pob['district']) {
-            $data['communes'] = Communes::getData($pob['district']['id']);
-        }
-        if ($pob['commune']) {
-            $data['villages'] = Villages::getData($pob['commune']['id']);
+
+        if ($id) {
+            $response           = Staff::getData($id, true);
+            $data['formData']   = $response['data'][0];
+            $data['listData']   = $response['pages']['listData'];
+            $data['formAction'] = '/' . $type . '/' . $id;
+
+            $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
+            $data['metaLink']   = url(Users::role() . $data['formAction']);
+            $pob                = $data['formData']['place_of_birth'];
+            $cur                = $data['formData']['current_resident'];
+
+            if ($pob['district']) {
+                $data['communes'] = Communes::getData($pob['district']['id']);
+            }
+            if ($pob['commune']) {
+                $data['villages'] = Villages::getData($pob['commune']['id']);
+            }
+
+            if ($cur['district']) {
+                $data['curr_communes'] = Communes::getData($cur['district']['id']);
+            }
+            if ($cur['commune']) {
+                $data['curr_villages'] = Villages::getData($cur['commune']['id']);
+            }
         }
 
-        if ($cur['district']) {
-            $data['curr_communes'] = Communes::getData($cur['district']['id']);
-        }
-        if ($cur['commune']) {
-            $data['curr_villages'] = Villages::getData($cur['commune']['id']);
-        }
+
+
+
 
 
         return $data;

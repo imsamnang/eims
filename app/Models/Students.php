@@ -73,7 +73,7 @@ class Students extends Model
         }else{
             if(request('ref') == Users::$path['url']){
                 $get = $get->whereNotIn((new Students())->getTable() . '.id',Users::select('node_id')->whereNotNull('node_id')->where('role_id',Students::$path['roleId'])->get());
-            }    
+            }
             if(request('instituteId')){
                 $get = $get->where('institute_id',request('instituteId'));
             }
@@ -229,7 +229,7 @@ class Students extends Model
 
                 return [
                     'id'      => $row['id'],
-                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],                    
+                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
                     'gender'             =>  Gender::where('id',$row['gender_id'])->pluck(app()->getLocale())->first(),
                     'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
                     'account'            => $account ? Users::getData($account->id)['data'][0] : null,
@@ -401,6 +401,7 @@ class Students extends Model
         } else {
             try {
                 $add = Students::insertGetId([
+                    'institute_id'      => trim(request('institute')),
                     'first_name_km'    => trim(request('first_name_km')),
                     'last_name_km'     => trim(request('last_name_km')),
                     'first_name_en'    => trim(request('first_name_en')),
@@ -498,6 +499,7 @@ class Students extends Model
         } else {
 
             $values = [
+                'institute_id'      => trim(request('institute')),
                 'first_name_km'    => trim(request('first_name_km')),
                 'last_name_km'     => trim(request('last_name_km')),
                 'first_name_en'    => trim(request('first_name_en')),
@@ -558,6 +560,7 @@ class Students extends Model
             try {
 
                 $update = Students::where('id', $id)->update([
+                    'institute_id'      => trim(request('institute')),
                     'first_name_km'    => trim(request('first_name_km')),
                     'last_name_km'     => trim(request('last_name_km')),
                     'first_name_en'    => trim(request('first_name_en')),

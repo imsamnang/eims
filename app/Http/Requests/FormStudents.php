@@ -27,6 +27,7 @@ class FormStudents extends FormRequest
     {
         return [
 
+            'institute'              => 'required',
             'first_name_km'        => 'required|only_khmer_character|only_string',
             'last_name_km'         => 'required|only_khmer_character|only_string',
             'first_name_en'        => 'required|string',

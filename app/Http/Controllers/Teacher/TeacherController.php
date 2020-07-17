@@ -369,7 +369,7 @@ class TeacherController extends Controller
                 return [
                     'id'    => $row['id'],
                     'name'  => $study_subject->name,
-                    'image'  => ImageHelper::site(StudySubjects::$path['image'], $study_subject->image),
+                    'image'  => $study_subject->image? ImageHelper::site(StudySubjects::$path['image'], $study_subject->image) : ImageHelper::prefix(),
                 ];
             })->toArray();
 
