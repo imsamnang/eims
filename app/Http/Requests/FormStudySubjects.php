@@ -26,6 +26,7 @@ class FormStudySubjects extends FormRequest
     public static function rulesField()
     {
         $rules['name']                     = 'required';
+        $rules['course_type']              = 'required';
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
                 $rules[$lang['code_name']] =  'required';
@@ -46,6 +47,7 @@ class FormStudySubjects extends FormRequest
     {
 
         $attributes['name']                     = Translator::phrase('study_subject_name');
+        $attributes['course_type']              = Translator::phrase('course_type');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
                 $attributes[$lang['code_name']] =  Translator::phrase('study_subject.as.' . $lang['translate_name']);

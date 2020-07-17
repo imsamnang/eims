@@ -18,6 +18,8 @@
                         {{Translator::phrase("numbering")}}​</th>
                     <th data-type="text" data-key="name" class="sort" data-sort="name">
                         {{Translator::phrase("name")}}​</th>
+                    <th data-type="text" data-key="course_type.name" class="sort" data-sort="course_type">
+                        {{Translator::phrase("course_type")}}​</th>
                     <th data-type="text" data-key="full_mark_theory">{{Translator::phrase("full_mark_theory")}}​
                     </th>
                     <th data-type="text" data-key="pass_mark_theory">{{Translator::phrase("pass_mark_theory")}}​

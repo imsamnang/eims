@@ -12,7 +12,7 @@ use App\Models\SocailsMedia;
 use App\Models\StudySubjects;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStudySubjects;
-
+use App\Models\CourseTypes;
 
 class StudySubjectController extends Controller
 {
@@ -29,7 +29,7 @@ class StudySubjectController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
+        $data['course_type'] = CourseTypes::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
@@ -38,7 +38,7 @@ class StudySubjectController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StudySubjects::getData(null, null, 10,request('search'));
+                return  StudySubjects::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }

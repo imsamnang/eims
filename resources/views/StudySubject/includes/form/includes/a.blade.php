@@ -35,6 +35,30 @@
                     {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
             </div>
+            <div class="col-md-6 mb-3">
+
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.course_type")}}" class="form-control-label"
+                    for="course_type">
+
+                    {{ Translator:: phrase("course_type") }}
+
+                    @if(config("pages.form.validate.rules.course_type"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
+
+                <select  class="form-control" data-toggle="select"
+                    id="course_type" title="Simple select"
+                    data-placeholder="{{ Translator::phrase("choose.course_type") }}" name="course_type"
+                    data-select-value="{{config("pages.form.data.course_type.id",request("courseId"))}}">
+                    @foreach($course_type["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
         <div class="form-row">
@@ -45,13 +69,12 @@
                     {{ Translator:: phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}
 
                     @if(config("pages.form.validate.rules.".$lang["code_name"]))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger"
-                        style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
+                            class="fas fa-asterisk fa-xs"></i></span>
                     @endif
 
                 </label>
-                <input type="text" class="form-control" name="{{$lang["code_name"]}}"
-                    id="{{$lang["code_name"]}}"
+                <input type="text" class="form-control" name="{{$lang["code_name"]}}" id="{{$lang["code_name"]}}"
                     placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}"
                     value="{{config("pages.form.data.".$lang["code_name"])}}"
                     {{config("pages.form.validate.rules.".$lang["code_name"]) ? "required" : ""}} />

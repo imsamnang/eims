@@ -83,6 +83,7 @@ class StudySubjects extends Model
                 $data[$key]                       = array(
                     'id'                       => $row['id'],
                     'name'                     => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    'course_type'              => CourseTypes::getData($row['course_type_id'])['data'][0],
                     'full_mark_theory'         => $row['full_mark_theory'],
                     'pass_mark_theory'         => $row['pass_mark_theory'],
                     'full_mark_practical'      => $row['full_mark_practical'],
@@ -143,6 +144,7 @@ class StudySubjects extends Model
                 return [
                     'id'                       => $row['id'],
                     'name'                     => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    'course_type'              => CourseTypes::getData($row['course_type_id'])['data'][0],
                     'full_mark_theory'         => $row['full_mark_theory'],
                     'pass_mark_theory'         => $row['pass_mark_theory'],
                     'full_mark_practical'      => $row['full_mark_practical'],
@@ -211,7 +213,7 @@ class StudySubjects extends Model
         } else {
 
             try {
-
+                $values['course_type_id']      = request('course_type');
                 $values['name']                = trim(request('name'));
                 $values['full_mark_theory']    =  request('full_mark_theory');
                 $values['pass_mark_theory']    =  request('pass_mark_theory');
@@ -278,6 +280,7 @@ class StudySubjects extends Model
         } else {
 
             try {
+                $values['course_type_id']      = request('course_type');
                 $values['name']                = trim(request('name'));
                 $values['full_mark_theory']    =  request('full_mark_theory');
                 $values['pass_mark_theory']    =  request('pass_mark_theory');

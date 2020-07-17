@@ -72,7 +72,7 @@
                     @endif
                 </label>
 
-                <select disabled {{$study_program['success']? "" : "disabled" }} class="form-control" data-toggle="select"
+                <select {{$study_course['success']? "" : "disabled" }} class="form-control" data-toggle="select"
                     id="study_course" title="Simple select"
 
                     data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"

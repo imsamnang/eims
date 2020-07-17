@@ -122,13 +122,7 @@ class StudentsRequestController extends Controller
 
     public function show($data, $id, $type)
     {
-        $data['institute']         = Institute::getData();
-        $data['study_program']     = StudyPrograms::getData();
-        $data['study_course']      = StudyCourse::getData();
-        $data['study_generation']  = StudyGeneration::getData();
-        $data['study_academic_year']  = StudyAcademicYears::getData();
-        $data['study_semester']       = StudySemesters::getData();
-        $data['study_session']       = StudySession::getData();
+
 
         $student = Students::orderBy('first_name_km', 'ASC');
         if (request('instituteId')) {
@@ -153,7 +147,19 @@ class StudentsRequestController extends Controller
             $data['formData']   = $response['data'][0];
             $data['listData']   = $response['pages']['listData'];
             $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+            request()->merge([
+                'programId' => $data['formData']['study_program']['id']
+            ]);
         }
+
+        $data['institute']         = Institute::getData();
+        $data['study_program']     = StudyPrograms::getData();
+        $data['study_course']      = StudyCourse::getData();
+        $data['study_generation']  = StudyGeneration::getData();
+        $data['study_academic_year']  = StudyAcademicYears::getData();
+        $data['study_semester']       = StudySemesters::getData();
+        $data['study_session']       = StudySession::getData();
+
         return $data;
     }
 }

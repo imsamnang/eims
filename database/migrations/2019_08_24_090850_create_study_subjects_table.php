@@ -16,6 +16,7 @@ class CreateStudySubjectsTable extends Migration
         Schema::create('study_subjects', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('institute_id')->unsigned()->nullable();
+            $table->bigInteger('course_type')->unsigned()->nullable();
             $table->string('name')->unique();
             $table->string('en')->nullable();
             $table->string('km')->nullable();

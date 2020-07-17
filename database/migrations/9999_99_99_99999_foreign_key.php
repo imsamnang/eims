@@ -273,6 +273,11 @@ class ForeignKey extends Migration
             $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
         });
 
+        Schema::table((new StudySubjects())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+            $table->foreign('course_type_id')->references('id')->on((new CourseTypes())->getTable())->onDelete('cascade');
+        });
+
         Schema::table((new StudySubjectLesson())->getTable(), function (Blueprint $table) {
             $table->foreign('staff_teach_subject_id')->references('id')->on((new StaffTeachSubject())->getTable())->onDelete('cascade');
         });
