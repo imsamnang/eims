@@ -271,7 +271,6 @@ class StudentsStudyShortCourse extends Model
                     $update = StudentsStudyShortCourse::where('id', $id)->update([
                         'student_short_course_request_id'  =>    request('student')[0],
                         'study_short_course_session_id'  => request('study_short_course_session'),
-
                     ]);
                     if ($update) {
                         $response       = array(

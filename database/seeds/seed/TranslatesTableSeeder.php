@@ -1684,6 +1684,26 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'សិក្សាវគ្គខ្លី'
             ],
             [
+                'phrase' => 'short_course_approved',
+                'en' => 'Short course approved',
+                'km' => 'សិក្សាវគ្គខ្លីបានអនុម័ត'
+            ],
+            [
+                'phrase' => 'short_course_request',
+                'en' => 'Short course request',
+                'km' => 'ស្នើសុំសិក្សាវគ្គខ្លី'
+            ],
+            [
+                'phrase' => 'short_course_schedule',
+                'en' => 'Short course schedule',
+                'km' => 'កាលវិភាគសិក្សាវគ្គខ្លី'
+            ],
+            [
+                'phrase' => 'short_course_session',
+                'en' => 'Short Course Session',
+                'km' => 'វេននៃការសិក្សាខ្លី'
+            ],
+            [
                 'phrase' => 'short_form',
                 'en' => 'Short form',
                 'km' => 'ទម្រង់ខ្លី'
@@ -1789,14 +1809,29 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'វត្តមានសិស្ស'
             ],
             [
+                'phrase' => 'student_request',
+                'en' => 'Student request',
+                'km' => 'ការស្នើសុំរបស់និស្សិត'
+            ],
+            [
                 'phrase' => 'student_score',
                 'en' => 'Student score',
                 'km' => 'ពិន្ទុសិស្ស'
             ],
             [
+                'phrase' => 'student_short_course_request',
+                'en' => 'Student short course request',
+                'km' => 'សិស្សស្នើសុំសិក្សាវគ្គខ្លី'
+            ],
+            [
                 'phrase' => 'student_study_course',
                 'en' => 'Student Study Course',
                 'km' => 'សិស្សដែលរៀនជំនាញ'
+            ],
+            [
+                'phrase' => 'student_study_short_course',
+                'en' => 'Student study short course',
+                'km' => 'សិស្សសិក្សាវគ្គខ្លី'
             ],
             [
                 'phrase' => 'study',

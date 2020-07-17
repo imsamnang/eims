@@ -62,7 +62,7 @@ class StudentsStudyShortCourseController extends Controller
                 return StudentsStudyShortCourse::updateToTable(request('id', $param2));
             }
             $data = $this->show($data, request('id', $param2), $param1);
-        } elseif ($param1 == 'edit') {
+        } elseif ($param1 == 'delete') {
             return StudentsStudyShortCourse::deleteFromTable(request('id', $param2));
         } else {
             abort(404);

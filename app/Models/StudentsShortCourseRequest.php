@@ -41,7 +41,9 @@ class StudentsShortCourseRequest extends Model
             }
         }
 
-        $get = StudentsShortCourseRequest::orderBy('id', $orderBy);
+        $get = StudentsShortCourseRequest::select((new StudentsShortCourseRequest())->getTable() . '.*')
+        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+        ->orderBy((new StudentsShortCourseRequest())->getTable() .'.id', $orderBy);
 
 
 
