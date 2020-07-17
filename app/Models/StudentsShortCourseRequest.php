@@ -42,13 +42,13 @@ class StudentsShortCourseRequest extends Model
         }
 
         $get = StudentsShortCourseRequest::select((new StudentsShortCourseRequest())->getTable() . '.*')
-        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
-        ->orderBy((new StudentsShortCourseRequest())->getTable() .'.id', $orderBy);
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+            ->orderBy((new StudentsShortCourseRequest())->getTable() . '.id', $orderBy);
 
 
 
         if ($id) {
-            $get = $get->whereIn('id', $id);
+            $get = $get->whereIn((new StudentsShortCourseRequest())->getTable() . '.id', $id);
         } else {
             if (request('ref') == StudentsStudyShortCourse::$path['url']) {
                 $get = $get->where('status', 0);
@@ -78,7 +78,7 @@ class StudentsShortCourseRequest extends Model
         if ($get) {
 
             foreach ($get as $key => $row) {
-                $status = StudentsStudyShortCourse::where('student_short_course_request_id', $row['id'])->get()->first();
+                $status = StudentsStudyShortCourse::where('stu_sh_c_request_id', $row['id'])->get()->first();
                 if ($status) {
                     StudentsShortCourseRequest::updateStatus($row['id'], 1);
                 } else {
@@ -93,9 +93,9 @@ class StudentsShortCourseRequest extends Model
                     'delete'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/delete/' . $row['id']),
                 ];
                 if (request('ref') == Students::$path['url'] . '-' . StudentsShortCourseRequest::$path['url']) {
-                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'. StudentsShortCourseRequest::$path['url'], $action['view']);
-                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'. StudentsShortCourseRequest::$path['url'], $action['edit']);
-                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'. StudentsShortCourseRequest::$path['url'], $action['delete']);
+                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['view']);
+                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['edit']);
+                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['delete']);
                 }
 
                 $data[$key]         = array(
@@ -177,7 +177,7 @@ class StudentsShortCourseRequest extends Model
             })
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
-                $status = StudentsStudyShortCourse::where('student_short_course_request_id', $row['id'])->get()->first();
+                $status = StudentsStudyShortCourse::where('stu_sh_c_request_id', $row['id'])->get()->first();
                 $student = Students::where('id', $row['student_id'])->first(['first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'email', 'phone', 'photo'])->toArray();
 
                 $action = [
@@ -187,9 +187,9 @@ class StudentsShortCourseRequest extends Model
                     'delete'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/delete/' . $row['id']),
                 ];
                 if (request('ref') == Students::$path['url'] . '-' . StudentsShortCourseRequest::$path['url']) {
-                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'.  StudentsShortCourseRequest::$path['url'], $action['view']);
-                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'.  StudentsShortCourseRequest::$path['url'], $action['edit']);
-                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' .'/'.  StudentsShortCourseRequest::$path['url'], $action['delete']);
+                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['view']);
+                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['edit']);
+                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['delete']);
                 }
 
                 return [

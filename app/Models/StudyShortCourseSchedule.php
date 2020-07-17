@@ -48,7 +48,7 @@ class StudyShortCourseSchedule extends Model
             $get = $get->whereIn('id', $id);
         } else {
             if (request('ref') == StudyCourseSession::$path['url']) {
-                $get = $get->whereNotIn('id', StudyCourseSession::select('study_short_course_schedule_id')->get());
+                $get = $get->whereNotIn('id', StudyCourseSession::select('stu_sh_c_schedule_id')->get());
             }
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));

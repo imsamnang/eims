@@ -15,8 +15,8 @@ class CreateStudentsStudyShortCoursesTable extends Migration
     {
         Schema::create('students_study_short_courses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('student_short_course_request_id')->unsigned()->nullable();
-            $table->bigInteger('study_short_course_session_id')->unsigned()->nullable();
+            $table->bigInteger('stu_sh_c_request_id')->unsigned()->nullable();
+            $table->bigInteger('stu_sh_c_session_id')->unsigned()->nullable();
             $table->string('photo')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();

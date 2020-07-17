@@ -124,8 +124,13 @@ class StudentsStudyShortCourseController extends Controller
     }
     public function show($data, $id, $type)
     {
+        $student = StudentsShortCourseRequest::where('status', '0');
 
-        $student = StudentsShortCourseRequest::where('status', 0)->pluck('id')->toArray();
+        if (request('instituteId')) {
+            $student = $student->where('institute_id', request('instituteId'));
+        }
+        $student = $student->pluck('id')->toArray();
+
 
         $data['view']       = StudentsStudyShortCourse::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_Study_Course');

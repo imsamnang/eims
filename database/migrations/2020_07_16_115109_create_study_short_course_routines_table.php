@@ -15,7 +15,7 @@ class CreateStudyShortCourseRoutinesTable extends Migration
     {
         Schema::create('study_short_course_routines', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('study_short_course_session_id')->unsigned()->nullable();
+            $table->bigInteger('stu_sh_c_session_id')->unsigned()->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->time('day')->nullable();

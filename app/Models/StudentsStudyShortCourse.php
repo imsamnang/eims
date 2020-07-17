@@ -45,9 +45,9 @@ class StudentsStudyShortCourse extends Model
         }
 
         $get = StudentsStudyShortCourse::orderBy($student_study_short_course . '.id', $orderBy)
-            ->join($study_short_cououre_session, $study_short_cououre_session . '.id', $student_study_short_course . '.study_short_course_session_id')
-            ->join($student_short_cououre_request, $student_short_cououre_request . '.id', $student_study_short_course . '.student_short_course_request_id')
-            ->join($study_short_cououre_schedule, $study_short_cououre_schedule . '.id', $study_short_cououre_session . '.study_short_course_schedule_id');
+            ->join($study_short_cououre_session, $study_short_cououre_session . '.id', $student_study_short_course . '.stu_sh_c_session_id')
+            ->join($student_short_cououre_request, $student_short_cououre_request . '.id', $student_study_short_course . '.stu_sh_c_request_id')
+            ->join($study_short_cououre_schedule, $study_short_cououre_schedule . '.id', $study_short_cououre_session . '.stu_sh_c_schedule_id');
 
         if ($id) {
             $get = $get->whereIn($student_study_short_course . '.id', $id);
@@ -75,14 +75,14 @@ class StudentsStudyShortCourse extends Model
 
         if ($get) {
             foreach ($get as $key => $row) {
-                $student_request = StudentsShortCourseRequest::where('id', $row['student_short_course_request_id'])->first();
+                $student_request = StudentsShortCourseRequest::where('id', $row['stu_sh_c_request_id'])->first();
                 $student = Students::where('id', $student_request->student_id)->first()->toArray();
                 $account = Users::where('email', $student['email'])->where('node_id', $student['id'])->first();
                 $data[$key] = [
                     'id'    => $row['id'],
-                    'request_id'  => $row['student_short_course_request_id'],
+                    'request_id'  => $row['stu_sh_c_request_id'],
                     'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
-                    'study_short_course_session'    =>  StudyShortCourseSession::getData($row['study_short_course_session_id'])['data'][0],
+                    'study_short_course_session'    =>  StudyShortCourseSession::getData($row['stu_sh_c_session_id'])['data'][0],
                     'account'   => $account ? Users::getData($account->id)['data'][0] : null,
                     'photo' => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyShortCourse::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
                     'action'    => [
@@ -119,10 +119,10 @@ class StudentsStudyShortCourse extends Model
     public static function getDataTable()
     {
         $model = StudentsStudyShortCourse::select((new StudentsStudyShortCourse())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.student_short_course_request_id')
+            ->join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsShortCourseRequest())->getTable() . '.student_id')
-            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.study_short_course_session_id')
-            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', '=', (new StudyShortCourseSession())->getTable() . '.study_short_course_schedule_id')
+            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_session_id')
+            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', '=', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
             ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', '=', (new StudyShortCourseSchedule())->getTable() . '.institute_id');
         return DataTables::eloquent($model)
             ->filter(function ($query) {
@@ -131,7 +131,7 @@ class StudentsStudyShortCourse extends Model
                     $query =  $query->where((new StudyShortCourseSchedule())->getTable() . '.institute_id', request('instituteId'));
                 }
                 if (request('course-sessionId')) {
-                    $query =  $query->where('study_short_course_session_id', request('course-sessionId'));
+                    $query =  $query->where('stu_sh_c_session_id', request('course-sessionId'));
                 }
 
                 if (request('search.value')) {
@@ -148,15 +148,15 @@ class StudentsStudyShortCourse extends Model
             })
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
-                $student_request = StudentsShortCourseRequest::where('id', $row['student_short_course_request_id'])->first();
+                $student_request = StudentsShortCourseRequest::where('id', $row['stu_sh_c_request_id'])->first();
                 $student = Students::where('id', $student_request->student_id)->first()->toArray();
 
                 $account = Users::where('email', $student['email'])->where('node_id', $student['id'])->first();
                 return [
                     'id'    => $row['id'],
-                    'request_id'  => $row['student_short_course_request_id'],
+                    'request_id'  => $row['stu_sh_c_request_id'],
                     'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
-                    'study_short_course_session'    =>  StudyShortCourseSession::getData($row['study_short_course_session_id'])['data'][0],
+                    'study_short_course_session'    =>  StudyShortCourseSession::getData($row['stu_sh_c_session_id'])['data'][0],
                     'account'   => $account ? Users::getData($account->id)['data'][0] : null,
                     'photo' => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyShortCourse::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
                     'action'    => [
@@ -191,13 +191,13 @@ class StudentsStudyShortCourse extends Model
         } else {
             try {
                 $sid = '';
-                foreach (request('student') as $student_short_course_request_id) {
+                foreach (request('student') as $stu_sh_c_request_id) {
 
-                    if (!StudentsStudyShortCourse::existsToTable($student_short_course_request_id, request('study_short_course_session'))) {
+                    if (!StudentsStudyShortCourse::existsToTable($stu_sh_c_request_id, request('study_short_course_session'))) {
 
                         $values = [
-                            'student_short_course_request_id'  => $student_short_course_request_id,
-                            'study_short_course_session_id'  => request('study_short_course_session'),
+                            'stu_sh_c_request_id'  => $stu_sh_c_request_id,
+                            'stu_sh_c_session_id'  => request('study_short_course_session'),
                         ];
                         $add = StudentsStudyShortCourse::insertGetId($values);
                         if ($add) {
@@ -269,8 +269,8 @@ class StudentsStudyShortCourse extends Model
                 }
                 if (!$exists) {
                     $update = StudentsStudyShortCourse::where('id', $id)->update([
-                        'student_short_course_request_id'  =>    request('student')[0],
-                        'study_short_course_session_id'  => request('study_short_course_session'),
+                        'stu_sh_c_request_id'  =>    request('student')[0],
+                        'stu_sh_c_session_id'  => request('study_short_course_session'),
                     ]);
                     if ($update) {
                         $response       = array(
@@ -329,35 +329,34 @@ class StudentsStudyShortCourse extends Model
         return $response;
     }
 
-    public static function existsToTable($student_short_course_request_id, $study_short_course_session_id)
+    public static function existsToTable($stu_sh_c_request_id, $stu_sh_c_session_id)
     {
-        $student_request = StudentsShortCourseRequest::where('id', $student_short_course_request_id)->get()->first();
-        return StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.student_short_course_request_id')
+        $student_request = StudentsShortCourseRequest::where('id', $stu_sh_c_request_id)->get()->first();
+        return StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsShortCourseRequest())->getTable() . '.student_id')
             ->where('student_id', $student_request->student_id)
-            ->where('study_short_course_session_id', $study_short_course_session_id)
+            ->where('stu_sh_c_session_id', $stu_sh_c_session_id)
             ->groupBy('student_id')
             ->first();
     }
 
     public static function getStudy($student_id)
     {
-        $get =  StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.student_short_course_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsShortCourseRequest())->getTable() . '.student_id')
+        $get =  StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
             ->where((new StudentsShortCourseRequest())->getTable() . '.student_id', $student_id)
-            ->groupBy('study_short_course_session_id')
+            ->groupBy('stu_sh_c_session_id')
             ->get()->toArray();
 
-        $study_short_course_session_id = [];
+        $stu_sh_c_session_id = [];
         if ($get) {
             foreach ($get as $key => $row) {
-                $study_short_course_session_id[] = $row['study_short_course_session_id'];
+                $stu_sh_c_session_id[] = $row['stu_sh_c_session_id'];
             }
-            return StudyShortCourseSession::getData($study_short_course_session_id);
-        }else{
+            return StudyShortCourseSession::getData($stu_sh_c_session_id);
+        } else {
             return StudyShortCourseSession::getData('null');
         }
-
     }
 
     public static function deleteFromTable($id)

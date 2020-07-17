@@ -15,7 +15,7 @@ class CreateStudyShortCourseSessionsTable extends Migration
     {
         Schema::create('study_short_course_sessions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('study_short_course_schedule_id')->unsigned()->nullable();
+            $table->bigInteger('stu_sh_c_schedule_id')->unsigned()->nullable();
             $table->bigInteger('study_session_id')->unsigned()->nullable();
             $table->date('study_start')->nullable();
             $table->date('study_end')->nullable();

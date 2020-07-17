@@ -65,13 +65,18 @@ use App\Models\StaffTeachSubject;
 use App\Models\StudentsCertificate;
 use App\Models\StudentsRequest;
 use App\Models\StudentsScore;
+use App\Models\StudentsShortCourseRequest;
 use App\Models\StudentsStudyCourseScore;
+use App\Models\StudentsStudyShortCourse;
 use App\Models\StudyCourseSession;
 use App\Models\StudySession;
+use App\Models\StudyShortCourseSchedule;
+use App\Models\StudyShortCourseSession;
 use App\Models\StudySubjectLesson;
 use App\Models\ThemesColor;
 use App\Models\Users;
 use App\Models\Villages;
+use App\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -85,18 +90,7 @@ class ForeignKey extends Migration
      */
     public function up()
     {
-        Schema::table((new Students())->getTable(), function (Blueprint $table) {
-            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
-            $table->foreign('nationality_id')->references('id')->on((new Nationality())->getTable())->onDelete('cascade');
-            $table->foreign('mother_tong_id')->references('id')->on((new MotherTong())->getTable())->onDelete('cascade');
-            $table->foreign('gender_id')->references('id')->on((new Gender())->getTable())->onDelete('cascade');
-            $table->foreign('marital_id')->references('id')->on((new Marital())->getTable())->onDelete('cascade');
-            $table->foreign('blood_group_id')->references('id')->on((new BloodGroup())->getTable())->onDelete('cascade');
-        });
 
-        Schema::table((new StudentsGuardians())->getTable(), function (Blueprint $table) {
-            $table->foreign('student_id')->references('id')->on((new Students())->getTable())->onDelete('cascade');
-        });
 
         Schema::table((new StudyCourse())->getTable(), function (Blueprint $table) {
             $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
@@ -129,6 +123,54 @@ class ForeignKey extends Migration
             $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
             $table->foreign('study_class_id')->references('id')->on((new StudyClass())->getTable())->onDelete('cascade');
         });
+
+        Schema::table((new StudyShortCourseSchedule())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+            $table->foreign('study_generation_id')->references('id')->on((new StudyGeneration())->getTable())->onDelete('cascade');
+            $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
+        });
+        Schema::table((new StudyShortCourseSession())->getTable(), function (Blueprint $table) {
+            $table->foreign('stu_sh_c_schedule_id')->references('id')->on((new StudyShortCourseSchedule())->getTable())->onDelete('cascade');
+            $table->foreign('study_session_id')->references('id')->on((new StudySession())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudyStatus())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudySession())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+        });
+        Schema::table((new StudySemesters())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudySubjects())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+            $table->foreign('course_type_id')->references('id')->on((new CourseTypes())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudySubjectLesson())->getTable(), function (Blueprint $table) {
+            $table->foreign('staff_teach_subject_id')->references('id')->on((new StaffTeachSubject())->getTable())->onDelete('cascade');
+        });
+
+
+        Schema::table((new Students())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+            $table->foreign('nationality_id')->references('id')->on((new Nationality())->getTable())->onDelete('cascade');
+            $table->foreign('mother_tong_id')->references('id')->on((new MotherTong())->getTable())->onDelete('cascade');
+            $table->foreign('gender_id')->references('id')->on((new Gender())->getTable())->onDelete('cascade');
+            $table->foreign('marital_id')->references('id')->on((new Marital())->getTable())->onDelete('cascade');
+            $table->foreign('blood_group_id')->references('id')->on((new BloodGroup())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudentsGuardians())->getTable(), function (Blueprint $table) {
+            $table->foreign('student_id')->references('id')->on((new Students())->getTable())->onDelete('cascade');
+        });
+
+
+
+
         Schema::table((new StudentsRequest())->getTable(), function (Blueprint $table) {
             $table->foreign('student_id')->references('id')->on((new Students())->getTable())->onDelete('cascade');
             $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
@@ -163,6 +205,20 @@ class ForeignKey extends Migration
         Schema::table((new StudentsScore())->getTable(), function (Blueprint $table) {
             $table->foreign('student_study_course_score_id')->references('id')->on((new StudentsStudyCourseScore())->getTable())->onDelete('cascade');
             $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudentsStudyShortCourse())->getTable(), function (Blueprint $table) {
+            $table->foreign('stu_sh_c_request_id')->references('id')->on((new StudentsShortCourseRequest())->getTable())->onDelete('cascade');
+            $table->foreign('stu_sh_c_session_id')->references('id')->on((new StudyShortCourseSession())->getTable())->onDelete('cascade');
+        });
+
+        Schema::table((new StudentsShortCourseRequest())->getTable(), function (Blueprint $table) {
+            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on((new Students())->getTable())->onDelete('cascade');
+            $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
+            $table->foreign('study_session_id')->references('id')->on((new StudySession())->getTable())->onDelete('cascade');
+            $table->foreign('added_by')->references('id')->on((new Users())->getTable())->onDelete('cascade');
+            $table->foreign('updated_by')->references('id')->on((new Users())->getTable())->onDelete('cascade');
         });
 
 
@@ -273,14 +329,13 @@ class ForeignKey extends Migration
             $table->foreign('study_subject_id')->references('id')->on((new StudySubjects())->getTable())->onDelete('cascade');
         });
 
-        Schema::table((new StudySubjects())->getTable(), function (Blueprint $table) {
-            $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
-            $table->foreign('course_type_id')->references('id')->on((new CourseTypes())->getTable())->onDelete('cascade');
-        });
 
-        Schema::table((new StudySubjectLesson())->getTable(), function (Blueprint $table) {
-            $table->foreign('staff_teach_subject_id')->references('id')->on((new StaffTeachSubject())->getTable())->onDelete('cascade');
-        });
+
+
+
+
+
+
 
         Schema::table((new SocialAuth())->getTable(), function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
@@ -311,7 +366,6 @@ class ForeignKey extends Migration
             $table->foreign('mailbox_id')->references('id')->on((new Mailbox())->getTable())->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on((new Users())->getTable())->onDelete('cascade');
         });
-
     }
 
     /**
