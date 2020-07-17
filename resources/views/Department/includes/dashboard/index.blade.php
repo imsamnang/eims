@@ -9,9 +9,9 @@
             </div>
         </div>
 
-        <div class="row">
-            @include(Auth::user()->role('view_path').".includes.dashboard.includes.studyProgram.index")
-        </div>
+
+        @include(Auth::user()->role('view_path').".includes.dashboard.includes.subject.index")
+
     </div>
 
     <div class="col-xl-4">

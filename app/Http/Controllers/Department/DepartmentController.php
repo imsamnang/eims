@@ -6,6 +6,7 @@ use App\Models\App;
 use App\Models\Quiz;
 use App\Models\Staff;
 use App\Models\Users;
+use App\Models\Years;
 use App\Models\Gender;
 use App\Models\Marital;
 use App\Models\Communes;
@@ -20,25 +21,26 @@ use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
-use App\Http\Controllers\ActivityFeed\ActivityFeedController;
 use App\Models\Nationality;
+use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
+use App\Models\StudyPrograms;
+use App\Models\StaffInstitutes;
+use App\Models\StudentsRequest;
 use App\Http\Requests\FormStaff;
 use App\Models\StaffDesignations;
+use App\Models\StaffTeachSubject;
 use App\Models\StudyCourseSession;
 use App\Models\StudentsStudyCourse;
+use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\Study\StudyController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Student\StudentController;
-use App\Http\Controllers\Study\StudyController;
-use App\Models\ActivityFeed;
-use App\Models\StaffInstitutes;
-use App\Models\StudentsRequest;
-use App\Models\StudyCourseSchedule;
-use App\Models\StudyPrograms;
+use App\Http\Controllers\ActivityFeed\ActivityFeedController;
 
 class DepartmentController extends Controller
 {
@@ -232,27 +234,7 @@ class DepartmentController extends Controller
             ],
         );
 
-        $studyPrograms = StudyPrograms::getData();
-        if ($studyPrograms['success']) {
-            foreach ($studyPrograms['data'] as $row) {
-                $data['studyProgram'][] = [
-                    'title'   => $row['name'],
-                    'link'    => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list?programId=' . $row['id']),
-                    'icon'    => null,
-                    'image'   => $row['image'],
-                    'gender'  => Students::gender(
-                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-                            ->whereNotIn('study_status_id', [7])
-                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row['id'])
-                    ),
-                    'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
-                    'color'   => config('app.theme_color.name'),
-                ];
-            }
-        }
+        $data['current_subjects'] = StaffTeachSubject::getTeachSubjects(request('t-subjectId'), Auth::user()->node_id, null, 10, true, Years::now());
 
 
         $data['users'] = Users::getData(null, null, 10);
