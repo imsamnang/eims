@@ -49,10 +49,10 @@
                         Swal.showLoading();
                     },
                     onClose: () => {
-                        if(ajax){
+                        if(ajax && ajax.abort){
                             ajax.abort();
                         }
-                        
+
                     }
                 });
                 $(this).parent().prepend(loading);

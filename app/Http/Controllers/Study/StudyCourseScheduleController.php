@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Study;
 
 use App\Models\App;
-use App\Models\Days;
-use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Languages;
-use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\StudyCourse;
 use App\Models\SocailsMedia;
-use App\Models\StudySession;
 use App\Models\StudyPrograms;
-use App\Models\StudySubjects;
 use App\Models\StudySemesters;
 use App\Models\StudyGeneration;
 use App\Models\StudyAcademicYears;
@@ -45,13 +40,6 @@ class StudyCourseScheduleController extends Controller
         $data['study_generation']         = StudyGeneration::getData();
         $data['study_academic_year']      = StudyAcademicYears::getData();
         $data['study_semester']           = StudySemesters::getData();
-        $data['days']                     = Days::getData();
-        $data['study_class']              = StudyClass::getData();
-        $data['study_session']           = StudySession::getData();
-        $data['teacher']                  = Staff::getData();
-        $data['study_subject']            = StudySubjects::getData();
-
-
 
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),

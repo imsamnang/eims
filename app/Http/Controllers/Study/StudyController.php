@@ -47,6 +47,8 @@ use App\Http\Controllers\Study\CurriculumEndorsementController;
 use App\Models\StudyCourseRoutine;
 use App\Models\StudyCourseSession;
 use App\Models\StudyGrade;
+use App\Models\StudyShortCourseSchedule;
+use App\Models\StudyShortCourseSession;
 use App\Models\StudySubjectLesson;
 
 class StudyController extends Controller
@@ -129,6 +131,26 @@ class StudyController extends Controller
                         ]
                     ]
                 ],
+                [
+                    'title' => null,
+                    'children'  => [
+                        [
+                            'name'  => Translator::phrase('list.study_session'),
+                            'link'  => url(Users::role() . '/study/' . StudySession::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-hourglass-start',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                        [
+                            'name'  => Translator::phrase('list.study_class'),
+                            'link'  => url(Users::role() . '/study/' . StudyClass::$path['url'] . '/list'),
+                            'icon'  => null,
+                            'text'  => Translator::phrase('study_class'),
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                    ]
+                ],
 
                 [
                     'title' => Translator::phrase('study_course_schedule'),
@@ -140,23 +162,10 @@ class StudyController extends Controller
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
-                        [
-                            'name'  => Translator::phrase('list.study_session'),
-                            'link'  => url(Users::role() . '/study/' . StudySession::$path['url'] . '/list'),
-                            'icon'  => 'fas fa-hourglass-start',
-                            'image' => null,
-                            'color' => 'bg-' . config('app.theme_color.name'),
-                        ], [
+                       [
                             'name'  => Translator::phrase('list.study_course_session'),
                             'link'  => url(Users::role() . '/study/' . StudyCourseSession::$path['url'] . '/list'),
                             'icon'  => 'fas fa-table',
-                            'image' => null,
-                            'color' => 'bg-' . config('app.theme_color.name'),
-                        ], [
-                            'name'  => Translator::phrase('list.study_class'),
-                            'link'  => url(Users::role() . '/study/' . StudyClass::$path['url'] . '/list'),
-                            'icon'  => null,
-                            'text'  => Translator::phrase('study_class'),
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
@@ -166,6 +175,25 @@ class StudyController extends Controller
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ]
+                    ]
+                ],
+                [
+                    'title' => Translator::phrase('short_course_schedule'),
+                    'children'  => [
+                        [
+                            'name'  => Translator::phrase('list.short_course_schedule'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-calendar-alt',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
+                       [
+                            'name'  => Translator::phrase('list.short_course_session'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/list'),
+                            'icon'  => 'fas fa-table',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ],
                     ]
                 ],
                 [
@@ -319,6 +347,14 @@ class StudyController extends Controller
             return $view->index($param2, $param3);
         } elseif (strtolower($param1) == StudyGrade::$path['url']) {
             $view = new StudyGradeController();
+            return $view->index($param2, $param3);
+
+        } elseif (strtolower($param1) == StudyShortCourseSchedule::$path['url']) {
+            $view = new StudyShortCourseScheduleController;
+            return $view->index($param2, $param3);
+
+        } elseif (strtolower($param1) == StudyShortCourseSession::$path['url']) {
+            $view = new StudyShortCourseSessionController;
             return $view->index($param2, $param3);
         } else {
             abort(404);

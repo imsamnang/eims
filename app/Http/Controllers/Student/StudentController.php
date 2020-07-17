@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Student;
 
 use App\Models\App;
+use App\Models\Days;
 use App\Models\Quiz;
 use App\Models\Roles;
 use App\Models\Users;
 use App\Models\Years;
 use App\Models\Gender;
 use App\Models\Months;
+use App\Models\Mailbox;
 use App\Models\Marital;
 use App\Models\Communes;
 use App\Models\Holidays;
@@ -47,19 +49,19 @@ use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\StudentsStudyCourseScore;
+use App\Models\StudentsStudyShortCourse;
 use App\Http\Requests\FormStudentsRequest;
+use App\Models\StudentsShortCourseRequest;
 use App\Http\Requests\FormQuizStudentAnswer;
 use App\Http\Controllers\Card\CardController;
 use App\Http\Controllers\General\GeneralController;
+use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizStudentAnswerController;
 use App\Http\Controllers\Certificate\CertificateController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
-use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Student\StudentsStudyCourseController;
-use App\Models\Days;
-use App\Models\Mailbox;
-use App\Models\StudentsStudyShortCourse;
+use App\Http\Controllers\Student\StudentsShortCourseRequestController;
 
 class StudentController extends Controller
 {
@@ -202,29 +204,17 @@ class StudentController extends Controller
                         'children' => [
                             [
                                 'name'  => Translator::phrase('list.student'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::path('url') . '/list'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-user-graduate',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
                                 'name'  => Translator::phrase('list.student.request_study'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
+                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-users-medical',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
-                            ], [
-                                'name'  => Translator::phrase('list.student.attendance'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
-                                'icon'  => 'fas fa-calendar-edit',
-                                'image' => null,
-                                'color' => 'bg-' . config('app.theme_color.name'),
-                            ], [
-                                'name'  => Translator::phrase('list.student.score'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
-                                'icon'  => 'fas fa-trophy-alt',
-                                'image' => null,
-                                'color' => 'bg-' . config('app.theme_color.name'),
-                            ],
+                            ], 
                         ]
                     ]
                 ];
@@ -297,8 +287,12 @@ class StudentController extends Controller
             } elseif (strtolower($param1) == CertificateFrames::$path['url']) {
                 $view = new CertificateController();
                 return $view->index($param2, $param3, $param4, $param5, $param6);
-            } elseif (strtolower($param1) == StudentsStudyShortCourse::path('url')) {
-                dd(StudentsStudyShortCourse::getData());
+            } elseif (strtolower($param1) == StudentsStudyShortCourse::$path['url']) {
+                $view = new StudentsStudyShortCourseController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == StudentsShortCourseRequest::$path['url']) {
+                $view = new StudentsShortCourseRequestController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
             } else {
                 abort(404);
             }

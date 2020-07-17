@@ -208,9 +208,7 @@ class StudentsStudyCourseController extends Controller
     {
 
         $student = StudentsRequest::where('status', 0)->pluck('id')->toArray();
-
-
-
+        
         $data['view']       = StudentsStudyCourse::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_Study_Course');
         $data['metaImage']  = asset('assets/img/icons/register.png');
@@ -224,7 +222,7 @@ class StudentsStudyCourseController extends Controller
             $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
         }
         $data['student']              = StudentsRequest::getData($student);
-        
+
 
 
 
