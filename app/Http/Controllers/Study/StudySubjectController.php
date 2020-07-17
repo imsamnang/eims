@@ -29,6 +29,7 @@ class StudySubjectController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+
         $data['course_type'] = CourseTypes::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),

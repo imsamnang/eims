@@ -53,6 +53,9 @@ class StudySubjects extends Model
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));
             }
+            if (request('courseTId')) {
+                $get = $get->where('course_type_id', request('courseTId'));
+            }
         }
         if ($search) {
             $get = $get->where('name', 'LIKE', '%' . $search . '%');
@@ -213,6 +216,7 @@ class StudySubjects extends Model
         } else {
 
             try {
+                $values['institute_id']      = request('institute');
                 $values['course_type_id']      = request('course_type');
                 $values['name']                = trim(request('name'));
                 $values['full_mark_theory']    =  request('full_mark_theory');
@@ -280,6 +284,7 @@ class StudySubjects extends Model
         } else {
 
             try {
+                $values['institute_id']      = request('institute');
                 $values['course_type_id']      = request('course_type');
                 $values['name']                = trim(request('name'));
                 $values['full_mark_theory']    =  request('full_mark_theory');

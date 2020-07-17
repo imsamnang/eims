@@ -4,12 +4,20 @@
             <div class="row">
                 @csrf
                 @if (Auth::user()->role_id == 6)
+                @if (config("pages.parameters.param1") == "short-course-request")
+                <div class="col-md-12">
+                    @include(config("pages.parent").".includes.study.includes.short_course_requesting.form.includes.a")
+                    @include(config("pages.parent").".includes.study.includes.short_course_requesting.form.includes.b")
+                </div>
+                @else
                 <div class="col-md-6">
                     @include(config("pages.parent").".includes.study.includes.requesting.form.includes.a")
                 </div>
                 <div class="col-md-6">
                     @include(config("pages.parent").".includes.study.includes.requesting.form.includes.b")
                 </div>
+                @endif
+
                 @elseif (config("pages.parameters.param1") == "account")
                 <div class="col-md-12">
                 @include(config("pages.parent").".includes.account.includes.a")

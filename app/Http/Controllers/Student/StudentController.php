@@ -34,6 +34,7 @@ use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
 use App\Models\StudyPrograms;
+use App\Models\StudySubjects;
 use App\Models\StudySemesters;
 use App\Models\AttendancesType;
 use App\Models\StudentsRequest;
@@ -57,6 +58,7 @@ use App\Http\Controllers\Card\CardController;
 use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Requests\FormStudentsShortCourseRequest;
 use App\Http\Controllers\Quiz\QuizStudentAnswerController;
 use App\Http\Controllers\Certificate\CertificateController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
@@ -214,7 +216,7 @@ class StudentController extends Controller
                                 'icon'  => 'fas fa-users-medical',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
-                            ], 
+                            ],
                         ]
                     ]
                 ];
@@ -513,63 +515,100 @@ class StudentController extends Controller
 
         if (strtolower($param1)  == null) {
             if (Auth::user()->node_id) {
-                $data['shortcut'] = [
+                $data['shortcuts'] = [
                     [
-                        'name'  => Translator::phrase('edit.register'),
-                        'link'  => url(Users::role() . '/study/edit'),
-                        'icon'  => 'fas fa-user-edit',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('study_course'),
-                        'link'  => url(Users::role() . '/study/approved/list'),
-                        'icon'  => 'fas fa-user-graduate',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
+                        'title' => null,
+                        'children'  => [
+                            [
+                                'name'  => Translator::phrase('edit.register'),
+                                'link'  => url(Users::role() . '/study/edit'),
+                                'icon'  => 'fas fa-user-edit',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                            [
+                                'name'  => Translator::phrase('list.quiz'),
+                                'link'  => url(Users::role() . '/study/' . Quiz::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-question-circle',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
                     ],
                     [
-                        'name'  => Translator::phrase('request_study'),
-                        'link'  => url(Users::role() . '/study/request/list'),
-                        'icon'  => 'fas fa-layer-plus',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.schedule'),
-                        'link'  => url(Users::role() . '/study/schedule/list'),
-                        'icon'  => 'fas fa-calendar-alt',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.attendance'),
-                        'link'  => url(Users::role() . '/study/' . StudentsAttendances::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-calendar-edit',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ], [
-                        'name'  => Translator::phrase('list.score'),
-                        'link'  => url(Users::role() . '/study/' . StudentsStudyCourseScore::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-trophy-alt',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ],
-                    [
-                        'name'  => Translator::phrase('list.quiz'),
-                        'link'  => url(Users::role() . '/study/' . Quiz::$path['url'] . '/list'),
-                        'icon'  => 'fas fa-question-circle',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ],
+                        'title' => Translator::phrase('long_course'),
+                        'children'  => [
 
+                            [
+                                'name'  => Translator::phrase('study_course'),
+                                'link'  => url(Users::role() . '/study/'.str_replace('request','approved',StudentsRequest::$path['url']).'/list'),
+                                'icon'  => 'fas fa-user-graduate',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                            [
+                                'name'  => Translator::phrase('request_study'),
+                                'link'  => url(Users::role() . '/study/' . StudentsRequest::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-layer-plus',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.schedule'),
+                                'link'  => url(Users::role() . '/study/schedule/list'),
+                                'icon'  => 'fas fa-calendar-alt',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.attendance'),
+                                'link'  => url(Users::role() . '/study/' . StudentsAttendances::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-calendar-edit',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ], [
+                                'name'  => Translator::phrase('list.score'),
+                                'link'  => url(Users::role() . '/study/' . StudentsStudyCourseScore::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-trophy-alt',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
+                    ],
+                    [
+                        'title' => Translator::phrase('short_course'),
+                        'children'  => [
+
+                            [
+                                'name'  => Translator::phrase('study_course'),
+                                'link'  => url(Users::role() . '/study/' . str_replace('request', 'approved', StudentsShortCourseRequest::$path['url']) . '/list'),
+                                'icon'  => 'fas fa-user-graduate',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                            [
+                                'name'  => Translator::phrase('request_study'),
+                                'link'  => url(Users::role() . '/study/' . StudentsShortCourseRequest::$path['url'] . '/list'),
+                                'icon'  => 'fas fa-layer-plus',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
+                    ]
                 ];
             } else {
-                $data['shortcut'] = [
+                $data['shortcuts'] = [
                     [
-                        'name'  => Translator::phrase('register'),
-                        'link'  => url(Users::role() . '/study/register'),
-                        'icon'  => 'fas fa-user-plus',
-                        'image' => null,
-                        'color' => 'bg-' . config('app.theme_color.name'),
-                    ],
+                        'title' => null,
+                        'children'  => [
+                            [
+                                'name'  => Translator::phrase('register'),
+                                'link'  => url(Users::role() . '/study/register'),
+                                'icon'  => 'fas fa-user-plus',
+                                'image' => null,
+                                'color' => 'bg-' . config('app.theme_color.name'),
+                            ],
+                        ]
+                    ]
+
                 ];
             }
             $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .study');
@@ -604,7 +643,7 @@ class StudentController extends Controller
                 $data = $this->show($data, Auth::user()->node_id, 'edit');
                 $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit');
             }
-        } elseif (strtolower($param1) == 'approved') {
+        } elseif (strtolower($param1) == str_replace('request','approved',StudentsRequest::$path['url'])) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  StudentsStudyCourse::getStudy(Auth::user()->node_id);
             } else {
@@ -660,6 +699,75 @@ class StudentController extends Controller
                 }
             } elseif (strtolower($param2) == 'delete') {
                 return StudentsRequest::deleteFromTable(request('id', $param3));
+            } else {
+                abort(404);
+            }
+        } elseif (strtolower($param1) == str_replace('request','approved',StudentsShortCourseRequest::$path['url'])) {
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return  StudentsStudyShortCourse::getStudy(Auth::user()->node_id);
+            } else {
+                $data['formName']            = 'study/' . StudentsShortCourseRequest::$path['url'];
+
+
+                if (strtolower($param2) == 'list' || strtolower($param2) == null) {
+                    $data['studys'] = StudentsStudyShortCourse::getStudy(Auth::user()->node_id);
+                    $data['response']  = StudentsShortCourseRequest::getData(null, Auth::user()->node_id, 10);
+
+
+
+                    $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.short_course.approved.and.request_study');
+                    $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course.list.index';
+                } else {
+                    abort(404);
+                }
+            }
+        } elseif (strtolower($param1) == StudentsShortCourseRequest::$path['url']) {
+            $data['formName'] .= '/' . StudentsShortCourseRequest::$path['url'];
+
+            if (strtolower($param2) == 'list' || strtolower($param2) == null) {
+                $data['response']  = StudentsShortCourseRequest::getData(null, Auth::user()->node_id, 10);
+                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .short_course_request');
+                $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.list.index';
+            }elseif(strtolower($param2) == 'list-datatable'){
+                if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                    request()->merge([
+                        'ref'   => Students::$path['url'].'-'. StudentsShortCourseRequest::$path['url'],
+                    ]);
+                    return  StudentsShortCourseRequest::getDataTable(Auth::user()->node_id);
+                }
+            } elseif (strtolower($param2) == 'add') {
+                request()->merge([
+                    'ref'   => Students::$path['url'] . '-' . StudentsShortCourseRequest::$path['url'],
+                    'courseTId' => 1,
+                ]);
+                if (request()->method() == 'POST') {
+                    request()->merge([
+                        'student' => [Auth::user()->node_id]
+                    ]);
+                    return StudentsShortCourseRequest::addToTable();
+                } else {
+                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.form.index';
+                    $data['study_subject']       = StudySubjects::getData();
+                }
+            } elseif (strtolower($param2) == 'edit') {
+                if (request()->method() == 'POST') {
+                    return StudentsShortCourseRequest::updateToTable(request('id', $param3));
+                } else {
+                    $data['formAction']          = '/edit';
+
+                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.form.index';
+                    $response  = StudentsShortCourseRequest::getData(request('id', $param3));
+
+                    $data['formData'] = $response['data'][0];
+                    $data['listData'] = $response['pages']['listData'];
+                    $data['institute']         = Institute::getData();
+                    $data['study_subject']       = StudySubjects::getData();
+                    $data['study_session']       = StudySession::getData();
+                }
+            } elseif (strtolower($param2) == 'delete') {
+                return StudentsShortCourseRequest::deleteFromTable(request('id', $param3));
             } else {
                 abort(404);
             }
@@ -764,6 +872,14 @@ class StudentController extends Controller
                 'attributes'  =>  FormStudentsRequest::attributeField(),
                 'messages'    =>  FormStudentsRequest::customMessages(),
                 'questions'   =>  FormStudentsRequest::questionField(),
+            ];
+
+        }elseif (strtolower($param1) == StudentsShortCourseRequest::$path['url']) {
+            $pages['form']['validate'] = [
+                'rules'       =>  FormStudentsShortCourseRequest::rulesField(),
+                'attributes'  =>  FormStudentsShortCourseRequest::attributeField(),
+                'messages'    =>  FormStudentsShortCourseRequest::customMessages(),
+                'questions'   =>  FormStudentsShortCourseRequest::questionField(),
             ];
         } else {
             $pages['form']['validate'] = [

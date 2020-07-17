@@ -9,6 +9,8 @@
                         <h6 class="modal-title" class="h3 mr-2">
                             @if (config("pages.parameters.param1") == "register")
                             {{ Translator:: phrase("register") }}
+                            @elseif(config("pages.parameters.param1") == "short-course-request")
+                            {{ Translator:: phrase(config("pages.form.role").'.short_course_request') }}
                             @else
                             {{ Translator:: phrase(config("pages.form.role").'.request') }}
                             @endif

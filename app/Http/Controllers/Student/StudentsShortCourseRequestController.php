@@ -30,7 +30,9 @@ class StudentsShortCourseRequestController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
-
+        request()->merge([
+            'courseTId' => 1,
+        ]);
 
         $data['formAction']          = '/add';
         $data['formData']            = array(

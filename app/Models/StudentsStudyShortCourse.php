@@ -252,7 +252,7 @@ class StudentsStudyShortCourse extends Model
         } else {
             try {
                 $exists =  StudentsStudyShortCourse::existsToTable(request('student')[0], request('study_short_course_session'));
-                
+
                 if ($exists) {
                     $response       = array(
                         'success'   => false,
@@ -339,6 +339,26 @@ class StudentsStudyShortCourse extends Model
             ->where('study_short_course_session_id', $study_short_course_session_id)
             ->groupBy('student_id')
             ->first();
+    }
+
+    public static function getStudy($student_id)
+    {
+        $get =  StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.student_short_course_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsShortCourseRequest())->getTable() . '.student_id')
+            ->where((new StudentsShortCourseRequest())->getTable() . '.student_id', $student_id)
+            ->groupBy('study_short_course_session_id')
+            ->get()->toArray();
+
+        $study_short_course_session_id = [];
+        if ($get) {
+            foreach ($get as $key => $row) {
+                $study_short_course_session_id[] = $row['study_short_course_session_id'];
+            }
+            return StudyShortCourseSession::getData($study_short_course_session_id);
+        }else{
+            return StudyShortCourseSession::getData('null');
+        }
+
     }
 
     public static function deleteFromTable($id)

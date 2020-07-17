@@ -78,7 +78,16 @@ class StudyShortCourseSession extends Model
 
         if ($get) {
             foreach ($get as $key => $row) {
+
+                $request_id =  StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.student_short_course_request_id')
+                ->join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsShortCourseRequest())->getTable() . '.student_id')
+                ->where((new StudentsShortCourseRequest())->getTable() . '.student_id', Auth::user()->node_id)
+                ->where((new StudentsStudyShortCourse())->getTable() . '.study_short_course_session_id', $row['id'])
+                ->pluck('student_short_course_request_id')->first();
+
+
                 $data[$key]  = array(
+                    'request_id'=> $request_id,
                     'id'  => $row['id'],
                     'name' => null,
                     'image' => null,

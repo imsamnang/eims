@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Images;
 
-use App\Models\Students;
-use App\Helpers\ImageHelper;
-use App\Helpers\QRHelper;
-use App\Http\Controllers\Controller;
 use App\Models\App;
-use App\Models\CardFrames;
 use App\Models\Staff;
+use App\Models\Students;
+use App\Helpers\QRHelper;
+use App\Models\CardFrames;
+use App\Helpers\ImageHelper;
 use App\Models\StudentsRequest;
 use App\Models\StudentsStudyCourse;
+use App\Http\Controllers\Controller;
+use App\Models\StudentsShortCourseRequest;
 
 class ImagesController extends Controller
 {
@@ -35,7 +36,8 @@ class ImagesController extends Controller
                 StudentsStudyCourse::$path['image'],
                 QRHelper::$path['image'],
                 CardFrames::$path['image'],
-                StudentsRequest::$path['image']
+                StudentsRequest::$path['image'],
+                StudentsShortCourseRequest::$path['image'],
             ])) {
                 $this->response = ImageHelper::getImage($param3, Students::$path['image'] . '/' . $param2, request('type'));
             } else {

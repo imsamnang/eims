@@ -17,6 +17,7 @@ class Translator
     {
         if ($string) {
             $str = str_replace(" ", "_", $string);
+            $str = str_replace("-", "_", $str);
             $str = str_replace("general_", "", $str);
             $stringArray  = explode('.', $str);
             $newString    = '';

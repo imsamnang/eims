@@ -5,35 +5,42 @@
             class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
-
                     <th data-type="checkbox" data-key="null" width="1">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
-                                data-checked-show-controls='["view","edit","delete"]' type="checkbox">
+                                data-checked-show-controls='["edit","delete"]' type="checkbox">
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
-                    <th data-type="text" data-key="name" class="sort" data-sort="name">
-                        {{Translator::phrase("name")}}​</th>
-                    <th data-type="text" data-key="course_type.name" class="sort" data-sort="course_type">
-                        {{Translator::phrase("course_type")}}​</th>
-                    {{-- <th data-type="text" data-key="full_mark_theory">
-                        {{Translator::phrase("full_mark_theory")}}​
+
+                    <th width=1 data-type="text" data-key="id">
+                        {{Translator::phrase("id.request_study")}}​
                     </th>
-                    <th data-type="text" data-key="">{{Translator::phrase("pass_mark_theory")}}​
+
+
+                    <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
+                        {{Translator::phrase("institute")}}​</th>
+
+                    <th data-type="text-image" data-key="study_subject.name" data-url="study_subject.image" width="1" class="sort"
+                        data-sort="study_subject">
+                        {{Translator::phrase("study_subject")}}
                     </th>
-                    <th data-type="text" data-key="full_mark_practical">
-                        {{Translator::phrase("full_mark_practical")}}​</th>
-                    <th data-type="text" data-key="pass_mark_practical">
-                        {{Translator::phrase("pass_mark_practical")}}​</th> --}}
-                    <th data-type="text" data-key="credit_hour">{{Translator::phrase("credit_hour")}}​</th>
-                    {{-- <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th> --}}
-                    <th data-type="image" data-key="image" data-url="file">{{Translator::phrase("image")}}​</th>
-                    <th data-type="icon" data-key="file">{{Translator::phrase("File")}}​</th>
-                    <th width=1 data-type="option" data-key="view,edit,delete"></th>
+
+                    <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
+                        {{Translator::phrase("study_session")}}
+                    </th>
+
+                    <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
+                        {{Translator::phrase("status")}}
+                    </th>
+
+                    <th width=1 data-type="image" data-key="photo">{{Translator::phrase("photo")}}​</th>
+
+                    <th width=1 data-type="option" data-key="edit,delete">
+                    </th>
 
                 </tr>
             </thead>
@@ -46,14 +53,14 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="disabled dropdown-item" href="">
                         <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
                     </a>
 
-                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
-
-                        <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
-
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item">
+                        <i class="fas fa-edit"></i>
+                        {{Translator::phrase("edit")}}
+                    </a>
 
                     <div class="dropdown-divider"></div>
 
