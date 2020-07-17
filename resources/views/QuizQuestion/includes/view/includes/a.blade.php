@@ -37,7 +37,7 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                            data-url="{{$quiz["pages"]["form"]["action"]["add"]}}"
+
 
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quiz"
@@ -64,7 +64,7 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz_answer_type" title="Simple select"
-                            data-url="{{$quiz_answer_type["pages"]["form"]["action"]["add"]}}"
+
 
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.quiz_answer_type") }}"
@@ -92,8 +92,8 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz_type" title="Simple select"
-                            data-url="{{$quiz_type["pages"]["form"]["action"]["add"]}}"
-                            
+                           
+
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.quiz_type") }}" name="quiz_type"
                             data-select-value="{{config("pages.form.data.quiz_type.id")}}"

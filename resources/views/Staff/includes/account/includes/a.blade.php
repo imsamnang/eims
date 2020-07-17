@@ -101,8 +101,8 @@
                     </label>
 
                     <select class="form-control" data-toggle="select" id="role" title="Simple select"
-                        data-url="{{$role["pages"]["form"]["action"]["add"]}}"
                         
+
                         data-text="{{ Translator::phrase("add_new_option") }}"
                         data-placeholder="{{ Translator::phrase("choose.role") }}" name="role"
                         data-select-value="{{config("pages.form.data.role.id")}}" {{config("pages.form.validate.rules.role") ? "required" : ""}}>

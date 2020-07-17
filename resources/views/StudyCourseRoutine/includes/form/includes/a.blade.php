@@ -64,7 +64,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                    data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_session") }}" name="study_course_session"
                     data-select-value="{{config("pages.form.data.study_course_session.id")}}">
@@ -108,7 +108,7 @@
                         <td class="cell" data-merge="{{$d["teacher"]["id"]}}-{{$d["study_subject"]["id"]}}-{{$d["study_subject"]["id"]}}">
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="teacher"
-                                    title="Simple select" data-url="{{$teacher["pages"]["form"]["action"]["add"]}}"
+                                    title="Simple select" 
                                     data-text="{{ Translator::phrase("add_new_option") }}"
                                     data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
                                     data-select-value="{{$d["teacher"]["id"]}}"
@@ -124,7 +124,7 @@
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="study_subject"
                                     title="Simple select"
-                                    data-url="{{$study_subject["pages"]["form"]["action"]["add"]}}"
+                                    
                                     data-text="{{ Translator::phrase("add_new_option") }}"
                                     data-placeholder="{{ Translator::phrase("choose.study_subject") }}"
                                     name="study_subject[]"
@@ -184,7 +184,7 @@
             <div class="d-none tsc-template">
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="teacher"
-                        title="Simple select" data-url="{{$teacher["pages"]["form"]["action"]["add"]}}"
+                        title="Simple select" 
                         data-text="{{ Translator::phrase("add_new_option") }}"
                         data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
                         data-select-value="{{config("pages.form.data.teacher")}}"
@@ -200,7 +200,7 @@
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="study_subject"
                         title="Simple select"
-                        data-url="{{$study_subject["pages"]["form"]["action"]["add"]}}"
+                        
                         data-text="{{ Translator::phrase("add_new_option") }}"
                         data-placeholder="{{ Translator::phrase("choose.study_subject") }}"
                         name="study_subject[]"

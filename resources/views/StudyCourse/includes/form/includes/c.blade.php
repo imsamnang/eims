@@ -18,7 +18,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="curriculum_author" title="Simple select"
-                    data-url="{{$curriculum_author["pages"]["form"]["action"]["add"]}}"
+                    
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.curriculum_author") }}" name="curriculum_author"
                     data-select-value="{{config("pages.form.data.curriculum_author.id")}}"
@@ -41,7 +41,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="curriculum_endorsement" title="Simple select"
-                    data-url="{{$curriculum_endorsement["pages"]["form"]["action"]["add"]}}"
+                    
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.curriculum_endorsement") }}"
                     name="curriculum_endorsement"

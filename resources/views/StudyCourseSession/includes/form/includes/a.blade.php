@@ -18,7 +18,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_course_schedule" title="Simple select"
-                    data-url="{{$study_course_schedule["pages"]["form"]["action"]["add"]}}"
+                   
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_schedule") }}" name="study_course_schedule"
@@ -40,8 +40,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
-                    data-url="{{$study_session["pages"]["form"]["action"]["add"]}}"
                    
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_session") }}" name="study_session"
                     data-select-value="{{config("pages.form.data.study_session.id")}}">

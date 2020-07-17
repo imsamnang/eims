@@ -20,9 +20,9 @@
 
                         </label>
                         <select class="form-control" data-toggle="taginputs" id="recipient"
-                            title="Simple select" data-url="{{$recipient["pages"]["form"]["action"]["add"]}}"
+                            title="Simple select" 
                             data-text="{{ Translator::phrase("add_new_option") }}"
-                            
+
                             data-allow-clear="true" data-placeholder="{{Translator::phrase("recipient") }}"
                             name="recipient[]"
                             data-name="recipient[]"

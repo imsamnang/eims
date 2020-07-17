@@ -84,7 +84,7 @@
             <div class="col-md-7 mb-3">
                 <select class="form-control" data-toggle="select" id="study_course_session"
                     title="Simple select"
-                    data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+
                     data-allow-clear="true" data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
                     name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
@@ -95,7 +95,7 @@
             </div>
             <div class="col-md-2 mb-3">
                 <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
-                    data-url="{{$study_status["pages"]["form"]["action"]["add"]}}"
+                    
                     data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
                     data-placeholder="{{ Translator::phrase("choose.study_status") }}" name="statusId"
                     data-select-value="{{request('statusId')}}">

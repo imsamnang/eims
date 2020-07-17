@@ -70,7 +70,7 @@
 
                         <select disabled {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="district" title="Simple select"
-                            data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
+
                             data-text="{{ Translator::phrase("add_new_option") }}"
 
                             data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
@@ -101,9 +101,9 @@
 
                         <select disabled {{config("pages.form.data.commune.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="commune" title="Simple select"
-                            data-url="{{$communes["pages"]["form"]["action"]["add"]}}"
-                            data-text="{{ Translator::phrase("add_new_option") }}"
                             
+                            data-text="{{ Translator::phrase("add_new_option") }}"
+
                             data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
                             name="commune" data-select-value="{{config("pages.form.data.commune.id")}}"
                             {{config("pages.form.validate.rules.commune") ? "required" : ""}}>

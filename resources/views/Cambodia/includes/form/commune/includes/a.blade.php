@@ -69,7 +69,7 @@
 
                         <select disabled {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="district" title="Simple select"
-                            data-url="{{$districts["pages"]["form"]["action"]["add"]}}"
+                            
                             data-text="{{ Translator::phrase("add_new_option") }}"
 
                             data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"

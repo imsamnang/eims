@@ -33,8 +33,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                    data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
-                    
+
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                     data-select-value="{{config("pages.form.data.institute.id")}}"
@@ -61,7 +61,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
-                    data-url="{{$study_program["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
                     data-select-value="{{config("pages.form.data.study_program.id")}}"
@@ -85,7 +85,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="course_type" title="Simple select"
-                    data-url="{{$course_type["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.course_type") }}" name="course_type"
                     data-select-value="{{config("pages.form.data.course_type.id")}}"
@@ -108,7 +108,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_modality" title="Simple select"
-                    data-url="{{$study_modality["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_modality") }}" name="study_modality"
                     data-select-value="{{config("pages.form.data.study_modality.id")}}"
@@ -131,7 +131,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_faculty" title="Simple select"
-                    data-url="{{$study_faculty["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_faculty") }}" name="study_faculty"
                     data-select-value="{{config("pages.form.data.study_faculty.id")}}"
@@ -154,7 +154,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_overall_fund" title="Simple select"
-                    data-url="{{$study_overall_fund["pages"]["form"]["action"]["add"]}}"
+                   
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_overall_fund") }}" name="study_overall_fund"
                     data-select-value="{{config("pages.form.data.study_overall_fund.id")}}"

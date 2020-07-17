@@ -55,7 +55,7 @@
             <div class="col-md-8 mb-3">
                 <select class="form-control" data-toggle="select" id="study_course_session"
                     title="Simple select"
-                    data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                   
                     data-allow-clear="true"
 
                     data-text="{{ Translator::phrase("add_new_option") }}"

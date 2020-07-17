@@ -24,8 +24,8 @@
 
                         <div class="col-md-12 mb-3">
                             <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                                data-url="{{$quiz["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                                
+                                 data-allow-clear="true"
+
                                 data-text="{{ Translator::phrase("add_new_option") }}"
                                 data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quizId"
                                 data-select-value="{{request('quizId')}}">

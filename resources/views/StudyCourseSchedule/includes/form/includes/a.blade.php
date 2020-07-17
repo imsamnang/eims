@@ -21,7 +21,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                    data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
@@ -50,7 +50,7 @@
 
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
-                    data-url="{{$study_program["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
@@ -74,7 +74,7 @@
                 </label>
                 <select {{$study_course['success']? "" : "disabled" }} class="form-control"
                     data-toggle="select" id="study_course" title="Simple select"
-                    data-url="{{$study_course["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"
@@ -100,7 +100,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
-                    data-url="{{$study_generation["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
@@ -122,7 +122,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
-                    data-url="{{$study_academic_year["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_academic_year") }}" name="study_academic_year"
@@ -142,8 +142,8 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
-                    data-url="{{$study_semester["pages"]["form"]["action"]["add"]}}"
-                    
+                   
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_semester") }}" name="study_semester"
                     data-select-value="{{config("pages.form.data.study_semester.id")}}">

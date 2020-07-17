@@ -38,7 +38,7 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                            data-url="{{$institute["pages"]["form"]["action"]["add"]}}"
+                           
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
                             data-select-value="{{config("pages.form.data.institute.id")}}"
@@ -243,7 +243,7 @@
                         </label>
 
                         <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-url="{{$student["pages"]["form"]["action"]["add"]}}"
+                           
                             {{str_replace("add","list",$student["pages"]["form"]["action"]["add"])}}"
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.student") }}" name="reference"
@@ -269,7 +269,7 @@
                         </label>
 
                         <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-url="{{$staff["pages"]["form"]["action"]["add"]}}"
+                           
                             data-text="{{ Translator::phrase("add_new_option") }}"
                             data-placeholder="{{ Translator::phrase("choose.staff") }}" name="reference"
                             data-select-value="{{config("pages.form.data.staff.id")}}"

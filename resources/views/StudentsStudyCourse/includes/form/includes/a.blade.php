@@ -18,7 +18,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                    data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
@@ -41,7 +41,7 @@
                 </label>
 
                 <select {{config("pages.form.role") == "add" ? "multiple" : ""}}  class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-url="{{$student["pages"]["form"]["action"]["add"]}}"
+
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.student") }}" name="student[]"
                     data-select-value="{{config("pages.form.data.request_id",request("studRequestId"))}}"
@@ -67,7 +67,7 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
-                    data-url="{{$study_status["pages"]["form"]["action"]["add"]}}"
+                    
 
                     data-text="{{ Translator::phrase("add_new_option") }}"
                     data-placeholder="{{ Translator::phrase("choose.study_status") }}" name="study_status"
