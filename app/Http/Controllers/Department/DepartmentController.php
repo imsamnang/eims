@@ -106,6 +106,10 @@ class DepartmentController extends Controller
         } elseif (strtolower($param1)  == 'profile') {
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4);
+        } elseif (strtolower($param1)  == 'myclass') {
+            $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .myclass');
+            $data['response']   = Staff::getClassTeaching(Auth::user()->node_id);
+            $data['view']       = Users::role('view_path') . '.includes.myclass.index';
         } else {
             abort(404);
         }
@@ -132,8 +136,8 @@ class DepartmentController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => 'Department',
-            'modal'      => Students::$path['view'] . '.includes.modal.index',
+            'parent'     => Users::role('view_path'),
+            'modal'      => Users::role('view_path') . '.includes.modal.index',
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
@@ -173,7 +177,7 @@ class DepartmentController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => "Manager",
+            'parent'     => Users::role('view_path'),
             'view'       => Users::role('view_path') . ".includes.dashboard.index",
         );
 

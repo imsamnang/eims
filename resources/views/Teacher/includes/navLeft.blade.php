@@ -41,6 +41,15 @@
                             <span class="nav-link-text">{{Translator::phrase("teaching")}}</span>
                         </a>
                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link {{request()->segment(2) == "myclass" ? "active text-blue": "" }}"
+                            href="{{URL::to(config("pages.host").config("pages.path")."/myclass")}}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span class="nav-link-text">{{Translator::phrase("myclass")}}</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link {{request()->segment(2) == "quiz" ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/quiz")}}">

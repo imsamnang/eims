@@ -9,6 +9,7 @@ use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\SocailsMedia;
@@ -44,8 +45,7 @@ class usersController extends Controller
             'ref'   => Users::$path['url'],
         ]);
         $data['institute'] = Institute::getData();
-        $data['student'] = Students::getData();
-        $data['staff'] = Staff::getData();
+
 
 
         $data['listData']       = array();
@@ -56,13 +56,13 @@ class usersController extends Controller
                 $view = new ProfileController;
                 return $view->index($param2, $param3);
             } elseif ($param1 == 'register') {
-               if(request()->method() == 'POST'){
-                   request()->merge([
-                       'institute'  => 1
-                   ]);
+                if (request()->method() == 'POST') {
+                    request()->merge([
+                        'institute'  => 1
+                    ]);
                     return Users::register();
-               }
-            }else{
+                }
+            } else {
                 abort(404);
             }
         } else {
@@ -82,19 +82,12 @@ class usersController extends Controller
                 if (request()->method() === 'POST') {
                     return users::addToTable();
                 }
-                $data = $this->add($data);
+                $data = $this->show($data, null, $param1);
             } elseif ($param1 == 'edit') {
-                if ($param2) {
-                    $id = $param2;
-                } else if (request('id')) {
-                    $id = request('id');
-                }
-
+                $id = request('id', $param2);
                 if (request()->method() === 'POST') {
                     return users::updateToTable($id);
                 }
-
-
                 $data  = $this->show($data, $id, $param1);
             } elseif (strtolower($param1) == 'list-datatable') {
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -228,27 +221,56 @@ class usersController extends Controller
         return $data;
     }
 
-    public function add($data)
-    {
-        $data['view']      = users::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
+
 
     public function show($data, $id, $type)
     {
-        $response           = Users::getData($id);
+        $student_id_not_in = Users::whereNotNull('node_id')->where('role_id', Students::$path['roleId'])->pluck('node_id')->toArray();
+        $staff_id_not_in = Users::whereNotNull('node_id')->whereNotIn('role_id', [1, 6, 7, 9])->pluck('node_id')->toArray();
+
+
+
+
+
+        if ($id) {
+            $node = Users::where('id', $id)->first(['role_id', 'node_id']);
+            if ($node->role_id == Students::$path['roleId']) {
+                $student_id_not_in = array_diff($student_id_not_in, [$node->node_id]);
+            } elseif (!in_array($node->role_id, [1, 6, 7, 9])) {
+                $staff_id_not_in = array_diff($staff_id_not_in, [$node->node_id]);
+            }
+
+
+            $response           = Users::getData($id);
+            $data['formData']   = $response['data'][0];
+            $data['listData']   = $response['pages']['listData'];
+            $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+            $data['institute']  = Institute::getData($response['data'][0]['institute']['id']);
+        }
+
+
         $data['view']       = Users::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . str_replace('-', '_', $data['formName']));
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
-        $data['institute']  = Institute::getData($response['data'][0]['institute']['id']);
-        $data['role']       = Roles::getData($response['data'][0]['role']['id']);
+
+        $data['student']['data'] = Students::whereNotIn('id', $student_id_not_in)
+            ->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
+                return [
+                    'id'    => $row['id'],
+                    'name'  => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
+                    'photo'  => ImageHelper::site(Students::$path['image'], $row['photo']),
+                ];
+            })->toArray();
+        $data['staff']['data'] = Staff::whereNotIn('id', $staff_id_not_in)
+            ->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
+                return [
+                    'id'    => $row['id'],
+                    'name'  => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
+                    'photo'  => ImageHelper::site(Staff::$path['image'], $row['photo']),
+                ];
+            })->toArray();
+
         return $data;
     }
 }

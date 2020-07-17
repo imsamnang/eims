@@ -238,6 +238,7 @@ class StudyCourseRoutine extends Model
         } else {
 
             try {
+
                 $exists = StudyCourseRoutine::existsToTable();
 
                 if ($exists) {
@@ -262,6 +263,7 @@ class StudyCourseRoutine extends Model
                             );
                         }
                     }
+
 
                     $add = StudyCourseRoutine::insert($values);
                     if ($add) {

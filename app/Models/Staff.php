@@ -68,10 +68,10 @@ class Staff extends Model
         if ($id) {
             $get = $get->whereIn((new Staff())->getTable() . '.id', $id);
         } else {
-            if(request('ref') == Users::$path['url']){                
-                $get = $get->whereNotIn((new Staff())->getTable() . '.id',Users::select('node_id')->whereNotNull('node_id')->whereNotIn('role_id',[1,6,7,9])->get());                
+            if (request('ref') == Users::$path['url']) {
+                $get = $get->whereNotIn((new Staff())->getTable() . '.id', Users::select('node_id')->whereNotNull('node_id')->whereNotIn('role_id', [1, 6, 7, 9])->get());
             }
-            
+
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'))
                     ->whereNotIn('designation_id', [1]);
@@ -225,23 +225,23 @@ class Staff extends Model
         $_staff_institute = (new StaffInstitutes)->getTable();
 
         $model = Staff::select([
-            $_staff.'.id',
-            $_staff.'.first_name_km',
-            $_staff.'.last_name_km',
-            $_staff.'.first_name_en',
-            $_staff.'.last_name_en',
-            $_staff.'.gender_id',
-            $_staff.'.date_of_birth',
-            $_staff.'.email',
-            $_staff.'.phone',
-            $_staff.'.photo',
-            $_staff.'.staff_status_id',
-            $_staff_institute.'.institute_id',
-            $_staff_institute.'.designation_id',
+            $_staff . '.id',
+            $_staff . '.first_name_km',
+            $_staff . '.last_name_km',
+            $_staff . '.first_name_en',
+            $_staff . '.last_name_en',
+            $_staff . '.gender_id',
+            $_staff . '.date_of_birth',
+            $_staff . '.email',
+            $_staff . '.phone',
+            $_staff . '.photo',
+            $_staff . '.staff_status_id',
+            $_staff_institute . '.institute_id',
+            $_staff_institute . '.designation_id',
 
         ])
-        ->join($_staff_institute, $_staff_institute.'.staff_id', $_staff . '.id');
-         
+            ->join($_staff_institute, $_staff_institute . '.staff_id', $_staff . '.id');
+
 
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
@@ -250,16 +250,16 @@ class Staff extends Model
                 return [
                     'id'      => $row['id'],
                     'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'gender'             =>  Gender::where('id',$row['gender_id'])->pluck(app()->getLocale())->first(),
+                    'gender'             =>  Gender::where('id', $row['gender_id'])->pluck(app()->getLocale())->first(),
                     'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
                     'account'            => $account ? Users::getData($account->id)['data'][0] : null,
-                    'status'            => Gender::where('id',$row['staff_status_id'])->pluck(app()->getLocale())->first(),
+                    'status'            => Gender::where('id', $row['staff_status_id'])->pluck(app()->getLocale())->first(),
                     'photo'             => ImageHelper::site(Staff::$path['image'], $row['photo']),
                     'email'      => $row['email'],
                     'phone'      => $row['phone'],
                     'staff_institute'         => [
-                        'institute' =>  Institute::where('id',$row['institute_id'])->pluck(app()->getLocale())->first(),
-                        'designation' =>  StaffDesignations::where('id',$row['designation_id'])->pluck(app()->getLocale())->first(),
+                        'institute' =>  Institute::where('id', $row['institute_id'])->pluck(app()->getLocale())->first(),
+                        'designation' =>  StaffDesignations::where('id', $row['designation_id'])->pluck(app()->getLocale())->first(),
                     ],
                     'action'                   => [
                         'edit'                 => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']), //?id
@@ -1008,7 +1008,7 @@ class Staff extends Model
 
     public static function getTeaching($teacher_id)
     {
-        $course_routine = StudyCourseRoutine::where('teacher_id', Auth::user()->node_id)->groupBy('study_course_session_id')->get()->toArray();
+        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->groupBy('study_course_session_id')->get()->toArray();
         $study_course_session_id = [];
         if ($course_routine) {
             foreach ($course_routine as $key => $value) {
@@ -1016,5 +1016,50 @@ class Staff extends Model
             }
         }
         return StudyCourseSession::getData($study_course_session_id);
+    }
+
+    /** Get Teacher teaching classes and subjects.
+     * GroupBy classes
+     * @param int $teacher_id
+     */
+    public static function getClassTeaching($teacher_id)
+    {
+        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->groupBy(['study_course_session_id','study_class_id'])->get()->toArray();
+        if($course_routine){            
+           $data = [];
+           foreach($course_routine as $row){
+            $class = StudyClass::where('id',$row['study_class_id'])->first(['id', app()->getLocale().' as name' ,'image']);
+
+            $data[] = [
+                'class' => [
+                        'id'    => $class->id,
+                        'name'    => $class->name,
+                        'image'    => $class->image? ImageHelper::site(StudyClass::$path['image'], $class->image) : ImageHelper::prefix(),
+                    ],
+                'subjects' => Staff::getSubjectsTeaching($teacher_id,$row['study_class_id']),
+            ] ;
+           }
+           return [
+               'success'    => true,
+               'data'       => $data
+           ];
+        }
+    }
+
+    public static function getSubjectsTeaching($teacher_id,$study_class_id)
+    {
+        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->where('teacher_id', $teacher_id)->groupBy(['study_course_session_id','study_class_id','study_subject_id'])->get()->toArray();
+        if($course_routine){
+           $data = [];
+           foreach($course_routine as $row){
+                $subject = StudySubjects::where('id',$row['study_subject_id'])->first(['id', app()->getLocale().' as name' ,'image']);
+                $data[] =   [
+                    'id'    => $subject->id,
+                    'name'    => $subject->name,
+                    'image'    => $subject->image? ImageHelper::site(StudySubjects::$path['image'], $subject->image) : ImageHelper::prefix(),
+                ];         
+           }
+           return $data;
+        }
     }
 }

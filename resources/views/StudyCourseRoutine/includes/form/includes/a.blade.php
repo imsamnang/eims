@@ -81,7 +81,7 @@
                         {{Translator::phrase("time")}}
                     </th>
                     @foreach ($days['data'] as $day)
-                    <th data-name="day[]" data-value="1" width=500 class="font-weight-bold">
+                <th data-name="day[]" data-value="{{$day['id']}}" width=500 class="font-weight-bold">
                         {{$day['name']}}</th>
                     @endforeach
 
@@ -108,7 +108,7 @@
                         <td class="cell" data-merge="{{$d["teacher"]["id"]}}-{{$d["study_subject"]["id"]}}-{{$d["study_subject"]["id"]}}">
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="teacher"
-                                    title="Simple select" 
+                                    title="Simple select"
                                     data-text="{{ Translator::phrase("add_new_option") }}"
                                     data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
                                     data-select-value="{{$d["teacher"]["id"]}}"
@@ -124,7 +124,7 @@
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="study_subject"
                                     title="Simple select"
-                                    
+
                                     data-text="{{ Translator::phrase("add_new_option") }}"
                                     data-placeholder="{{ Translator::phrase("choose.study_subject") }}"
                                     name="study_subject[]"
@@ -184,7 +184,7 @@
             <div class="d-none tsc-template">
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="teacher"
-                        title="Simple select" 
+                        title="Simple select"
                         data-text="{{ Translator::phrase("add_new_option") }}"
                         data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
                         data-select-value="{{config("pages.form.data.teacher")}}"
@@ -200,7 +200,7 @@
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="study_subject"
                         title="Simple select"
-                        
+
                         data-text="{{ Translator::phrase("add_new_option") }}"
                         data-placeholder="{{ Translator::phrase("choose.study_subject") }}"
                         name="study_subject[]"

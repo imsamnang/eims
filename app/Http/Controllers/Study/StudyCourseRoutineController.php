@@ -58,20 +58,18 @@ class StudyCourseRoutineController extends Controller
 
             $data = $this->add($data);
         } elseif ($param1 == 'edit') {
-            $id = $param2 ? $param2 : request('id');
-
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return StudyCourseRoutine::updateToTable();
-                }
+            $id = request('id', $param2);
+            if (request()->method() === 'POST') {
+                return StudyCourseRoutine::updateToTable($id);
             }
+
             $data = $this->edit($data, $id);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
 
             $data = $this->view($data, $id);
         } elseif ($param1 == 'delete') {
-            $id = $param2 ? $param2 : request('id');
+            $id = request('id', $param2);
             return StudyCourseRoutine::deleteFromTable($id);
         } else {
             abort(404);

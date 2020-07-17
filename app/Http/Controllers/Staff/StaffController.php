@@ -44,7 +44,7 @@ class StaffController extends Controller
     }
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
-    {
+    {        
         $data['formAction']          = '/add';
         $data['formName']            = Staff::$path['url'];
         $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);

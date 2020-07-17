@@ -20,7 +20,8 @@
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == null || request()->segment(2) == "dashboard") ? "active text-blue": "" }}"
+                        <a data-toggle="navbar"
+                            class="nav-link {{ (request()->segment(2) == null || request()->segment(2) == "dashboard") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/dashboard")}}">
                             <i class="fas fa-tv"></i>
                             <span class="nav-link-text">{{Translator::phrase("dashboard")}}</span>
@@ -37,28 +38,39 @@
 
 
                     <li class="nav-item">
-                        <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == "staff") ? "active text-blue": "" }}"
+                        <a data-toggle="navbar"
+                            class="nav-link {{ (request()->segment(2) == "staff") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/staff")}}">
                             <i class="fas fa-chalkboard-teacher"></i>
                             <span class="nav-link-text">{{Translator::phrase("staff. & .teacher")}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == "student") ? "active text-blue": "" }}"
+                        <a data-toggle="navbar"
+                            class="nav-link {{ (request()->segment(2) == "student") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/student")}}">
                             <i class="fas fa-user-graduate"></i>
                             <span class="nav-link-text">{{Translator::phrase("student")}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == "quiz") ? "active text-blue": "" }}"
+                        <a class="nav-link {{request()->segment(2) == "myclass" ? "active text-blue": "" }}"
+                            href="{{URL::to(config("pages.host").config("pages.path")."/myclass")}}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span class="nav-link-text">{{Translator::phrase("myclass")}}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-toggle="navbar"
+                            class="nav-link {{ (request()->segment(2) == "quiz") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/quiz")}}">
                             <i class="fas fa-question-circle"></i>
                             <span class="nav-link-text">{{Translator::phrase("quiz")}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == "study") ? "active text-blue": "" }}"
+                        <a data-toggle="navbar"
+                            class="nav-link {{ (request()->segment(2) == "study") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/study")}}">
                             <i class="fas fa-graduation-cap"></i>
                             <span class="nav-link-text">{{Translator::phrase("study")}}</span>
