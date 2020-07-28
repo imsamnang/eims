@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-0">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
             (B) {{ Translator:: phrase("biography") }}
@@ -133,7 +133,7 @@
                             <span class="input-group-text"><i class="fas fa-flag"></i></span>
                         </div>
                         <select class="form-control" data-toggle="select" id="nationality" title="Simple select"
-
+                           
                             data-text="{{ Translator::phrase("add_new_option") }}" data-allow-clear="true"
 
                             data-placeholder="{{ Translator::phrase("choose.nationality") }}" name="nationality"
@@ -301,7 +301,30 @@
                 </select>
             </div>
 
+            <div class="col-md-4 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.blood_group")}}" class="form-control-label"
+                    for="blood_group">
+                    {{ Translator:: phrase("blood_group") }}
+                    @if(config("pages.form.validate.rules.blood_group"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
 
+
+                <select class="form-control" data-toggle="select" id="blood_group" title="Simple select"
+                   
+                    data-text="{{ Translator::phrase("add_new_option") }}"
+
+                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.blood_group") }}"
+                    name="blood_group" data-select-value="{{config("pages.form.data.blood_group.id")}}">
+                    @foreach($blood_group["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
     </div>

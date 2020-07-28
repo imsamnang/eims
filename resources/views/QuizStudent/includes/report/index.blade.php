@@ -27,7 +27,7 @@
         </h1>
         <div class="">
             <div class="col">
-                <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name="{{$name}}"
+                <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name=""
                     class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
                     <i class="fas fa-file-excel"></i>
                     {{Translator::phrase("Excel")}}

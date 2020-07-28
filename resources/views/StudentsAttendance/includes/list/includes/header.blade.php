@@ -2,9 +2,9 @@
     <div class="col-lg-12 p-0">
         <a href="{{config("pages.form.action.detect")}}" data-toggle="modal-qrcode" data-backdrop="static"
             data-keyboard="false" class="btn btn-primary mb-3" data-toggle="modal-qrcode" data-target="#modal-qrcode">
-            <i class="fa fa-plus m-0"></i>
+            <i class="fa fa-camera m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("add_absent")}}
+                {{Translator::phrase("add_absent.(.qrcode.)")}}
             </span>
         </a>
         <a href="#" data-href="{{config("pages.form.action.view")}}" class="btn btn-primary mb-3 disabled"
@@ -54,7 +54,7 @@
             <div class="col-md-6 mb-3">
                 <select class="form-control" data-toggle="select" id="study_course_session"
                     title="Simple select"
-                   
+
                     data-allow-clear="true"
 
                     data-text="{{ Translator::phrase("add_new_option") }}"

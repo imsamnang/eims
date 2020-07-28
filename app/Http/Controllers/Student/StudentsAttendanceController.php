@@ -11,7 +11,6 @@ use App\Models\Holidays;
 use App\Models\Students;
 use App\Helpers\QRHelper;
 use App\Models\Languages;
-use App\Events\Attendances;
 use App\Helpers\Encryption;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
@@ -41,13 +40,7 @@ class StudentsAttendanceController extends Controller
             'image'                   => asset('/assets/img/icons/image.jpg'),
         );
         $data['listData']             = array();
-        $data['attendances_type']     = AttendancesType::getData();
-        $data['study_course_session'] = StudyCourseSession::getData();
-
-
-        $data['months']               = Months::getData();
-
-        $data['formAction']           = '/add';
+        $data['formAction']           = '/scan';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'];
         $data['title']                = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
         $data['metaImage']            = asset('assets/img/icons/' . $param1 . '.png');
@@ -60,6 +53,8 @@ class StudentsAttendanceController extends Controller
                 request()->merge(['id' => $param2]);
                 return $this->edit();
             }
+        } elseif ($param1 == 'scan') {
+            $data = $this->scan($data);
         } elseif ($param1 == 'add') {
             return $this->qrcode();
         } elseif ($param1 == 'report') {
@@ -106,7 +101,9 @@ class StudentsAttendanceController extends Controller
     public function list($data)
     {
         $data['formData']['node_type'] = request('type');
-
+        $data['attendances_type']     = AttendancesType::getData();
+        $data['study_course_session'] = StudyCourseSession::getData();
+        $data['months']               = Months::getData();
         $data['holiday']   = Holidays::getHoliday(request('year'), request('month'))['data'];
         $data['response']  = StudentsAttendances::getData(request('year'), request('month'), null, request('id'), 10);
         $data['view']      = StudentsAttendances::$path['view'] . '.includes.list.index';
@@ -117,7 +114,6 @@ class StudentsAttendanceController extends Controller
 
     public function edit()
     {
-
         $exists = StudentsAttendances::existsToTable(
             request('year'),
             request('month'),
@@ -134,7 +130,6 @@ class StudentsAttendanceController extends Controller
                 Encryption::decode(request('id'))['student_study_course_id'],
                 request('absent')
             );
-
         } else {
             $response =  StudentsAttendances::addToTable(
                 request('year'),
@@ -191,6 +186,12 @@ class StudentsAttendanceController extends Controller
         };
 
         return  $response;
+    }
+
+    public function scan($data)
+    {
+        $data['view']      = StudentsAttendances::$path['view'] . '.includes.scan.index';
+        return $data;
     }
 
     public function report($data)

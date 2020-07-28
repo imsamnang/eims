@@ -57,9 +57,6 @@ class usersController extends Controller
                 return $view->index($param2, $param3);
             } elseif ($param1 == 'register') {
                 if (request()->method() == 'POST') {
-                    request()->merge([
-                        'institute'  => 1
-                    ]);
                     return Users::register();
                 }
             } else {

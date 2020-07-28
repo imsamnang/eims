@@ -52,7 +52,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase("add_absent") }}
+                            {{Translator::phrase("add_absent.(.qrcode.)")}}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -61,6 +61,7 @@
                         </button>
                     </div>
                     <div class="modal-body p-0">
+                        @if (config("pages.parameters.param1") != "scan")
                         <div class="card m-0">
                             <div class="card-body">
                                 <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}"
@@ -73,6 +74,8 @@
                                 <div class="message"></div>
                             </div>
                         </div>
+                        @endif
+
                     </div>
                 </div>
             </form>

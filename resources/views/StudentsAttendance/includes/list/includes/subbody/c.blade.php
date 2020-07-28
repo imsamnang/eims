@@ -5,7 +5,7 @@
         <td>
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" data-toggle="table-checked" id="table-check-{{$row["id"]}}"
-                    data-checked-show-controls='["edit","delete"]' type="checkbox" data-checked="table-checked"
+                    data-checked-show-controls='[]' type="checkbox" data-checked="table-checked"
                     value="{{$row["id"]}}">
                 <label class="pl-4 custom-control-label" for="table-check-{{$row["id"]}}"></label>
             </div>

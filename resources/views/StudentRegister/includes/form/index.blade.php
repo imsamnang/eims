@@ -20,10 +20,11 @@
                                         @csrf
                                         @include(config("pages.parent").".includes.form.includes.a")
                                         @include(config("pages.parent").".includes.form.includes.b")
+
                                     </div>
                                     <div class="col-md-6">
-
                                         @include(config("pages.parent").".includes.form.includes.c")
+                                        @include(config("pages.parent").".includes.form.includes.d")
                                     </div>
 
                                 </div>

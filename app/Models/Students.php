@@ -71,7 +71,7 @@ class Students extends Model
         if ($id) {
             $get = $get->whereIn((new Students())->getTable() . '.id', $id);
         }else{
-           
+
             if(request('instituteId')){
                 $get = $get->where('institute_id',request('instituteId'));
             }
@@ -497,7 +497,7 @@ class Students extends Model
         } else {
 
             $values = [
-                'institute_id'      => trim(request('institute')),
+                'institute_id'     => trim(request('institute')),
                 'first_name_km'    => trim(request('first_name_km')),
                 'last_name_km'     => trim(request('last_name_km')),
                 'first_name_en'    => trim(request('first_name_en')),

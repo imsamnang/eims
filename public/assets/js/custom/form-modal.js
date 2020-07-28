@@ -63,15 +63,11 @@ AjaxFormModal = function(opts) {
                     "text/html"
                 ),
                 newModal = $(newDocument).find("div.modal"),
-                newModalHeader = newModal.find("div.modal-header"),
-                newModalBody = newModal.find("div.modal-body"),
-                newModalFooter = newModal.find("div.modal-footer"),
-                newModalForm = newModal.find("form");
+                newModalHeader = newModal.find("div.modal-header");
             var oldModal = settings.modalContainer,
                 oldModalHeader = oldModal.find("div.modal-header"),
-                oldModalBody = oldModal.find("div.modal-body"),
-                oldModalFooter = oldModal.find("div.modal-footer"),
-                oldModalForm = oldModal.find("form");
+                oldModalBody = oldModal.find("div.modal-body");
+
 
                 oldModal.html(newModal.html());
                 oldModalHeader.html(newModalHeader.html());

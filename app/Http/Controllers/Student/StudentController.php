@@ -77,6 +77,7 @@ class StudentController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
     {
+        
 
         if (Auth::user()->role_id != 6) {
             $data['institute']            = Institute::getData();

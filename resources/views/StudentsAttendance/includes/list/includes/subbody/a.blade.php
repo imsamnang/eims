@@ -75,7 +75,7 @@
         <th width="1">
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
-                    data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
+                    data-checked-controls="table-checked" data-checked-show-controls='[]'
                     type="checkbox">
                 <label class="pl-4 custom-control-label" for="table-check-all"></label>
             </div>

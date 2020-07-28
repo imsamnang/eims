@@ -41,6 +41,7 @@ use App\Http\Controllers\Study\StudyController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
+use App\Http\Controllers\Teacher\TeacherController;
 
 class DepartmentController extends Controller
 {
@@ -112,6 +113,9 @@ class DepartmentController extends Controller
             $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .myclass');
             $data['response']   = Staff::getClassTeaching(Auth::user()->node_id);
             $data['view']       = Users::role('view_path') . '.includes.myclass.index';
+        } elseif (strtolower($param1)  == 'teaching') {
+            $view = new TeacherController;
+            return $view->teaching($param2,$param3,$param4);
         } else {
             abort(404);
         }

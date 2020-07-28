@@ -563,6 +563,7 @@ class Users extends Model
         } else {
 
             $values = [
+                'institute_id'     => trim(request('institute')),
                 'first_name_km'    => trim(request('first_name_km')),
                 'last_name_km'     => trim(request('last_name_km')),
                 'first_name_en'    => trim(request('first_name_en')),
