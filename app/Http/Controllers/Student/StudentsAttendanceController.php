@@ -54,6 +54,9 @@ class StudentsAttendanceController extends Controller
                 return $this->edit();
             }
         } elseif ($param1 == 'scan') {
+            if(request()->method() == 'POST'){
+                return $this->qrcode();
+            }
             $data = $this->scan($data);
         } elseif ($param1 == 'add') {
             return $this->qrcode();
