@@ -78,7 +78,7 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    {{Translator::phrase('edit.attendance')}}
+                                    {{Translator::phrase('add_absent.(.qrcode.)')}}
                                 </li>
                                 @endif
                             </ol>
