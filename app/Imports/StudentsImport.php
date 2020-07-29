@@ -62,7 +62,7 @@ class StudentsImport implements
                 $fullname_km = explode(' ', $row[2]);
                 $fullname_en = explode(' ', $row[3]);
 
-                if (Gender::where('km', $row[3])->first() && Marital::where('km', $row[5])->first()) {
+                if (Institute::where('km', $row[1])->first() && Gender::where('km', $row[4])->first() && Marital::where('km', $row[6])->first()) {
                     request()->merge([
                         'first_name_km' => $fullname_km[0],
                         'last_name_km' => $fullname_km[1],

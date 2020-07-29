@@ -82,7 +82,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A1:K1')
+                $event->sheet->getDelegate()->getStyle('A1:L1')
                     ->applyFromArray(
                         [
                             'font' => [
@@ -114,10 +114,10 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $column_count = count($this->headings());
 
                 for ($i = 2; $i <= $row_count; $i++) {
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getFont()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':L' . $i)->getFont()
                         ->setName('Khmer OS Battambang')
                         ->setSize(11);
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getAlignment()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':L' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
                 }
                  // Apply array of styles to 'A1:J'.$row_count cell range
