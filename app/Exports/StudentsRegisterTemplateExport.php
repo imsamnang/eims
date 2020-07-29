@@ -50,7 +50,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
         $drawing->setDescription('My Photo');
         $drawing->setPath(public_path('/assets/img/user/male.jpg'));
         $drawing->setHeight(70);
-        $drawing->setCoordinates('J2');
+        $drawing->setCoordinates('K2');
         return $drawing;
     }
 
@@ -82,7 +82,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle('A1:L1')
+                $event->sheet->getDelegate()->getStyle('A1:K1')
                     ->applyFromArray(
                         [
                             'font' => [
@@ -114,13 +114,13 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
                 $column_count = count($this->headings());
 
                 for ($i = 2; $i <= $row_count; $i++) {
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':L' . $i)->getFont()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getFont()
                         ->setName('Khmer OS Battambang')
                         ->setSize(11);
-                    $event->sheet->getDelegate()->getStyle('A' . $i . ':L' . $i)->getAlignment()
+                    $event->sheet->getDelegate()->getStyle('A' . $i . ':K' . $i)->getAlignment()
                         ->setVertical(Alignment::VERTICAL_CENTER);
                 }
-                 // Apply array of styles to 'A1:J'.$row_count cell range
+                 // Apply array of styles to 'A1:K'.$row_count cell range
                  $styleArray = [
                     'borders' => [
                         'outline' => [
@@ -129,7 +129,7 @@ class StudentsRegisterTemplateExport implements FromCollection, ShouldAutoSize, 
                         ]
                     ]
                 ];
-                $event->sheet->getDelegate()->getStyle('A1:J'.$row_count)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A1:K'.$row_count)->applyFromArray($styleArray);
 
                 // set dropdown column
                 $drop_column_institute = 'B';
