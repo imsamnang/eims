@@ -245,7 +245,7 @@ class Students extends Model
             })
             ->filter(function ($query) {
                 if(request('instituteId')){
-                    $get = $get->where('institute_id',request('instituteId'));
+                    $query = $query->where('institute_id',request('instituteId'));
                 }
                 foreach (request('columns') as $i => $value) {
                     if ($value['searchable']) {
