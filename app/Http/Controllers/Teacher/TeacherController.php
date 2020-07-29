@@ -438,11 +438,14 @@ class TeacherController extends Controller
                     $study_course_session_id[] = $value['study_course_session_id'];
                 }
                 $data['response'] = StudyCourseRoutine::getData($study_course_session_id);
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.schedule');
-                $data['view']    = 'Teacher.includes.teaching.includes.schedule.index';
             } else {
-                abort(404);
+                $data['response'] = [
+                    'success'   => false,
+                    'message'   => Translator::phrase('no_data')
+                ];
             }
+            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.schedule');
+            $data['view']    = 'Teacher.includes.teaching.includes.schedule.index';
         } elseif (strtolower($param1) == StudentsAttendances::$path['url']) {
 
             $data['months']               = Months::getData();
