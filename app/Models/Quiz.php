@@ -219,6 +219,7 @@ class Quiz extends Model
 
             try {
                 $add = Quiz::insertGetId([
+                    'staff_id'    => Auth::user()->id,
                     'institute_id' => trim(request('institute')),
                     'name'        => trim(request('name')),
                     'description' => request('description'),
