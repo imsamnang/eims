@@ -45,8 +45,6 @@ class ImagesController extends Controller
             }
         } else if (strtolower($param1) == QRHelper::$path['image']) {
             $this->response = ImageHelper::getImageNoType($param2, QRHelper::$path['image']);
-        } else if (strtolower($param1) == App::$path['image']) {
-            $this->response = ImageHelper::getImageNoType($param2, App::$path['image']);
         } else {
             $this->response = ImageHelper::getImage($param2, $param1, request('type'), request('w'), request('h'), request('q'));
         }
