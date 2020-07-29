@@ -115,7 +115,7 @@ class App extends Model
                     'location'      => $row['location'],
                     'website'       => $row['website'],
                     'description'   => $row['description'],
-                    'logo'          => ImageHelper::site(App::$path['image'], $row['logo']),
+                    'logo'          => ImageHelper::site(App::$path['image'], $row['logo'],'original'),
                     'favicon'       => ImageHelper::site(App::$path['image'], $row['favicon']),
                     'theme_color'   => ThemesColor::getData($row['theme_color_id'])['data'][0],
                     'action'        => [
