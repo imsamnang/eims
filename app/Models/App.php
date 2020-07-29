@@ -34,7 +34,7 @@ class App extends Model
                 if ($key == 'theme_color_id') {
                     config()->set('app.theme_color', $themeColor);
                 } elseif ($key == 'logo' || $key == 'favicon') {
-                    config()->set('app.' . $key, ImageHelper::site(App::$path['image'], $value), 'original');
+                    config()->set('app.' . $key, ImageHelper::site(App::$path['image'], $value, 'original'));
                 } elseif (array_key_exists($key, Languages::getLanguages()['data'])) {
                     config()->set('app.name', $app[app()->getLocale()] ? $app[app()->getLocale()] : $app['name']);
                 } else {
@@ -115,7 +115,7 @@ class App extends Model
                     'location'      => $row['location'],
                     'website'       => $row['website'],
                     'description'   => $row['description'],
-                    'logo'          => ImageHelper::site(App::$path['image'], $row['logo'],'original'),
+                    'logo'          => ImageHelper::site(App::$path['image'], $row['logo'], 'original'),
                     'favicon'       => ImageHelper::site(App::$path['image'], $row['favicon']),
                     'theme_color'   => ThemesColor::getData($row['theme_color_id'])['data'][0],
                     'action'        => [
