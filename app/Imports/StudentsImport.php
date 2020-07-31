@@ -2,25 +2,26 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Events\Import;
-use App\Exports\StudentsRegisterTemplateExport;
-use App\Helpers\DateHelper;
 use App\Models\Gender;
-use App\Models\Institute;
 use App\Models\Marital;
 use App\Models\Students;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Institute;
+use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Exports\StudentsRegisterTemplateExport;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
 
 HeadingRowFormatter::
@@ -58,7 +59,6 @@ class StudentsImport implements
             $row = array_values($row);
 
             if ($row && count($row) >= count($_template->headings())) {
-
                 $fullname_km = explode(' ', $row[2]);
                 $fullname_en = explode(' ', $row[3]);
 
@@ -69,7 +69,7 @@ class StudentsImport implements
                         'first_name_en' => $fullname_en[0],
                         'last_name_en' => $fullname_en[1],
                         'gender' => Gender::where('km', $row[4])->first()->id,
-                        'date_of_birth' => DateHelper::convert($row[5]),
+                        'date_of_birth' => gettype($row[5]) == 'string' ? DateHelper::convert($row[5]) : Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5])),
                         'marital'    => Marital::where('km', $row[6])->first()->id,
                         'permanent_address' =>  $row[7],
                         'temporaray_address' =>  $row[8],
@@ -79,6 +79,7 @@ class StudentsImport implements
                         'mother_tong'   => 1,
                         'institute'   => Institute::where('km', $row[1])->first()->id,
                     ]);
+
                     $add = Students::register();
                     $add['data'] = $row;
                     $add['row'] = $this->row;
