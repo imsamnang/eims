@@ -1,7 +1,5 @@
 <style>
-    .card .card-body {
-        flex: inherit;
-    }
+
 
     .table-xs td,
     .table-xs th {
@@ -10,31 +8,6 @@
         text-align: center;
         user-select: none;
         vertical-align: middle;
-
-    }
-
-    .custom-control {
-        min-width: 1.5rem;
-        padding-left: 0rem;
-    }
-
-    .custom-control-label::before {
-        top: .25rem;
-        left: 0.25rem;
-    }
-
-    .custom-control-label::after {
-        top: .25rem;
-        left: 0.25rem;
-    }
-
-    table th .custom-control {
-        min-height: unset
-    }
-
-    table th label.custom-control-label {
-        display: unset !important;
-        vertical-align: super;
     }
 
     table td.cell.selected {

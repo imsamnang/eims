@@ -17,13 +17,20 @@
                     </div>
 
                     <div class="modal-body p-0">
+
                         <div class="card m-0">
                             <div class="card-body">
                                 @if (request()->ajax())
+                                @if (config("pages.parameters.param1") == "view")
+                                @include(config("pages.parent").".includes.view.includes.body")
+                                @else
                                 @include(config("pages.parent").".includes.modal.includes.a")
+                                @endif
                                 @endif
                             </div>
                         </div>
+
+
                     </div>
                     <div class="modal-footer {{config("pages.form.role") == "view"? "invisible": ""}}">
                         <div class="col">

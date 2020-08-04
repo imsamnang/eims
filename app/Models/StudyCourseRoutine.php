@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DomainException;
 use App\Helpers\Exception;
 use App\Helpers\Encryption;
 use App\Helpers\Translator;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormStudyCourseRoutine;
-use Carbon\Carbon;
 
 class StudyCourseRoutine extends Model
 {
@@ -24,12 +24,12 @@ class StudyCourseRoutine extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . self::$path['url'] . '/add/'),
             ),
         );
         $data = array();
-        $get = StudyCourseRoutine::select((new StudyCourseRoutine())->getTable() . '.*')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudyCourseRoutine())->getTable() . '.study_course_session_id')
+        $get = self::select((new self())->getTable() . '.*')
+            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new self())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
             ->orderBy('study_course_session_id', 'DESC');
 
@@ -60,7 +60,7 @@ class StudyCourseRoutine extends Model
 
         if ($get) {
             foreach ($get as $key => $row) {
-                $routine = StudyCourseRoutine::where('study_course_session_id', $row['study_course_session_id'])->get()->toArray();
+                $routine = self::where('study_course_session_id', $row['study_course_session_id'])->get()->toArray();
                 $kdata = [];
 
                 foreach ($routine as  $k) {
@@ -96,8 +96,8 @@ class StudyCourseRoutine extends Model
                     'study_course_session' => StudyCoursesession::getData($row['study_course_session_id'])['data'][0],
                     'children' => array_values($kdata),
                     'action' => [
-                        'edit'    => url(users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/edit/' . $generateId),
-                        'delete'  => url(users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/delete/' . $generateId),
+                        'edit'    => url(users::role() . '/study/' . self::$path['url'] . '/edit/' . $generateId),
+                        'delete'  => url(users::role() . '/study/' . self::$path['url'] . '/delete/' . $generateId),
                     ]
                 );
                 $data[$key]['name'] =  $data[$key]['study_course_session']['name'];
@@ -128,10 +128,67 @@ class StudyCourseRoutine extends Model
         return $response;
     }
 
+    public static function getDataTable()
+    {
+        $model = self::select((new self())->getTable().'.*')
+        ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new self())->getTable() . '.study_course_session_id')
+        ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+        ->groupBy('study_course_session_id');
+
+        return DataTables::eloquent($model)
+            ->setTransformer(function ($row) {
+                $row = $row->toArray();
+                $study_course_session = StudyCourseSession::getData($row['study_course_session_id'])['data'][0];
+                $generateId = Encryption::encode([
+                    'study_course_session_id' => $row['study_course_session_id'],
+                ]);
+                return [
+                    'id'    => $row['id'],
+                    'study_course_session' => $study_course_session,
+                    'action' => [
+                        'view'    => url(users::role() . '/study/' . self::$path['url'] . '/view/' . $generateId),
+                        'edit'    => url(users::role() . '/study/' . self::$path['url'] . '/edit/' . $generateId),
+                        'delete'  => url(users::role() . '/study/' . self::$path['url'] . '/delete/' . $generateId),
+                    ]
+                ];
+            })
+            ->filter(function ($query) {
+
+                if(request('instituteId')){
+                    $query = $query->where('institute_id',request('instituteId'));
+                }
+
+                // if (request('search.value')) {
+                //     foreach (request('columns') as $i => $value) {
+                //         if ($value['searchable']) {
+                //             if ($value['data'] == 'name') {
+                //                 $query =  $query->where(function ($q) {
+                //                     $q->where('study_course_session.name', 'LIKE', '%' . request('search.value') . '%');
+                //                 });
+                //             }
+                //         }
+                //     }
+                // }
+
+                return $query;
+            })
+            ->order(function ($query) {
+                if (request('order')) {
+                    foreach (request('order') as $order) {
+                        $col = request('columns')[$order['column']];
+                        if ($col['data'] == 'id') {
+                            $query->orderBy('id', $order['dir']);
+                        }
+                    }
+                }
+            })
+            ->toJson();
+    }
+
     public static function getSubject($study_course_session_id, $study_subject_id = null)
     {
         $data = array();
-        $get = StudyCourseRoutine::orderBy('day_id', 'ASC')->groupBy('study_subject_id')
+        $get = self::orderBy('day_id', 'ASC')->groupBy('study_subject_id')
             ->where('study_course_session_id', $study_course_session_id);
         if ($study_subject_id) {
             $get = $get->where('study_subject_id', $study_subject_id);
@@ -157,7 +214,7 @@ class StudyCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseRoutine::rulesField('.*'), FormStudyCourseRoutine::customMessages(), FormStudyCourseRoutine::attributeField());
+        $validator          = Validator::make(request()->all(), Formself::rulesField('.*'), Formself::customMessages(), Formself::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -166,7 +223,7 @@ class StudyCourseRoutine extends Model
         } else {
 
             try {
-                $exists = StudyCourseRoutine::existsToTable();
+                $exists = self::existsToTable();
                 if ($exists) {
                     $response       = array(
                         'success'   => false,
@@ -202,7 +259,7 @@ class StudyCourseRoutine extends Model
                         }
                     }
 
-                    $add = StudyCourseRoutine::insert($values);
+                    $add = self::insert($values);
                     if ($add) {
                         $response       = array(
                             'success'   => true,
@@ -229,7 +286,7 @@ class StudyCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseRoutine::rulesField('.*'), FormStudyCourseRoutine::customMessages(), FormStudyCourseRoutine::attributeField());
+        $validator          = Validator::make(request()->all(), Formself::rulesField('.*'), Formself::customMessages(), Formself::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -239,10 +296,10 @@ class StudyCourseRoutine extends Model
 
             try {
 
-                $exists = StudyCourseRoutine::existsToTable();
+                $exists = self::existsToTable();
 
                 if ($exists) {
-                    StudyCourseRoutine::where('study_course_session_id', $exists->study_course_session_id)->delete();
+                    self::where('study_course_session_id', $exists->study_course_session_id)->delete();
                     $values = array();
                     foreach (request('day') as $k => $day) {
                         foreach ($day as $key => $value) {
@@ -265,7 +322,7 @@ class StudyCourseRoutine extends Model
                     }
 
 
-                    $add = StudyCourseRoutine::insert($values);
+                    $add = self::insert($values);
                     if ($add) {
                         $response       = array(
                             'success'   => true,
@@ -290,7 +347,7 @@ class StudyCourseRoutine extends Model
     }
     public static function existsToTable()
     {
-        return StudyCourseRoutine::where('study_course_session_id', request('study_course_session'))->first();
+        return self::where('study_course_session_id', request('study_course_session'))->first();
     }
 
     public static function deleteFromTable($id)
@@ -302,10 +359,10 @@ class StudyCourseRoutine extends Model
             foreach ($ids as $key => $value) {
                 $id[] = Encryption::decode($value)['study_course_session_id'];
             }
-            if (StudyCourseRoutine::whereIn('study_course_session_id', $id)->get()->toArray()) {
+            if (self::whereIn('study_course_session_id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StudyCourseRoutine::whereIn('study_course_session_id', $id)->delete();
+                        $delete    = self::whereIn('study_course_session_id', $id)->delete();
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,

@@ -46,7 +46,15 @@ class StudyCourseRoutineController extends Controller
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
+
             $data = $this->list($data, $param1);
+
+        } elseif (strtolower($param1) == 'list-datatable') {
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return StudyCourseRoutine::getDataTable();
+            } else {
+                $data = $this->list($data,$param1);
+            }
         } elseif ($param1 == 'add') {
 
             if (request()->ajax()) {
@@ -143,8 +151,8 @@ class StudyCourseRoutineController extends Controller
 
     public function view($data, $id)
     {
-        $response = StudyCourseRoutine::getData($id, true);
-        $data['view']       = StudyCourseRoutine::$path['view'] . '.includes.view';
+        $response = StudyCourseRoutine::getData(Encryption::decode($id)['study_course_session_id'], true);
+        $data['view']       = StudyCourseRoutine::$path['view'] . '.includes.view.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Study_Course_Schedule');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
