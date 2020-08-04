@@ -45,12 +45,12 @@ class Translator
                 return $string;
             }
         } else {
-            // if(Lang::has('phrase.'.$string)){
-            //     return Lang::get('phrase.'.$string);
-            // }else{
-            //     $string =  str_replace('_', ' ', $string);
-            //     return ($string);
-            // }
+            if (Lang::has('phrase.' . $string)) {
+                return Lang::get('phrase.' . $string);
+            } else {
+                $string =  str_replace('_', ' ', $string);
+                return ($string);
+            }
             $phrases = Translates::where('phrase', $string)->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["en"];
@@ -61,88 +61,83 @@ class Translator
             }
         }
     }
-    public static function day(string $string  , $lang = null , $getString = null){
+    public static function day(string $string, $lang = null, $getString = null)
+    {
         if ($lang) {
-            $phrases = Days::select($lang)->where('name','like','%' .  $string . '%')->first();
+            $phrases = Days::select($lang)->where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string = $phrases[$lang];
-                if($getString == "short"){
-                    $string = $lang == "km" ? (Days::getKMShort($phrases["id"] - 1)) : substr($string,0,3);
+                if ($getString == "short") {
+                    $string = $lang == "km" ? (Days::getKMShort($phrases["id"] - 1)) : substr($string, 0, 3);
                 }
                 return $string;
             }
-
         } else {
-            $phrases = Days::where('name','like','%' .  $string . '%')->first();
+            $phrases = Days::where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["name"];
-                if($getString == "short"){
-                    $string =  app()->getLocale() == "km" ? (Days::getKMShort($phrases["id"] - 1)) : substr($string,0,3);
+                if ($getString == "short") {
+                    $string =  app()->getLocale() == "km" ? (Days::getKMShort($phrases["id"] - 1)) : substr($string, 0, 3);
                 }
                 return $string;
             }
-
         }
     }
 
-    public static function month($string , $lang = null , $getString = null){
+    public static function month($string, $lang = null, $getString = null)
+    {
 
         if ($lang) {
-            $phrases = Months::select($lang)->where('name','like','%' .  $string . '%')->first();
+            $phrases = Months::select($lang)->where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string = $phrases[$lang];
                 return $string;
             }
-
         } else {
-            $phrases = Months::where('name','like','%' .  $string . '%')->first();
+            $phrases = Months::where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["name"];
-                if($getString == "short"){
-                   // $string =  app()->getLocale() == "km" ? (Months::getKMShort($phrases["id"] - 1)) : substr($string,0,3);
+                if ($getString == "short") {
+                    // $string =  app()->getLocale() == "km" ? (Months::getKMShort($phrases["id"] - 1)) : substr($string,0,3);
                 }
                 return $string;
             }
-
         }
     }
 
-    public static function attendance(string $string , $lang = null , $getString = null){
+    public static function attendance(string $string, $lang = null, $getString = null)
+    {
         if ($lang) {
-            $phrases = AttendancesType::select($lang)->where('name','like','%' .  $string . '%')->first();
+            $phrases = AttendancesType::select($lang)->where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string = $phrases[$lang];
                 return $string;
             }
-
         } else {
-            $phrases = AttendancesType::where('name','like','%' .  $string . '%')->first();
+            $phrases = AttendancesType::where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["name"];
 
                 return $string;
             }
-
         }
     }
 
-    public static function role(string $string , $lang = null , $getString = null){
+    public static function role(string $string, $lang = null, $getString = null)
+    {
         if ($lang) {
-            $phrases = Roles::select($lang)->where('name','like','%' .  $string . '%')->first();
+            $phrases = Roles::select($lang)->where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string = $phrases[$lang];
                 return $string;
             }
-
         } else {
-            $phrases = Roles::where('name','like','%' .  $string . '%')->first();
+            $phrases = Roles::where('name', 'like', '%' .  $string . '%')->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["name"];
 
                 return $string;
             }
-
         }
     }
-
 }
