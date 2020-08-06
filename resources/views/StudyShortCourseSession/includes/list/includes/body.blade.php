@@ -18,16 +18,8 @@
                     <th data-type="text" data-key="study_short_course_schedule.name" width="1" class="sort"
                         data-sort="study_subject">
                         {{Translator::phrase("study_subject")}}​</th>
-                    <th data-type="text" data-key="study_short_course_schedule.study_subject.credit_hour">
-                        {{Translator::phrase("credit_hour")}}​
+                    <th data-type="text" data-key="study_session.name">{{Translator::phrase("study_session")}}​
                     </th>
-                    <th data-type="link" data-key="student.total" data-url="student.link_view">
-                        {{Translator::phrase("student")}}​
-                    </th>
-                    <th data-type="text" data-key="study_session.name">
-                        {{Translator::phrase("study_session")}}​
-                    </th>
-
                     <th data-type="text" data-key="study_start,study_end" data-join="&#9866;">
                         {{Translator::phrase("study_start. & .study_end")}}​</th>
                     <th data-type="image" data-key="study_short_course_schedule.image" width="1" class="sort"

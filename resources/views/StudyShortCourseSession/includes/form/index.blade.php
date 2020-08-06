@@ -16,7 +16,6 @@
                                 <input type="hidden" name="id" value="{{config('pages.form.data.id')}}">
                                 @endif
                                 @include(config("pages.parent").".includes.form.includes.a")
-                                @include(config("pages.parent").".includes.form.includes.b")
                             </div>
                         </div>
                     </div>

@@ -19,10 +19,6 @@ class CreateStudyShortCourseSessionsTable extends Migration
             $table->bigInteger('study_session_id')->unsigned()->nullable();
             $table->date('study_start')->nullable();
             $table->date('study_end')->nullable();
-            $table->bigInteger('province_id')->unsigned()->nullable();
-            $table->bigInteger('district_id')->unsigned()->nullable();
-            $table->bigInteger('commune_id')->unsigned()->nullable();
-            $table->bigInteger('village_id')->unsigned()->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });

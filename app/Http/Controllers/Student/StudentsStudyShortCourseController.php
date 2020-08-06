@@ -97,6 +97,10 @@ class StudentsStudyShortCourseController extends Controller
             'view'       => $data['view'],
         );
 
+
+
+
+
         $pages['form']['validate'] = [
             'rules'       => FormStudentsStudyShortCourse::rulesField(),
             'attributes'  => FormStudentsStudyShortCourse::attributeField(),
@@ -142,6 +146,12 @@ class StudentsStudyShortCourseController extends Controller
             $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
         }
         $data['student']              = StudentsShortCourseRequest::getData($student);
+
+
+
+
+
+
         return $data;
     }
 }

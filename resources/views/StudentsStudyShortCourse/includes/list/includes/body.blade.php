@@ -15,6 +15,10 @@
                     </th>
                     <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
+                    @if (Auth::user()->role_id != 2)
+                    <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
+                        {{Translator::phrase("institute")}}​</th>
+                    @endif
                     <th width=1 data-type="text" data-key="name">
                         {{Translator::phrase("name")}}​
                     </th>

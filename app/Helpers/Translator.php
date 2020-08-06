@@ -45,12 +45,12 @@ class Translator
                 return $string;
             }
         } else {
-            // if (Lang::has('phrase.' . $string)) {
-            //     return Lang::get('phrase.' . $string);
-            // } else {
-            //     $string =  str_replace('_', ' ', $string);
-            //     return ($string);
-            // }
+            if (Lang::has('phrase.' . $string)) {
+                return Lang::get('phrase.' . $string);
+            } else {
+                $string =  str_replace('_', ' ', $string);
+                return ($string);
+            }
             $phrases = Translates::where('phrase', $string)->first();
             if ($phrases) {
                 $string =  $phrases[app()->getLocale()] ?  $phrases[app()->getLocale()] : $phrases["en"];
