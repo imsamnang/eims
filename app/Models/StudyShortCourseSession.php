@@ -141,12 +141,21 @@ class StudyShortCourseSession extends Model
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
+                $student = StudentsStudyShortCourse::where('stu_sh_c_session_id', $row['id'])->count();
                 return [
                     'id'  => $row['id'],
                     'study_short_course_schedule' => StudyShortCourseSchedule::getData($row['stu_sh_c_schedule_id'])['data'][0],
                     'study_session' => StudySession::getData($row['study_session_id'])['data'][0],
                     'study_start'   => DateHelper::convert($row['study_start'], 'd-M-Y'),
                     'study_end'    => DateHelper::convert($row['study_end'],  'd-M-Y'),
+                    'student'       => [
+                        'total'  => Translator::phrase('student') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
+                        'link_view'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/list?stu_sh_c_sessionId=' . $row['id']),
+                    ],
+                    'province'      => $row['province_id'],
+                    'district'      => $row['district_id'],
+                    'commune'      => $row['commune_id'],
+                    'village'      => $row['village_id'],
                     'action'        => [
                         'edit' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/view/' . $row['id']),
@@ -209,6 +218,10 @@ class StudyShortCourseSession extends Model
                         'study_session_id'      => request('study_session'),
                         'study_start'      => DateHelper::convert(trim(request('study_start'))),
                         'study_end'      => DateHelper::convert(trim(request('study_end'))),
+                        'province_id'      => trim(request('province')),
+                        'district_id'      => trim(request('district')),
+                        'commune_id'      => trim(request('commune')),
+                        'village_id'      => trim(request('village')),
                     ]);
                     if ($add) {
                         $response       = array(
@@ -252,6 +265,10 @@ class StudyShortCourseSession extends Model
                     'study_session_id'      => request('study_session'),
                     'study_start'      => DateHelper::convert(trim(request('study_start'))),
                     'study_end'      => DateHelper::convert(trim(request('study_end'))),
+                    'province_id'      => trim(request('province')),
+                    'district_id'      => trim(request('district')),
+                    'commune_id'      => trim(request('commune')),
+                    'village_id'      => trim(request('village')),
                 ]);
                 if ($update) {
                     $response       = array(

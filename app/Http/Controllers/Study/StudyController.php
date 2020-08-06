@@ -7,6 +7,7 @@ use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Models\StudyClass;
+use App\Models\StudyGrade;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
@@ -25,10 +26,16 @@ use App\Models\StudyGeneration;
 use App\Models\CurriculumAuthor;
 use App\Models\StudyOverallFund;
 use App\Models\StudyAcademicYears;
+use App\Models\StudyCourseRoutine;
+use App\Models\StudyCourseSession;
+use App\Models\StudySubjectLesson;
 use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CurriculumEndorsement;
+use App\Models\StudyShortCourseRoutine;
+use App\Models\StudyShortCourseSession;
+use App\Models\StudyShortCourseSchedule;
 use App\Http\Controllers\Study\InstituteController;
 use App\Http\Controllers\Study\CourseTypeController;
 use App\Http\Controllers\Study\StudyCourseController;
@@ -44,12 +51,6 @@ use App\Http\Controllers\Study\StudyOverallFundController;
 use App\Http\Controllers\Study\StudyAcademicYearController;
 use App\Http\Controllers\Study\StudyCourseScheduleController;
 use App\Http\Controllers\Study\CurriculumEndorsementController;
-use App\Models\StudyCourseRoutine;
-use App\Models\StudyCourseSession;
-use App\Models\StudyGrade;
-use App\Models\StudyShortCourseSchedule;
-use App\Models\StudyShortCourseSession;
-use App\Models\StudySubjectLesson;
 
 class StudyController extends Controller
 {
@@ -194,6 +195,13 @@ class StudyController extends Controller
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
+                        [
+                            'name'  => Translator::phrase('list.short_course_routine'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseRoutine::$path['url'] . '/list'),
+                            'icon'  => 'fal fa-table',
+                            'image' => null,
+                            'color' => 'bg-' . config('app.theme_color.name'),
+                        ]
                     ]
                 ],
                 [
@@ -355,6 +363,9 @@ class StudyController extends Controller
 
         } elseif (strtolower($param1) == StudyShortCourseSession::$path['url']) {
             $view = new StudyShortCourseSessionController;
+            return $view->index($param2, $param3);
+        } elseif (strtolower($param1) == StudyShortCourseRoutine::$path['url']) {
+            $view = new StudyShortCourseRoutineController;
             return $view->index($param2, $param3);
         } else {
             abort(404);

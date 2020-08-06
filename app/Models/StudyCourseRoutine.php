@@ -8,6 +8,7 @@ use App\Helpers\Exception;
 use App\Helpers\Encryption;
 use App\Helpers\Translator;
 use App\Helpers\ImageHelper;
+use App\Http\Requests\FormStudyCourseRoutine;
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -214,7 +215,7 @@ class StudyCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), Formself::rulesField('.*'), Formself::customMessages(), Formself::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourseRoutine::rulesField('.*'), FormStudyCourseRoutine::customMessages(), FormStudyCourseRoutine::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -286,7 +287,7 @@ class StudyCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), Formself::rulesField('.*'), Formself::customMessages(), Formself::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourseRoutine::rulesField('.*'), FormStudyCourseRoutine::customMessages(), FormStudyCourseRoutine::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

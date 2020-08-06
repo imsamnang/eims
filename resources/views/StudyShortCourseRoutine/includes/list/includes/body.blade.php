@@ -15,24 +15,9 @@
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{Translator::phrase("numbering")}}​</th>
-                    <th data-type="text" data-key="study_short_course_schedule.name" width="1" class="sort"
-                        data-sort="study_subject">
-                        {{Translator::phrase("study_subject")}}​</th>
-                    <th data-type="text" data-key="study_short_course_schedule.study_subject.credit_hour">
-                        {{Translator::phrase("credit_hour")}}​
-                    </th>
-                    <th data-type="link" data-key="student.total" data-url="student.link_view">
-                        {{Translator::phrase("student")}}​
-                    </th>
-                    <th data-type="text" data-key="study_session.name">
-                        {{Translator::phrase("study_session")}}​
-                    </th>
-
-                    <th data-type="text" data-key="study_start,study_end" data-join="&#9866;">
-                        {{Translator::phrase("study_start. & .study_end")}}​</th>
-                    <th data-type="image" data-key="study_short_course_schedule.image" width="1" class="sort"
-                        data-sort="image">
-                        {{Translator::phrase("image")}}​</th>
+                    <th class="sort" data-type="modal" data-key="study_course_session.name" data-url="action.view">{{Translator::phrase("study_course")}}​</th>
+                    <th class="sort" data-type="text" data-join="&#9866;" data-key="study_course_session.study_start,study_course_session.study_end">{{Translator::phrase("study_start. & .study_end")}}​</th>
+                    <th class="sort" data-type="image" data-key="study_course_session.image">{{Translator::phrase("image")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
 
                 </tr>
