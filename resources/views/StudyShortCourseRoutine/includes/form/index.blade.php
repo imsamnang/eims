@@ -1,12 +1,13 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="card-wrapper">
-            <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST" action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
-                enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
+            <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
+                action="{{config("pages.form.action.detect")}}" id="form-course-routine"
+                enctype="multipart/form-data" data-validation="{{json_encode(config('pages.form.validate'))}}">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase(config("pages.form.role")) }}</h5>
+                            {{ Translator:: phrase(config("pages.form.role").".".str_replace("-","_",config("pages.form.name"))) }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -16,7 +17,6 @@
                                 <input type="hidden" name="id" value="{{config('pages.form.data.id')}}">
                                 @endif
                                 @include(config("pages.parent").".includes.form.includes.a")
-                                @include(config("pages.parent").".includes.form.includes.b")
                             </div>
                         </div>
                     </div>
@@ -27,11 +27,18 @@
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
                             class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
                         @endif
-
                         <a href="" name="scrollTo"></a>
-                        <button href="{{config("pages.form.action.add")}}" class="btn btn-primary ml-auto pull-right"
-                            data-for="save" id="btn-save" name="btn-save"
-                            type="submit">{{ Translator:: phrase("save") }}</button>
+                        <button
+                            class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
+                            type="submit">
+                            @if (config("pages.form.role") == "add")
+                            {{ Translator:: phrase("save") }}
+                            @elseif(config("pages.form.role") == "edit")
+                            {{ Translator:: phrase("update") }}
+                            @elseif(config("pages.form.role") == "view")
+                            {{ Translator:: phrase("goto.edit") }}
+                            @endif
+                        </button>
                     </div>
 
                 </div>

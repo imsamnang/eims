@@ -3,7 +3,6 @@
         <div class="{{count($listData) <= 1 ? "col-md-12":"col-md-8"}}" data-list-group>
             @csrf
             @include(config("pages.parent").".includes.form.includes.a")
-            @include(config("pages.parent").".includes.form.includes.b")
         </div>
         @if (count($listData) > 1)
         <div class="col-md-4">

@@ -18,7 +18,7 @@ class CreateStudyShortCourseRoutinesTable extends Migration
             $table->bigInteger('stu_sh_c_session_id')->unsigned()->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->time('day')->nullable();
+            $table->bigInteger('day_id')->unsigned()->nullable();
             $table->bigInteger('teacher_id')->unsigned()->nullable();
             $table->bigInteger('study_class_id')->unsigned()->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();

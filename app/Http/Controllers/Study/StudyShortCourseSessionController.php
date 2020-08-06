@@ -4,17 +4,20 @@ namespace App\Http\Controllers\Study;
 
 use App\Models\App;
 use App\Models\Users;
+use App\Models\Communes;
+use App\Models\Villages;
+use App\Models\Districts;
 use App\Models\Languages;
+use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\Translator;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
-use App\Models\StudyShortCourseSession;
-use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStudyShortCourseSession;
+use App\Models\StudyShortCourseSession;
 use App\Models\StudyShortCourseSchedule;
+use App\Http\Requests\FormStudyShortCourseSession;
 
 class StudyShortCourseSessionController extends Controller
 {
@@ -128,6 +131,11 @@ class StudyShortCourseSessionController extends Controller
 
     public function show($data, $id, $type)
     {
+        $data['provinces']           = Provinces::getData();
+        $data['districts']           = Districts::getData('null', 'null');
+        $data['communes']            = Communes::getData('null', 'null');
+        $data['villages']            = Villages::getData('null', 'null');
+
         $data['view']       = StudyShortCourseSession::$path['view'] . '.includes.form.index';
         $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Course_Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
