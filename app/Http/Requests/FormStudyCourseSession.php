@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudyCourseSession extends FormRequest
@@ -37,10 +37,10 @@ class FormStudyCourseSession extends FormRequest
     {
         return [
 
-            'study_course_schedule'      => Translator::phrase('study_course_schedule'),
-            'study_session'              => Translator::phrase('study_session'),
-            'study_start'                => Translator::phrase('study_start'),
-            'study_end'                  => Translator::phrase('study_end'),
+            'study_course_schedule'      => __('Study course schedule'),
+            'study_session'              => __('Study session'),
+            'study_start'                => __('Study start'),
+            'study_end'                  => __('Study end'),
 
         ];
     }

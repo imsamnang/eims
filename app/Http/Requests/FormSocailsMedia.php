@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormSocailsMedia extends FormRequest
@@ -47,20 +47,20 @@ class FormSocailsMedia extends FormRequest
     public static function attributeField()
     {
         $attributes = [
-            'facebook'      =>  Translator::phrase('facebook'),
-            'linkedin'      =>  Translator::phrase('linkedin'),
-            'google-plus'   =>  Translator::phrase('google_plus'),
-            'whatsapp'      =>  Translator::phrase('whatsapp'),
-            'pinterest'     =>  Translator::phrase('pinterest'),
-            'twitter'       =>  Translator::phrase('twitter'),
-            'youtube'       =>  Translator::phrase('youtube'),
-            'instagram'     =>  Translator::phrase('instagram'),
-            'skype'         =>  Translator::phrase('skype'),
-            'wordpress'     =>  Translator::phrase('wordpress'),
-            'tripadvisor'   =>  Translator::phrase('tripadvisor'),
-            'rss'           =>  Translator::phrase('rss'),
-            'like-cambodia' =>  Translator::phrase('like_cambodia'),
-            'github'        =>  Translator::phrase('github'),
+            'facebook'      =>  __('Facebook'),
+            'linkedin'      =>  __('Linkedin'),
+            'google-plus'   =>  __('Google plus'),
+            'whatsapp'      =>  __('WhatsApp'),
+            'pinterest'     =>  __('Pinterest'),
+            'twitter'       =>  __('Twitter'),
+            'youtube'       =>  __('Youtube'),
+            'instagram'     =>  __('Instagram'),
+            'skype'         =>  __('Skype'),
+            'wordpress'     =>  __('Wordpress'),
+            'tripadvisor'   =>  __('Tripadvisor'),
+            'rss'           =>  __('Rss'),
+            'like-cambodia' =>  __('Like Cambodia'),
+            'github'        =>  __('Github'),
         ];
 
         return $attributes;

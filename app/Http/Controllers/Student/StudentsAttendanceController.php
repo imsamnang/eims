@@ -14,7 +14,7 @@ use App\Models\Languages;
 use App\Helpers\Encryption;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\AttendancesType;
 use App\Models\StudyCourseSession;
@@ -42,7 +42,7 @@ class StudentsAttendanceController extends Controller
         $data['listData']             = array();
         $data['formAction']           = '/scan';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'];
-        $data['title']                = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Attendance');
         $data['metaImage']            = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']             = url(Users::role() . '/' . $param1);
 
@@ -110,7 +110,7 @@ class StudentsAttendanceController extends Controller
         $data['holiday']   = Holidays::getHoliday(request('year'), request('month'))['data'];
         $data['response']  = StudentsAttendances::getData(request('year'), request('month'), null, request('id'), 10);
         $data['view']      = StudentsAttendances::$path['view'] . '.includes.list.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.student_attendance');
+        $data['title']                = Users::role(app()->getLocale()) .' | '.__('List Student Attendance');
 
         return $data;
     }
@@ -172,7 +172,7 @@ class StudentsAttendanceController extends Controller
                         'data'      => $node,
                         'type'      => 'exists',
                         'sound'     => asset('assets/sounds/' . app()->getLocale() . '/your_presence_is_already_exists.mp3'),
-                        'message'   => Translator::phrase('already_exists'),
+                        'message'   => __('Already exists'),
                     );
                 }
             } else {
@@ -184,7 +184,7 @@ class StudentsAttendanceController extends Controller
                 'data'      => $node,
                 'type'      => 'expired',
                 'sound'     => asset('assets/sounds/' . app()->getLocale() . '/your_qrcode_is_expired.mp3'),
-                'message'   => Translator::phrase('qrcode_expired'),
+                'message'   => __('Qrcode expired'),
             );
         };
 
@@ -203,7 +203,7 @@ class StudentsAttendanceController extends Controller
         $data['holiday']   = Holidays::getHoliday(request('year'), request('month'))['data'];
         $data['response']  = StudentsAttendances::getData(request('year'), request('month'), null, request('id'));
         $data['view']      = StudentsAttendances::$path['view'] . '.includes.report.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName'] . '.');
+        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Attendance Report');
         return $data;
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
@@ -114,14 +114,14 @@ class StaffStatusController extends Controller
     {
         $data['response'] = StaffStatus::getData(null, null, true);
         $data['view']     = StaffStatus::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.staff_status');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('List Staff status');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StaffStatus::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.staff_status');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Add Staff status');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -131,7 +131,7 @@ class StaffStatusController extends Controller
     {
         $response = StaffStatus::getData(null, $id, true);
         $data['view']       = StaffStatus::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.staff_status');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Edit Staff status');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -144,7 +144,7 @@ class StaffStatusController extends Controller
     {
         $response = StaffStatus::getData(null, $id, true);
         $data['view']       = StaffStatus::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.staff_status');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('View Staff status');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

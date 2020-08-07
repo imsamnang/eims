@@ -8,7 +8,7 @@ use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormInstitute;
@@ -110,14 +110,14 @@ class InstituteController extends Controller
     public function list($data)
     {
         $data['view']     = Institute::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Institute');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Institute');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Institute::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Institute');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Institute');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -127,7 +127,7 @@ class InstituteController extends Controller
     {
         $response = Institute::getData($id, true);
         $data['view']       = Institute::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Institute');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Institute');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -140,7 +140,7 @@ class InstituteController extends Controller
     {
         $response = Institute::getData($id, true);
         $data['view']       = Institute::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Institute');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Institute');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

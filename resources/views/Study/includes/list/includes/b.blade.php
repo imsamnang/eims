@@ -11,11 +11,11 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th width="1" class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
+                    <th width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
                     <th class="sort" data-sort="name">
-                        {{Translator::phrase(str_replace("-","_",config("pages.form.name")))}}​</th>
-                    <th>{{Translator::phrase("description")}}​</th>
-                    <th width="1">{{Translator::phrase("image")}}​</th>
+                        {{__('Name')}}​</th>
+                    <th>{{__("Description")}}​</th>
+                    <th width="1">{{__("Image")}}​</th>
                     <th width="1" class="d-none"></th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
                         @if ($row["description"])
                         {{  $row["description"]}}
                         @else
-                        {{-- <span class="text-red"> {{ Translator::phrase("empty")}}</span> --}}
+                        {{-- <span class="text-red"> {{ __("Empty")}}</span> --}}
                         @endif
 
                     </td>
@@ -53,16 +53,16 @@
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                 <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
                                     href="{{$row["action"]["view"]}}">
-                                    <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                                    <i class="fas fa-eye"></i> {{__("View")}}
                                 </a>
 
                                 <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
                                     href="{{$row["action"]["edit"]}}">
-                                    <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
+                                    <i class="fas fa-edit"></i> {{__("Edit")}}</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-toggle="sweet-alert" data-sweet-alert="confirm"
                                     data-sweet-id="{{$row["id"]}}" href="{{$row["action"]["delete"]}}">
-                                    <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                                    <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                             </div>
                         </div>
                     </td>

@@ -8,7 +8,7 @@ use App\Models\Languages;
 use App\Models\BloodGroup;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormBloodGroup;
@@ -112,14 +112,14 @@ class BloodGroupController extends Controller
     public function list($data)
     {
         $data['view']     = BloodGroup::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.blood_group');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Blood group');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = BloodGroup::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.blood_group');
+        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Blood group');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class BloodGroupController extends Controller
     {
         $response = BloodGroup::getData($id, true);
         $data['view']       = BloodGroup::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.blood_group');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Blood group');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class BloodGroupController extends Controller
     {
         $response = BloodGroup::getData($id, true);
         $data['view']       = BloodGroup::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.blood_group');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Blood group');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

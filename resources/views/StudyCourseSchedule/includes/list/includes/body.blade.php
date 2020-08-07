@@ -14,19 +14,19 @@
                         </div>
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
-                    <th data-type="text" data-key="institute.short_name">{{Translator::phrase("institute")}}​
+                        {{__("Id")}}​</th>
+                    <th data-type="text" data-key="institute.short_name">{{__("Institute"}}​
                     </th>
-                    <th data-type="text" data-key="study_program.name">{{Translator::phrase("study_program")}}​
+                    <th data-type="text" data-key="study_program.name">{{__("Study Program")}}​
                     </th>
-                    <th data-type="text" data-key="study_course.name">{{Translator::phrase("study_course")}}​
+                    <th data-type="text" data-key="study_course.name">{{__("Study Course")}}​
                     </th>
                     <th data-type="text" data-key="study_generation.name">
-                        {{Translator::phrase("study_generation")}}​</th>
+                        {{__("Study Generation")}}​</th>
                     <th data-type="text" data-key="study_academic_year.name">
-                        {{Translator::phrase("study_academic_year")}}​</th>
+                        {{__("Study Academic year")}}​</th>
                     <th data-type="text" data-key="study_semester.name">
-                        {{Translator::phrase("study_semester")}}​</th>
+                        {{__("Study Semester")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
 
                 </tr>
@@ -41,19 +41,19 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
-                        <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
+                        <i class="fas fa-edit"></i> {{__("Edit")}}</a>
 
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

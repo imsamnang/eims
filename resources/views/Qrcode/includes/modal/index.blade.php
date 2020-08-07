@@ -7,7 +7,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase("qrcode") }}
+                            {{ __("Qrcode") }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -31,7 +31,7 @@
                                 <div class="{{count($listData) > 1 ? "col-md-8":"col-md-12"}}">
                                     <a href="" name="scrollTo"></a>
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                     </button>
                                 </div>
                             </div>

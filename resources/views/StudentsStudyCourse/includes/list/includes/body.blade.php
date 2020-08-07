@@ -15,26 +15,26 @@
                         </div>
                     </th>
                     <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
 
                     <th width=1 data-type="text" data-key="name">
-                        {{Translator::phrase("name")}}​
+                        {{__("Name")}}​
                     </th>
                     <th width=1 data-type="text" data-key="study_course_session.name">
-                        {{Translator::phrase("course")}}​
+                        {{__("Course")}}​
                     </th>
                     <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green"
                         data-key="account">
-                        {{Translator::phrase("account")}}​
+                        {{__("Account")}}​
                     </th>
                     {{-- <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green" data-key="qrcode">
-                                {{Translator::phrase("qrcode")}}​
+                                {{__("Qrcode")}}​
                     </th>
                     <th width=1 data-type="icon" data-icon="fas fa-check-circle" data-color="text-green"
                         data-key="card">
-                        {{Translator::phrase("card")}}​
+                        {{__("Card")}}​
                     </th> --}}
-                    <th width=1 data-type="image" data-key="photo">{{Translator::phrase("photo")}}​</th>
+                    <th width=1 data-type="image" data-key="photo">{{__("Photo")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete,photo,qrcode,card,certificate">
                     </th>
 
@@ -50,12 +50,12 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item">
                         <i class="fas fa-edit"></i>
-                        {{Translator::phrase("edit")}}
+                        {{__("Edit")}}
                     </a>
 
 
@@ -63,30 +63,30 @@
                     <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-photo"
                         class="dropdown-item">
                         <i class="fas fa-portrait "></i>
-                        {{Translator::phrase("photo")}}
+                        {{__("Photo")}}
                     </a>
                     <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-qrcode"
                         class="dropdown-item">
                         <i class="fas fa-qrcode "></i>
-                        {{Translator::phrase("qrcode")}}
+                        {{__("Qrcode")}}
                     </a>
                     <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-card"
                         class="dropdown-item">
                         <i class="fas fa-id-card "></i>
-                        {{Translator::phrase("card")}}
+                        {{__("Card")}}
                     </a>
 
                     <a href="#" data-toggle="modal-ajax" data-target="#modal" id="btn-option-certificate"
                         class="dropdown-item">
                         <i class="fas fa-file-certificate"></i>
-                        {{Translator::phrase("certificate")}}
+                        {{__("Certificate")}}
                     </a>
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

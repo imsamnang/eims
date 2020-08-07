@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 
@@ -37,13 +37,13 @@ class FormCard extends FormRequest
     public static function attributeField()
     {
         return [
-            'institute'                     => Translator::phrase('institute'),
-            'type'                          => Translator::phrase('type'),
-            'name'                          => Translator::phrase('name'),
-            'layout'                        => Translator::phrase('layout'),
-            'front'                         => Translator::phrase('frame_front'),
-            'background'                    => Translator::phrase('frame_background'),
-            'extra_info'                    => Translator::phrase('extra_info'),
+            'institute'                     => __('Institute'),
+            'type'                          => __('Type'),
+            'name'                          => __('Name'),
+            'layout'                        => __('Layout'),
+            'front'                         => __('Frame front'),
+            'background'                    => __('Frame background'),
+            'extra_info'                    => __('Extra information'),
 
         ];
     }

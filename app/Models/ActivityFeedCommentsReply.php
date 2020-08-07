@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\NewsFeed;
 use App\Helpers\MentionHelper;
-use App\Helpers\Translator;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,7 +56,7 @@ class ActivityFeedCommentsReply extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
         return $response;
@@ -78,7 +78,7 @@ class ActivityFeedCommentsReply extends Model
                 return [
                     'success'   => true,
                     'data'      => $replied['data'],
-                    'message'   => Translator::phrase('replied.successfully'),
+                    'message'   => __('Replied Successfully'),
                 ];
             }
         }

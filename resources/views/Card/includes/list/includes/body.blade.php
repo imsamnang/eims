@@ -14,17 +14,17 @@
                         </div>
                     </th>
                     <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
 
                     <th width=1 data-type="text" data-key="name">
-                        {{Translator::phrase("name")}}​
+                        {{__("Name")}}​
                     </th>
                     <th width=1 data-type="text" data-key="layout">
-                        {{Translator::phrase("layout")}}​
+                        {{__("Layout")}}​
                     </th>
-                    <th width=1 data-type="image" data-key="front,background">{{Translator::phrase("frame")}}​
+                    <th width=1 data-type="image" data-key="front,background">{{__("Frame")}}​
                     </th>
-                    <th width=1 data-type="icon" data-key="status">{{Translator::phrase("status")}}​</th>
+                    <th width=1 data-type="icon" data-key="status">{{__("Status")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,set,delete"></th>
 
                 </tr>
@@ -39,22 +39,22 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
-                        <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
+                        <i class="fas fa-edit"></i> {{__("Edit")}}</a>
 
                     <a href="#" data-toggle="card-frame" data-id="" id="btn-option-set"
-                        data-title="{{Translator::phrase("set.as.default")}}" data-text="name"
-                        data-confirm-button-text="{{Translator::phrase("set")}}"
-                        data-cancel-button-text="{{Translator::phrase("cancel")}}"
-                        data-text-select="{{ Translator::phrase("select") }}"
-                        data-text-selected="{{ Translator::phrase("selected") }}" data-image="front_o,background_o"
+                        data-title="{{__("Set as default")}}" data-text="name"
+                        data-confirm-button-text="{{__("Set")}}"
+                        data-cancel-button-text="{{__("Cancel")}}"
+                        data-text-select="{{ __("Select") }}"
+                        data-text-selected="{{ __("Selected") }}" data-image="front_o,background_o"
                         data-link="" class="dropdown-item">
                         <i class="fas fa-check-square"></i>
-                        {{Translator::phrase("set.as.default")}}
+                        {{__("Set as default")}}
 
                     </a>
 
@@ -62,7 +62,7 @@
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

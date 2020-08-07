@@ -4,41 +4,41 @@
             data-toggle="modal-ajax" data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("add")}}
+                {{__("Add")}}
             </span>
         </a>
         <a href="#" data-href="{{config("pages.form.action.view")}}" class="btn btn-primary disabled"
             data-checked-show="view" data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-eye m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("view")}}
+                {{__("View")}}
             </span>
         </a>
         <a href="#" data-href="{{config("pages.form.action.edit")}}" class="btn btn-primary disabled"
             data-checked-show="edit" data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-edit m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("edit")}}
+                {{__("Edit")}}
             </span>
         </a>
         <a href="#" data-href="{{config("pages.form.action.delete")}}" class="btn btn-danger disabled"
             data-toggle="sweet-alert" data-sweet-alert="confirm" sweet-alert-controls-id="" data-checked-show="delete">
             <i class="fa fa-trash m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("delete")}}
+                {{__("Delete")}}
             </span>
 
         </a>
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("filter")}}
+                {{__("Filter")}}
             </span>
         </a>
         <a href="{{str_replace("add","grid",config("pages.form.action.detect"))}}" class="btn btn-primary">
             <i class="fas fa-list m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("grid")}}
+                {{__("Grid")}}
             </span>
         </a>
     </div>
@@ -51,9 +51,9 @@
                 <div class="form-row">
                     <div class="col-md-8">
                         <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
-                            
-                            data-allow-clear="true" data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.subject") }}" name="t-subjectId"
+
+                            data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             data-select-value="{{request("t-subjectId")}}">
                             @foreach($staff_teach_subject["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
-                            {{ Translator::phrase("search_filter") }}</button>
+                            {{ __("Search filter") }}</button>
                     </div>
                 </div>
 

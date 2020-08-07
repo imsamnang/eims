@@ -12,7 +12,7 @@ use App\Models\Languages;
 use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
@@ -47,7 +47,7 @@ class StudentRegisterController extends Controller
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
         $data['formName']            = '';
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Student Register');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
 
@@ -84,12 +84,12 @@ class StudentRegisterController extends Controller
                             'success'   => false,
                             'type'      => 'import',
                             'message'   => array(
-                                'title' => Translator::phrase('error'),
-                                'text'  => Translator::phrase('import.unsuccessful') . PHP_EOL
-                                    . Translator::phrase('( .excel. ) .empty'),
+                                'title' => __('Error'),
+                                'text'  => __('import Unsuccessful') . PHP_EOL
+                                    . __('Excel empty'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
@@ -172,7 +172,7 @@ class StudentRegisterController extends Controller
     public function add($data)
     {
         $data['view']  = 'StudentRegister.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Student Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -190,7 +190,7 @@ class StudentRegisterController extends Controller
         $data['gender'] = Gender::pluck('km')->toArray();
         $data['marital'] = Marital::pluck('km')->toArray();
         $data['view']  = 'StudentRegister.includes.excel.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Excel Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;

@@ -11,7 +11,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase(config("pages.form.role").'.'.str_replace("-","_",config("pages.form.name"))) }}
+                            {{ __(config("pages.form.role")) }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -36,11 +36,11 @@
                                     <a href="" name="scrollTo"></a>
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
                                         @if (config("pages.form.role") == "add")
-                                        {{ Translator:: phrase("save") }}
+                                        {{ __("Save") }}
                                         @elseif(config("pages.form.role") == "edit")
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                         @elseif(config("pages.form.role") == "view")
-                                        {{ Translator:: phrase("goto.edit") }}
+                                        {{ __("Goto Edit") }}
                                         @endif
                                     </button>
                                 </div>
@@ -60,10 +60,10 @@
             <table class="table border">
                 <thead>
                     <tr>
-                        <th width="1">{{Translator::phrase("numbering")}}​</th>
-                        <th width="1">{{Translator::phrase("quiz_type")}}​</th>
-                        <th>{{Translator::phrase("question. & .answered")}}​</th>
-                        <th width="1">{{Translator::phrase("marks")}}​</th>
+                        <th width="1">{{__("Id")}}​</th>
+                        <th width="1">{{__("Quiz type​")}}​</th>
+                        <th>{{__("Questions & Answered")}}​</th>
+                        <th width="1">{{__('Score​')}}​</th>
                     </tr>
                 </thead>
                 <tbody>

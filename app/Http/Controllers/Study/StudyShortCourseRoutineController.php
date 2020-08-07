@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudyShortCourseRoutine;
 use App\Http\Controllers\Controller;
@@ -121,14 +121,14 @@ class StudyShortCourseRoutineController extends Controller
     {
         $data['response'] = StudyShortCourseRoutine::getData(null, 10);
         $data['view']     = StudyShortCourseRoutine::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course_Schedule' . '.' . $param1);
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Short Course Routine');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyShortCourseRoutine::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Course_Schedule');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Short Course Routine');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -139,7 +139,7 @@ class StudyShortCourseRoutineController extends Controller
 
         $response = StudyShortCourseRoutine::getData(Encryption::decode($id)['stu_sh_c_session_id']);
         $data['view']       = StudyShortCourseRoutine::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Study_Course_Schedule');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Edit Study Short Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -152,7 +152,7 @@ class StudyShortCourseRoutineController extends Controller
     {
         $response = StudyShortCourseRoutine::getData(Encryption::decode($id)['stu_sh_c_session_id'], true);
         $data['view']       = StudyShortCourseRoutine::$path['view'] . '.includes.view.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Study_Course_Schedule');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('View Study Short Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

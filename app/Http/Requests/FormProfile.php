@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormProfile extends FormRequest
@@ -35,12 +35,12 @@ class FormProfile extends FormRequest
 
     public static function attributeField()
     {
-        $attributes['name']        = Translator::phrase('name');
-        $attributes['email']       = Translator::phrase('email');
-        $attributes['phone']       = Translator::phrase('phone');
-        $attributes['address']     = Translator::phrase('address');
-        $attributes['location']    = Translator::phrase('location');
-        $attributes['profile']     = Translator::phrase('profile');
+        $attributes['name']        = __('Name');
+        $attributes['email']       = __('Email');
+        $attributes['phone']       = __('Phone');
+        $attributes['address']     = __('Address');
+        $attributes['location']    = __('Location');
+        $attributes['profile']     = __('Profile');
         return $attributes;
     }
 

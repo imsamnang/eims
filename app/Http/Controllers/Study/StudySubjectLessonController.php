@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudySubjectLesson;
 use App\Http\Controllers\Controller;
@@ -121,14 +121,14 @@ class StudySubjectLessonController extends Controller
     public function list($data)
     {
         $data['view']     = StudySubjectLesson::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Subject_lesson');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Lesson');
         return $data;
     }
     public function grid($data)
     {
         $data['response'] =  StudySubjectLesson::getData(null, null, 10);
         $data['view']     = StudySubjectLesson::$path['view'] . '.includes.grid.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .grid.Study_Subject_lesson');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Grid Study Lesson');
         return $data;
     }
 
@@ -136,7 +136,7 @@ class StudySubjectLessonController extends Controller
     public function add($data)
     {
         $data['view']      = StudySubjectLesson::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Subject_lesson');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Lesson');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -148,13 +148,13 @@ class StudySubjectLessonController extends Controller
     {
         $response = StudySubjectLesson::getData($id, true);
         $data['view']       = StudySubjectLesson::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Subject_lesson');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Lesson');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];
         $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
-        
+
         return $data;
     }
 }

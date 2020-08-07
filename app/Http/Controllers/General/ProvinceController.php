@@ -8,7 +8,7 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;;
+;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormProvince;
 use App\Http\Controllers\Controller;
@@ -32,7 +32,7 @@ class ProvinceController extends Controller
 
         $data['formAction']      = '/add';
         $data['formName']        = 'general/'.Provinces::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'. __('List Provinces');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -110,14 +110,14 @@ class ProvinceController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.province');
+        $data['title']    = Users::role(app()->getLocale()).'|'. __('List Provinces');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.province.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.province');
+        $data['title']     = Users::role(app()->getLocale()).'|'. ('Add Provinces');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -127,7 +127,7 @@ class ProvinceController extends Controller
     {
         $response           = Provinces::getData($id, true);
         $data['view']       = 'Cambodia.includes.form.province.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.province');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Provinces');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -140,7 +140,7 @@ class ProvinceController extends Controller
     {
         $response           = Provinces::getData($id, true);
         $data['view']       = 'Cambodia.includes.form.province.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.province');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('View Provinces');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

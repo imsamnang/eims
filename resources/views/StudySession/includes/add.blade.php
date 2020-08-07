@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase("add.".str_replace("-","_",config("pages.form.name"))) }}</h5>
+                            {{ __("Add") }}</h5>
                     </div>
                     <div class="card-body p-0" >
                         @include(config("pages.parent").".includes.form.index")
@@ -16,11 +16,11 @@
                     <div class="card-footer">
                         @if (!request()->ajax())
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
-                            class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
+                            class="btn btn-default" type="button">{{ __("Back") }}</a>
                         @endif
                         <a href="" name="scrollTo"></a>
                         <button href="{{config("pages.form.action.add")}}" class="btn btn-primary ml-auto float-right"
-                            type="submit">{{ Translator:: phrase("save") }}</button>
+                            type="submit">{{ __("Save") }}</button>
                     </div>
 
                 </div>

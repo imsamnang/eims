@@ -27,7 +27,7 @@
         <div class="form-row">
             <div class="col-md-12 mb-3">
                 <label class="form-control-label" for="study_course_session">
-                    {{ Translator:: phrase("study_course_session") }}
+                    {{ __("Study course session") }}
 
                     @if(array_key_exists("study_course_session",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -38,8 +38,8 @@
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.study_course_session") }}" name="study_course_session"
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_course_session.id")}}">
                     @foreach($study_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -51,7 +51,7 @@
             <table class="table table-xs table-bordered border" data-toggle="course-routine">
                 <thead>
                     <th width=1 class="font-weight-bold">
-                        {{Translator::phrase("time")}}
+                        {{__("time")}}
                     </th>
                     @foreach ($days['data'] as $day)
                 <th data-name="day[]" data-value="{{$day['id']}}" width=500 class="font-weight-bold">
@@ -82,8 +82,8 @@
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="teacher"
                                     title="Simple select"
-                                    data-text="{{ Translator::phrase("add_new_option") }}"
-                                    data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
+                                    data-text="{{ __("Add new option") }}"
+                                    data-placeholder=""
                                     data-select-value="{{$d["teacher"]["id"]}}"
                                     {{(array_key_exists("teacher",config("pages.form.validate.rules"))) ? "required" : ""}}>
                                     @foreach($teacher["data"] as $o)
@@ -97,7 +97,7 @@
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="study_class"
                                     title="Simple select"
-                                    data-placeholder="{{ Translator::phrase("choose.study_class") }}"
+                                    data-placeholder=""
                                     name="study_class[]" data-select-value="{{$d["study_class"]["id"]}}"
                                     {{(array_key_exists("study_class",config("pages.form.validate.rules"))) ? "required" : ""}}>
                                     @foreach($study_class["data"] as $o)
@@ -143,8 +143,8 @@
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="teacher"
                         title="Simple select"
-                        data-text="{{ Translator::phrase("add_new_option") }}"
-                        data-placeholder="{{ Translator::phrase("choose.teacher") }}" name="teacher[]"
+                        data-text="{{ __("Add new option") }}"
+                        data-placeholder=""
                         data-select-value="{{config("pages.form.data.teacher")}}"
                         {{(array_key_exists("teacher",config("pages.form.validate.rules"))) ? "required" : ""}}>
                         @foreach($teacher["data"] as $o)
@@ -159,8 +159,8 @@
                     <select class="form-control form-control-sm" id="study_subject"
                         title="Simple select"
 
-                        data-text="{{ Translator::phrase("add_new_option") }}"
-                        data-placeholder="{{ Translator::phrase("choose.study_subject") }}"
+                        data-text="{{ __("Add new option") }}"
+                        data-placeholder=""
                         name="study_subject[]"
                         data-select-value="{{config("pages.form.data.study_subject")}}"
                         {{(array_key_exists("study_subject",config("pages.form.validate.rules"))) ? "required" : ""}}>
@@ -173,7 +173,7 @@
                 <div class="m-1">
                     <select class="form-control form-control-sm" id="study_class"
                         title="Simple select"
-                        data-placeholder="{{ Translator::phrase("choose.study_class") }}"
+                        data-placeholder=""
                         name="study_class[]" data-select-value=""
                         {{(array_key_exists("study_class",config("pages.form.validate.rules"))) ? "required" : ""}}>
                         @foreach($study_class["data"] as $o)

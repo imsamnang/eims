@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormQuiz extends FormRequest
@@ -39,15 +39,15 @@ class FormQuiz extends FormRequest
 
     public static function attributeField()
     {
-        $attributes['institute']    = Translator::phrase('institute');
-        $attributes['name']    = Translator::phrase('quiz_group');
+        $attributes['institute']    = __('Institute');
+        $attributes['name']    = __('Quiz group');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('quiz_group.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
-        $attributes['description']            = Translator::phrase('description');
-        $attributes['image']                  = Translator::phrase('image');
+        $attributes['description']            = __('Description');
+        $attributes['image']                  = __('Image');
         return $attributes;
     }
 

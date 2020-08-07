@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use Illuminate\Database\Eloquent\Model;
 
 class StudentsGuardians extends Model
@@ -98,17 +98,17 @@ class StudentsGuardians extends Model
                 $response       = array(
                     'success'   => true,
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('add.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Add Successfully'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
             }
         } catch (DomainException $e) {
-            $response       = Exception::exception($e);
+            $response       = $e;
         }
         return $response;
     }
@@ -151,17 +151,17 @@ class StudentsGuardians extends Model
                 $response       = array(
                     'success'   => true,
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('update.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Update Successfully'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
             }
         } catch (DomainException $e) {
-            $response       = Exception::exception($e);
+            $response       = $e;
         }
         return $response;
     }

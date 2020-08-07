@@ -8,7 +8,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase(config("pages.form.role").'.'."designation") }}
+                            {{ __(config("pages.form.role")) }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -33,11 +33,11 @@
                                     <a href="" name="scrollTo"></a>
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
                                         @if (config("pages.form.role") == "add")
-                                        {{ Translator:: phrase("save") }}
+                                        {{ __("Save") }}
                                         @elseif(config("pages.form.role") == "edit")
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                         @elseif(config("pages.form.role") == "view")
-                                        {{ Translator:: phrase("goto.edit") }}
+                                        {{ __("Goto Edit") }}
                                         @endif
                                     </button>
                                 </div>

@@ -10,7 +10,7 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
 use App\Models\StudyPrograms;
@@ -86,7 +86,7 @@ class ManagerController extends Controller
 
     public function dashboard()
     {
-        $data['title'] = Translator::phrase("dashboard");
+        $data['title'] = __("Dashboard");
         $data['formData'] = null;
         $data['formName'] = null;
         $data['formAction'] = null;
@@ -117,7 +117,7 @@ class ManagerController extends Controller
 
         $data['staff'] = array(
             [
-                'title'   => Translator::phrase('staff. & .teacher'),
+                'title'   => __('Staff & Teacher'),
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
@@ -126,7 +126,7 @@ class ManagerController extends Controller
                 'color'   => 'blue',
             ],
             [
-                'title'   => Translator::phrase('teacher'),
+                'title'   => __('Teacher'),
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
@@ -138,7 +138,7 @@ class ManagerController extends Controller
 
         $data['student'] = array(
             [
-                'title'       => Translator::phrase('student.all'),
+                'title'       => __('List all students'),
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
@@ -147,7 +147,7 @@ class ManagerController extends Controller
                 'color'       => 'green',
             ],
             [
-                'title'       => Translator::phrase('student_study_course'),
+                'title'       => __('Student study course'),
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,

@@ -13,7 +13,7 @@
                         @if (request()->segment(3) == "view")
                         <div class="col-md-6 mb-3">
                             <label class="form-control-label" for="id">
-                                {{ Translator:: phrase("numbering") }}
+                                {{ __("Id") }}
                             </label>
                             <span class="form-control" id="id" name="id"
                                 value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -25,7 +25,7 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label class="form-control-label" for="name">
-                                {{ Translator:: phrase("name") }}
+                                {{ __("Name") }}
 
                                 @if(config("pages.form.validate.rules.name"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -34,7 +34,7 @@
 
                             </label>
                             <input type="text" class="form-control" name="name" id="name"
-                                placeholder="{{ Translator::phrase("name") }}"
+                                placeholder=""
                                 value="{{config("pages.form.data.name")}}"
                                 {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
@@ -48,7 +48,7 @@
                                 title="{{config("pages.form.validate.questions.email")}}" class="form-control-label"
                                 for="email">
 
-                                {{ Translator:: phrase("email") }}
+                                {{ __("Email") }}
                                 @if(config("pages.form.validate.rules.email"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -60,7 +60,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input type="email" class="form-control" id="email"
-                                        placeholder="{{ Translator:: phrase("email") }}"
+                                        placeholder=""
                                         value="{{config("pages.form.data.email")}}"
                                         {{config("pages.form.validate.rules.email") ? "required" : ""}} name="email" />
                                 </div>
@@ -72,7 +72,7 @@
                                 title="{{config("pages.form.validate.questions.phone")}}" class="form-control-label"
                                 for="phone">
 
-                                {{ Translator:: phrase("phone") }}
+                                {{ __("Phone") }}
                                 @if(config("pages.form.validate.rules.phone"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -85,7 +85,7 @@
                                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                     </div>
                                     <input type="phone" class="form-control"
-                                        placeholder="{{ Translator:: phrase("phone") }}"
+                                        placeholder=""
                                         value="{{config("pages.form.data.phone")}}"
                                         {{config("pages.form.validate.rules.phone") ? "required" : ""}} id="phone"
                                         name="phone" />
@@ -97,7 +97,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-control-label" for="address">
-                                {{ Translator:: phrase("address") }}
+                                {{ __("Address") }}
 
                                 @if(config("pages.form.validate.rules.address"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -112,7 +112,7 @@
                                         <span class="input-group-text"><i class="fas fa-map"></i></span>
                                     </div>
                                     <textarea class="form-control" id="address"
-                                        placeholder="{{ Translator:: phrase("address") }}" value=""
+                                        placeholder=""
                                         {{config("pages.form.validate.rules.address") ? "required" : ""}}
                                         name="address">{{config("pages.form.data.address")}}</textarea>
 
@@ -122,7 +122,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-control-label" for="location">
-                                {{ Translator:: phrase("location") }}
+                                {{ __("Location") }}
                                 @if(config("pages.form.validate.rules.location"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
@@ -137,7 +137,7 @@
                                                 class="fas fa-map-marker-alt"></i></span>
                                     </div>
                                     <input class="form-control" id="location"
-                                        placeholder="{{ Translator:: phrase("location") }}"
+                                        placeholder=""
                                         value="{{config("pages.form.data.location")}}"
                                         {{config("pages.form.validate.rules.location") ? "required" : ""}}
                                         name="location" />
@@ -156,7 +156,7 @@
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label class="form-control-label" for="profile">
-                                {{ Translator:: phrase("photo") }}
+                                {{ __("Photo") }}
                                 @if(config("pages.form.validate.rules.profile"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
@@ -166,12 +166,12 @@
                                 data-dropzone-url="{{config("pages.form.data.profile")}}">
                                 <div class="fallback">
                                     <div class="custom-file">
-                                        <input type="file" placeholder="{{ Translator:: phrase("drop_photo_here") }}"
+                                        <input type="file" placeholder=""
                                             class="custom-file-input" id="dropzoneBasicUpload" name="profile"
                                             {{config("pages.form.validate.rules.profile") ? "required" : ""}} />
                                         <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                             class="custom-file-label"
-                                            for="dropzoneBasicUpload">{{ Translator:: phrase("choose.photo") }}</label>
+                                            for="dropzoneBasicUpload">{{ __("choose.photo") }}</label>
                                     </div>
                                 </div>
 
@@ -193,13 +193,13 @@
                             <div class="custom-control custom-checkbox mb-3">
 
                                 <label class="form-control-label"><i class="fas fa-sticky-note "></i>
-                                    {{ Translator:: phrase("note") }} </label>
+                                    {{ __("Note") }} </label>
                                 <br>
                                 <label class="form-control-label">
                                     <span class="badge badge-md badge-circle badge-floating badge-danger"
                                         style="background:unset">
                                         <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                        {{ Translator:: phrase("field_required") }}</span> </label>
+                                        {{ __("Field required") }}</span> </label>
 
 
                             </div>

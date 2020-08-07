@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 
 class MailboxRead extends Model
@@ -24,7 +24,7 @@ class MailboxRead extends Model
                 if ($exists) {
                     $response = [
                         'success'   => false,
-                        'message'   => Translator::phrase('already_exists')
+                        'message'   => __('Already exists')
                     ];
                 } else {
                     $add = MailboxRead::insert([
@@ -37,11 +37,11 @@ class MailboxRead extends Model
                             'success'   => true,
                             'type'      => 'mark-read',
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('mark_read.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Mark read successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         ];

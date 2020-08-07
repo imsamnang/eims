@@ -10,7 +10,7 @@ use App\Models\Languages;
 use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\QuizStudent;
 use App\Models\StudyCourse;
 use App\Models\SocailsMedia;
@@ -146,9 +146,9 @@ class QuizStudentAnswerController extends Controller
             $student_study_course_id[] = $course['id'];
         }
         $data['response'] = QuizStudentAnswer::getData1($student_study_course_id);
-        
+
         $data['view']     = QuizStudentAnswer::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.quiz_question');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student answer');
         return $data;
     }
 
@@ -167,7 +167,7 @@ class QuizStudentAnswerController extends Controller
         $data['class']                = StudentsStudyCourse::studyClass(null, true);
 
         $data['view']      = QuizStudentAnswer::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Quiz Student answer');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -189,7 +189,7 @@ class QuizStudentAnswerController extends Controller
 
         $response = QuizStudentAnswer::getData($id, 10);
         $data['view']       = QuizStudentAnswer::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student answer');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

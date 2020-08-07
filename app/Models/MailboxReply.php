@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use App\Http\Requests\FormMailboxReply;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
@@ -72,11 +72,11 @@ class MailboxReply extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('send_message.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Send message successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );

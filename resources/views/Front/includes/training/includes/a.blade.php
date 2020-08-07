@@ -19,14 +19,14 @@
                     @if (Auth::user()->role_id == 6)
                         <a href="{{url(Auth::user()->role()."/study/course/add?programId=".$course["study_program"]["id"]."&courseId=".$course["id"])}}"
                             class="btn btn-sm btn-primary font-weight-300">
-                            {{Translator::phrase("apply_now")}}
+                            {{__("Apply now")}}
                         </a>
                     @endif
 
                 @else
                     <a href="{{url("login")}}"
                         class="btn btn-sm btn-primary font-weight-300">
-                        {{Translator::phrase("apply_now")}}
+                        {{__("Apply now")}}
                     </a>
                 @endauth
 

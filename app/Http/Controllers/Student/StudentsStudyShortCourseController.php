@@ -8,7 +8,7 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Models\StudentsStudyShortCourse;
@@ -37,7 +37,8 @@ class StudentsStudyShortCourseController extends Controller
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
         $data['formName']            = Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']               = __(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('Students study short course');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
 
@@ -115,7 +116,7 @@ class StudentsStudyShortCourseController extends Controller
     public function list($data)
     {
         $data['view']     = StudentsStudyShortCourse::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.student_study_short_course');
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('List Students study short course');
         return $data;
     }
     public function show($data, $id, $type)
@@ -129,7 +130,7 @@ class StudentsStudyShortCourseController extends Controller
 
 
         $data['view']       = StudentsStudyShortCourse::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_Study_Course');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Students study short course');
         $data['metaImage']  = asset('assets/img/icons/register.png');
 
         if ($id) {

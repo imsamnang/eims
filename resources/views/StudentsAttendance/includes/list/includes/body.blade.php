@@ -62,7 +62,7 @@
                 id="form-edit-attendance" enctype="multipart/form-data">
                 <select class="form-control" data-toggle="select" id="attendance_type" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.attendance_type") }}" name="attendance_type">
+                    data-placeholder="">
                     @foreach($attendances_type["data"] as $o)
                     <option value="{{$o["id"]}}" data-absent="{{$o["credit_absent"]}}">{{ $o["name"]}}</option>
                     @endforeach
@@ -88,7 +88,7 @@
                             type="checkbox">
                         <label class="custom-control-label" for="table-option-t2">
                             <span class="ml-4"></span>
-                            <span class="">{{Translator::phrase("print")}}</span>
+                            <span class="">{{__("Print")}}</span>
                         </label>
                     </div>
                 </td>
@@ -106,16 +106,16 @@
         <tbody>
             <tr>
                 <td class="p-3 bg-blue"></td>
-                <td class="text-left"> {{ Translator::phrase("today") }} </td>
+                <td class="text-left"> {{ __("Today") }} </td>
 
                 <td class="p-3 bg-green"></td>
-                <td class="text-left"> {{ Translator::phrase("national_holiday") }} </td>
+                <td class="text-left"> {{ __("National holiday") }} </td>
 
                 <td class="p-3 text-left bg-pink"> </td>
-                <td> {{ Translator::phrase("holiday") }} </td>
+                <td> {{ __("Holiday") }} </td>
 
                 <td class="p-3 bg-gray"> </td>
-                <td class="text-left"> {{ Translator::phrase("most_absent") }} </td>
+                <td class="text-left"> {{ __("Most absent") }} </td>
 
                 <td class="text-right text-center print-option d-print-none">
                     <div class="custom-control custom-checkbox">
@@ -123,7 +123,7 @@
                             type="checkbox">
                         <label class="custom-control-label" for="table-option-t3">
                             <span class="ml-4"></span>
-                            <span class="">{{Translator::phrase("print")}}</span>
+                            <span class="">{{__("Print")}}</span>
                         </label>
                     </div>
                 </td>

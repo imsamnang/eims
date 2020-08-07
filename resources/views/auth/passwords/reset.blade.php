@@ -74,7 +74,7 @@
                                 <a class="dropdown-item {{app()->getLocale() == $lang["code_name"] ? "disabled" : ""}}"
                                     href="{{$lang["action"]["set"]}}">
                                     <span><img width="26" src="{{ $lang["image"]}}" /></span>
-                                    <span>{{ Translator::phrase($lang["code_name"],"en")}}</span>
+                                    <span>{{ __($lang["code_name"])}}</span>
                                 </a>
                             </li>
                             @endforeach
@@ -82,12 +82,12 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{route("login")}}" class="nav-link">
-                            <span class="nav-link-inner--text">{{Translator::phrase('login')}}</span>
+                            <span class="nav-link-inner--text">{{__('Login')}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route("register")}}" class="nav-link">
-                            <span class="nav-link-inner--text">{{Translator::phrase('register')}}</span>
+                            <span class="nav-link-inner--text">{{__('Register')}}</span>
                         </a>
                     </li>
                 </ul>
@@ -102,7 +102,7 @@
                 <div class="card bg-{{config("app.theme_color.name")}} shadow border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">
-                            <small>{{Translator::phrase('reset_password')}}</small>
+                            <small>{{__('Reset password')}}</small>
                         </div>
                         @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -119,7 +119,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('email')}}" type="email"
+                                        placeholder=""
                                         value="{{old('email')}}" name="email" required>
                                     @error('email')
                                     <div class="invalid-feedback" role="alert">
@@ -135,7 +135,7 @@
                                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('password')}}" type="password"
+                                        placeholder=""
                                         value="{{old('password')}}" name="password" required
                                         autocomplete="new-password">
                                     @error('password')
@@ -151,7 +151,7 @@
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('password_confirm')}}" type="password"
+                                        placeholder=""
                                         value="{{old('password-confirm')}}" name="password_confirmation" required
                                         autocomplete="new-password">
                                     @error('password-confirm')
@@ -163,7 +163,7 @@
                             </div>
                             <div class="text-center">
                                 <button type="submit"
-                                    class="btn btn-white my-4">{{Translator::phrase('reset_password')}}</button>
+                                    class="btn btn-white my-4">{{__('Reset password')}}</button>
                             </div>
                         </form>
                     </div>

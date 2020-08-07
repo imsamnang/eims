@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Events\NewsFeed;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Helpers\MentionHelper;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +60,7 @@ class ActivityFeedComment extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
         return $response;
@@ -83,7 +83,7 @@ class ActivityFeedComment extends Model
                 return [
                     'success'   => true,
                     'data'      => $comment['data'],
-                    'message'   => Translator::phrase('comment.successfully'),
+                    'message'   => __('Comment Successfully'),
                 ];
             }
         }

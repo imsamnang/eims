@@ -1,10 +1,10 @@
 <div class="col-12">
-    <h1 class="my-2 h2">{{Translator::phrase("contact")}}</h1>
+    <h1 class="my-2 h2">{{__("Contact")}}</h1>
     <hr class="my-2">
     <div class="container">
         <div class="row bg-light pt-3 pb-3 mb-3">
             <div class="col-12">
-                {{Translator::phrase("address")}}
+                {{__("Address")}}
             </div>
             <div class="col-4">
                 <span class="text-sm">
@@ -46,7 +46,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input class="form-control " placeholder="{{Translator::phrase("name")}}" type="text"
+                            <input class="form-control " placeholder=""
                                 value="" name="name" autocomplete="name">
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input class="form-control " placeholder="{{Translator::phrase("email")}}" type="email"
+                            <input class="form-control " placeholder=""
                                 value="" name="email" autocomplete="email">
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input class="form-control " placeholder="{{Translator::phrase("phone")}}" type="phone"
+                            <input class="form-control " placeholder=""
                                 value="" name="phone" autocomplete="phone">
                         </div>
                     </div>
@@ -76,11 +76,11 @@
                                 <span class="input-group-text"><i class="fas fa-envelope-open-text"></i></span>
                             </div>
                             <textarea class="form-control" id="" name="message"
-                                placeholder="{{Translator::phrase("message")}}"></textarea>
+                                placeholder=""></textarea>
                         </div>
                     </div>
                     <button type="submit"
-                        class="btn float-right btn-primary">{{Translator::phrase("send_message")}}</button>
+                        class="btn float-right btn-primary">{{__("Send message")}}</button>
                 </form>
             </div>
 

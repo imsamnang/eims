@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use App\Http\Requests\FormMailbox;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
@@ -101,11 +101,11 @@ class Mailbox extends Model
             $response = [
                 'success'   => false,
                 'data'   => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
                 'pages' => $pages
             ];
         }
-        
+
         return $response;
     }
 
@@ -160,11 +160,11 @@ class Mailbox extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('send_message.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Send message successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -192,11 +192,11 @@ class Mailbox extends Model
                     $response       =  array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('delete.!'),
-                            'text'  => Translator::phrase('delete.successfully'),
+                            'title' => __('Delete!'),
+                            'text'  => __('Delete Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -206,12 +206,12 @@ class Mailbox extends Model
                     array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('are_you_sure.?'),
-                            'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                            'title' => __('Are you sure?'),
+                            'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                 'ID : (' . implode(',', $id) . ')',
                             'button'   => array(
-                                'confirm' => Translator::phrase('yes_delete_it.!'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Yes delete!'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )

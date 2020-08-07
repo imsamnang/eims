@@ -14,7 +14,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
-            <input class="form-control" placeholder="{{Translator::phrase("search")}}" type="text">
+            <input class="form-control" placeholder="">
           </div>
         </div>
         <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main"
@@ -48,7 +48,7 @@
             <li>
               <a class="dropdown-item" href="{{$lang["action"]["set"]}}">
                 <span><img width="26" src="{{ $lang["image"]}}" /></span>
-                <span>{{ Translator::phrase($lang["code_name"],"en")}}</span>
+                <span>{{ __($lang["code_name"])}}</span>
               </a>
             </li>
             @endforeach
@@ -74,21 +74,21 @@
 
             <a href="{{url(Auth::user()->role()."/profile")}}" class="dropdown-item">
               <i class="ni ni-single-02"></i>
-              <span> {{ Translator::phrase('my_profile') }}</span>
+              <span> {{ __("My profile") }}</span>
             </a>
             <a href="{{url(Auth::user()->role()."/dashboard")}}" class="dropdown-item">
               <i class="fas fa-tv"></i>
-              <span> {{ Translator::phrase('dashboard') }}</span>
+              <span> {{ __("Dashboard") }}</span>
             </a>
 
             <div class="dropdown-divider"></div>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            <form id="logout-form" action="{{ route("logout") }}" method="POST" style="display: none;">
               @csrf
             </form>
-            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+            <a class="dropdown-item" href="{{ route("logout") }}" onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();">
               <i class="ni ni-user-run"></i>
-              {{ Translator::phrase('logout') }}
+              {{ __("Logout") }}
             </a>
           </div>
         </li>

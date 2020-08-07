@@ -20,7 +20,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="calendar" data-toggle="calendar" id="calendar"
-                    data-event-url="{{URL::to("/holiday/calendar")}}" data-alldaytext="{{Translator::phrase("all_day")}}"></div>
+                    data-event-url="{{URL::to("/holiday/calendar")}}" data-alldaytext="{{__("All day")}}"></div>
             </div>
         </div>
     </div>

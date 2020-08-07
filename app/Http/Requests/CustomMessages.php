@@ -21,9 +21,9 @@ class CustomMessages extends FormRequest
      *
      * @return array
      */
-    
-    
-    // validation.php // view/lang/en/validation.php 
+
+
+    // validation.php // view/lang/en/validation.php
     public static function customMessages()
     {
         return [];
@@ -66,24 +66,24 @@ class CustomMessages extends FormRequest
             'ipv6'                 => ':attribute must be a valid IPv6 address',
             'json'                 => ':attribute must be a valid JSON string',
             'max'                  => [
-                'numeric' => ':attribute '.Translator::phrase('max_numeric').' :max',
-                'file'    => ':attribute '.Translator::phrase('max_file').' :max '.Translator::phrase('kilobytes'),
-                'string'  => ':attribute '.Translator::phrase('max_string').' :max '.Translator::phrase('characters'),
-                'array'   => ':attribute '.Translator::phrase('max_array').' :max '.Translator::phrase('items'),
+                'numeric' => ':attribute '.__('max numeric').' :max',
+                'file'    => ':attribute '.__('max file').' :max '.__('kilobytes'),
+                'string'  => ':attribute '.__('max string').' :max '.__('characters'),
+                'array'   => ':attribute '.__('max array').' :max '.__('items'),
             ],
             'mimes'                => ':attribute must be a file of type: :values',
             'mimetypes'            => ':attribute must be a file of type: :values',
             'min'                  => [
-                'numeric' => ':attribute '.Translator::phrase('min_numeric').' :min',
-                'file'    => ':attribute '.Translator::phrase('min_file').' :min '.Translator::phrase('kilobytes'),
-                'string'  => ':attribute '.Translator::phrase('min_string').' :min '.Translator::phrase('characters'),
-                'array'   => ':attribute '.Translator::phrase('min_array').' :min '.Translator::phrase('items'),
+                'numeric' => ':attribute '.__('min_numeric').' :min',
+                'file'    => ':attribute '.__('min_file').' :min '.__('kilobytes'),
+                'string'  => ':attribute '.__('min_string').' :min '.__('characters'),
+                'array'   => ':attribute '.__('min_array').' :min '.__('items'),
             ],
             'not_in'               => 'The selected :attribute is invalid',
-            'numeric'              => ':attribute '.Translator::phrase('numeric_only'),
+            'numeric'              => ':attribute '.__('numeric only'),
             'present'              => ':attribute field must be present',
             'regex'                => ':attribute format is invalid',
-            'required'             => ':attribute '.Translator::phrase('required'),
+            'required'             => ':attribute '.__('required'),
             'required_if'          => ':attribute field is required when :other is :value',
             'required_unless'      => ':attribute field is required unless :other is in :values',
             'required_with'        => ':attribute field is required when :values is present',
@@ -97,7 +97,7 @@ class CustomMessages extends FormRequest
                 'string'  => ':attribute must be :size characters',
                 'array'   => ':attribute must contain :size items',
             ],
-            'string'               => ':attribute '.Translator::phrase('string_only'),
+            'string'               => ':attribute '.__('string only'),
             'timezone'             => ':attribute must be a valid zone',
             'unique'               => ':attribute has already been taken',
             'uploaded'             => ':attribute failed to upload',

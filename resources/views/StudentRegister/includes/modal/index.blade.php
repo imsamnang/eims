@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" class="h3 mr-2">
-                        {{ Translator:: phrase(config("pages.form.role").'.'.str_replace("-","_",config("pages.form.name"))) }}
+                        {{ __(config("pages.form.role")) }}
                     </h6>
 
                     <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
@@ -24,7 +24,7 @@
                         </div>
 
                         <button class="btn btn-primary float-right mt-3"
-                            type="submit">{{Translator::phrase("Run")}}</button>
+                            type="submit">{{__("Run")}}</button>
                     </form> --}}
                 </div>
 

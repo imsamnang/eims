@@ -13,7 +13,7 @@
         </div>
         <div class="col-auto">
             <span class="text-{{$user["status"]? "success" : ""}}">●</span>
-            <small>{{$user["status"]? Translator::phrase("online") :Translator::phrase("offline")}}</small>
+            <small>{{$user["status"]? __("Online") :__("Offline")}}</small>
         </div>
     </div>
 </li>

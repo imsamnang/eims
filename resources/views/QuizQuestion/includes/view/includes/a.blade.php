@@ -12,7 +12,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -26,7 +26,7 @@
                             title="{{config("pages.form.validate.questions.quiz")}}" class="form-control-label"
                             for="quiz">
 
-                            {{ Translator:: phrase("quiz") }}
+                            {{ __("Quiz") }}
 
                             @if(config("pages.form.validate.rules.quiz"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -39,8 +39,8 @@
                         <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
 
 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quiz"
+                            data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             data-select-value="{{config("pages.form.data.quiz.id")}}"
                             {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                             @foreach($quiz["data"] as $o)
@@ -53,7 +53,7 @@
                             title="{{config("pages.form.validate.questions.quiz_answer_type")}}"
                             class="form-control-label" for="quiz_answer_type">
 
-                            {{ Translator:: phrase("quiz_answer_type") }}
+                            {{ __("Quiz answer type​") }}
 
                             @if(config("pages.form.validate.rules.quiz_answer_type"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -66,8 +66,8 @@
                         <select class="form-control" data-toggle="select" id="quiz_answer_type" title="Simple select"
 
 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.quiz_answer_type") }}"
+                            data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             name="quiz_answer_type"
                             data-select-value="{{config("pages.form.data.quiz_answer_type.id")}}"
                             {{config("pages.form.validate.rules.quiz_answer_type") ? "required" : ""}}>
@@ -81,7 +81,7 @@
                             title="{{config("pages.form.validate.questions.quiz_type")}}" class="form-control-label"
                             for="quiz_type">
 
-                            {{ Translator:: phrase("quiz_type") }}
+                            {{ __("Quiz type​") }}
 
                             @if(config("pages.form.validate.rules.quiz_type"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -92,10 +92,10 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz_type" title="Simple select"
-                           
 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.quiz_type") }}" name="quiz_type"
+
+                            data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             data-select-value="{{config("pages.form.data.quiz_type.id")}}"
                             {{config("pages.form.validate.rules.quiz_type") ? "required" : ""}}>
                             @foreach($quiz_type["data"] as $o)
@@ -115,7 +115,7 @@
                                 title="{{config("pages.form.validate.question")}}" class="form-control-label"
                                 for="question">
 
-                                {{ Translator:: phrase("question") }}
+                                {{ __("Question​") }}
 
                                 @if(config("pages.form.validate.rules.question"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -124,15 +124,15 @@
                                 </span>
                                 @endif
                             </label>
-                            <textarea class="form-control" title="{{ Translator::phrase("question") }}"
-                                placeholder="{{ Translator::phrase("question") }}" id="question" name="question"
+                            <textarea class="form-control" title="{{ __("Question​") }}"
+                                placeholder=""
                                 {{config("pages.form.validate.rules.question") ? "required" : ""}}>{{config("pages.form.data.question")}}</textarea>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                                 title="{{config("pages.form.validate.marks")}}" class="form-control-label" for="marks">
 
-                                {{ Translator:: phrase("marks") }}
+                                {{ __('Score') }}
 
                                 @if(config("pages.form.validate.rules.marks"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -143,7 +143,7 @@
                             </label>
 
                             <input type="text" class="form-control" name="marks" id="marks"
-                                placeholder="{{ Translator::phrase("marks") }}"
+                                placeholder=""
                                 value="{{config("pages.form.data.marks")}}"
                                 {{config("pages.form.validate.rules.marks") ? "required" : ""}} />
 
@@ -161,12 +161,12 @@
                                         value="1" name="correct_answer[id-{{$answer["id"]}}]"
                                         class="custom-control-input position-absolute">
                                     <label class="custom-control-label"
-                                        for="correct_answer-[{{$answer["id"]}}]">{{ Translator::phrase("correct_answer") }}</label>
+                                        for="correct_answer-[{{$answer["id"]}}]">{{ __("Correct answer​") }}</label>
                                 </div>
                             </div>
                             <div class="col-md-8 mb-3">
-                                <span class="form-control" title="{{ Translator::phrase("answer") }}"
-                                    placeholder="{{ Translator::phrase("answer") }}" id="answer" name="answer[id-{{$answer["id"]}}]"
+                                <span class="form-control" title="{{ __("answer") }}"
+                                    placeholder=""
                                     {{config("pages.form.validate.rules.answer") ? "required" : ""}}>{{$answer["answer"]}}</span>
                             </div>
 

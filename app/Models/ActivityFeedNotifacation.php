@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Events\NewsFeed;
-use App\Helpers\Translator;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 

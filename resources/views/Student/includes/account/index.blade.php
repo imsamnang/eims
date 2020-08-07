@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase("create_account") }}
+                            {{ __("Create account") }}
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -24,7 +24,7 @@
                                     <div class="card-header py-2 px-3">
                                         <label
                                             class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                            {{Translator::phrase("list")}}
+                                            {{__("List")}}
                                         </label>
                                     </div>
                                     <div class="card-body p-2">
@@ -60,7 +60,7 @@
                                 <div class="{{count($listData) > 1 ? "col-md-8":"col-md-12"}}">
                                     @if (!request()->ajax())
                                     <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
-                                        class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
+                                        class="btn btn-default" type="button">{{ __("Back") }}</a>
                                     @endif
                                     <a href="" name="scrollTo"></a>
                                     @if (!config("pages.form.data.account"))
@@ -68,9 +68,9 @@
                                         class="btn btn-primary ml-auto float-right {{config("pages.form.data.account") || config("pages.form.role") == "view"? "d-none": ""}}"
                                         type="submit">
                                         @if (config("pages.parameters.param2") == "create")
-                                        {{ Translator:: phrase("create") }}
+                                        {{ __("create") }}
                                         @else
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                         @endif
                                     </button>
                                     @endif

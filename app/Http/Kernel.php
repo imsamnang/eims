@@ -22,15 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\Localization::class,
-
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
+        \App\Http\Middleware\Localization::class,      
 
     ];
 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Events\NewsFeed;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +58,7 @@ class ActivityFeedReaction extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -85,7 +85,7 @@ class ActivityFeedReaction extends Model
                     return [
                         'success'   => true,
                         'data'      => $reaction['data'],
-                        'message'   => Translator::phrase('reaction.successfully'),
+                        'message'   => __('Reaction Successfully'),
                     ];
                 }
             }
@@ -104,7 +104,7 @@ class ActivityFeedReaction extends Model
             return array(
                 'success'   => true,
                 'data'      => $reaction['data'],
-                'message'   => Translator::phrase('update.successfully'),
+                'message'   => __('Update Successfully'),
             );
         }
     }

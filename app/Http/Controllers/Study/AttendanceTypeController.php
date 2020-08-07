@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\AttendancesType;
 use App\Http\Controllers\Controller;
@@ -109,14 +109,14 @@ class AttendanceTypeController extends Controller
     public function list($data)
     {
         $data['view']     = AttendancesType::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Attendance_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Attendance type');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = AttendancesType::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Attendance_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Attendance type');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -126,7 +126,7 @@ class AttendanceTypeController extends Controller
     {
         $response = AttendancesType::getData($id, true);
         $data['view']       = AttendancesType::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Attendance_Type');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Attendance type');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -139,7 +139,7 @@ class AttendanceTypeController extends Controller
     {
         $response = AttendancesType::getData($id, true);
         $data['view']       = AttendancesType::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Attendance_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Attendance type');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

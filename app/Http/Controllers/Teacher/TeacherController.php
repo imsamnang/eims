@@ -22,7 +22,7 @@ use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
@@ -88,7 +88,7 @@ class TeacherController extends Controller
 
         $data['formAction']          = '/add';
         $data['formName']            = Students::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('Teacher');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -144,7 +144,7 @@ class TeacherController extends Controller
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4);
         } elseif (strtolower($param1)  == 'myclass') {
-            $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .myclass');
+            $data['title']           = Users::role(app()->getLocale()).'|'.__('My class');
             $data['response']    = Staff::getClassTeaching(Auth::user()->node_id);
             $data['view']       = 'Teacher.includes.myclass.index';
         } else {
@@ -223,7 +223,7 @@ class TeacherController extends Controller
             }
         }
 
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('Teacher');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . $data['formAction']);
         $data['mother_tong'] = MotherTong::getData();
@@ -259,7 +259,7 @@ class TeacherController extends Controller
         ]);
         $data['current_subjects'] = StaffTeachSubject::getTeachSubjects(request('t-subjectId'), Auth::user()->node_id, null, 10, true, Years::now());
         //dd($data['current_subjects']);
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .dashboard');
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('Dashboard');
         $data['view']    = 'Teacher.includes.dashboard.index';
 
         return  $data;
@@ -293,39 +293,39 @@ class TeacherController extends Controller
         if (strtolower($param1)  == null) {
             $data['shortcut'] = [
                 [
-                    'name'  => Auth::user()->node_id ?  Translator::phrase('edit.register') :  Translator::phrase('register'),
+                    'name'  => Auth::user()->node_id ?  __('Edit Register') :  __('Register'),
                     'link'  => url(Users::role() .  (Auth::user()->node_id ? '/teaching/edit' : '/teaching/register')),
                     'icon'  => Auth::user()->node_id ? 'fas fa-user-edit' : 'fas fa-user-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('subject'),
+                    'name'  => __('Subject'),
                     'link'  => url(Users::role() . '/teaching/' . StaffTeachSubject::$path['url'] . '/list'),
                     'icon'  => 'fas fa-books',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.schedule'),
+                    'name'  => __('List Schedule'),
                     'link'  => url(Users::role() . '/teaching/schedule/list'),
                     'icon'  => 'fas fa-calendar-alt',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.attendance'),
+                    'name'  => __('List Attendance'),
                     'link'  => url(Users::role() . '/teaching/' . StudentsAttendances::$path['url'] . '/list'),
                     'icon'  => 'fas fa-calendar-edit',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.score'),
+                    'name'  => __('List Score'),
                     'link'  => url(Users::role() . '/teaching/' . StudentsStudyCourseScore::$path['url'] . '/list'),
                     'icon'  => 'fas fa-trophy-alt',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
             ];
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .dashboard');
+            $data['title'] = Users::role(app()->getLocale()).'|'.__('Dashboard');
             $data['view']  = 'Teacher.includes.teaching.index';
         } elseif (strtolower($param1) == 'register') {
             $data['mother_tong']         = MotherTong::getData('null');
@@ -340,7 +340,7 @@ class TeacherController extends Controller
             $data['curr_communes']       = Communes::getData('null', 'null');
             $data['curr_villages']       = Villages::getData('null', 'null');
             $data = $this->add($data);
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .register');
+            $data['title']           = Users::role(app()->getLocale()).'|'.__('Register');
         } elseif (strtolower($param1) == 'edit') {
             $view = new StaffController;
             $data['institute']           = Institute::getData(Auth::user()->institute_id);
@@ -361,12 +361,12 @@ class TeacherController extends Controller
             $data['curr_villages']       = $data['villages'];
             $data = $view->show($data, Auth::user()->node_id, 'edit');
             $data['view']       = 'Teacher.includes.form.includes.edit.index';
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit');
+            $data['title']           = Users::role(app()->getLocale()).'|'.__('Edit');
         } elseif (strtolower($param1) == StaffTeachSubject::$path['url']) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id, null, 10, false);
             } else {
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject');
+                $data['title']           = Users::role(app()->getLocale()).'|'.__('Subjects');
                 $data['response'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['view']    = 'Teacher.includes.teaching.includes.subject.index';
             }
@@ -389,7 +389,7 @@ class TeacherController extends Controller
                     return StudySubjectLesson::addToTable();
                 }
 
-                $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
+                $data['title']           = Users::role(app()->getLocale()).'|'.__('Subjects and Lesson');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'edit') {
                 $id = request('id', $param3);
@@ -404,7 +404,7 @@ class TeacherController extends Controller
                 //$data['staff_teach_subject'] = StaffTeachSubject::getTeachSubjects($response['data'][0]['staff_teach_subject'], Auth::user()->node_id, null, true, false);
 
 
-                $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.lesson');
+                $data['title']           = Users::role(app()->getLocale()).'|'.__('Edit Lession');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'view') {
                 $data['formAction']          = '/view';
@@ -413,7 +413,7 @@ class TeacherController extends Controller
                 $data['formData']   = $response['data'][0];
                 $data['listData']   = $response['pages']['listData'];
 
-                $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.lesson');
+                $data['title']           = Users::role(app()->getLocale()).'|'.__('View Lession');
                 $data['view']    = 'Teacher.includes.form.includes.lesson.index';
             } elseif ($param2 == 'list-datatable') {
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -423,7 +423,7 @@ class TeacherController extends Controller
                 $staff_teach_subject_id = request('t-subjectId', $param3);
 
                 $data['response'] = StudySubjectLesson::getData(null, $staff_teach_subject_id, 10);
-                $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .subject.&.lesson');
+                $data['title']           = Users::role(app()->getLocale()).'|'.__('Subjects and Lesson');
                 $data['view']     = 'Teacher.includes.teaching.includes.lesson.includes.list.index';
                 if ($param2 == 'grid') {
                     $data['view']     = 'Teacher.includes.teaching.includes.lesson.includes.grid.index';
@@ -441,10 +441,10 @@ class TeacherController extends Controller
             } else {
                 $data['response'] = [
                     'success'   => false,
-                    'message'   => Translator::phrase('no_data')
+                    'message'   => __('No Data')
                 ];
             }
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.schedule');
+            $data['title']   = Users::role(app()->getLocale()).'|'.__('List Schedule');
             $data['view']    = 'Teacher.includes.teaching.includes.schedule.index';
         } elseif (strtolower($param1) == StudentsAttendances::$path['url']) {
 
@@ -475,7 +475,7 @@ class TeacherController extends Controller
 
             if ($param2 == null || $param2 == 'list') {
                 $data['response'] = StudentsStudyCourseScore::getData(null, null, 10);
-                $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Student_score');
+                $data['title']   = Users::role(app()->getLocale()).'|'.__('List Students Score');
                 $data['view']    = 'Teacher.includes.teaching.includes.score.index';
                 $data['formAction'] = '/score/add/';
             } elseif ($param2 == 'edit') {
@@ -495,7 +495,7 @@ class TeacherController extends Controller
                     $data['formData']   = $response['data'][0];
                     $data['listData']   = $response['pages']['listData'];
                     $data['formAction'] = '/score/edit/' . $response['data'][0]['id'];
-                    $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Student_score');
+                    $data['title']   = Users::role(app()->getLocale()).'|'.__('List Students Score');
                     $data['view']    = 'Teacher.includes.form.includes.score.index';
                 }
             }

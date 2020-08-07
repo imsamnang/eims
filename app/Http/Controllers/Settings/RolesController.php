@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormRoles;
 use App\Http\Controllers\Controller;
@@ -106,14 +106,14 @@ class RolesController extends Controller
     {
         $data['response'] =  Roles::getData(null, null, 10);
         $data['view']     = Roles::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Roles');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Roles::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Roles');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
 
@@ -124,7 +124,7 @@ class RolesController extends Controller
     {
         $response = Roles::getData($id, true);
         $data['view']       = Roles::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Roles');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];

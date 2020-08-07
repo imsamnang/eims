@@ -5,14 +5,14 @@
 
             <div class="row align-items-center">
                 <div class="col-auto">
-                    {{Translator::phrase("numbering")}}
+                    {{__("Id")}}
                 </div>
                 <div class="col">
-                    {{Translator::phrase("question")}}
+                    {{__("Question​")}}
                 </div>
 
                 <div class="col-2">
-                    {{Translator::phrase("marks")}}
+                    {{__('Score​')}}
                 </div>
             </div>
 

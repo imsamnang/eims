@@ -20,7 +20,7 @@ use App\Models\BloodGroup;
 use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
@@ -79,7 +79,7 @@ class DepartmentController extends Controller
 
         $data['formAction']          = '/add';
         $data['formName']            = Staff::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Department');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -110,7 +110,7 @@ class DepartmentController extends Controller
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4);
         } elseif (strtolower($param1)  == 'myclass') {
-            $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .myclass');
+            $data['title']      = Users::role(app()->getLocale()).'|'.__('My Class');
             $data['response']   = Staff::getClassTeaching(Auth::user()->node_id);
             $data['view']       = Users::role('view_path') . '.includes.myclass.index';
         } elseif (strtolower($param1)  == 'teaching') {
@@ -160,7 +160,7 @@ class DepartmentController extends Controller
 
     public function dashboard()
     {
-        $data['title'] = Translator::phrase("dashboard");
+        $data['title'] = __("Dashboard");
         $data['formData'] = null;
         $data['formName'] = null;
         $data['formAction'] = null;
@@ -191,7 +191,7 @@ class DepartmentController extends Controller
 
         $data['staff'] = array(
             [
-                'title'   => Translator::phrase('staff. & .teacher'),
+                'title'   => __('Staff & Teacher'),
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
@@ -200,7 +200,7 @@ class DepartmentController extends Controller
                 'color'   => 'blue',
             ],
             [
-                'title'   => Translator::phrase('teacher'),
+                'title'   => __('Teacher'),
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
@@ -212,7 +212,7 @@ class DepartmentController extends Controller
 
         $data['student'] = array(
             [
-                'title'       => Translator::phrase('student.all'),
+                'title'       => __('List all student'),
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
@@ -221,7 +221,7 @@ class DepartmentController extends Controller
                 'color'       => 'green',
             ],
             [
-                'title'       => Translator::phrase('student_study_course'),
+                'title'       => __('Student study course'),
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,

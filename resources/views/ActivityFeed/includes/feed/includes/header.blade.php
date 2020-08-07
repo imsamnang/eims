@@ -31,9 +31,9 @@
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-bookmark" aria-hidden="true"></i>
 
-                            <strong>{{Translator::phrase("save_post")}}</strong>
+                            <strong>{{__("Save post")}}</strong>
                             <br />
-                            <small>{{Translator::phrase("add_this_to_your_saved_items")}} </small>
+                            <small>{{__("Add this to your saved items")}} </small>
 
                         </a>
                     </li>
@@ -42,14 +42,14 @@
                     <li>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-edit" aria-hidden="true"></i>
-                            <strong>{{Translator::phrase("edit_post")}}</strong>
+                            <strong>{{__("Edit post")}}</strong>
                         </a>
                     </li>
                     <li class="dropdown-divider"></li>
                     <li>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-trash" aria-hidden="true"></i>
-                            <strong>{{Translator::phrase("delete")}}</strong>
+                            <strong>{{__("Delete")}}</strong>
 
                         </a>
                     </li>
@@ -60,16 +60,16 @@
                     <li>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-                            <strong>{{Translator::phrase("report​_post")}}</strong>
+                            <strong>{{__("Report post")}}</strong>
                             <br />
-                            <small>{{Translator::phrase("I'm_concerned_about_this_post")}} </small>
+                            <small>{{__("I'm concerned about this post")}} </small>
                         </a>
                     </li>
                     @endif
                     <li>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-code" aria-hidden="true"></i>
-                            {{Translator::phrase("Embed")}}
+                            {{__("Embed")}}
                         </a>
                     </li>
                     <li class="dropdown-divider"></li>
@@ -77,7 +77,7 @@
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-chevron-down" aria-hidden="true"></i>
 
-                            {{Translator::phrase("More_options")}}
+                            {{__("More options")}}
                         </a>
                     </li>
 

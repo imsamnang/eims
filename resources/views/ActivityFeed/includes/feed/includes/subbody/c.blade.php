@@ -42,7 +42,7 @@
                             data-user='{!!json_encode(["id" => $comment["user"]["id"],"name" => $comment["user"]["name"]])!!}'
                             data-toggle="scroll-to" data-target="#comment-{{$comment["id"]}}" data-focus="comment"
                             class="text-muted text-xs text-right ml-2">
-                            {{Translator::phrase("reply")}}
+                            {{__("Reply")}}
                         </a>
                         @endif
                     @endauth
@@ -87,14 +87,14 @@
                                         <a href="#"
                                             data-toggle="scroll-to" data-target="#comment-{{$comment["id"]}}" data-focus="comment"
                                             class="text-muted text-xs text-right ml-2">
-                                            {{Translator::phrase("reply")}}
+                                            {{__("Reply")}}
                                         </a>
                                         @else
                                         <a href="#"
                                             data-user='{!!json_encode(["id" => $replied["user"]["id"],"name" => $replied["user"]["name"]])!!}'
                                             data-toggle="scroll-to" data-target="#comment-{{$comment["id"]}}" data-focus="comment"
                                             class="text-muted text-xs text-right ml-2">
-                                            {{Translator::phrase("reply")}}
+                                            {{__("Reply")}}
                                         </a>
                                         @endif
                                     @endauth
@@ -117,7 +117,7 @@
                             <input data-mention-url="{{str_replace("post","user",config("pages.form.action.detect"))}}"
                                 data-toggle="replied-comment" name="comment"
                                 class="form-control form-control-sm rounded-pill"
-                                placeholder="{{Translator::phrase("write_a_reply")}}" />
+                                placeholder="" />
                         </form>
                     </div>
                 </div>

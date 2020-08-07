@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\CourseTypes;
 use App\Models\StudyCourse;
 use App\Models\SocailsMedia;
@@ -145,14 +145,14 @@ class StudyCourseController extends Controller
             request()->merge(["typeId" => 2]);
         }
         $data['view']     = StudyCourse::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course' . '.' . $param1);
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study course');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyCourse::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Course');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study course');
         $data['metaImage'] = asset('assets/img/icons/add.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -162,7 +162,7 @@ class StudyCourseController extends Controller
     {
         $response = StudyCourse::getData($id, true);
         $data['view']       = StudyCourse::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Course');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study course');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

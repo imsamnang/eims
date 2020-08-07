@@ -12,7 +12,7 @@ use App\Models\CertificateFrames;
 use App\Helpers\CertificateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCertificate;
 use App\Models\StudentsStudyCourse;
@@ -39,7 +39,7 @@ class CertificateController extends Controller
         );
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . CertificateFrames::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('Certificate');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -106,7 +106,7 @@ class CertificateController extends Controller
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $d['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .Certificate.');
+            $d['title'] = Users::role(app()->getLocale()).'|'.__('Certificate');
             MetaHelper::setConfig(
                 [
                     'title'       => $d['title'],
@@ -163,7 +163,7 @@ class CertificateController extends Controller
     public function list($data)
     {
         $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Certificate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Certificate');
         $data['response'] =  CertificateFrames::getData(null, null, 10);
         return $data;
     }
@@ -171,7 +171,7 @@ class CertificateController extends Controller
     public function add($data)
     {
         $data['view']  = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Certificate');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Certificate');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
 
@@ -182,7 +182,7 @@ class CertificateController extends Controller
     {
         $response = CertificateFrames::getData($id, true);
         $data['view']       = CertificateFrames::$path['view'] . '.includes.view.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Certificate');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Certificate');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -195,7 +195,7 @@ class CertificateController extends Controller
     {
         $response = CertificateFrames::getData($id, true);
         $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.' . str_replace('-', '_', $data['formName']));
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Certificate');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -206,7 +206,7 @@ class CertificateController extends Controller
     public function make($data, $user)
     {
 
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .Certificate.');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Certificate');
         $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
         $data['certificates']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
         $data['certificates']['frame']['front'] = $data['certificates']['frame']['front_o'];

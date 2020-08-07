@@ -8,7 +8,7 @@
             </div>
             <input class="form-control form-control-sm" type="text" name="link" data-toggle="link"
                 data-url="{{str_replace("post","link",config("pages.form.action.detect"))}}" data-target="#link-view"
-                placeholder="{{Translator::phrase("link")}}">
+                placeholder="">
         </div>
         <div id="link-view">
             <div class="card m-0">
@@ -17,21 +17,21 @@
                         <input type="radio" id="small_image" name="link_view" class="custom-control-input active" value="1"
                             checked data-target="#small-image">
                         <label class="custom-control-label" for="small_image">
-                            {{Translator::phrase("small_image")}}
+                            {{__("Small image")}}
                         </label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
                         <input type="radio" id="big_image" name="link_view" class="custom-control-input" value="2"
                             data-target="#big-image">
                         <label class="custom-control-label" for="big_image">
-                            {{Translator::phrase("big_image")}}
+                            {{__("Big image")}}
                         </label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline d-none">
                         <input type="radio" id="show_video" name="link_view" class="custom-control-input" value="3"
                             data-target="#show-video">
                         <label class="custom-control-label"
-                            for="show_video">{{Translator::phrase("show_video")}}</label>
+                            for="show_video">{{__("Show video")}}</label>
                     </div>
                 </div>
                 <div class="tab-content p-0 border-0">

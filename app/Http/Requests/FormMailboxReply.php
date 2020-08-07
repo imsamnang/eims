@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormMailboxReply extends FormRequest
@@ -35,9 +35,9 @@ class FormMailboxReply extends FormRequest
     public static function attributeField($flag = '[]')
     {
         return [
-            'mailbox_id'  => Translator::phrase('mailbox_id'),
-            'recipient' . $flag  => Translator::phrase('recipient'),
-            'message'  => Translator::phrase('message'),
+            'mailbox_id'  => __('Mailbox Id'),
+            'recipient' . $flag  => __('Recipient'),
+            'message'  => __('Message'),
         ];
     }
 

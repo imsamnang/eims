@@ -75,7 +75,7 @@
                             <input class="custom-control-input" id="table-option-t2" checked  data-toggle="table-option" type="checkbox">
                             <label class="custom-control-label" for="table-option-t2">
                                 <span class="ml-4"></span>
-                                <span class="">{{Translator::phrase("print")}}</span>
+                                <span class="">{{__("Print")}}</span>
                             </label>
                         </div>
                     </td>

@@ -2,7 +2,7 @@
     <a href="#filter" data-toggle="collapse" class="btn btn-primary mb-3" role="button" aria-expanded="false">
         <i class="fa fa-filter m-0"></i>
         <span class="d-none d-sm-inline">
-            {{Translator::phrase("filter")}}
+            {{__("Filter")}}
         </span>
     </a>
 </div>
@@ -18,9 +18,9 @@
                         <select class="form-control" data-toggle="select" id="study_course_session"
                             title="Simple select" data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
                             data-allow-clear="true"
-                        
-                            data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
+
+                            data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                             @foreach($study_course_session["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-xl-4 mb-3">
                         <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
-                            {{ Translator::phrase("search_filter") }}</button>
+                            {{ __("Search filter") }}</button>
                     </div>
                 </div>
             </div>

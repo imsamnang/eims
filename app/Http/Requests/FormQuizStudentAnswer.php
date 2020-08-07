@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormQuizStudentAnswer extends FormRequest
@@ -37,7 +37,7 @@ class FormQuizStudentAnswer extends FormRequest
     public static function attributeField($flag = '[]')
     {
         $attributes = [
-            'answer'.$flag            => Translator::phrase('answer'),
+            'answer'.$flag            => __('Answer'),
         ];
 
         return $attributes;

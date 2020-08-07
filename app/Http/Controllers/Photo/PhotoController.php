@@ -8,7 +8,7 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
@@ -74,7 +74,7 @@ class PhotoController extends Controller
     public function make($data, $user)
     {
         $data['view']       = 'Photo.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .make.' . str_replace('-', '_', $data['formName']));
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('Photo');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $user['data'][0]['id']);
         $data['formData']   = $user['data'][0];

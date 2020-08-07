@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Helpers\Translator;
+
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
@@ -45,7 +45,7 @@ class PasswordReset extends ResetPasswordNotification
     {
         return (new MailMessage)
         ->line(__('passwords.reset_line1')) // Here are the lines you can safely override
-        ->action(Translator::phrase('reset_password'), url('password/reset', $this->token))
+        ->action(__('reset_password'), url('password/reset', $this->token))
         ->line(__('passwords.reset_line2'));
     }
 

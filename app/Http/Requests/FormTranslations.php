@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use App\Models\Languages;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,10 +34,10 @@ class FormTranslations extends FormRequest
     }
     public static function attributeField()
     {
-        $attributes['phrase'] = Translator::phrase('phrase');
+        $attributes['phrase'] = __('Phrase');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('word.in.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
         return $attributes;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStaff extends FormRequest
@@ -88,60 +88,60 @@ class FormStaff extends FormRequest
     {
         return [
 
-            'institute'            => Translator::phrase('institute'),
-            'status'               => Translator::phrase('status'),
-            'designation'          => Translator::phrase('designation'),
-            'institute_extra_info' => Translator::phrase('extra_info'),
+            'institute'            => __('Institute'),
+            'status'               => __('Status'),
+            'designation'          => __('Designation'),
+            'institute_extra_info' => __('Extra information'),
 
-            'first_name_km'        => Translator::phrase('first_name_km'),
-            'last_name_km'         => Translator::phrase('last_name_km'),
-            'first_name_en'        => Translator::phrase('first_name_en'),
-            'last_name_en'         => Translator::phrase('last_name_en'),
+            'first_name_km'        => __('First name Khmer'),
+            'last_name_km'         => __('Last name Khmer'),
+            'first_name_en'        => __('first name Latin'),
+            'last_name_en'         => __('last name Latin'),
 
-            'nationality'          => Translator::phrase('nationality'),
-            'mother_tong'          => Translator::phrase('mother_tong'),
-            'national_id'          => Translator::phrase('national_id'),
+            'nationality'          => __('Nationality'),
+            'mother_tong'          => __('Mother tong'),
+            'national_id'          => __('National Id'),
 
-            'gender'               => Translator::phrase('gender'),
-            'date_of_birth'        => Translator::phrase('date_of_birth'),
-            'marital'              => Translator::phrase('marital'),
+            'gender'               => __('Gender'),
+            'date_of_birth'        => __('Date of birth'),
+            'marital'              => __('Marital'),
 
-            'pob_province_fk'      => Translator::phrase('province'),
-            'pob_district_fk'      => Translator::phrase('district'),
-            'pob_commune_fk'       => Translator::phrase('commune'),
-            'pob_village_fk'       => Translator::phrase('village'),
-            'permanent_address'    => Translator::phrase('permanent_address'),
+            'pob_province_fk'      => __('Province'),
+            'pob_district_fk'      => __('District'),
+            'pob_commune_fk'       => __('Commune'),
+            'pob_village_fk'       => __('Village'),
+            'permanent_address'    => __('Permanent address'),
 
-            'curr_province_fk'     => Translator::phrase('province'),
-            'curr_district_fk'     => Translator::phrase('district'),
-            'curr_commune_fk'      => Translator::phrase('commune'),
-            'curr_village_fk'      => Translator::phrase('village'),
-            'temporaray_address'   => Translator::phrase('temporaray_address'),
+            'curr_province_fk'     => __('Province'),
+            'curr_district_fk'     => __('District'),
+            'curr_commune_fk'      => __('Commune'),
+            'curr_village_fk'      => __('Village'),
+            'temporaray_address'   => __('Temporaray address'),
 
-            'father_fullname'      => Translator::phrase('father_fullname'),
-            'father_occupation'    => Translator::phrase('occupation'),
-            'father_phone'         => Translator::phrase('father_phone'),
-            'father_email'         => Translator::phrase('father_email'),
-            'father_extra_info'    => Translator::phrase('extra_info'),
+            'father_fullname'      => __('Father fullname'),
+            'father_occupation'    => __('Occupation'),
+            'father_phone'         => __('Father phone'),
+            'father_email'         => __('Father email'),
+            'father_extra_info'    => __('Extra info'),
 
-            'mother_fullname'      => Translator::phrase('mother_fullname'),
-            'mother_occupation'    => Translator::phrase('occupation'),
-            'mother_phone'         => Translator::phrase('mother_phone'),
-            'mother_email'         => Translator::phrase('mother_email'),
-            'mother_extra_info'    => Translator::phrase('extra_info'),
+            'mother_fullname'      => __('Mother fullname'),
+            'mother_occupation'    => __('Occupation'),
+            'mother_phone'         => __('Mother phone'),
+            'mother_email'         => __('Mother email'),
+            'mother_extra_info'    => __('Extra info'),
 
-            'guardian'             => Translator::phrase('guardian'),
+            'guardian'             => __('Guardian'),
 
-            'guardian_fullname'    => Translator::phrase('guardian_fullname'),
-            'guardian_occupation'  => Translator::phrase('occupation'),
-            'guardian_phone'       => Translator::phrase('guardian_phone'),
-            'guardian_email'       => Translator::phrase('guardian_email'),
-            'guardian_extra_info'  => Translator::phrase('extra_info'),
-            'phone'                => Translator::phrase('phone'),
-            'email'                => Translator::phrase('email'),
-            'password'             => Translator::phrase('password'),
-            'staff_extra_info'    => Translator::phrase('extra_info'),
-            'photo'                => Translator::phrase('photo'),
+            'guardian_fullname'    => __('Guardian fullname'),
+            'guardian_occupation'  => __('Occupation'),
+            'guardian_phone'       => __('Guardian phone'),
+            'guardian_email'       => __('Guardian email'),
+            'guardian_extra_info'  => __('Extra info'),
+            'phone'                => __('Phone'),
+            'email'                => __('Email'),
+            'password'             => __('Password'),
+            'staff_extra_info'    => __('Extra info'),
+            'photo'                => __('Photo'),
         ];
     }
 
@@ -158,10 +158,10 @@ class FormStaff extends FormRequest
     {
         return [
             'first_name_km'                                       => [
-                'only_khmer_character'                            => Translator::phrase('first_name_km.required_only_khmer_character'),
+                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
             ],
             'last_name_km'                                        => [
-                'only_khmer_character'                            => Translator::phrase('first_name_km.required_only_khmer_character'),
+                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
             ],
         ];
     }

@@ -11,7 +11,7 @@
                     title="{{config("pages.form.validate.questions.student")}}" class="form-control-label"
                     for="student">
 
-                    {{ Translator:: phrase("student") }}
+                    {{ __("Student") }}
 
                     @if(config("pages.form.validate.rules.student[]"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -20,7 +20,7 @@
                     @endif
                 </label>
                 <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder="{{ Translator::phrase("choose.student") }}" name="student[]"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.student.id",request("sessionId"))}}">
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

@@ -8,7 +8,7 @@ use App\Models\Languages;
 use App\Models\Translates;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormTranslates;
@@ -130,14 +130,14 @@ class TranslateController extends Controller
     {
         $data['response'] = Translates::getData(null, 10);
         $data['view']     = Translates::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.translate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Translates');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Translates::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.translate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Translates');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -147,7 +147,7 @@ class TranslateController extends Controller
     {
         $response = Translates::getData($id, true);
         $data['view']       = Translates::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.translate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Translates');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -160,7 +160,7 @@ class TranslateController extends Controller
     {
         $response = Translates::getData($id, true);
         $data['view']       = Translates::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.translate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Translates');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

@@ -26,7 +26,7 @@
                 <a href="#filter" data-toggle="collapse" class="btn btn-sm mb-3" role="button" aria-expanded="false">
                     <i class="fa fa-filter m-0"></i>
                     <span class="d-none d-sm-inline">
-                        {{Translator::phrase("filter")}}
+                        {{__("Filter")}}
                     </span>
                 </a>
             </div>

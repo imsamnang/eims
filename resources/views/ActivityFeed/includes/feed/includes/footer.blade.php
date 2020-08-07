@@ -9,7 +9,7 @@
                 @csrf
                 <input type="hidden" name="feed_id" value="{{$feed["id"]}}">
                 <input data-mention-url="{{str_replace("post","user",config("pages.form.action.detect"))}}" data-toggle="comment" name="comment" class="form-control form-control-sm rounded-pill"
-                    placeholder="{{Translator::phrase("write_a_comment")}}" ></textarea>
+                    placeholder="" ></textarea>
             </form>
         </div>
     </div>

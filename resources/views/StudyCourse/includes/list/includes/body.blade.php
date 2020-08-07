@@ -14,16 +14,16 @@
                         </div>
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
                     <th data-type="text" data-key="name" width="1" class="sort" data-sort="name">
-                        {{Translator::phrase("study_course")}}​</th>
+                        {{__("Study Course")}}​</th>
                     <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
-                        {{Translator::phrase("institute")}}​</th>
+                        {{__("Institute"}}​</th>
 
                     <th data-type="text" data-key="study_program.name" width="1" class="sort" data-sort="program">
-                        {{Translator::phrase("study_program")}}​ </th>
-                    <th data-type="text" data-key="description">{{Translator::phrase("description")}}​</th>
-                    <th data-type="image" data-key="image" width="1">{{Translator::phrase("image")}}​</th>
+                        {{__("Study Program")}}​ </th>
+                    <th data-type="text" data-key="description">{{__("Description")}}​</th>
+                    <th data-type="image" data-key="image" width="1">{{__("Image")}}​</th>
 
                 </tr>
             </thead>
@@ -37,19 +37,19 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
-                        <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
+                        <i class="fas fa-edit"></i> {{__("Edit")}}</a>
 
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

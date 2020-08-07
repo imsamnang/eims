@@ -5,7 +5,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="b-tab" data-toggle="tab" href="#a" role="tab" aria-controls="a"
                         aria-selected="true">
-                        (A) {{Translator::phrase("biography")}}
+                        (A) {{__("Biography")}}
                     </a>
                 </li>
 

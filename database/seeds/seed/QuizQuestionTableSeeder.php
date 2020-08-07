@@ -20,7 +20,7 @@ class QuizQuestionTableSeeder extends Seeder
                 'quiz_answer_type_id'   => 1,
                 'quiz_question_type_id' => 1,
                 'question'              => '1 + 1 = ?',
-                'marks'                 => 10,
+                'score'                 => 10,
             ],
             [
                 'id'                    => 2,
@@ -28,7 +28,7 @@ class QuizQuestionTableSeeder extends Seeder
                 'quiz_answer_type_id'   => 2,
                 'quiz_question_type_id' => 2,
                 'question'              => '1 + 1 = ?',
-                'marks'                 => 10,
+                'score'                 => 10,
             ],
             [
                 'id'                    => 3,
@@ -36,7 +36,7 @@ class QuizQuestionTableSeeder extends Seeder
                 'quiz_answer_type_id'   => 3,
                 'quiz_question_type_id' => 2,
                 'question'              => '1 + 5 = ?',
-                'marks'                 => 10,
+                'score'                 => 10,
             ]
         ]);
 

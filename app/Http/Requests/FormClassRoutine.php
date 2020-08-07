@@ -40,15 +40,15 @@ class FormClassRoutine extends FormRequest
     public static function attributeField()
     {
         return [
-            'class'                  => Translator::phrase('class'),
-            'subject'                => Translator::phrase('subject'),
-            'day'                    => Translator::phrase('day'),
-            'start_time_hour'        => Translator::phrase('start_time.hour'),
-            'start_time_minutes'     => Translator::phrase('start_time.minutes'),
-            'start_time_meridiem'    => Translator::phrase('start_time.meridiem'),
-            'end_time_hour'          => Translator::phrase('end_time.hour'),
-            'end_time_minutes'       => Translator::phrase('end_time.minutes'),
-            'end_time_meridiem'      => Translator::phrase('end_time.meridiem'),
+            'class'                  => __('Class'),
+            'subject'                => __('subjects'),
+            'day'                    => __('Day'),
+            'start_time_hour'        => __('Start time hour'),
+            'start_time_minutes'     => __('start time minutes'),
+            'start_time_meridiem'    => __('start time meridiem'),
+            'end_time_hour'          => __('end time hour'),
+            'end_time_minutes'       => __('end time minutes'),
+            'end_time_meridiem'      => __('end time meridiem'),
 
 
         ];

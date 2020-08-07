@@ -19,7 +19,7 @@ use App\Models\BloodGroup;
 use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
@@ -61,95 +61,95 @@ class GeneralController extends Controller
         if ($param1 == null || $param1 == 'list') {
             $data['shortcut'] = array(
                 [
-                    'name'  => Translator::phrase('list.province'),
+                    'name'  => __('List Province'),
                     'link'  => url(Users::role() . '/general/' . Provinces::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('province'),
+                    'text'  => __('Province'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.district'),
+                    'name'  => __('List District'),
                     'link'  => url(Users::role() . '/general/' . Districts::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('district'),
+                    'text'  => __('District'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.commune'),
+                    'name'  => __('List Commune'),
                     'link'  => url(Users::role() . '/general/' . Communes::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('commune'),
+                    'text'  => __('Commune'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.village'),
+                    'name'  => __('List Village'),
                     'link'  => url(Users::role() . '/general/' . Villages::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('village'),
+                    'text'  => __('Village'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.nationality'),
+                    'name'  => __('List Nationality'),
                     'link'  => url(Users::role() . '/general/' . Nationality::$path['url'] . '/list'),
                     'icon'  => 'fas fa-flag',
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.mother_tong'),
+                    'name'  => __('List Mother tong'),
                     'link'  => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/list'),
                     'icon'  => 'fas fa-head-side-headphones',
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.gender'),
+                    'name'  => __('List Gender'),
                     'link'  => url(Users::role() . '/general/' . Gender::$path['url'] . '/list'),
                     'icon'  => 'fas fa-venus-mars',
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.marital'),
+                    'name'  => __('List Marital'),
                     'link'  => url(Users::role() . '/general/' . Marital::$path['url'] . '/list'),
                     'icon'  => 'fas fa-rings-wedding',
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.blood_group'),
+                    'name'  => __('List Blood group'),
                     'link'  => url(Users::role() . '/general/' . BloodGroup::$path['url'] . '/list'),
                     'icon'  => 'fas fa-hand-holding-water',
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('year')  .' '.Years::now(),
+                    'name'  => __('Year')  .' '.Years::now(),
                     'link'  => '#',
                     'icon'  => null,
                     'text'  => Years::now(),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.month'),
+                    'name'  => __('List Month'),
                     'link'  => url(Users::role() . '/general/' . Months::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('month'),
+                    'text'  => __('Month'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.day'),
+                    'name'  => __('List Day'),
                     'link'  => url(Users::role() . '/general/' . Days::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('day'),
+                    'text'  => __('Day'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.holiday'),
+                    'name'  => __('List Holiday'),
                     'link'  => url(Users::role() . '/general/' . Holidays::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('holiday'),
+                    'text'  => __('Holiday'),
                     'image' => null,
                     'color' => 'bg-'.config('app.theme_color.name'),
                 ],
             );
             $data['view']  = 'General.includes.dashboard.index';
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+            $data['title'] = Users::role(app()->getLocale()).'|'.__('General');
         } elseif (strtolower($param1) == Provinces::$path['url']) {
             $view = new ProvinceController();
             return $view->index($param2,$param3);

@@ -12,7 +12,7 @@ use App\Models\CardFrames;
 use App\Helpers\CardHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCard;
 use App\Models\StudentsStudyCourse;
@@ -40,7 +40,7 @@ class CardController extends Controller
         );
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . CardFrames::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()) .'|'.  __('Card');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -109,7 +109,7 @@ class CardController extends Controller
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $d['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
+            $d['title'] = Users::role(app()->getLocale()) .'|'.__('Card');
             MetaHelper::setConfig(
                 [
                     'title'       => $d['title'],
@@ -166,7 +166,7 @@ class CardController extends Controller
     public function list($data)
     {
         $data['view']     = CardFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.card');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Card');
         $data['response'] =  CardFrames::getData(null, null, 10);
         return $data;
     }
@@ -174,7 +174,7 @@ class CardController extends Controller
     public function add($data)
     {
         $data['view']  = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.card');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Card');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
 
@@ -185,7 +185,7 @@ class CardController extends Controller
     {
         $response = CardFrames::getData($id, true);
         $data['view']       = CardFrames::$path['view'] . '.includes.view.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.card');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Card');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -198,7 +198,7 @@ class CardController extends Controller
     {
         $response = CardFrames::getData($id, true);
         $data['view']       = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.' . str_replace('-', '_', $data['formName']));
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Card');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -208,8 +208,8 @@ class CardController extends Controller
     }
     public function make($data, $user)
     {
-        
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
+
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Card');
         $data['view']  = CardFrames::$path['view'] . '.includes.make.index';
         $data['cards']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];
         $data['cards']['frame']['front'] = $data['cards']['frame']['front_o'];

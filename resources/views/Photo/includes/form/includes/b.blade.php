@@ -2,7 +2,7 @@
     <div class="sticky-top" data-spy="affix" data-offset-top="100">
         <div class="card">
             <div class="card-header">
-                <div class="font-weight-600">{{Translator::phrase("edit.photo")}}</div>
+                <div class="font-weight-600">{{__("Photo")}}</div>
                 <div class="list-group list-group-flush">
                     <div href="#" class="list-group-item">
                         <div class="row">

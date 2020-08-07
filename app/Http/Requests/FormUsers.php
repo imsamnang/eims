@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormUsers extends FormRequest
@@ -58,15 +58,15 @@ class FormUsers extends FormRequest
     public static function attributeField()
     {
         return [
-                'institute'    => Translator::phrase('institute'),
-                'name'         => Translator::phrase('user_name'),
-                'phone'        => Translator::phrase('phone'),
-                'email'        => Translator::phrase('email'),
-                'password'     => Translator::phrase('password'),
-                'address'      => Translator::phrase('address'),
-                'location'     => Translator::phrase('location'),
-                'role'         => Translator::phrase('role'),
-                'profile'      => Translator::phrase('profile'),
+                'institute'    => __('Institute'),
+                'name'         => __('User name'),
+                'phone'        => __('Phone'),
+                'email'        => __('Email'),
+                'password'     => __('Password'),
+                'address'      => __('Address'),
+                'location'     => __('Location'),
+                'role'         => __('Role'),
+                'profile'      => __('Profile'),
 
         ];
     }

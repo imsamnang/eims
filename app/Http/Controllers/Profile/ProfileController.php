@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormProfile;
@@ -68,11 +68,11 @@ class ProfileController extends Controller
                             'type'      => 'update',
                             'data'      => Users::getData(Auth::user()->id),
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('update.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Update Successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
@@ -95,11 +95,11 @@ class ProfileController extends Controller
                             $response       = array(
                                 'success'   => false,
                                 'message'   => array(
-                                    'title' => Translator::phrase('error'),
-                                    'text'  => Translator::phrase('new_password.same.old_password'),
+                                    'title' => __('Error'),
+                                    'text'  => __('New password is same old password'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
 
                                 ),
@@ -113,11 +113,11 @@ class ProfileController extends Controller
                                     $response       = array(
                                         'success'   => true,
                                         'message'   => array(
-                                            'title' => Translator::phrase('success'),
-                                            'text'  => Translator::phrase('update.successfully'),
+                                            'title' => __('Success'),
+                                            'text'  => __('Update Successfully'),
                                             'button'   => array(
-                                                'confirm' => Translator::phrase('ok'),
-                                                'cancel'  => Translator::phrase('cancel'),
+                                                'confirm' => __('Ok'),
+                                                'cancel'  => __('Cancel'),
                                             ),
 
                                         ),
@@ -126,11 +126,11 @@ class ProfileController extends Controller
                                 $response       = array(
                                     'success'   => false,
                                     'message'   => array(
-                                        'title' => Translator::phrase('error'),
-                                        'text'  => Translator::phrase('password.and.password_confirmation.not_match'),
+                                        'title' => __('Error'),
+                                        'text'  => __('Password and password confirmation not match'),
                                         'button'   => array(
-                                            'confirm' => Translator::phrase('ok'),
-                                            'cancel'  => Translator::phrase('cancel'),
+                                            'confirm' => __('Ok'),
+                                            'cancel'  => __('Cancel'),
                                         ),
 
                                     ),
@@ -141,11 +141,11 @@ class ProfileController extends Controller
                         $response       = array(
                             'success'   => false,
                             'message'   => array(
-                                'title' => Translator::phrase('error'),
-                                'text'  => Translator::phrase('old_password.incrrent'),
+                                'title' => __('Error'),
+                                'text'  => __('Old password incrrent'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
 
                             ),
@@ -198,7 +198,7 @@ class ProfileController extends Controller
     {
         $response           = Users::getUsers(Auth::user()->id);
         $data['view']       = 'Profile.includes.form.general.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .profile.-.general');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('General');
         $data['metaImage']  = asset('assets/img/icons/profile.png');
         $data['metaLink']   = url(Users::role() . '/profile/');
         $data['formData']   = $response['data'][0];
@@ -210,7 +210,7 @@ class ProfileController extends Controller
     {
         $response           = Users::getUsers(Auth::user()->id);
         $data['view']       = 'Profile.includes.form.password.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .profile.-.password');
+        $data['title']      = Users::role(app()->getLocale()) .'|'.__('Password');
         $data['metaImage']  = asset('assets/img/icons/profile.png');
         $data['metaLink']   = url(Users::role() . '/password/');
         $data['formData']   = $response['data'][0];

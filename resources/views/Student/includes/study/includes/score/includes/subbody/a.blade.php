@@ -22,23 +22,23 @@
                 </span>
                 <br>
                 <span>
-                    {{ Translator::phrase("list.score.".config("pages.form.data.node_type"))}}
+                    {{ __("List score")}}
                 </span>
             </h4>
         </th>
     </tr>
 
     <tr>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  Translator::phrase("numbering") }}​</th>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  Translator::phrase("name") }}​</th>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  Translator::phrase("gender") }}​</th>
+        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Id") }}​</th>
+        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Name") }}​</th>
+        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Gender") }}​</th>
         @foreach ($response['study_subject'] as $row)
         <th> {{$row['subject']['name'] }}</th>
         @endforeach
-        <th class="font-weight-bold1">{{  Translator::phrase("attendance_score") }}​</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("other_score") }}</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("total") }}</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("average") }}</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("grade") }}</th>
+        <th class="font-weight-bold1">{{  __("Attendance score") }}​</th>
+        <th class="font-weight-bold1">{{  __("Other score") }}</th>
+        <th class="font-weight-bold1">{{  __("Total") }}</th>
+        <th class="font-weight-bold1">{{  __("Average") }}</th>
+        <th class="font-weight-bold1">{{  __("Grade") }}</th>
     </tr>
 </thead>

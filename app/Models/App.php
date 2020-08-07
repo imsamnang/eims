@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormApp;
 use Illuminate\Database\Eloquent\Model;
@@ -153,7 +153,7 @@ class App extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -204,17 +204,17 @@ class App extends Model
                         'type'      => 'update',
                         'data'      => [],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -224,7 +224,7 @@ class App extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -237,17 +237,17 @@ class App extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),                                
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -260,7 +260,7 @@ class App extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($id && $theme_color_id) {
             try {
@@ -273,17 +273,17 @@ class App extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;

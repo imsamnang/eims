@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use Illuminate\Support\Facades\Auth;
 use PHPHtmlParser\Dom;
 
@@ -93,7 +93,7 @@ class MailboxSent
             $response = [
                 'success'   => false,
                 'data'   => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
                 'pages' => $pages
             ];
         }

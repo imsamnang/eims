@@ -7,10 +7,10 @@
                     @include('Mailbox.includes.navLeft')
                     <aside class="lg-side">
                         <div class="inbox-head">
-                            <h3 class="text-white"> {{Translator::phrase(config("pages.parameters.param1"))}}</h3>
+                            <h3 class="text-white"> {{__(config("pages.parameters.param1"))}}</h3>
                             <form class="pull-right position" action="#">
                                 <div class="input-append">
-                                    <input type="text" placeholder="Search Mail" class="sr-input">
+                                    <input type="text" placeholder="">
                                     <button type="button" class="btn sr-btn" data-original-title="" title=""><i
                                             class="fas fa-search"></i></button>
                                 </div>
@@ -38,7 +38,7 @@
                                         data-sweet-alert="confirm" sweet-alert-controls-id="" data-checked-show="trash">
                                         <i class="fas fa-trash m-0"></i>
                                         <span class="d-none d-sm-inline">
-                                            {{Translator::phrase("move_trash")}}
+                                            {{__("Move trash")}}
                                         </span>
                                     </a>
                                 </div>
@@ -92,7 +92,7 @@
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item" href="{{$row["action"]["view"]}}">
                                                         <i class="fas fa-eye"></i>
-                                                        {{Translator::phrase("view")}}
+                                                        {{__("View")}}
                                                     </a>
 
                                                     <div class="dropdown-divider"></div>
@@ -101,7 +101,7 @@
                                                         data-sweet-alert="confirm" data-sweet-id="{{$row["id"]}}"
                                                         href="{{$row["action"]["move_trash"]}}">
                                                         <i class="fas fa-trash"></i>
-                                                        {{Translator::phrase("move_trash")}}</a>
+                                                        {{__("Move trash")}}</a>
                                                 </div>
                                             </div>
                                         </td>

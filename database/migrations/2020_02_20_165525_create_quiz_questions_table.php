@@ -19,7 +19,7 @@ class CreateQuizQuestionsTable extends Migration
             $table->bigInteger('quiz_answer_type_id')->unsigned()->nullable();
             $table->bigInteger('quiz_question_type_id')->unsigned()->nullable();
             $table->string('question')->nullable();
-            $table->float('marks')->nullable();
+            $table->float('score')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });

@@ -1,7 +1,7 @@
 <div class="sticky-top" data-spy="affix" data-offset-top="100">
     <div class="card m-0">
         <div class="card-header">
-            <div class="font-weight-600">{{Translator::phrase("account")}}</div>
+            <div class="font-weight-600">{{__("Account")}}</div>
             <div class="list-group list-group-flush">
                 <div href="#" class="list-group-item">
                     <div class="row">
@@ -28,7 +28,7 @@
                             </p>
                             @if(config("pages.form.data.account"))
                             <p class="text-sm mb-0 text-green">
-                                {{Translator::phrase("has_account")}}
+                                {{__("Has account")}}
                                 <i class="fas fa-check-circle"></i>
                             </p>
                             @endif
@@ -45,7 +45,7 @@
                         title="{{config("pages.form.validate.questions.email")}}" class="form-control-label"
                         for="email">
 
-                        {{ Translator:: phrase("email") }}
+                        {{ __("Email") }}
                         @if(config("pages.form.validate.rules.email"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger"
                             style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -57,7 +57,7 @@
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
                             <input disabled type="email" class="form-control" id="email"
-                                placeholder="{{ Translator:: phrase("email") }}"
+                                placeholder=""
                                 value="{{config("pages.form.data.node.email")}}"
                                 {{config("pages.form.validate.rules.email") ? "required" : ""}} name="email" />
                         </div>
@@ -68,7 +68,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                         title="" class="form-control-label"
                         for="password">
-                        {{ Translator:: phrase("password") }}
+                        {{ __("Password") }}
                         @if(config("pages.form.validate.rules.password"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger"
                             style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -81,7 +81,7 @@
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                             </div>
                             <input type="password" class="form-control" id="password"
-                                placeholder="{{ Translator:: phrase("new_password") }}"
+                                placeholder=""
                                 value=""
                                 {{config("pages.form.validate.rules.password") ? "required" : ""}} name="password" />
 

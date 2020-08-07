@@ -5,9 +5,9 @@ namespace App\Models;
 use App\User;
 use Carbon\Carbon;
 use DomainException;
-use App\Helpers\Exception;
+
 use App\Helpers\DateHelper;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStaff;
 use App\Http\Requests\FormUsers;
@@ -131,7 +131,7 @@ class Users extends Model
                     'status'         => User::find($row['id'])->isOnline(),
                     'account_status'  => [
                         'id'    => 1,
-                        'name'  => Translator::phrase('new_account'),
+                        'name'  => __('New account'),
                         'color' => 'bg-yellow text-black'
                     ],
                     'action'         => [
@@ -150,7 +150,7 @@ class Users extends Model
                     if ($diff > 90) {
                         $data[$key]['account_status']  = [
                             'id'   => 2,
-                            'name' => Translator::phrase('old_account'),
+                            'name' => __('Old account'),
                             'color' => 'bg-secondary'
                         ];
                     };
@@ -176,7 +176,7 @@ class Users extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -251,17 +251,17 @@ class Users extends Model
 
         if (request('role') != 1 && request('role') != 9) {
             if (!request('reference')) {
-                $empty = (request('role') == 6 || request('role') == 7) ? Translator::phrase('( .student. ) .required') : Translator::phrase('( .staff. ) .required');
+                $empty = (request('role') == 6 || request('role') == 7) ? __('Students required') : __('Staff required');
                 return array(
                     'success'   => false,
                     'type'      => 'add',
                     'data'      => [],
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL . $empty,
+                        'title' => __('Error'),
+                        'text'  => __('Add Unsuccessful') . PHP_EOL . $empty,
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
@@ -281,11 +281,11 @@ class Users extends Model
                     'type'      => 'add',
                     'data'      => [],
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('already_exists. ( .email. )'),
+                        'title' => __('Error'),
+                        'text'  => __('Already exists email'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
@@ -318,17 +318,17 @@ class Users extends Model
                             'type'      => 'add',
                             'data'      => Users::getData($add),
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('add.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Add Successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
                     }
                 } catch (DomainException $e) {
-                    $response       = Exception::exception($e);
+                    $response       = $e;
                 }
             }
         }
@@ -381,17 +381,17 @@ class Users extends Model
                         'type'      => 'update',
                         'data'      => Users::getData($id),
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -401,7 +401,7 @@ class Users extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -414,17 +414,17 @@ class Users extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -443,29 +443,29 @@ class Users extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -476,11 +476,11 @@ class Users extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -491,11 +491,11 @@ class Users extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )
@@ -507,7 +507,7 @@ class Users extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('no_data')
+            'message'   => __('No Data')
         );
         if ($id) {
             $get = Users::where('id', $id)->get()->toArray();
@@ -623,12 +623,12 @@ class Users extends Model
                     'type'      => 'add',
                     'reload'    => true,
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('register.successfully') . PHP_EOL
-                            . Translator::phrase('( .reload_page. )'),
+                        'title' => __('Success'),
+                        'text'  => __('Register Successfully') . PHP_EOL
+                            . __('Reload page'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );

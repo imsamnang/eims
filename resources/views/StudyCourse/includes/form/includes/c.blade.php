@@ -8,7 +8,7 @@
         <div class="form-row">
             {{-- <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="curriculum_author">
-                    {{ Translator:: phrase("curriculum_author") }}
+                    {{ __("Curriculum Author") }}
 
                     @if(array_key_exists("curriculum_author",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -18,9 +18,9 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="curriculum_author" title="Simple select"
-                    
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.curriculum_author") }}" name="curriculum_author"
+
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.curriculum_author.id")}}"
                     {{(array_key_exists("curriculum_author",config("pages.form.validate.rules"))) ? "required" : ""}}>
                     @foreach($curriculum_author["data"] as $o)
@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="curriculum_endorsement">
-                    {{ Translator:: phrase("curriculum_endorsement") }}
+                    {{ __("Curriculum Endorsement") }}
 
                     @if(array_key_exists("curriculum_endorsement",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -41,9 +41,9 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="curriculum_endorsement" title="Simple select"
-                    
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.curriculum_endorsement") }}"
+
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     name="curriculum_endorsement"
                     data-select-value="{{config("pages.form.data.curriculum_endorsement.id")}}"
                     {{(array_key_exists("curriculum_endorsement",config("pages.form.validate.rules"))) ? "required" : ""}}>
@@ -55,7 +55,7 @@
             </div> --}}
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="description">
-                    {{ Translator:: phrase("description") }}
+                    {{ __("Description") }}
 
                     @if(array_key_exists("description",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -70,7 +70,7 @@
                             <span class="input-group-text"><i class="fas fa-info"></i></span>
                         </div>
                         <textarea class="form-control" id="description"
-                            placeholder="{{ Translator:: phrase("description") }}"
+                            placeholder=""
                             value="{{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}"
                             name="description">{{config("pages.form.data.description")}}</textarea>
 
@@ -80,7 +80,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="image">
-                    {{ Translator:: phrase("image") }}
+                    {{ __("Image") }}
                     @if(array_key_exists("image",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
@@ -90,12 +90,12 @@
                     data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
                     <div class="fallback">
                         <div class="custom-file">
-                            <input type="file" placeholder="{{ Translator:: phrase("drop_image_here") }}"
+                            <input type="file" placeholder=""
                                 class="custom-file-input" id="dropzoneBasicUpload" name="image"
                                 {{(array_key_exists("image", config("pages.form.validate.rules"))) ? "required" : ""}} />
                             <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                 class="custom-file-label"
-                                for="dropzoneBasicUpload">{{ Translator:: phrase("choose.image") }}</label>
+                                for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                         </div>
                     </div>
 
@@ -111,13 +111,13 @@
                 <div class="form-group">
                     <div class="custom-checkbox mb-3">
                         <label class="form-control-label"><i class="fas fa-sticky-note "></i>
-                            {{ Translator:: phrase("note") }} </label>
+                            {{ __("Note") }} </label>
                         <br>
                         <label class="form-control-label">
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset">
                                 <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                {{ Translator:: phrase("field_required") }}</span> </label>
+                                {{ __("Field required") }}</span> </label>
 
 
                     </div>

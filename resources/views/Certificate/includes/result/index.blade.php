@@ -43,20 +43,20 @@
 
             <div class="{{$certificates["success"] == false ? "d-none":""}}">
                 <button class="btn-save btn d-print-none">
-                    <i class="fas fa-save"></i> {{Translator::phrase("save")}}
+                    <i class="fas fa-save"></i> {{__("Save")}}
                 </button>
 
                 <button class="btn-print btn btn-primary d-print-none">
                     <i class="fas fa-print"></i>
-                    {{Translator::phrase("print")}} | (A4)
-                    {{$certificates["settings"]  && $certificates["settings"]["layout"] =="vertical"? Translator::phrase("landscape") : Translator::phrase("portrait")}}
+                    {{__("Print")}} | (A4)
+                    {{$certificates["settings"]  && $certificates["settings"]["layout"] =="vertical"? __("Landscape") : __("Portrait")}}
                 </button>
             </div>
         </header>
 
         @if ($certificates["success"] == false)
         <section class="sheet nodata">
-            <div class="nodata-text">{{Translator::phrase("no_data")}}</div>
+            <div class="nodata-text">{{__("No Data")}}</div>
         </section>
 
         @endif

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase("edit.".str_replace("-","_",config("pages.form.name"))) }}</h5>
+                            {{ __("edit.".'Name') }}</h5>
                     </div>
                     <div class="card-body" data-modal-view="modal-lg">
                         @include(config("pages.parent").".includes.form")
@@ -16,11 +16,11 @@
                     <div class="card-footer">
                         @if (!request()->ajax())
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
-                            class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
+                            class="btn btn-default" type="button">{{ __("Back") }}</a>
                         @endif
                         <a href="" name="scrollTo"></a>
                         <button class="btn btn-primary ml-auto pull-right" data-for="update" id="btn-update"
-                            name="btn-update" type="submit">{{ Translator:: phrase("update") }}</button>
+                            name="btn-update" type="submit">{{ __("Update") }}</button>
                     </div>
 
                 </div>

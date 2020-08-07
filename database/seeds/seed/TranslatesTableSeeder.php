@@ -49,7 +49,7 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'បន្ថែម'
             ],
             [
-                'phrase' => 'add_absent',
+                'phrase' => 'Add Absent',
                 'en' => 'Add Absent',
                 'km' => 'ចុះវត្តមាន'
             ],
@@ -109,7 +109,7 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'ពេញមួយថ្ងៃ'
             ],
             [
-                'phrase' => 'already_exists',
+                'phrase' => 'Already exists',
                 'en' => 'already exists',
                 'km' => 'មាន​រួចហើយ'
             ],
@@ -254,7 +254,7 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'មិនអាច'
             ],
             [
-                'phrase' => 'cancel',
+                'phrase' => 'Cancel',
                 'en' => 'Cancel',
                 'km' => 'បោះបង់'
             ],
@@ -1004,8 +1004,8 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'ស្ថានភាពគ្រួសារ'
             ],
             [
-                'phrase' => 'marks',
-                'en' => 'marks',
+                'phrase' => 'score',
+                'en' => 'score',
                 'km' => 'ពិន្ទុ'
             ],
             [
@@ -1179,7 +1179,7 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'រកមិនឃើញម៉ាស៊ីនថតទេ'
             ],
             [
-                'phrase' => 'no_data',
+                'phrase' => 'No Data',
                 'en' => 'No Data',
                 'km' => 'គ្មាន​ទិន្នន័យ'
             ],
@@ -1250,7 +1250,7 @@ class TranslatesTableSeeder extends Seeder
             ],
             [
                 'phrase' => 'ok',
-                'en' => 'Ok',
+                'en' => 'ok',
                 'km' => 'យល់ព្រម'
             ],
             [
@@ -2040,7 +2040,7 @@ class TranslatesTableSeeder extends Seeder
             ],
             [
                 'phrase' => 'this_question_can_answer',
-                'en' => 'This question can answer',
+                'en' => 'This question can answers',
                 'km' => 'សំណួរនេះអាចឆ្លើយបាន'
             ],
             [

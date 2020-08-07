@@ -4,7 +4,7 @@ namespace Tests\Browser;
 
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Helpers\VideoHelper;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +26,8 @@ class ExampleTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($destinationPath) {
             $browser->visit('/')
-                ->clickLink(Translator::phrase('login'))
-                ->assertSee(Translator::phrase('login'))
+                ->clickLink(__('login'))
+                ->assertSee(__('login'))
                 ->value('[name="email"]', 'keamsan.sem@gmail.com')
                 ->value('[name="password"]', '123456')
                 ->click('[for="remember"]')

@@ -10,7 +10,7 @@ use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\StudyCourse;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
@@ -46,7 +46,7 @@ class StudentsRequestController extends Controller
 
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . StudentsRequest::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.request_study');
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('List Request study');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -114,7 +114,7 @@ class StudentsRequestController extends Controller
     public function list($data)
     {
         $data['view']     = StudentsRequest::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.request_study');
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('List Request study');
         $data['response'] =  StudentsRequest::getData(null, null, 10);
         return $data;
     }
@@ -138,7 +138,7 @@ class StudentsRequestController extends Controller
 
 
         $data['view']       = StudentsRequest::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.request_study');
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('Request study');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
 
         if($id){

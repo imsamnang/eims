@@ -6,11 +6,11 @@
                     <div class="col-6 col-lg-6 col-xs-12">
                         <div class="card">
                             <div class="card-header">
-                            <h5 class="h3 mb-0">{{Translator::phrase("scaned")}}</h5>
+                            <h5 class="h3 mb-0">{{__("Scaned")}}</h5>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush list my--3" id="scaned">
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -24,17 +24,17 @@
                                     @csrf
                                     <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}" data-target="#scaned"
                                         class="text-center"
-                                        data-camera-error="{{Translator::phrase("there_was_a_problem_with_your_camera.<br>.no_cameras_found")}}">
+                                        data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                         <div class="please_wait"
                                             style="position: absolute;    z-index: 1;    top: 50%;    left: 50%;    font-size: 1.5rem;    font-weight: 600;    color: white;    user-select: none;    transform: translate(-50%, -50%);">
-                                            {{Translator::phrase("please_wait")}}
+                                            {{__("Please wait")}}
                                         </div>
                                         <div class="text-right">
                                             <button disabled type="button" class="btn btn-success" id="btn-open">
-                                                {{Translator::phrase("Open")}}
+                                                {{__("Open")}}
                                             </button>
                                             <button type="button" class="btn btn-danger" id="btn-close">
-                                                {{Translator::phrase("Close")}}
+                                                {{__("Close")}}
                                             </button>
                                         </div>
                                     </div>

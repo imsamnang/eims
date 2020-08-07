@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormLanguages extends FormRequest
@@ -45,17 +45,17 @@ class FormLanguages extends FormRequest
     {
 
         $attributes =  [
-            'name'  => Translator::phrase('language'),
-            'code_name'  => Translator::phrase('code_name'),
-            'country_code'  => Translator::phrase('country_code'),
+            'name'  => __('Languages'),
+            'code_name'  => __('Code name'),
+            'country_code'  => __('Country code'),
         ];
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('app_name.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
-        $attributes['description']            = Translator::phrase('description');
-        $attributes['image']                  = Translator::phrase('image');
+        $attributes['description']            = __('Description');
+        $attributes['image']                  = __('Image');
         return $attributes;
     }
 

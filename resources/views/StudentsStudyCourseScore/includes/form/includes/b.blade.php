@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header py-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            B {{Translator::phrase("study_subject")}}
+            B {{__("Study subjects")}}
         </label>
     </div>
     <div class="card-body">
@@ -20,7 +20,7 @@
                     </span>
                 </label>
                 <input type="number" class="form-control" name="study_subject[{{$key}}]" id="study_subject-{{$key}}"
-                    placeholder="{{$score["study_subject"]["name"]}}" value="{{$score["marks"]}}"
+                    placeholder=""
                     {{config("pages.form.validate.rules.study_subject[]") ? "required" : ""}} />
             </div>
             @endif

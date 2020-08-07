@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudyAcademicYears;
 use App\Http\Controllers\Controller;
@@ -112,14 +112,14 @@ class StudyAcademicYearController extends Controller
     public function list($data)
     {
         $data['view']     = StudyAcademicYears::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Academic_Year');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Study Academic years');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyAcademicYears::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Academic_Year');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Study Academic years');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class StudyAcademicYearController extends Controller
     {
         $response = StudyAcademicYears::getData($id, true);
         $data['view']       = StudyAcademicYears::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Study_Academic_Year');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Study Academic years');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class StudyAcademicYearController extends Controller
     {
         $response = StudyAcademicYears::getData($id, true);
         $data['view']       = StudyAcademicYears::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Study_Academic_Year');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Study Academic years');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

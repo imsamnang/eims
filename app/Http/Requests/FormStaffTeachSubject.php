@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStaffTeachSubject extends FormRequest
@@ -33,9 +33,9 @@ class FormStaffTeachSubject extends FormRequest
 
     public static function attributeField()
     {
-        $attributes['staff']          = Translator::phrase('staff');
-        $attributes['study_subject']   = Translator::phrase('study_subject');
-        $attributes['year']   = Translator::phrase('year');
+        $attributes['staff']          = __('Staff');
+        $attributes['study_subject']   = __('Study subjects');
+        $attributes['year']   = __('Years');
 
         return $attributes;
     }

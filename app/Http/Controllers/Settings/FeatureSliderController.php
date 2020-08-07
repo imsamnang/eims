@@ -8,7 +8,7 @@ use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
 use App\Http\Controllers\Controller;
@@ -122,7 +122,7 @@ class FeatureSliderController extends Controller
     {
         $data['response'] = FeatureSlider::getData(null, 10);
         $data['view']     = FeatureSlider::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.feature');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Feature');
         return $data;
     }
 
@@ -130,14 +130,14 @@ class FeatureSliderController extends Controller
     {
         $data['response'] = FeatureSlider::getData();
         $data['view']     = FeatureSlider::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.gallery');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Qallery');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.feature');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Feature');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -147,7 +147,7 @@ class FeatureSliderController extends Controller
     {
         $response           = FeatureSlider::getData($id);
         $data['view']       = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.feature');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Feature');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

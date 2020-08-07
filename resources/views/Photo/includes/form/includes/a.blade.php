@@ -31,15 +31,15 @@
                                 @if (config("pages.form.data.id") == $row["id"])
                                 <button type="button" data-toggle="select-crop" data-image="{{$row["photo"]}}"
                                     class="btn btn-sm btn-primary disabled"
-                                    data-text-select="{{ Translator::phrase("select") }}"
-                                    data-text-selected="{{ Translator::phrase("selected") }}"
-                                    data-target="div#photo-crop">{{ Translator::phrase("selected") }}
+                                    data-text-select="{{ __("Select") }}"
+                                    data-text-selected="{{ __("Selected") }}"
+                                    data-target="div#photo-crop">{{ __("Selected") }}
                                     <li class="fas fa-check"></li></button>
                                 @else
                                 <button type="button" data-toggle="select-crop" data-image="{{$row["photo"]}}"
-                                    class="btn btn-sm btn-primary" data-text-select="{{ Translator::phrase("select") }}"
-                                    data-text-selected="{{ Translator::phrase("selected") }}"
-                                    data-target="div#photo-crop">{{ Translator::phrase("select") }}
+                                    class="btn btn-sm btn-primary" data-text-select="{{ __("Select") }}"
+                                    data-text-selected="{{ __("Selected") }}"
+                                    data-target="div#photo-crop">{{ __("Select") }}
                                 </button>
                                 @endif
 

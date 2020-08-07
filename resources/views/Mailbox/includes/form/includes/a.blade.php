@@ -11,7 +11,7 @@
                     @csrf
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label d-none" for="recipient">
-                            {{ Translator:: phrase('recipient') }}
+                            {{ __('Recipient') }}
 
                             @if(config("pages.form.validate.rules.recipient")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -20,10 +20,10 @@
 
                         </label>
                         <select class="form-control" data-toggle="taginputs" id="recipient"
-                            title="Simple select" 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
+                            title="Simple select"
+                            data-text="{{ __("Add new option") }}"
 
-                            data-allow-clear="true" data-placeholder="{{Translator::phrase("recipient") }}"
+                            data-allow-clear="true" data-placeholder=""
                             name="recipient[]"
                             data-name="recipient[]"
                             data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
@@ -40,7 +40,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label d-none" for="subject">
-                            {{ Translator:: phrase("subject") }}
+                            {{ __("Subjects") }}
 
                             @if(config("pages.form.validate.rules.subject"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -49,14 +49,14 @@
 
                         </label>
                         <input type="text" class="form-control" name="subject" id="subject"
-                            placeholder="{{ Translator::phrase("subject") }}"
+                            placeholder=""
                             value="{{config("pages.form.data.subject")}}"
                             {{config("pages.form.validate.rules.subject") ? "required" : ""}} />
 
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label d-none" for="message">
-                            {{ Translator:: phrase('message') }}
+                            {{ __('Message') }}
 
                             @if(config("pages.form.validate.rules.message")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -66,7 +66,7 @@
                         </label>
                         <div>
                             <div data-name="message" id="message"
-                                data-placeholder="{{ Translator::phrase("message") }}"></div>
+                                data-placeholder=""></div>
                         </div>
                     </div>
                 </div>

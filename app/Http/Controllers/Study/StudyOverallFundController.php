@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudyOverallFund;
 use App\Http\Controllers\Controller;
@@ -108,14 +108,14 @@ class StudyOverallFundController extends Controller
     public function list($data)
     {
         $data['view']     = StudyOverallFund::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Overall_Fund');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Overall Fund');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyOverallFund::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Overall_Fund');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Overall Fund');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -125,7 +125,7 @@ class StudyOverallFundController extends Controller
     {
         $response = StudyOverallFund::getData($id, true);
         $data['view']       = StudyOverallFund::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Study_Overall_Fund');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Edit Study Overall Fund');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -138,7 +138,7 @@ class StudyOverallFundController extends Controller
     {
         $response = StudyOverallFund::getData($id, true);
         $data['view']       = StudyOverallFund::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Study_Overall_Fund');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('View Study Overall Fund');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

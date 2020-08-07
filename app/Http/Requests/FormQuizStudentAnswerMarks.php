@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormQuizStudentAnswerMarks extends FormRequest
@@ -26,8 +26,8 @@ class FormQuizStudentAnswerMarks extends FormRequest
     public static function rulesField()
     {
         $rules = [
-            'marks'            => 'required',
-            
+            'score'            => 'required',
+
         ];
         return $rules;
     }
@@ -35,10 +35,10 @@ class FormQuizStudentAnswerMarks extends FormRequest
     public static function attributeField()
     {
         $attributes = [
-            'marks'            => Translator::phrase('marks'),
-            
+            'score'            => __('Score'),
+
         ];
-        
+
         return $attributes;
     }
 

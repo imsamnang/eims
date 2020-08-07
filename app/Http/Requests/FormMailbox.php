@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormMailbox extends FormRequest
@@ -36,9 +36,9 @@ class FormMailbox extends FormRequest
     {
 
         return [
-            'recipient'.$flag  => Translator::phrase('recipient'),
-            'subject'  => Translator::phrase('subject'),
-            'message'  => Translator::phrase('message'),
+            'recipient'.$flag  => __('Recipient'),
+            'subject'  => __('Subject'),
+            'message'  => __('Message'),
         ];
 
     }

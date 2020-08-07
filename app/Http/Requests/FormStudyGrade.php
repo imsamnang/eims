@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudyGrade extends FormRequest
@@ -31,21 +31,21 @@ class FormStudyGrade extends FormRequest
                 $rules[$lang['code_name']] =  'required';
             }
         }
-        $rules['marks']   = 'required';
+        $rules['score']   = 'required';
         return $rules;
     }
 
     public static function attributeField()
     {
-        $attributes['name']    = Translator::phrase('study_grade');
+        $attributes['name']    = __('Name');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('study_grade.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
-        $attributes['marks']            = Translator::phrase('marks');
-        $attributes['description']            = Translator::phrase('description');
-        $attributes['image']                  = Translator::phrase('image');
+        $attributes['score']            = __('score');
+        $attributes['description']            = __('Description');
+        $attributes['image']                  = __('Image');
         return $attributes;
     }
 

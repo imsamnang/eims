@@ -10,7 +10,7 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.student")}}" class="form-control-label"
                     for="student">
-                    {{ Translator:: phrase("student") }}
+                    {{ __("Students") }}
                     @if(config("pages.form.validate.rules.student[]"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -19,7 +19,7 @@
                 </label>
 
                 <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder="{{ Translator::phrase("choose.student") }}" name="student"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.student.id",request("studentId"))}}">
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">

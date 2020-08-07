@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Http\Requests\FormQuizStudentAnswer;
 use App\Http\Requests\FormQuizStudentAnswerMarks;
 use DomainException;
@@ -22,7 +22,7 @@ class QuizStudentAnswer extends Model
         $response       = array(
             'success'   => false,
             'data'      => [],
-            'total_marks' => $total_marks . ' ' . Translator::phrase('marks'),
+            'total_marks' => $total_marks . ' ' . __('score'),
         );
         if ($quiz_student_id) {
             $get = QuizStudentAnswer::where('quiz_student_id', $quiz_student_id);
@@ -50,14 +50,14 @@ class QuizStudentAnswer extends Model
                         'answered'  => $row['answered'],
                         'correct'   => false,
                         'correct_marks' => 0,
-                        'marks'     => $row['marks'],
+                        'score'     => $row['score'],
                     ];
 
                     if ($data[$key]['question']['quiz_answer_type']['id'] == 1) {
                         $quizAnswer = QuizAnswer::find($data[$key]['answered']);
                         if ($quizAnswer->correct_answer) {
                             $data[$key]['correct'] = true;
-                            $data[$key]['correct_marks'] = $data[$key]['question']['marks'];
+                            $data[$key]['correct_marks'] = $data[$key]['question']['score'];
                         };
                     } elseif ($data[$key]['question']['quiz_answer_type']['id'] == 2) {
                         $correct = [];
@@ -67,13 +67,13 @@ class QuizStudentAnswer extends Model
                             $quizAnswer = QuizAnswer::find($answer);
                             if ($quizAnswer->correct_answer) {
                                 $correct[] = $quizAnswer->correct_answer;
-                                $correct_marks += $data[$key]['question']['marks'] / $quizAnswerCorrect;
+                                $correct_marks += $data[$key]['question']['score'] / $quizAnswerCorrect;
                             }
                         }
 
                         if ($quizAnswerCorrect == count($correct)) {
                             $data[$key]['correct'] = true;
-                            $data[$key]['correct_marks'] = $data[$key]['question']['marks'];
+                            $data[$key]['correct_marks'] = $data[$key]['question']['score'];
                         } else {
                             $data[$key]['correct'] = false;
                             $data[$key]['correct_marks'] = $correct_marks;
@@ -81,7 +81,7 @@ class QuizStudentAnswer extends Model
                     } elseif ($data[$key]['question']['quiz_answer_type']['id'] == 3) {
                         if ($data[$key]['question']['answer'][0]['answer'] == $data[$key]['answered']) {
                             $data[$key]['correct'] = true;
-                            $data[$key]['correct_marks'] = $data[$key]['question']['marks'];
+                            $data[$key]['correct_marks'] = $data[$key]['question']['score'];
                         }
                     }
 
@@ -91,7 +91,7 @@ class QuizStudentAnswer extends Model
                 $response       = array(
                     'success'   => true,
                     'data'      => $data,
-                    'total_marks' => $total_marks . ' ' . Translator::phrase('marks'),
+                    'total_marks' => $total_marks . ' ' . __('score'),
                 );
             }
         }
@@ -148,9 +148,9 @@ class QuizStudentAnswer extends Model
                                 'answered'    => $answered ? [
                                     'id'          => $answered[0]['id'],
                                     'answered'    => $answered[0]['answered'],
-                                    'marks'       => $answered[0]['marks'],
+                                    'score'       => $answered[0]['score'],
                                 ] : null,
-                                'marks'    => $question['marks'],
+                                'score'    => $question['score'],
 
                             ];
                         }
@@ -167,7 +167,7 @@ class QuizStudentAnswer extends Model
                     $response = array(
                         'success'   => false,
                         'data'      => [],
-                        'message'   => Translator::phrase('no_data'),
+                        'message'   => __('No Data'),
                         'pages'     => $pages
                     );
                 }
@@ -185,7 +185,7 @@ class QuizStudentAnswer extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
                 'pages'     => $pages
             );
         }
@@ -210,7 +210,7 @@ class QuizStudentAnswer extends Model
                 return array(
                     'success'   => false,
                     'type'      => 'exists',
-                    'message'      => Translator::phrase('already_exists'),
+                    'message'      => __('Already exists'),
                 );
             }
             try {
@@ -239,17 +239,17 @@ class QuizStudentAnswer extends Model
                             'answered'    => request('answer'),
                         ],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -279,11 +279,11 @@ class QuizStudentAnswer extends Model
                             'question'    => QuizQuestion::getData($quiz_student->quiz_question_id),
                         ],
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('update.unsuccessful'),
+                            'title' => __('Error'),
+                            'text'  => __('Update Unsuccessful'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -313,18 +313,18 @@ class QuizStudentAnswer extends Model
                                 'answered'    => request('answer'),
                             ],
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('update.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Update Successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
                     }
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -332,7 +332,7 @@ class QuizStudentAnswer extends Model
     public static function updateAnswerAgainToTable($id)
     {
         $update = QuizStudentAnswer::where('id', $id)->update([
-            'marks'     => null
+            'score'     => null
         ]);
         if ($update) {
             $response       = array(
@@ -340,14 +340,14 @@ class QuizStudentAnswer extends Model
                 'type'      => 'update',
                 'data'      => [
                     'id'       => $id,
-                    'marks'       => 0,
+                    'score'       => 0,
                 ],
                 'message'   => array(
-                    'title' => Translator::phrase('success'),
-                    'text'  => Translator::phrase('answer_again.successfully'),
+                    'title' => __('Success'),
+                    'text'  => __('answer_again.successfully'),
                     'button'   => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
             );
@@ -356,11 +356,11 @@ class QuizStudentAnswer extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('No-ID'),
+                        'title' => __('Error'),
+                        'text'  => __('No-ID'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )
@@ -383,7 +383,7 @@ class QuizStudentAnswer extends Model
                 try {
 
                     $update = QuizStudentAnswer::where('id', $id)->update([
-                        'marks'     => trim(request('marks'))
+                        'score'     => trim(request('score'))
                     ]);
                     if ($update) {
 
@@ -392,20 +392,20 @@ class QuizStudentAnswer extends Model
                             'type'      => 'update',
                             'data'      => [
                                 'id'       => $id,
-                                'marks'       => trim(request('marks')),
+                                'score'       => trim(request('score')),
                             ],
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('update.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Update Successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
                     }
                 } catch (DomainException $e) {
-                    $response       = Exception::exception($e);
+                    $response       = $e;
                 }
             }
         } else {
@@ -413,11 +413,11 @@ class QuizStudentAnswer extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('No-ID'),
+                        'title' => __('Error'),
+                        'text'  => __('No Id'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )

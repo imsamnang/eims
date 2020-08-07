@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Translator;
+
 use App\Helpers\videoHelper;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,7 +41,7 @@ class ActivityFeedVideo extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -53,7 +53,7 @@ class ActivityFeedVideo extends Model
     {
         $response = [
             'success'   => false,
-            'message'   => Translator::phrase('upload.unsuccessful'),
+            'message'   => __('Upload Unsuccessful'),
         ];
         if ($activity_feed_id) {
             if (request('video_files')) {
@@ -66,7 +66,7 @@ class ActivityFeedVideo extends Model
                     if ($add) {
                         $response = [
                             'success'   => true,
-                            'message'   => Translator::phrase('upload.successfully'),
+                            'message'   => __('Upload Successfully'),
                         ];
                     }
                 }
@@ -88,7 +88,7 @@ class ActivityFeedVideo extends Model
                 }
                 $response = [
                     'success'   => true,
-                    'message'   => Translator::phrase('upload.successfully'),
+                    'message'   => __('Upload Successfully'),
                     'data'      => $data
                 ];
             }

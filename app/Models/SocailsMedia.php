@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormSocailsMedia;
 use Illuminate\Database\Eloquent\Model;
@@ -76,7 +76,7 @@ class SocailsMedia extends Model
                 $data[$key]         = array(
                     'id'            => $row['id'],
                     'app_id'        => $row['app_id'],
-                    'name'          => Translator::phrase($row['name']),
+                    'name'          => __($row['name']),
                     'link'          => $row['link'],
                     'icon'          => $row['icon'],
                     'description'   => $row['description'],
@@ -116,7 +116,7 @@ class SocailsMedia extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -148,18 +148,18 @@ class SocailsMedia extends Model
                             'success'   => true,
                             'type'      => 'update',
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('update.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Update Successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
                     }
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;

@@ -10,7 +10,7 @@ use App\Models\Sponsored;
 use App\Models\Translates;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
@@ -52,7 +52,7 @@ class SettingsController extends Controller
 
             if (Auth::user()->role_id == 1) {
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('general'),
+                    'name'  => __('General'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/general'),
                     'icon'  => 'fas fa-sliders-h-square',
                     'image' => null,
@@ -60,7 +60,7 @@ class SettingsController extends Controller
                 ];
 
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('color'),
+                    'name'  => __('Color'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/color'),
                     'icon'  => 'fas fa-palette',
                     'image' => null,
@@ -68,7 +68,7 @@ class SettingsController extends Controller
                 ];
 
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('theme_background'),
+                    'name'  => __('Theme Background'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/list'),
                     'icon'  => 'fas fa-file-image',
                     'image' => null,
@@ -76,14 +76,14 @@ class SettingsController extends Controller
                 ];
 
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('sponsored'),
+                    'name'  => __('Sponsored'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/list'),
                     'icon'  => 'fas fa-hands-usd',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('language'),
+                    'name'  => __('Language'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/list'),
                     'icon'  => 'fas fa-flag',
                     'image' => null,
@@ -91,14 +91,14 @@ class SettingsController extends Controller
                 ];
 
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('translate'),
+                    'name'  => __('Translate'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/list'),
                     'icon'  => 'fas fa-language',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
                 $data['shortcut'][] = [
-                    'name'  => Translator::phrase('clean'),
+                    'name'  => __('Clean'),
                     'link'  => url(Users::role() . '/' . App::$path['url'] . '/clean'),
                     'icon'  => 'fas fa-recycle',
                     'image' => null,
@@ -107,7 +107,7 @@ class SettingsController extends Controller
             }
 
             $data['shortcut'][] = [
-                'name'  => Translator::phrase('feature'),
+                'name'  => __('Feature'),
                 'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/list'),
                 'icon'  => 'fas fa-images',
                 'image' => null,
@@ -115,7 +115,7 @@ class SettingsController extends Controller
             ];
 
             $data['shortcut'][] = [
-                'name'  => Translator::phrase('role'),
+                'name'  => __('Role'),
                 'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/list'),
                 'icon'  => 'fas fa-user-shield',
                 'image' => null,
@@ -123,7 +123,7 @@ class SettingsController extends Controller
             ];
 
             $data['view']  = App::$path['view'] . '.includes.dashboard.index';
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+            $data['title'] = Users::role(app()->getLocale()).'|'.__('Settings');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  App::getData(null, null, 10);
@@ -237,7 +237,7 @@ class SettingsController extends Controller
     {
         $data['response'] =  App::getData(null, null, 10);
         $data['view']     =  App::$path['view'] . '.includes.list.index';
-        $data['title']    =  Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Settings');
         return $data;
     }
 
@@ -246,7 +246,7 @@ class SettingsController extends Controller
     {
         $response           = App::getData($id, true);
         $data['view']       = App::$path['view'] . '.includes.general.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.' . str_replace('-', '_', $data['formName']));
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Settings');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');
         $data['formAction'] = '/general/add';
@@ -261,7 +261,7 @@ class SettingsController extends Controller
     {
         $data['response']   = ThemesColor::getData();
         $data['view']       = App::$path['view'] . '.includes.color.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .set.color');
+        $data['title']      = $data['title'] = Users::role(app()->getLocale()).'|'.__('Set color');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');
         return $data;

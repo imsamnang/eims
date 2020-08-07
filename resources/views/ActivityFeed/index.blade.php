@@ -1,14 +1,6 @@
 @extends("layouts.master-v1")
 @section("meta")
-    @foreach(config("app.meta") as $keys)
-    @for($i = 0 ; $i< count($keys);$i++) @php $meta=array();$content=array(); @endphp @foreach ($keys[$i] as $name=> $item)
-        @php $meta[] =
-        $name ; @endphp @endforeach
-        @if(count($meta) == 1)
-        <meta {{$meta[0]}}="{{ $keys[$i][$meta[0]] }}" />
-        @else
-        <meta {{$meta[0]}}="{{ $keys[$i][$meta[0]] }}" {{$meta[1]}}="{{ $keys[$i][$meta[1]] }}" />
-        @endif @endfor @endforeach
+{!! config("app.meta_html") !!}
 @endsection
 
 

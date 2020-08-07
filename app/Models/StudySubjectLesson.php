@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Embed\Embed;
 use DomainException;
-use App\Helpers\Exception;
+
 use App\Helpers\FileHelper;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
@@ -130,7 +130,7 @@ class StudySubjectLesson extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'      => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -215,12 +215,12 @@ class StudySubjectLesson extends Model
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => array(
-                    'title' => Translator::phrase('error'),
-                    'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
-                        . Translator::phrase('( .File. ) .empty'),
+                    'title' => __('Error'),
+                    'text'  => __('Add Unsuccessful') . PHP_EOL
+                        . __('File empty'),
                     'button'   => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
             );
@@ -260,17 +260,17 @@ class StudySubjectLesson extends Model
                         'type'      => 'add',
                         'data'      => StudySubjectLesson::getData($add)['data'],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -311,17 +311,17 @@ class StudySubjectLesson extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -331,7 +331,7 @@ class StudySubjectLesson extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($source_file) {
             try {
@@ -344,17 +344,17 @@ class StudySubjectLesson extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -365,7 +365,7 @@ class StudySubjectLesson extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -378,17 +378,17 @@ class StudySubjectLesson extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -407,29 +407,29 @@ class StudySubjectLesson extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -440,11 +440,11 @@ class StudySubjectLesson extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -455,11 +455,11 @@ class StudySubjectLesson extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )

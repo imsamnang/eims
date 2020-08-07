@@ -1,6 +1,6 @@
 <div class="card m-0">
     <div class="card-header py-2 px-3">
-        {{config("pages.form.data.name")}} | {{Translator::phrase(config("pages.form.data.layout"))}}
+        {{config("pages.form.data.name")}} | {{__(config("pages.form.data.layout"))}}
     </div>
     <div class="card-body">
         <div class="row">

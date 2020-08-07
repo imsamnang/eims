@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
@@ -112,14 +112,14 @@ class NationalityController extends Controller
     public function list($data)
     {
         $data['view']     =  Nationality::$path['view'] . '.includes.list.index';
-        $data['title']    =  Translator::phrase(Users::role(app()->getLocale()) . '. | .list.nationality');
+        $data['title']    =  Users::role(app()->getLocale()).'|'. __('List Nationality');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.nationality');
+        $data['title']     = Users::role(app()->getLocale()).'|'. __('Add Nationality');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class NationalityController extends Controller
     {
         $response = Nationality::getData($id, true);
         $data['view']       = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.nationality');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Nationality');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class NationalityController extends Controller
     {
         $response = Nationality::getData($id, true);
         $data['view']       = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.nationality');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('View Nationality');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

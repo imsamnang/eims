@@ -8,7 +8,7 @@ use App\Models\Languages;
 use App\Models\Sponsored;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\StudyCourse;
 use App\Models\ThemesColor;
 use App\Models\ActivityFeed;
@@ -55,16 +55,16 @@ class FrontController extends Controller
         if (strtolower($param1) == null) {
             $data['title']  = config('app.name');
         } elseif (strtolower($param1) == 'home') {
-            $data['title']  = config('app.name') . ' | ' . Translator::phrase('home');
+            $data['title']  = config('app.name') . ' | ' . __('Home');
             $data['view']   = 'Front.includes.home.index';
         } elseif (strtolower($param1) == 'about') {
-            $data['title']  = config('app.name') . ' | ' . Translator::phrase('about');
+            $data['title']  = config('app.name') . ' | ' . __('About');
             $data['view']   = 'Front.includes.about.index';
         } elseif (strtolower($param1) == 'contact') {
-            $data['title']  = config('app.name') . ' | ' . Translator::phrase('contact');
+            $data['title']  = config('app.name') . ' | ' . __('Contact');
             $data['view']   = 'Front.includes.contact.index';
         } elseif (strtolower($param1) == 'training') {
-            $data['title']  = config('app.name') . ' | ' . Translator::phrase('contact');
+            $data['title']  = config('app.name') . ' | ' . __('Training');
             $data['view']   = 'Front.includes.training.index';
             request()->merge([
                 'programId' =>  request('programId') ? request('programId') : 4
@@ -75,7 +75,7 @@ class FrontController extends Controller
         } elseif (strtolower($param1) == 'news-even') {
             $data['response']    =  ActivityFeed::getData(null, 10);
             $data['theme_color'] = ThemesColor::getData();
-            $data['title']  = config('app.name') . ' | ' . Translator::phrase('news. & .even');
+            $data['title']  = config('app.name') . ' | ' . __('News & Even');
             $data['view']   = 'Front.includes.newsEven.index';
             $data['formName'] = 'feed';
             $data['formAction'] = '/post';

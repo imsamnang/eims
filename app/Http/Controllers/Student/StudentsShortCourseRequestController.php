@@ -9,7 +9,7 @@ use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Models\StudentsShortCourseRequest;
@@ -39,7 +39,7 @@ class StudentsShortCourseRequestController extends Controller
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
         $data['formName']            = Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('List Students short course request');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
 
@@ -122,7 +122,7 @@ class StudentsShortCourseRequestController extends Controller
     public function list($data)
     {
         $data['view']     = StudentsShortCourseRequest::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.student_short_course_request');
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('List Students short course request');
         return $data;
     }
 
@@ -146,7 +146,7 @@ class StudentsShortCourseRequestController extends Controller
 
 
         $data['view']       = StudentsShortCourseRequest::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.student_short_course_request');
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('Students short course request');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
 
         if ($id) {

@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormQuiz;
 use App\Http\Controllers\Controller;
@@ -45,52 +45,52 @@ class QuizController extends Controller
         if ($param1 == null) {
             $data['shortcut'] = [
                 [
-                    'name'  => Translator::phrase('add.quiz'),
+                    'name'  => __('Add Quiz'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/add'),
                     'icon'  => 'fas fa-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.quiz'),
+                    'name'  => __('List Quiz'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/list'),
                     'icon'  => 'fas fa-question-square',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.quiz_question'),
+                    'name'  => __('List Quiz question'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list'),
                     'icon'  => 'fas fa-question',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.quiz_student'),
+                    'name'  => __('List Quiz student'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/list'),
                     'icon'  => 'fas fa-users-class',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.quiz_answer_type'),
+                    'name'  => __('List Quiz answer type'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('quiz_answer_type'),
+                    'text'  => __('Quiz answer type'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
-                    'name'  => Translator::phrase('list.quiz_question_type'),
+                    'name'  => __('List Quiz question type'),
                     'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/list'),
                     'icon'  => null,
-                    'text'  => Translator::phrase('quiz_question_type'),
+                    'text'  => __('Quiz question type'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ]
             ];
             $data['view']  = 'Quiz.includes.dashboard.index';
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+            $data['title'] = Users::role(app()->getLocale()).'|'.__('Quiz');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return Quiz::getData(null, null, 10, request('search'));
@@ -180,14 +180,14 @@ class QuizController extends Controller
     public function list($data)
     {
         $data['view']     = Quiz::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Quiz');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Quiz::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Quiz');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -197,7 +197,7 @@ class QuizController extends Controller
     {
         $response = Quiz::getData($id, true);
         $data['view']       = Quiz::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Quiz');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -220,14 +220,14 @@ class QuizController extends Controller
             $response = [
                 'success' => false,
                 'data' => [],
-                'message' => Translator::phrase('no_data'),
+                'message' => __('No Data'),
             ];
         }
 
         $data['response'] = $response;
         $data['quiz']   = Quiz::getData($quizId);
         $data['view']       = Quiz::$path['view'] . '.includes.view.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Quiz');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $quizId);
         $data['formAction'] = '/view/' . $quizId;

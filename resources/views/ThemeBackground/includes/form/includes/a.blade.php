@@ -12,7 +12,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -23,7 +23,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="name">
-                            {{ Translator:: phrase("name") }}
+                            {{ __("Name") }}
 
                             @if(array_key_exists("name",config("pages.form.validate.rules"))) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -32,7 +32,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="name" id="name"
-                            placeholder="{{ Translator::phrase("theme_background") }}"
+                            placeholder=""
                             value="{{config("pages.form.data.name")}}"
                             {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
@@ -44,7 +44,7 @@
                     @foreach (config('app.languages') as $lang)
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="{{$lang["code_name"]}}">
-                            {{ Translator:: phrase("as.".$lang["code_name"]) }}
+                            {{ __($lang["code_name"]) }}
 
                             @if(array_key_exists($lang["code_name"],config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -54,7 +54,7 @@
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
-                            placeholder="{{ Translator::phrase("theme_background.as.".$lang["code_name"]) }}"
+                            placeholder=""
                             value="{{config("pages.form.data.".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
@@ -69,7 +69,7 @@
 
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="description">
-                            {{ Translator:: phrase("description") }}
+                            {{ __("Description") }}
 
                             @if(array_key_exists("description",config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -84,7 +84,7 @@
                                     <span class="input-group-text"><i class="fas fa-info"></i></span>
                                 </div>
                                 <textarea class="form-control" id="description"
-                                    placeholder="{{ Translator:: phrase("description") }}" value=""
+                                    placeholder=""
                                     {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="description">{{config("pages.form.data.description")}}</textarea>
 
@@ -101,7 +101,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="image">
-                            {{ Translator:: phrase("image") }} (1000pixel x 1000pixel)
+                            {{ __("Image") }} (1000pixel x 1000pixel)
 
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset">
@@ -113,12 +113,12 @@
                             data-dropzone-url="{{config("pages.form.data.image")}}?type=slide">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder="{{ Translator:: phrase("drop_image_here") }}"
+                                    <input type="file" placeholder=""
                                         class="custom-file-input" id="dropzoneBasicUpload" name="image"
                                         {{config("pages.form.validate.rules.image") ? "required" : ""}} value="image" />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
-                                        for="dropzoneBasicUpload">{{ Translator:: phrase("choose.image") }}</label>
+                                        for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                                 </div>
                             </div>
 
@@ -139,13 +139,13 @@
                         <div class="custom-control custom-checkbox mb-3">
 
                             <label class="form-control-label"><i class="fas fa-sticky-note "></i>
-                                {{ Translator:: phrase("note") }} </label>
+                                {{ __("Note") }} </label>
                             <br>
                             <label class="form-control-label">
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset">
                                     <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                    {{ Translator:: phrase("field_required") }}</span> </label>
+                                    {{ __("Field required") }}</span> </label>
 
 
                         </div>

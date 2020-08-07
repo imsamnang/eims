@@ -15,12 +15,12 @@
                             @endif
                         @endforeach
                     </span>
-                    <span class="reaction-details" data-you-react="{{$you_react}}" data-lable-you="{{Translator::phrase("you")}}" data-lable-other="{{$other_react_name}}">
+                    <span class="reaction-details" data-you-react="{{$you_react}}" data-lable-you="{{__("You")}}" data-lable-other="{{$other_react_name}}">
                         @if ($you_react)
                              @if ($other_react_name)
-                                {{Translator::phrase("you") .", ".$other_react_name}}
+                                {{__("You") .", ".$other_react_name}}
                             @else
-                                {{Translator::phrase("you")}}
+                                {{__("You")}}
                             @endif
                         @else
                             {{$other_react_name}}
@@ -30,17 +30,17 @@
             @else
             <div class="col reaction-stat-clone">
                 <span class="reaction-emo"></span>
-                <span class="reaction-details" data-you-react="" data-lable-you="{{Translator::phrase("you")}}" data-lable-other=""></span>
+                <span class="reaction-details" data-you-react="" data-lable-you="{{__("You")}}" data-lable-other=""></span>
             </div>
             @endif
             <div class="card-events">
                 @if($feed["reaction"])
                     <a data-count="{{$feed["reaction"][0]["like"]}}" data-toggle="view-reaction" data-feed-id="{{$feed["id"]}}">
-                        {{Translator::phrase("like")}}
+                        {{__("Like")}}
                     </a>
                 @else
                     <a data-count="0" data-toggle="view-reaction" data-feed-id="{{$feed["id"]}}">
-                        {{Translator::phrase("like")}}
+                        {{__("Like")}}
                     </a>
                 @endif
 
@@ -56,7 +56,7 @@
                     @endforeach
 
                 <a data-count="{{$count_comment}}" data-toggle="view-comment" data-feed-id="{{$feed["id"]}}">
-                    {{Translator::phrase("comment")}}
+                    {{__("Comment")}}
                 </a>
             </div>
         </div>
@@ -70,10 +70,10 @@
                     <button class="btn w-100 reaction-btn" data-toggle="reaction" data-feed-id="{{$feed["id"]}}" data-react={{($feed["reaction"] && $feed["reaction"][0]["you_react"]) ? $feed["reaction"][0]["you_react"] : ""}}>
                             @if ($feed["reaction"] && $feed["reaction"][0]["you_react"])
                                 <span class="reaction-btn-emo reaction-btn-{{$feed["reaction"][0]["you_react"]}}"></span>
-                                <span class="reaction-btn-text reaction-btn-text-{{$feed["reaction"][0]["you_react"]}} active">{{Translator::phrase($feed["reaction"][0]["you_react"])}}</span>
+                                <span class="reaction-btn-text reaction-btn-text-{{$feed["reaction"][0]["you_react"]}} active">{{__($feed["reaction"][0]["you_react"])}}</span>
                             @else
                             <i class="reaction-btn-emo fas fa-thumbs-up"></i>
-                            <span class="reaction-btn-text">{{Translator::phrase("Like")}}</span>
+                            <span class="reaction-btn-text">{{__("Like")}}</span>
                             @endif
 
                     </button>
@@ -81,13 +81,13 @@
                 <div class="col-xl-4 col-sm-4 col-4 text-nowrap">
                     <button class="btn w-100 ">
                         <i class="fa fa-comment" aria-hidden="true"></i>
-                        {{Translator::phrase("comment")}}
+                        {{__("Comment")}}
                     </button>
                 </div>
                 <div class="col-xl-4 col-sm-4 col-4 text-nowrap">
                 <button data-toggle="share" data-feed-id="{{($feed["type"]  == "share" ? $feed["share"]["feed_id"] : $feed["id"] )}}" class="btn w-100">
                         <i class="fa fa-share" aria-hidden="true"></i>
-                        {{Translator::phrase("share")}}
+                        {{__("Share")}}
                     </button>
                 </div>
             </div>

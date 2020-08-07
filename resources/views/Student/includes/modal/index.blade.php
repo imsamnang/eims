@@ -8,11 +8,11 @@
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
                             @if (config("pages.parameters.param1") == "register")
-                            {{ Translator:: phrase("register") }}
+                            {{ __("Register") }}
                             @elseif(config("pages.parameters.param1") == "short-course-request")
-                            {{ Translator:: phrase(config("pages.form.role").'.short_course_request') }}
+                            {{ __(config("pages.form.role").' '.__('Short course request') ) }}
                             @else
-                            {{ Translator:: phrase(config("pages.form.role").'.request') }}
+                            {{ __(config("pages.form.role").' '.__('Request')) }}
                             @endif
 
                         </h6>
@@ -43,27 +43,27 @@
                                     <a class="btn btn-primary ml-auto" target="_blank"
                                         href="{{str_replace("view","print",config("pages.form.data.action.view"))}}">
                                         <i class="fas fa-print"></i>
-                                        {{ Translator:: phrase("print") }}
+                                        {{ __("Print") }}
                                     </a>
                                     @elseif (config("pages.parameters.param1") == "account")
                                         @if (!config("pages.form.data.account"))
                                         <button class="btn btn-primary ml-auto float-right" type="submit">
-                                            {{ Translator:: phrase("create") }}
+                                            {{ __("create") }}
                                         </button>
                                         @endif
                                     @else
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
                                         @if (config("pages.form.role") == "add")
                                         @if (Auth::user()->role_id == 6)
-                                        {{ Translator:: phrase("request") }}
+                                        {{ __("Request") }}
                                         @else
-                                        {{ Translator:: phrase("save") }}
+                                        {{ __("Save") }}
                                         @endif
 
                                         @elseif(config("pages.form.role") == "edit")
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                         @elseif(config("pages.form.role") == "view")
-                                        {{ Translator:: phrase("goto.edit") }}
+                                        {{ __("Goto Edit") }}
                                         @endif
                                     </button>
                                     @endif

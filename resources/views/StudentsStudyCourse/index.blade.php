@@ -30,45 +30,8 @@
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
     @include(Auth::user()->role('view_path').".includes.navTop")
-    <!-- Header -->
-    <div class="header bg-{{config("app.theme_color.name")}} pb-6"
-        data-theme-bg-color="{{config("app.theme_color.name")}}">
-        <div class="container-fluid">
-            <div class="header-body">
-                <div class="row align-items-center py-4">
-                    <div class="col-lg-6 col-7">
-                        <h6 class="h2 text-white d-inline-block mb-0">{{Translator::phrase("student")}} </h6>
-                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item text-white"><i class="fas fa-home"></i></li>
-                                @if (config("pages.parameters.param1") != null && config("pages.parameters.param1")
-                                == "list")
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    {{Translator::phrase(config("pages.parameters.param1").'.student_study_course')}}
-                                </li>
-                                @else
-                                <li class="breadcrumb-item">
-                                    <a
-                                        href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}">
-                                        {{Translator::phrase("list.student_study_course")}}
-                                    </a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">
-                                    {{Translator::phrase(config("pages.parameters.param1"))}}
-                                </li>
-                                @endif
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="col-lg-6 col-5 text-right">
-                        <a href="{{url()->current()}}" class="btn btn-secondary btn-sm" data-toggle="cotent-refresh"><i
-                                class="fas fa-sync-alt"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="page-content container-fluid mt--6 {{Agent::isDesktop() ?: "p-1"}}">
+  
+    <div class="page-content container-fluid {{Agent::isDesktop() ?: "p-1"}}">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))
         @include(Auth::user()->role('view_path').".includes.navFooter")

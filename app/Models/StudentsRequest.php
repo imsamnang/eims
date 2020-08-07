@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -95,7 +95,7 @@ class StudentsRequest extends Model
                     'study_semester'       => StudySemesters::getData($row['study_semester_id'])['data'][0],
                     'study_session'       => StudySession::getData($row['study_session_id'])['data'][0],
                     'description'   => $row['description'],
-                    'status'        => $status ? Translator::phrase('approved') : Translator::phrase('requesting'),
+                    'status'        => $status ? __('Approved') : __('Requesting'),
                     'photo'         => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsRequest::$path['image'], $row['photo'])) : $student['photo'],
                     'action'        => [
                         'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/edit/' . $row['id']),
@@ -137,7 +137,7 @@ class StudentsRequest extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -184,7 +184,7 @@ class StudentsRequest extends Model
                     'study_semester'       => StudySemesters::getData($row['study_semester_id'])['data'][0],
                     'study_session'       => StudySession::getData($row['study_session_id'])['data'][0],
                     'description'   => $row['description'],
-                    'status'        => $status ? Translator::phrase('approved') : Translator::phrase('requesting'),
+                    'status'        => $status ? __('Approved') : __('Requesting'),
                     'photo'         => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsRequest::$path['image'], $row['photo'])) : $student['photo'],
                     'action'        => [
                         'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/edit/' . $row['id']),
@@ -254,11 +254,11 @@ class StudentsRequest extends Model
                         'type'      => 'add',
                         'data'      => StudentsRequest::getData($sid)['data'],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -268,17 +268,17 @@ class StudentsRequest extends Model
                         'type'      => 'add',
                         'data'      => [],
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('already_exists'),
+                            'title' => __('Error'),
+                            'text'  => __('Already exists'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -302,12 +302,12 @@ class StudentsRequest extends Model
                     $response       =  array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error.!'),
-                            'text'  => Translator::phrase('can_not.edit.or.delete') . PHP_EOL
-                                . Translator::phrase('(.approved.)'),
+                            'title' => __('Error!'),
+                            'text'  => __('Can not edit or delete!') . PHP_EOL
+                                . __('Approved'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -319,11 +319,11 @@ class StudentsRequest extends Model
                             'type'      => 'update',
                             'data'      => [],
                             'message'   => array(
-                                'title' => Translator::phrase('error'),
-                                'text'  => Translator::phrase('already_exists'),
+                                'title' => __('Error'),
+                                'text'  => __('Already exists'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
@@ -348,11 +348,11 @@ class StudentsRequest extends Model
                                 'type'      => 'update',
                                 'data'      => StudentsRequest::getData($id)['data'],
                                 'message'   => array(
-                                    'title' => Translator::phrase('success'),
-                                    'text'  => Translator::phrase('update.successfully'),
+                                    'title' => __('Success'),
+                                    'text'  => __('Update Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
@@ -360,7 +360,7 @@ class StudentsRequest extends Model
                     }
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -376,7 +376,7 @@ class StudentsRequest extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -389,17 +389,17 @@ class StudentsRequest extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -432,11 +432,11 @@ class StudentsRequest extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
@@ -447,31 +447,31 @@ class StudentsRequest extends Model
                                 $response       =  array(
                                     'success'   => false,
                                     'message'   => array(
-                                        'title' => Translator::phrase('error.!'),
-                                        'text'  => Translator::phrase('can_not.edit.or.delete') . PHP_EOL
-                                            . Translator::phrase('(.approved.)'),
+                                        'title' => __('Error!'),
+                                        'text'  => __('Can not edit or delete!') . PHP_EOL
+                                            . __('Approved'),
                                         'button'   => array(
-                                            'confirm' => Translator::phrase('ok'),
-                                            'cancel'  => Translator::phrase('cancel'),
+                                            'confirm' => __('Ok'),
+                                            'cancel'  => __('Cancel'),
                                         ),
                                     ),
                                 );
                             }
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -482,11 +482,11 @@ class StudentsRequest extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -497,11 +497,11 @@ class StudentsRequest extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )

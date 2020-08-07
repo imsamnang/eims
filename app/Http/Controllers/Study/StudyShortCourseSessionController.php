@@ -11,7 +11,7 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
 use App\Http\Controllers\Controller;
@@ -125,7 +125,7 @@ class StudyShortCourseSessionController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyShortCourseSession::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course_Session' . '.' . $param1);
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Short Course Session');
         return $data;
     }
 
@@ -137,7 +137,7 @@ class StudyShortCourseSessionController extends Controller
         $data['villages']            = Villages::getData('null', 'null');
 
         $data['view']       = StudyShortCourseSession::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Course_Session');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Short Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         if ($id) {

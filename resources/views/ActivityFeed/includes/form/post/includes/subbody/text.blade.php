@@ -5,7 +5,7 @@
             <input type="checkbox" class="custom-control-input" id="ckk-theme-color" data-target="#bbg">
             <label class="custom-control-label" for="ckk-theme-color">
                 <span class="text-muted">
-                    {{Translator::phrase("background")}}
+                    {{__("Background")}}
                 </span>
             </label>
         </div>

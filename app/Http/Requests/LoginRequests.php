@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequests extends FormRequest
@@ -33,8 +33,8 @@ class LoginRequests extends FormRequest
     public static function customAttributes()
     {
         return [
-                'email'    => Translator::phrase('email'),
-                'password' => Translator::phrase('password'),
+                'email'    => __('Email'),
+                'password' => __('Password'),
         ];
     }
 

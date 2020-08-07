@@ -3,7 +3,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col">
-                <h5 class="h3 mb-0">{{Translator::phrase("user")}}</h5>
+                <h5 class="h3 mb-0">{{__("Users")}}</h5>
             </div>
             <div class="col m-auto float-right text-right">
                 <a class=" btn btn-sm btn-link bg-secondary" href="{{url(Auth::user()->role()."/user/list")}}">

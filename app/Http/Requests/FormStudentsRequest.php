@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudentsRequest extends FormRequest
@@ -38,14 +38,14 @@ class FormStudentsRequest extends FormRequest
     public static function attributeField()
     {
 
-        $attributes['institute']          = Translator::phrase('institute');
-        $attributes['study_program']      = Translator::phrase('study_program');
-        $attributes['study_course']       = Translator::phrase('study_course');
-        $attributes['study_generation']   = Translator::phrase('study_generation');
-        $attributes['study_academic_year']= Translator::phrase('study_academic_year');
-        $attributes['study_semester']     = Translator::phrase('study_semester');
-        $attributes['study_session']      = Translator::phrase('study_session');
-        $attributes['photo']              = Translator::phrase('photo');
+        $attributes['institute']          = __('Institute');
+        $attributes['study_program']      = __('Study program');
+        $attributes['study_course']       = __('Study course');
+        $attributes['study_generation']   = __('Study generation');
+        $attributes['study_academic_year']= __('Study academic​ year');
+        $attributes['study_semester']     = __('Study semester');
+        $attributes['study_session']      = __('Study session');
+        $attributes['photo']              = __('Photo');
 
         return $attributes;
     }

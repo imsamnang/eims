@@ -9,7 +9,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase("compose") }}
+                            {{ __("Compose") }}
                         </h6>
                         <a href="{{str_replace("/add","compose",config("pages.form.action.add"))}}" target="_blank"
                             class="full-link"><i class="fas fa-external-link"></i> </a>
@@ -35,7 +35,7 @@
                                     <a href="" name="scrollTo"></a>
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
 
-                                        {{ Translator:: phrase("send_message") }}
+                                        {{ __("Send message") }}
 
                                     </button>
                                 </div>
@@ -59,12 +59,12 @@
                 <div class="modal-body">
                     <div class="col mb-3">
                         <div class="form-group">
-                            <label class="form-control-label mb-0" for="url">{{Translator::phrase("url")}}</label>
+                            <label class="form-control-label mb-0" for="url">{{__("Url")}}</label>
                             <div class="input-group input-group-merge">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-globe"></i></span>
                                 </div>
-                                <input class="form-control" data-placeholder="{{Translator::phrase("url")}}" type="url"
+                                <input class="form-control" data-placeholder=""
                                     id="url">
                             </div>
                         </div>
@@ -72,22 +72,22 @@
                     <div class="col mb-3">
                         <div class="form-group">
                             <label class="form-control-label mb-0"
-                                for="text_to_display">{{Translator::phrase("text_to_display")}}</label>
+                                for="text_to_display">{{__("Text to display")}}</label>
                             <div class="input-group input-group-merge">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-font-case"></i></span>
                                 </div>
-                                <input class="form-control" data-placeholder="{{Translator::phrase("text_to_display")}}"
+                                <input class="form-control" data-placeholder=""
                                     type="text" id="text_to_display">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer border-top">
-                    <button id="btn-remove" class="btn btn-danger">{{Translator::phrase("remove")}}</button>
+                    <button id="btn-remove" class="btn btn-danger">{{__("Remove")}}</button>
                     <button type="button" class="btn" data-dismiss="modal"
-                        aria-label="Close">{{Translator::phrase("cancel")}}</button>
-                    <button id="btn-save" class="btn btn-primary">{{Translator::phrase("ok")}}</button>
+                        aria-label="Close">{{__("Cancel")}}</button>
+                    <button id="btn-save" class="btn btn-primary">{{__("Ok")}}</button>
                 </div>
             </div>
         </div>
@@ -117,10 +117,10 @@
                             <div class="col mb-3">
                                 <div class="form-group">
                                     <label class="form-control-label mb-0"
-                                        for="url">{{Translator::phrase("image.url")}}</label>
+                                        for="url">{{__("Image url")}}</label>
                                     <div class="input-group input-group-merge">
                                         <input class="form-control"
-                                            data-placeholder="{{Translator::phrase("image.url")}}" type="url" id="url">
+                                            data-placeholder="">
 
                                     </div>
                                 </div>
@@ -130,12 +130,12 @@
                             <div class="col mb-3">
                                 <div class="form-group">
                                     <label class="form-control-label mb-0"
-                                        for="url">{{Translator::phrase("upload.image")}}</label>
+                                        for="url">{{__("Upload image")}}</label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="upload" data-name="image"
                                             data-url="{{str_replace("/add","upload",config("pages.form.action.add"))}}">
                                         <label id="onprogress" class="custom-file-label"
-                                            for="upload">{{Translator::phrase("browse")}}</label>
+                                            for="upload">{{__("Browse")}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -147,8 +147,8 @@
 
                 <div class="modal-footer border-top">
                     <button type="button" class="btn" data-dismiss="modal"
-                        aria-label="Close">{{Translator::phrase("cancel")}}</button>
-                    <button id="btn-save" class="btn btn-primary">{{Translator::phrase("ok")}}</button>
+                        aria-label="Close">{{__("Cancel")}}</button>
+                    <button id="btn-save" class="btn btn-primary">{{__("Ok")}}</button>
                 </div>
             </div>
         </div>

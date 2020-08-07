@@ -24,7 +24,7 @@
                 <br>
                 @endif
                 <span>
-                    {{ Translator::phrase("list.score.".config("pages.form.data.node_type"))}}
+                    {{ __("list.score.".config("pages.form.data.node_type"))}}
                 </span>
             </h4>
         </th>
@@ -39,9 +39,9 @@
                 <label class="pl-4 custom-control-label" for="table-check-all"></label>
             </div>
         </th>
-        <th class="font-weight-bold">{{  Translator::phrase("numbering") }}​</th>
-        <th class="font-weight-bold">{{  Translator::phrase("name") }}​</th>
-        <th class="font-weight-bold">{{  Translator::phrase("gender") }}​</th>
+        <th class="font-weight-bold">{{  __("Id") }}​</th>
+        <th class="font-weight-bold">{{  __("Name") }}​</th>
+        <th class="font-weight-bold">{{  __("Gender") }}​</th>
         @foreach ($response['study_subject'] as $row)
         <th class="font-weight-bold mw"> {{$row['subject']['name'] }}</th>
         @endforeach

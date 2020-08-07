@@ -10,7 +10,7 @@ use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Helpers\ImageHelper;
-use App\Helpers\Translator;
+
 use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
 use App\Models\ActivityFeedMedia;
@@ -158,7 +158,7 @@ class ActivityFeedController extends Controller
                     $response = [
                         'success'   => false,
                         'data'      => $data,
-                        'message'   => Translator::phrase('no_data'),
+                        'message'   => __('No Data'),
                     ];
                 }
                 return $response;

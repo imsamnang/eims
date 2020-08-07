@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            (C) {{ Translator:: phrase("address") }}
+            (C) {{ __("Address") }}
         </label>
     </div>
     <div class="card-body">
@@ -12,7 +12,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                         class="form-control-label" for="permanent_address">
 
-                        {{ Translator:: phrase("permanent_address") }}
+                        {{ __("Permanent address") }}
                         @if (config("pages.form.validate.rules.permanent_address"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger"
                             style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -23,7 +23,7 @@
                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
                             </div>
                             <textarea type="text" class="form-control" id="permanent_address"
-                                placeholder="{{ Translator::phrase("permanent_address") }}" value=""
+                                placeholder=""
                                 {{config("pages.form.validate.rules.permanent_address") ? "required" : ""}}
                                 name="permanent_address">{{config("pages.form.data.permanent_address")}}</textarea>
 
@@ -45,7 +45,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                         class="form-control-label" for="temporaray_address">
 
-                        {{ Translator:: phrase("temporaray_address") }}
+                        {{ __("Temporaray address") }}
                         @if(config("pages.form.validate.rules.temporaray_address"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                             <i class="fas fa-asterisk fa-xs"></i>
@@ -54,7 +54,7 @@
                         @if (request()->segment(3) != "view")
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="same-values"
                             data-same-value="other_pob"
-                            data-append-value="other_current">{{ Translator:: phrase("same.permanent_address") }}</button>
+                            data-append-value="other_current">{{ __("Same permanent address") }}</button>
                         @endif
                     </label>
                     <div class="form-group">
@@ -63,7 +63,7 @@
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                             </div>
                             <textarea type="text" class="form-control" id="temporaray_address"
-                                placeholder="{{ Translator::phrase("temporaray_address") }}" value=""
+                                placeholder=""
                                 {{config("pages.form.validate.rules.temporaray_address") ? "required" : ""}}
                                 name="temporaray_address">{{config("pages.form.data.temporaray_address")}}</textarea>
 

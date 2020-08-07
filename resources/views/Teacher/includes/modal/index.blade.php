@@ -9,9 +9,9 @@
                 <div class="modal-header">
                     <h6 class="modal-title" class="h3 mr-2">
                         @if(config("pages.parameters.param1") == "subject-lesson")
-                        {{ Translator:: phrase(config("pages.form.role").".lesson") }}
+                        {{ __(config("pages.form.role").".lesson") }}
                         @else
-                        {{ Translator:: phrase(config("pages.form.role").".".str_replace("-","_",config("pages.form.name"))) }}
+                        {{ __(config("pages.form.role")) }}
                         @endif
                     </h6>
                     <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
@@ -40,15 +40,15 @@
                                 <button class="btn btn-primary ml-auto float-right" type="submit">
                                     @if (config("pages.form.role") == "add")
                                     @if (Auth::user()->role_id == 6)
-                                    {{ Translator:: phrase("request") }}
+                                    {{ __("Request") }}
                                     @else
-                                    {{ Translator:: phrase("save") }}
+                                    {{ __("Save") }}
                                     @endif
 
                                     @elseif(config("pages.form.role") == "edit")
-                                    {{ Translator:: phrase("update") }}
+                                    {{ __("Update") }}
                                     @elseif(config("pages.form.role") == "view")
-                                    {{ Translator:: phrase("goto.edit") }}
+                                    {{ __("Goto Edit") }}
                                     @endif
                                 </button>
                             </div>
@@ -69,7 +69,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" class="h3 mr-2">
-                        {{ Translator:: phrase("add_absent") }}
+                        {{ __("Add Absent") }}
                     </h6>
                     <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                             class="fas fa-external-link"></i> </a>
@@ -82,10 +82,10 @@
                         <div class="card-body">
                             <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}"
                                 class="text-center"
-                                data-camera-error="{{Translator::phrase("there_was_a_problem_with_your_camera.<br>.no_cameras_found")}}">
+                                data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                 <div class="please_wait"
                                     style="position: absolute;    z-index: 1;    top: 50%;    left: 50%;    font-size: 1.5rem;    font-weight: 600;    color: white;    user-select: none;    transform: translate(-50%, -50%);">
-                                    {{Translator::phrase("please_wait")}}</div>
+                                    {{__("Please wait")}}</div>
                             </div>
                             <div class="message"></div>
                         </div>

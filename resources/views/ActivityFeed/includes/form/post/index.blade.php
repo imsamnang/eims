@@ -5,7 +5,7 @@
     <div class="create-post-overlay"></div>
     @csrf
     <div class="card mb-2 create-post">
-    <div class="card-header p-2 text-sm font-weight-600 bg-secondary m-0" data-update-text="{{Translator::phrase("edit_post")}}">{{Translator::phrase("create_post")}}</div>
+    <div class="card-header p-2 text-sm font-weight-600 bg-secondary m-0" data-update-text="{{__("Edit post")}}">{{__("Create post")}}</div>
         @include("ActivityFeed.includes.form.post.includes.body")
         @include("ActivityFeed.includes.form.post.includes.footer")
     </div>

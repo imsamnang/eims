@@ -6,7 +6,7 @@
 @if ($level === 'error')
 # @lang('Whoops!')
 @else
-# {{Translator::phrase('hello')}}
+# {{__('hello')}}
 @endif
 @endif
 

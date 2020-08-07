@@ -12,7 +12,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -25,7 +25,7 @@
                             title="{{config("pages.form.validate.questions.province")}}" class="form-control-label"
                             for="province">
 
-                            {{ Translator:: phrase("province") }}
+                            {{ __("Province") }}
 
                             @if(config("pages.form.validate.rules.province"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -37,9 +37,9 @@
 
                         <select class="form-control" data-toggle="select" id="province" title="Simple select"
                             data-url="{{ $provinces["pages"]["form"]["action"]["add"]}}"
-                            data-text="{{ Translator::phrase("add_new_option") }}"
+                            data-text="{{ __("Add new option") }}"
 
-                            data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
+                            data-allow-clear="true" data-placeholder=""
                             name="province" data-select-value="{{config("pages.form.data.province.id")}}"
                             data-append-to="#district"
                             data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
@@ -58,7 +58,7 @@
                             title="{{config("pages.form.validate.questions.district")}}" class="form-control-label"
                             for="district">
 
-                            {{ Translator:: phrase("district") }}
+                            {{ __("District") }}
 
                             @if(config("pages.form.validate.rules.district"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -71,9 +71,9 @@
                         <select disabled {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="district" title="Simple select"
 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
+                            data-text="{{ __("Add new option") }}"
 
-                            data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
+                            data-allow-clear="true" data-placeholder=""
                             name="district" data-select-value="{{config("pages.form.data.district.id")}}"
                             data-append-to="#commune"
                             data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
@@ -89,7 +89,7 @@
                             title="{{config("pages.form.validate.questions.commune")}}" class="form-control-label"
                             for="commune">
 
-                            {{ Translator:: phrase("commune") }}
+                            {{ __("Commune") }}
 
                             @if(config("pages.form.validate.rules.commune"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -101,10 +101,10 @@
 
                         <select disabled {{config("pages.form.data.commune.id")? "" :"disabled"}} class="form-control"
                             data-toggle="select" id="commune" title="Simple select"
-                            
-                            data-text="{{ Translator::phrase("add_new_option") }}"
 
-                            data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
+                            data-text="{{ __("Add new option") }}"
+
+                            data-allow-clear="true" data-placeholder=""
                             name="commune" data-select-value="{{config("pages.form.data.commune.id")}}"
                             {{config("pages.form.validate.rules.commune") ? "required" : ""}}>
                             @foreach($communes["data"] as $o)
@@ -118,7 +118,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="name">
-                            {{ Translator:: phrase(str_replace("-","_",config("pages.form.name"))) }}
+                            {{ __('Name') }}
 
                             @if(array_key_exists("name",config("pages.form.validate.rules"))) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -127,7 +127,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="name" id="name"
-                            placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name"))) }}"
+                            placeholder=""
                             value="{{config("pages.form.data.name")}}"
                             {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
@@ -139,7 +139,7 @@
                     @foreach (config('app.languages') as $lang)
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="{{$lang["code_name"]}}">
-                            {{ Translator:: phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}
+                            {{ __($lang["translate_name"]) }}
 
                             @if(array_key_exists($lang["code_name"],config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -149,7 +149,7 @@
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
-                            placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}"
+                            placeholder=""
                             value="{{config("pages.form.data.".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
@@ -164,7 +164,7 @@
 
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="description">
-                            {{ Translator:: phrase("description") }}
+                            {{ __("Description") }}
 
                             @if(array_key_exists("description",config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -179,7 +179,7 @@
                                     <span class="input-group-text"><i class="fas fa-info"></i></span>
                                 </div>
                                 <textarea class="form-control" id="description"
-                                    placeholder="{{ Translator:: phrase("description") }}" value=""
+                                    placeholder=""
                                     {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="description">{{config("pages.form.data.description")}}</textarea>
 
@@ -196,7 +196,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="image">
-                            {{ Translator:: phrase("image") }}
+                            {{ __("Image") }}
                             @if(array_key_exists("image",config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
@@ -206,12 +206,12 @@
                             data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder="{{ Translator:: phrase("drop_image_here") }}"
+                                    <input type="file" placeholder=""
                                         class="custom-file-input" id="dropzoneBasicUpload" name="image"
                                         {{(array_key_exists("image", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
-                                        for="dropzoneBasicUpload">{{ Translator:: phrase("choose.image") }}</label>
+                                        for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                                 </div>
                             </div>
 
@@ -233,13 +233,13 @@
                         <div class="custom-control custom-checkbox mb-3">
 
                             <label class="form-control-label"><i class="fas fa-sticky-note "></i>
-                                {{ Translator:: phrase("note") }} </label>
+                                {{ __("Note") }} </label>
                             <br>
                             <label class="form-control-label">
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset">
                                     <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                    {{ Translator:: phrase("field_required") }}</span> </label>
+                                    {{ __("Field required") }}</span> </label>
 
 
                         </div>

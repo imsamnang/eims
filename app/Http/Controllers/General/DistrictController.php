@@ -9,7 +9,7 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;;
+;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormDistrict;
 use App\Http\Controllers\Controller;
@@ -33,7 +33,7 @@ class DistrictController extends Controller
 
         $data['formAction']      = '/add';
         $data['formName']        = 'general/'.Districts::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'.__('List Districts');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -111,14 +111,14 @@ class DistrictController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.district');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Districts');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.district.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.district');
+        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Districts');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -128,7 +128,7 @@ class DistrictController extends Controller
     {
         $response           = Districts::getData(request('provinceId'),$id, true);
         $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.district');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Districts');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -141,7 +141,7 @@ class DistrictController extends Controller
     {
         $response           = Districts::getData(request('provinceId'),$id, true);
         $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.district');
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Districts');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

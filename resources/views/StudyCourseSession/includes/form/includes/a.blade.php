@@ -8,7 +8,7 @@
         <div class="form-row">
             <div class="col-md-8 mb-3">
                 <label class="form-control-label" for="study_course_schedule">
-                    {{ Translator:: phrase("study_course_schedule") }}
+                    {{ __("Study course schedule") }}
 
                     @if(array_key_exists("study_course_schedule",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -18,10 +18,10 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_course_schedule" title="Simple select"
-                   
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.study_course_schedule") }}" name="study_course_schedule"
+
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_course_schedule.id")}}">
                     @foreach($study_course_schedule["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-4 mb-3">
                 <label class="form-control-label" for="study_session">
-                    {{ Translator:: phrase("study_session") }}
+                    {{ __("Study Session") }}
 
                     @if(array_key_exists("study_session",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -40,10 +40,10 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
-                   
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.study_session") }}" name="study_session"
+
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_session.id")}}">
                     @foreach($study_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -54,7 +54,7 @@
         <div class="form-row input-daterange datepicker">
             <div class="col-md-4">
                 <label class="form-control-label" for="study_start">
-                    {{ Translator:: phrase("study_start") }}
+                    {{ __("study_start") }}
 
                     @if(array_key_exists("study_start",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -66,13 +66,13 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input value="{{config("pages.form.data.study_start")}}" class="form-control" placeholder="{{ Translator:: phrase("study_start") }}" type="text" id="study_start" name="study_start">
+                        <input value="{{config("pages.form.data.study_start")}}" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <label class="form-control-label" for="study_end">
-                    {{ Translator:: phrase("study_end") }}
+                    {{ __("study_end") }}
 
                     @if(array_key_exists("study_end",config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -84,7 +84,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input value="{{config("pages.form.data.study_end")}}" class="form-control" placeholder="{{ Translator:: phrase("study_end") }}" type="text" id="study_end" name="study_end">
+                        <input value="{{config("pages.form.data.study_end")}}" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
     <div class="sticky-top" data-spy="affix" data-offset-top="100">
         <div class="card m-0">
             <div class="card-header">
-                <div class="font-weight-600">{{Translator::phrase("edit.qrcode")}}</div>
+                <div class="font-weight-600">{{__("Qrcode")}}</div>
                 <div class="list-group list-group-flush">
                     <div href="#" class="list-group-item">
                         <div class="row">
@@ -31,7 +31,7 @@
                     <div class="col mb-3">
                         @if (config("pages.form.data") == null)
                         <div class="text-danger text-center">
-                            {{Translator::phrase('no_date')}}
+                            {{__('no_date')}}
                         </div>
                         @endif
                         <style>

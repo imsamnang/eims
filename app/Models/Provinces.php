@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormProvince;
 use Illuminate\Database\Eloquent\Model;
@@ -114,7 +114,7 @@ class Provinces extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -217,17 +217,17 @@ class Provinces extends Model
                         'type'      => 'add',
                         'data'      => Provinces::getData($add)['data'],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -268,17 +268,17 @@ class Provinces extends Model
                         'type'      => 'update',
                         'data'      => Provinces::getData($id),
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -288,7 +288,7 @@ class Provinces extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -301,17 +301,17 @@ class Provinces extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -330,29 +330,29 @@ class Provinces extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -363,11 +363,11 @@ class Provinces extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -378,11 +378,11 @@ class Provinces extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )

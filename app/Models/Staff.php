@@ -10,9 +10,9 @@ use App\Models\Villages;
 use App\Helpers\QRHelper;
 use App\Models\Districts;
 use App\Models\Provinces;
-use App\Helpers\Exception;
+
 use App\Helpers\DateHelper;
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Models\StaffGuardians;
 use App\Models\StaffInstitutes;
@@ -212,7 +212,7 @@ class Staff extends Model
                 'gender'      => Staff::gender('null'),
                 'staffStatus' =>  Staff::staffStatus('null'),
                 'type'      => Staff::$path['role'],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -244,36 +244,37 @@ class Staff extends Model
 
 
         return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $account = Users::where('email', $row['email'])->where('node_id', $row['id'])->first();
+            ->setTransformer(function ($row) {                
+                $account = Users::where('email', $row->email)
+                            ->where('node_id', $row->id)
+                            ->first(['name']);
                 return [
-                    'id'      => $row['id'],
-                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'gender'             =>  Gender::where('id', $row['gender_id'])->pluck(app()->getLocale())->first(),
-                    'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
-                    'account'            => $account ? Users::getData($account->id)['data'][0] : null,
-                    'status'            => Gender::where('id', $row['staff_status_id'])->pluck(app()->getLocale())->first(),
-                    'photo'             => ImageHelper::site(Staff::$path['image'], $row['photo']),
-                    'email'      => $row['email'],
-                    'phone'      => $row['phone'],
+                    'id'      => $row->id,
+                    'name'    => $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en,
+                    'gender'   =>  Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first(),
+                    'date_of_birth' => DateHelper::convert($row->date_of_birth, 'd-m-Y'),
+                    'account'            => $account ? $account : null,
+                    'status'            => StaffStatus::where('id', $row->staff_status_id)->pluck(app()->getLocale())->first(),
+                    'photo'             => ImageHelper::site(Staff::$path['image'], $row->photo),
+                    'email'      => $row->email,
+                    'phone'      => $row->phone,
                     'staff_institute'         => [
-                        'institute' =>  Institute::where('id', $row['institute_id'])->pluck(app()->getLocale())->first(),
-                        'designation' =>  StaffDesignations::where('id', $row['designation_id'])->pluck(app()->getLocale())->first(),
+                        'institute' =>  Institute::where('id', $row->institute_id)->pluck(app()->getLocale())->first(),
+                        'designation' =>  StaffDesignations::where('id', $row->designation_id)->pluck(app()->getLocale())->first(),
                     ],
                     'action'                   => [
-                        'edit'                 => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view'                 => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']), //?id
-                        'account'              => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']), //?id
-                        'delete'               => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit'                 => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row->id),
+                        'view'                 => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row->id),
+                        'account'              => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row->id),
+                        'delete'               => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row->id),
                     ],
 
                 ];
             })
             ->filter(function ($query) {
-
-                if (Auth::user()->role_id == 2) {
-                    $query = $query->where((new StaffInstitutes())->getTable() . '.institute_id', Auth::user()->institute_id)
+                
+                if (request('instituteId')) {
+                    $query = $query->where((new StaffInstitutes())->getTable() . '.institute_id', request('instituteId'))
                         ->whereNotIn((new StaffInstitutes())->getTable() . '.designation_id', [1]);
                 }
 
@@ -359,30 +360,30 @@ class Staff extends Model
             }
             return array(
                 'male'      => [
-                    'title' => Translator::phrase('staff.male'),
+                    'title' => __('Staff male'),
                     'text'  => $male . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'female'    => [
-                    'title' => Translator::phrase('staff.female'),
+                    'title' => __('Staff female'),
                     'text'  => $female . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'total'      => [
-                    'title' => Translator::phrase('staff.total'),
+                    'title' => __('Staff total'),
                     'text'  => $query->count() . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
             );
         } else {
             return array(
                 'male'      => [
-                    'title' => Translator::phrase('student.male'),
+                    'title' => __('Staff male'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'female'    => [
-                    'title' => Translator::phrase('student.female'),
+                    'title' => __('Staff female'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'total'      => [
-                    'title' => Translator::phrase('student.total'),
+                    'title' => __('Staff total'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
             );
@@ -397,7 +398,7 @@ class Staff extends Model
             if ($staffStatus['success']) {
                 foreach ($staffStatus['data'] as  $status) {
                     $data[$status['id']] = [
-                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  Translator::phrase('staff.' . $status['name']),
+                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('staff.' . $status['name']),
                         'color' => $status['color'],
                         'text' => 0,
                     ];
@@ -554,17 +555,17 @@ class Staff extends Model
                         'data'      => Staff::getData($add)['data'][0],
                         'type'      => 'add',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -640,11 +641,11 @@ class Staff extends Model
                     'success'   => true,
                     'type'      => 'add',
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('register.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Register successfully'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
@@ -724,17 +725,17 @@ class Staff extends Model
                         //'data'      => Staff::getData($id)['data'][0],
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -746,7 +747,7 @@ class Staff extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -759,17 +760,17 @@ class Staff extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -828,7 +829,7 @@ class Staff extends Model
                             'qrcode_image'  => $qrCode_image,
                         ]);
                     } catch (DomainException $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
 
                     $data[] = ImageHelper::site(QRHelper::$path['image'], $qrCode_image);
@@ -840,11 +841,11 @@ class Staff extends Model
                 'type'   => 'makeQRCode',
                 'data'   => $data,
                 'message'   => array(
-                    'title' => Translator::phrase('success'),
-                    'text'  => Translator::phrase('update.successfully'),
+                    'title' => __('Success'),
+                    'text'  => __('Update Successfully'),
                     'button'   => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
             );
@@ -866,11 +867,11 @@ class Staff extends Model
                     'success' => false,
                     'data'    => [],
                     'message'   => array(
-                        'title' => Translator::phrase('account'),
-                        'text'  => Translator::phrase('already_exists'),
+                        'title' => __('account'),
+                        'text'  => __('Already exists'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 ];
@@ -906,11 +907,11 @@ class Staff extends Model
                         'success' => true,
                         'data'    => Users::getData($create),
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('create.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Create Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     ];
@@ -920,11 +921,11 @@ class Staff extends Model
                     'success' => false,
                     'data'    => [],
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('no_password'),
+                        'title' => __('Error'),
+                        'text'  => __('No password'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 ];
@@ -945,29 +946,29 @@ class Staff extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -978,11 +979,11 @@ class Staff extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -993,11 +994,11 @@ class Staff extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )
@@ -1025,7 +1026,7 @@ class Staff extends Model
     public static function getClassTeaching($teacher_id)
     {
         $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->groupBy(['study_course_session_id','study_class_id'])->get()->toArray();
-        if($course_routine){            
+        if($course_routine){
            $data = [];
            foreach($course_routine as $row){
             $class = StudyClass::where('id',$row['study_class_id'])->first(['id', app()->getLocale().' as name' ,'image']);
@@ -1057,7 +1058,7 @@ class Staff extends Model
                     'id'    => $subject->id,
                     'name'    => $subject->name,
                     'image'    => $subject->image? ImageHelper::site(StudySubjects::$path['image'], $subject->image) : ImageHelper::prefix(),
-                ];         
+                ];
            }
            return $data;
         }

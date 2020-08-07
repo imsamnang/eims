@@ -2,7 +2,7 @@
 @section("meta")
 @section('style')
 <!-- Favicon -->
-<title>{{config("app.name")}} | {{ Translator::phrase("register")}}</title>
+<title>{{config("app.name")}} | {{ __("Register")}}</title>
 <link rel="icon" href="{{config("app.favicon")}}" type="image/png">
 <link rel="stylesheet" href="{{asset("assets/vendor/nucleo/css/nucleo.css")}}" type="text/css">
 <link rel="stylesheet" href="{{asset('/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css')}}" type="text/css">
@@ -53,13 +53,13 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-transparent">
                         <div class="text-muted text-center m-2">
-                            <small>{{Translator::phrase('create_new_account.with')}}</small></div>
+                            <small>{{__('Create new account with')}}</small></div>
                         <div class="btn-wrapper text-center">
                             @if (env("FACEBOOK_ENABLED"))
                             <a href="{{url('auth/facebook')}}" class="btn btn-neutral btn-icon">
                                 <span class="btn-inner--icon"><img
                                         src="{{asset('../assets/img/icons/common/facebook.svg')}}"></span>
-                                <span class="btn-inner--text">{{Translator::phrase('facebook')}}</span>
+                                <span class="btn-inner--text">{{__('Facebook')}}</span>
                             </a>
                             @endif
                             @if (env("GOOGLE_ENABLED"))
@@ -67,7 +67,7 @@
                             <a href="{{url('auth/google')}}" class="btn btn-neutral btn-icon">
                                 <span class="btn-inner--icon"><img
                                         src="{{asset('../assets/img/icons/common/google.svg')}}"></span>
-                                <span class="btn-inner--text">{{Translator::phrase('google')}}</span>
+                                <span class="btn-inner--text">{{__('Google')}}</span>
                             </a>
                             @endif
 
@@ -75,7 +75,7 @@
                     </div>
                     <div class="card-body px-lg-5 py-lg-3">
                         <div class="text-center text-muted mb-4">
-                            <small>{{Translator::phrase('or.create_new_account')}}</small>
+                            <small>{{__('Or create new account')}}</small>
                         </div>
                         <form method="POST" action="{{ route('register') }}"
                             class="needs-validation {{$errors ? 'has-validated' : 'was-validated'}}" novalidate="">
@@ -86,7 +86,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input class="form-control @error('name') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('name')}}" type="text" value="{{old('name')}}"
+                                        placeholder=""
                                         name="name" required>
                                     @error('name')
                                     <div class="invalid-feedback" role="alert">
@@ -102,7 +102,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('email')}}" type="email"
+                                        placeholder=""
                                         value="{{old('email')}}" name="email" required>
                                     @error('email')
                                     <div class="invalid-feedback" role="alert">
@@ -118,7 +118,7 @@
                                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('password')}}" type="password"
+                                        placeholder=""
                                         value="{{old('password')}}" name="password" required
                                         autocomplete="new-password">
                                     @error('password')
@@ -134,7 +134,7 @@
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('password_confirm')}}" type="password"
+                                        placeholder=""
                                         value="{{old('password-confirm')}}" name="password_confirmation" required
                                         autocomplete="new-password">
                                     @error('password-confirm')
@@ -147,7 +147,7 @@
 
                             <div class="text-center">
                                 <button type="submit"
-                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{Translator::phrase('register')}}</button>
+                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{__('Register')}}</button>
                             </div>
                         </form>
                     </div>

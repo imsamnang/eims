@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Students;
-use App\Helpers\Exception;
 use App\Helpers\DateHelper;
 use App\Helpers\Encryption;
 use App\Helpers\ImageHelper;
-use App\Helpers\Translator;
+
 use App\Models\AttendancesType;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +21,7 @@ class StudentsAttendances extends Model
 
 
     public static function getData($year = null, $month = null, $date = null, $student_study_course_id = null, $paginate = null)
-    {
+    {        
 
         $pages['form'] = array(
             'action'  => array(
@@ -34,7 +33,7 @@ class StudentsAttendances extends Model
             'success'   => false,
             'data'      => [],
             'pages'     => $pages,
-            'message'   => Translator::phrase('no_data'),
+            'message'   => __('No Data'),
             'gender'    => Students::gender(null),
         );
 
@@ -196,12 +195,12 @@ class StudentsAttendances extends Model
                             } else {
                                 $routine = StudyCourseRoutine::where('study_course_session_id', $schedule[0]['id'])->get()->toArray();
                                 if ($routine) {
-                                    $response['message'] = Translator::phrase('no_data') . PHP_EOL .
-                                        PHP_EOL . Translator::phrase('no_student_study_course');
+                                    $response['message'] = __('No Data') . PHP_EOL .
+                                        PHP_EOL . __('No student study course');
                                 } else {
                                     $study_session = StudySession::getData(request('sessionId'))['data'][0];
-                                    $response['message'] = Translator::phrase('no_data') . PHP_EOL .
-                                        PHP_EOL . Translator::phrase('no_study_course_schedule.for.' . $study_session['name']);
+                                    $response['message'] = __('No Data') . PHP_EOL .
+                                        PHP_EOL . __('No study course schedule for ',['study_session'=>$study_session['name']]);
                                 }
                             }
                         }
@@ -209,19 +208,19 @@ class StudentsAttendances extends Model
                         $study_start = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_start->day . '-' . $study_start->monthName . '-' . $study_start->year);
                         $study_end = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_end->day . '-' . $study_end->monthName . '-' . $study_end->year);
 
-                        $response['message'] = Translator::phrase('no_data.for.month.' . DateHelper::getDate($modify)->monthName) . ' ' . request('year') . PHP_EOL .
-                            Translator::phrase('study_start') . ' ' . $study_start . ' - ' . $study_end;
+                        $response['message'] = __('No Data for month ',['month'=>DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
+                            __('Study start') . ' ' . $study_start . ' - ' . $study_end;
                     }
                 } else {
                     $study_start = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_start->day . '-' . $study_start->monthName . '-' . $study_start->year);
                     $study_end = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_end->day . '-' . $study_end->monthName . '-' . $study_end->year);
 
-                    $response['message'] = Translator::phrase('no_data.for.month.' . DateHelper::getDate($modify)->monthName) . ' ' . request('year') . PHP_EOL .
-                        Translator::phrase('study_start') . ' ' . $study_start . ' ' . Translator::phrase('to') . ' ' . $study_end;
+                    $response['message'] = __('No Data for month.' ,['month'=>DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
+                        __('Study start') . ' ' . $study_start . ' ' . __('To') . ' ' . $study_end;
                 }
             } else {
-                $response['message'] = Translator::phrase('no_data') . PHP_EOL .
-                    Translator::phrase('study_course_session') . PHP_EOL . Translator::phrase('no_study_course_schedule');
+                $response['message'] = __('No Data') . PHP_EOL .
+                    __('Study course session') . PHP_EOL . __('No study course schedule');
             }
         }
         if ($recall) {
@@ -358,7 +357,7 @@ class StudentsAttendances extends Model
         if (StudentsAttendances::existsToTable($year, $month, $date, $student_study_course_id)) {
             $response       = array(
                 'success'   => false,
-                'message'   => Translator::phrase('already_exists'),
+                'message'   => __('Already exists'),
                 'errors'    => []
             );
         } else {
@@ -378,7 +377,7 @@ class StudentsAttendances extends Model
                     'success'   => true,
                     'data'      => StudentsAttendances::getData1($student_study_course_id),
                     'sound'     => asset('assets/sounds/' . app()->getLocale() . '/thank_you.mp3'),
-                    'message'   => $absent . PHP_EOL . ' ' . Translator::attendance('present'),
+                    'message'   => $absent . PHP_EOL . ' ' . __('Present'),
                     'type'      => 'add',
                 );
             }
@@ -414,7 +413,7 @@ class StudentsAttendances extends Model
                         );
                     }
                 } catch (\Exception $e) {
-                    $response       = Exception::exception($e);
+                    $response       = $e;
                 }
             }
         }

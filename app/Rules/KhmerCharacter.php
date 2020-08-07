@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Dotenv\Regex\Result;
-use App\Helpers\Translator;
+
 use Illuminate\Contracts\Validation\Rule;
 
 class KhmerCharacter implements Rule
@@ -69,6 +69,6 @@ class KhmerCharacter implements Rule
      */
     public function message()
     {
-        return ':attribute ' . Translator::phrase('required_khmer_only');
+        return ':attribute ' . __('Required khmer only');
     }
 }

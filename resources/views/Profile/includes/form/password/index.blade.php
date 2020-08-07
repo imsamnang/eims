@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase("password") }}
+                            {{ __("Password") }}
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -22,7 +22,7 @@
                         <button
                             class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                             type="submit">
-                            {{ Translator:: phrase("update") }}
+                            {{ __("Update") }}
                         </button>
                     </div>
 

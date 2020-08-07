@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Staff;
 use App\Models\Students;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +18,7 @@ class Qrcode extends Model
         $response = array(
             'success'   => false,
             'data'      => array(),
-            'message'   => Translator::phrase('no_data'),
+            'message'   => __('No Data'),
         );
 
         if ($id) {

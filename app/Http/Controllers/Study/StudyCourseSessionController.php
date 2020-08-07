@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
 use App\Models\StudyCourseSession;
@@ -121,14 +121,14 @@ class StudyCourseSessionController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyCourseSession::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course_Session' . '.' . $param1);
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Course Session');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyCourseSession::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Course_Session');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Course Session');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -138,7 +138,7 @@ class StudyCourseSessionController extends Controller
     {
         $response = StudyCourseSession::getData($id, true);
         $data['view']       = StudyCourseSession::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Course_Session');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

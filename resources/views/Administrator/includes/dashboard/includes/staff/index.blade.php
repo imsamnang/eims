@@ -11,7 +11,7 @@
     @if (count($staff) == ($key + 1))
     <a class="btn btn-sm" data-toggle="collapse" href="#staff-more" role="button" aria-expanded="false"
         aria-controls="staff-more">
-        {{Translator::phrase("more")}}
+        {{__("More")}}
     </a>
     @endif
     @endforeach

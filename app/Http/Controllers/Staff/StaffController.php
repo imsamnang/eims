@@ -18,7 +18,6 @@ use App\Models\BloodGroup;
 use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
 use App\Models\Nationality;
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
@@ -44,10 +43,9 @@ class StaffController extends Controller
     }
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
-    {        
+    {
         $data['formAction']          = '/add';
-        $data['formName']            = Staff::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['formName']            = Staff::$path['url'];       
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -58,44 +56,44 @@ class StaffController extends Controller
         if (strtolower($param1) == null) {
             $data['shortcut'] = [
                 [
-                    'name'  => Translator::phrase('add.staff'),
+                    'name'  => __('Add Staff'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/add'),
                     'icon'  => 'fas fa-user-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('add.staff.short_form'),
+                    'name'  => __('Add Staff short form'),
                     'link'  => url('staff-register'),
                     'target' => '_blank',
                     'icon'  => 'fas fa-user-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.staff.all'),
+                    'name'  => __('List all Staff'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                     'icon'  => 'fas fa-users-class',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.designation'),
+                    'name'  => __('List Designation'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/list'),
                     'icon'  => 'fas fa-user-tie',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.staff_status'),
+                    'name'  => __('List Staff status'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/list'),
                     'icon'  => 'fas fa-question-square',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.staff_certificate'),
+                    'name'  => __('List Staff Certificate'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/list'),
                     'icon'  => 'fas fa-file-certificate',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
-                    'name'  => Translator::phrase('list.staff_teach_subject'),
+                    'name'  => __('List Staff teach subject'),
                     'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/list'),
                     'icon'  => 'fas fa-chalkboard-teacher',
                     'image' => null,
@@ -104,7 +102,7 @@ class StaffController extends Controller
 
             ];
             $data['view']  = Staff::$path['view'] . '.includes.dashboard.index';
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .staff. & .teacher');
+            $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff & Teacher');
         } elseif (strtolower($param1) == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  Staff::getData(null, null, 10, request('search'));
@@ -215,8 +213,8 @@ class StaffController extends Controller
 
     public function list($data)
     {
-        $staff = Staff::join((new StaffInstitutes())->getTable(), (new StaffInstitutes())->getTable() . '.staff_id', (new Staff())->getTable() . '.id');
-        if (request('instituteId')) {
+       $staff = Staff::join((new StaffInstitutes())->getTable(), (new StaffInstitutes())->getTable() . '.staff_id', (new Staff())->getTable() . '.id');
+        if  (request('instituteId')) {
             $staff = $staff->where('institute_id', request('instituteId'))
                 ->whereNotIn('designation_id', [1]);
         }
@@ -226,9 +224,8 @@ class StaffController extends Controller
         ];
 
 
-
         $data['view']  = Staff::$path['view'] . '.includes.list.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName']);
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Staff');
         return $data;
     }
 
@@ -253,7 +250,7 @@ class StaffController extends Controller
         $data['curr_villages']       = $data['villages'];
 
         $data['view']       = Staff::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . $data['formName']);
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff');
 
 
         if ($id) {

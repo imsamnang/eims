@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase(config("pages.form.role").".".str_replace("-","_",config("pages.form.name"))) }}
+                            {{ __(config("pages.form.role")) }}
                             <a class="float-right" href="{{str_replace("/add","excel",config("pages.form.action.add"))}}">បញ្ចូលទិន្នន័យតាមទម្រង់អ៊ីហ្សែល</a>
                         </h5>
                     </div>
@@ -35,7 +35,7 @@
                                     <div class="card-header py-2 px-3">
                                         <label
                                             class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                            {{Translator::phrase("list")}}
+                                            {{__("List")}}
                                         </label>
                                     </div>
                                     <div class="card-body p-2">
@@ -72,11 +72,11 @@
                             class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                             type="submit">
                             @if (config("pages.form.role") == "add")
-                            {{ Translator:: phrase("save") }}
+                            {{ __("Save") }}
                             @elseif(config("pages.form.role") == "edit")
-                            {{ Translator:: phrase("update") }}
+                            {{ __("Update") }}
                             @elseif(config("pages.form.role") == "view")
-                            {{ Translator:: phrase("goto.edit") }}
+                            {{ __("Goto Edit") }}
                             @endif
                         </button>
                     </div>

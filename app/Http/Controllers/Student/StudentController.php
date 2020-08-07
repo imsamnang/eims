@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Student;
 use App\Models\App;
 use App\Models\Days;
 use App\Models\Quiz;
-use App\Models\Roles;
 use App\Models\Users;
 use App\Models\Years;
 use App\Models\Gender;
@@ -26,7 +25,7 @@ use App\Models\MotherTong;
 use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\Nationality;
 use App\Models\QuizStudent;
 use App\Models\StudyCourse;
@@ -77,7 +76,7 @@ class StudentController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
     {
-        
+
 
         if (Auth::user()->role_id != 6) {
             $data['institute']            = Institute::getData();
@@ -96,7 +95,7 @@ class StudentController extends Controller
         }
         $data['formAction']          = '/add';
         $data['formName']            = Students::$path['url'];
-        $data['title']               = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Students');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -138,33 +137,33 @@ class StudentController extends Controller
                         'title' => null,
                         'children'  => [
                             [
-                                'name'  => Translator::phrase('add.student'),
+                                'name'  => __('Add Student'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
                                 'icon'  => 'fas fa-user-plus',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                             [
-                                'name'  => Translator::phrase('add.student.short_form'),
+                                'name'  => __('Add Student short form'),
                                 'link'  => url('student-register'),
                                 'target' => '_blank',
                                 'icon'  => 'fas fa-user-plus',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.student.all'),
+                                'name'  => __('List all Student'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-users-class',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.card'),
+                                'name'  => __('List Card'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-id-card',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.certificate'),
+                                'name'  => __('List Certificate'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-file-certificate',
                                 'image' => null,
@@ -173,28 +172,28 @@ class StudentController extends Controller
                         ]
                     ],
                     [
-                        'title' => Translator::phrase('long_course'),
+                        'title' => __('Long course'),
                         'children' => [
                             [
-                                'name'  => Translator::phrase('list.student_study_course'),
+                                'name'  => __('List Student study course'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-user-graduate',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.request_study'),
+                                'name'  => __('List request study'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-users-medical',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.student.attendance'),
+                                'name'  => __('List Student attendance'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-calendar-edit',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.student.score'),
+                                'name'  => __('List Student score'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-trophy-alt',
                                 'image' => null,
@@ -203,16 +202,16 @@ class StudentController extends Controller
                         ]
                     ],
                     [
-                        'title' => Translator::phrase('short_course'),
+                        'title' => __('Short course'),
                         'children' => [
                             [
-                                'name'  => Translator::phrase('list.student'),
+                                'name'  => __('List Students'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-user-graduate',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.student.request_study'),
+                                'name'  => __('List Student request study'),
                                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-users-medical',
                                 'image' => null,
@@ -224,7 +223,7 @@ class StudentController extends Controller
 
 
                 $data['view']  = Students::$path['view'] . '.includes.dashboardAdmin.index';
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+                $data['title']   = Users::role(app()->getLocale()).'|'.__('Students');
             } elseif (strtolower($param1)  == 'list') {
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
 
@@ -361,14 +360,14 @@ class StudentController extends Controller
             'gender'      => Students::gender($student)
         ];
         $data['view']  = Students::$path['view'] . '.includes.list.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName']);
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('List Students');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']  = Students::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('Add Student');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -389,7 +388,7 @@ class StudentController extends Controller
     {
         $response           = Students::getData($id, true);
         $data['view']       = Students::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . $data['formName']);
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('Students');
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];
         $data['formAction'] = '/' . $type . '/' . $id;
@@ -474,7 +473,7 @@ class StudentController extends Controller
         $data['quiz'] = $quiz;
         $data['formName'] = 'study/' . Quiz::$path['url'] . '/' . QuizStudentAnswer::$path['url'];
 
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .dashboard');
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('Dashboard');
         $data['view']    = Students::$path['view'] . '.includes.dashboard.index';
 
         return  $data;
@@ -521,14 +520,14 @@ class StudentController extends Controller
                         'title' => null,
                         'children'  => [
                             [
-                                'name'  => Translator::phrase('edit.register'),
+                                'name'  => __('Edit Register'),
                                 'link'  => url(Users::role() . '/study/edit'),
                                 'icon'  => 'fas fa-user-edit',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                             [
-                                'name'  => Translator::phrase('list.quiz'),
+                                'name'  => __('List Quiz'),
                                 'link'  => url(Users::role() . '/study/' . Quiz::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-question-circle',
                                 'image' => null,
@@ -537,36 +536,36 @@ class StudentController extends Controller
                         ]
                     ],
                     [
-                        'title' => Translator::phrase('long_course'),
+                        'title' => __('Long course'),
                         'children'  => [
 
                             [
-                                'name'  => Translator::phrase('study_course'),
+                                'name'  => __('Study course'),
                                 'link'  => url(Users::role() . '/study/'.str_replace('request','approved',StudentsRequest::$path['url']).'/list'),
                                 'icon'  => 'fas fa-user-graduate',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                             [
-                                'name'  => Translator::phrase('request_study'),
+                                'name'  => __('Request study'),
                                 'link'  => url(Users::role() . '/study/' . StudentsRequest::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-layer-plus',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.schedule'),
+                                'name'  => __('List Schedule'),
                                 'link'  => url(Users::role() . '/study/schedule/list'),
                                 'icon'  => 'fas fa-calendar-alt',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.attendance'),
+                                'name'  => __('List Attendance'),
                                 'link'  => url(Users::role() . '/study/' . StudentsAttendances::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-calendar-edit',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ], [
-                                'name'  => Translator::phrase('list.score'),
+                                'name'  => __('List Score'),
                                 'link'  => url(Users::role() . '/study/' . StudentsStudyCourseScore::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-trophy-alt',
                                 'image' => null,
@@ -575,18 +574,18 @@ class StudentController extends Controller
                         ]
                     ],
                     [
-                        'title' => Translator::phrase('short_course'),
+                        'title' => __('Short course'),
                         'children'  => [
 
                             [
-                                'name'  => Translator::phrase('study_course'),
+                                'name'  => __('Study course'),
                                 'link'  => url(Users::role() . '/study/' . str_replace('request', 'approved', StudentsShortCourseRequest::$path['url']) . '/list'),
                                 'icon'  => 'fas fa-user-graduate',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
                             ],
                             [
-                                'name'  => Translator::phrase('request_study'),
+                                'name'  => __('Request study'),
                                 'link'  => url(Users::role() . '/study/' . StudentsShortCourseRequest::$path['url'] . '/list'),
                                 'icon'  => 'fas fa-layer-plus',
                                 'image' => null,
@@ -601,7 +600,7 @@ class StudentController extends Controller
                         'title' => null,
                         'children'  => [
                             [
-                                'name'  => Translator::phrase('register'),
+                                'name'  => __('Register'),
                                 'link'  => url(Users::role() . '/study/register'),
                                 'icon'  => 'fas fa-user-plus',
                                 'image' => null,
@@ -612,7 +611,7 @@ class StudentController extends Controller
 
                 ];
             }
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .study');
+            $data['title'] = Users::role(app()->getLocale()) .' | '.__('Study');
             $data['view']  = Students::$path['view'] . '.includes.study.includes.dashboard.index';
         } elseif (strtolower($param1) == 'register') {
             $data['mother_tong']         = MotherTong::getData();
@@ -628,7 +627,7 @@ class StudentController extends Controller
             $data['curr_communes']       = Communes::getData('null', 'null');
             $data['curr_villages']       = Villages::getData('null', 'null');
             $data = $this->add($data);
-            $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .register');
+            $data['title'] = Users::role(app()->getLocale()) .' | '.__('Register');
         } elseif (strtolower($param1) == 'edit') {
             $data['provinces']           = Provinces::getData();
             $data['districts']           = Districts::getData('null', 'null');
@@ -642,7 +641,7 @@ class StudentController extends Controller
                 return Students::updateToTable($id);
             } else {
                 $data = $this->show($data, Auth::user()->node_id, 'edit');
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit');
+                $data['title'] = Users::role(app()->getLocale()) .' | '.__('Edit');
             }
         } elseif (strtolower($param1) == str_replace('request','approved',StudentsRequest::$path['url'])) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -653,7 +652,8 @@ class StudentController extends Controller
                 if (strtolower($param2) == 'list' || strtolower($param2) == null) {
                     $data['studys'] = StudentsStudyCourse::getStudy(Auth::user()->node_id);
                     $data['response']  = StudentsRequest::getData(null, Auth::user()->node_id, 10);
-                    $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.approved.and.request_study');
+                    
+                    $data['title'] = Users::role(app()->getLocale()) .' | '.__('List Approved and request study');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.course.list.index';
                 } else {
                     abort(404);
@@ -664,7 +664,7 @@ class StudentController extends Controller
 
             if (strtolower($param2) == 'list' || strtolower($param2) == null) {
                 $data['response']  = StudentsRequest::getData(null, Auth::user()->node_id, 10);
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .request');
+                $data['title'] = Users::role(app()->getLocale()) .' | '.__('Request');
                 $data['view']    = Students::$path['view'] . '.includes.study.includes.requesting.list.index';
             } elseif (strtolower($param2) == 'add') {
                 if (request()->method() == 'POST') {
@@ -673,7 +673,7 @@ class StudentController extends Controller
                     ]);
                     return StudentsRequest::addToTable();
                 } else {
-                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['title'] = Users::role(app()->getLocale()) .' | '.__('Course');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.requesting.form.index';
                 }
             } elseif (strtolower($param2) == 'edit') {
@@ -684,7 +684,7 @@ class StudentController extends Controller
                     request()->merge([
                         'ref'   => Students::$path['url'] . '-' . StudentsRequest::$path['url']
                     ]);
-                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['title']   = __(Users::role(app()->getLocale()) . '. | .course');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.requesting.form.index';
                     $response  = StudentsRequest::getData(request('id', $param3));
 
@@ -716,7 +716,7 @@ class StudentController extends Controller
 
 
 
-                    $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.short_course.approved.and.request_study');
+                    $data['title'] = __(Users::role(app()->getLocale()) . '. | .list.short_course.approved.and.request_study');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course.list.index';
                 } else {
                     abort(404);
@@ -727,7 +727,8 @@ class StudentController extends Controller
 
             if (strtolower($param2) == 'list' || strtolower($param2) == null) {
                 $data['response']  = StudentsShortCourseRequest::getData(null, Auth::user()->node_id, 10);
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .short_course_request');
+                
+                $data['title'] = Users::role(app()->getLocale()) .' | '.__('Short course request');
                 $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.list.index';
             }elseif(strtolower($param2) == 'list-datatable'){
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -747,7 +748,7 @@ class StudentController extends Controller
                     ]);
                     return StudentsShortCourseRequest::addToTable();
                 } else {
-                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['title'] = Users::role(app()->getLocale()) .' | '.__('Course');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.form.index';
                     $data['study_subject']       = StudySubjects::getData();
                 }
@@ -757,7 +758,7 @@ class StudentController extends Controller
                 } else {
                     $data['formAction']          = '/edit';
 
-                    $data['title']   = Translator::phrase(Users::role(app()->getLocale()) . '. | .course');
+                    $data['title'] = Users::role(app()->getLocale()) .' | '.__('Course');
                     $data['view']    = Students::$path['view'] . '.includes.study.includes.short_course_requesting.form.index';
                     $response  = StudentsShortCourseRequest::getData(request('id', $param3));
 
@@ -776,7 +777,7 @@ class StudentController extends Controller
             if ($data['course_routine']) {
                 $data['days']                  = Days::getData();
                 $data['response'] = StudyCourseRoutine::getData(request('course-sessionId', $data['course_routine']->study_course_session_id));
-                $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .schedule');
+                $data['title'] = Users::role(app()->getLocale()) .' | '.__('Schedule');
                 $data['view']  = Students::$path['view'] . '.includes.study.includes.schedule.index';
             } else {
                 abort(404);

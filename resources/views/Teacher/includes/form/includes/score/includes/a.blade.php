@@ -10,14 +10,14 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.student")}}" class="form-control-label"
                     for="student">
-                    {{ Translator:: phrase("student") }}
+                    {{ __("Student") }}
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                 </label>
 
                 <select class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder="{{ Translator::phrase("choose.student") }}" name="student"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.node.id")}}"
                     {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                     @foreach($student["data"] as $o)

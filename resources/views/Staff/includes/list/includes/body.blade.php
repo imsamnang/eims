@@ -14,17 +14,17 @@
                         </div>
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
                     <th data-type="modal" data-searchable="true" data-key="name" data-url="action.view" class="sort" data-sort="name">
-                        {{Translator::phrase("name")}}​</th>
-                    <th data-type="text" data-key="gender">{{Translator::phrase("gender")}}</th>
-                    <th data-type="text" data-key="date_of_birth">{{Translator::phrase("date_of_birth")}}</th>
+                        {{__("Name")}}​</th>
+                    <th data-type="text" data-key="gender">{{__("Gender")}}</th>
+                    <th data-type="text" data-key="date_of_birth">{{__("Date of birth")}}</th>
                     <th data-type="text" data-key="email,phone" data-join="<br>">
-                        {{Translator::phrase("email. & .phone")}}</th>
+                        {{__("Email  & Phone")}}</th>
                     <th data-type="text" data-key="staff_institute.designation">
-                        {{Translator::phrase("designation")}}</th>
-                    <th data-type="icon" data-key="account">{{Translator::phrase("account")}}</th>
-                    <th data-type="image" data-key="photo">{{Translator::phrase("photo")}}</th>
+                        {{__("Designation")}}</th>
+                    <th data-type="icon" data-key="account">{{__("Account")}}</th>
+                    <th data-type="image" data-key="photo">{{__("Photo")}}</th>
                     <th data-type="option" data-key="view,edit,account,delete"></th>
 
                 </tr>
@@ -39,22 +39,22 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item" href="">
 
-                        <i class="fas fa-edit"></i> {{Translator::phrase("edit")}}</a>
+                        <i class="fas fa-edit"></i> {{__("Edit")}}</a>
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-account" class="dropdown-item"
                         href="">
 
-                        <i class="fas fa-user"></i> {{Translator::phrase("create.account")}}</a>
+                        <i class="fas fa-user"></i> {{__("Create account")}}</a>
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

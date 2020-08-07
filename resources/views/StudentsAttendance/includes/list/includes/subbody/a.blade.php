@@ -23,16 +23,14 @@
                 </span>
                 <br>
                 <span>
-                    {{ Translator::phrase("list.attendance.".config("pages.form.data.node_type").".for.month").DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->monthName . " ".request("year") }}
+                    {{ __("List Attendance for month",['month'=>DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->shortMonthName]) ." ".request("year") }}
                 </span>
 
             </h4>
 
             @else
-            <h4 class="header">
-
-                {{ Translator::phrase("list.attendance.".config("pages.form.data.node_type").".for.month").DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->monthName . " ".request("year") }}
-
+            <h4 class="header">                
+                {{ __("List Attendance for month",['month'=>DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->shortMonthName]) ." ".request("year") }}
             </h4>
             @endif
         </th>
@@ -64,7 +62,7 @@
             @endif
 
             <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
-                {{ Translator::day(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"],null,"short") }}
+                {{ __(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"]) }}
             </th>
             @endfor
             <th colspan="3">​</th>
@@ -81,9 +79,9 @@
             </div>
         </th>
         @endif
-        <th class="font-weight-bold1">{{  Translator::phrase("numbering") }}​</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("name") }}​</th>
-        <th class="font-weight-bold1">{{  Translator::phrase("gender") }}​</th>
+        <th class="font-weight-bold1">{{  __("Id") }}​</th>
+        <th class="font-weight-bold1">{{  __("Name") }}​</th>
+        <th class="font-weight-bold1">{{  __("Gender") }}​</th>
 
         @for ($i = 1; $i <= DateHelper::daysOfMonth(request("year"),request("month")); $i++) @php
             $setClass=DateHelper::getDate(request("year")."-".request("month")."-".$i)->isToday() ?"bg-blue text-white"
@@ -115,7 +113,7 @@
             </th>
             <th class="font-weight-bold1">{{ (app()->getLocale() == "km" ? " ឥ.ច្បាប់" : " A") }}
             </th>
-            <th class="font-weight-bold1">{{ Translator::phrase("total") }}</th>
+            <th class="font-weight-bold1">{{ __("Total") }}</th>
 
     </tr>
 </thead>

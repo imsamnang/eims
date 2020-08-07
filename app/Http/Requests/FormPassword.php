@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormPassword extends FormRequest
@@ -33,9 +33,9 @@ class FormPassword extends FormRequest
 
     public static function attributeField()
     {
-        $attributes['old_password']                = Translator::phrase('old_password');
-        $attributes['password']                    = Translator::phrase('new_password');
-        $attributes['password_confirmation']       = Translator::phrase('password_confirm');
+        $attributes['old_password']                = __('Old password');
+        $attributes['password']                    = __('New password');
+        $attributes['password_confirmation']       = __('Password confirm');
 
         return $attributes;
     }

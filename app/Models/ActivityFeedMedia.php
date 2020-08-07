@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Helpers\VideoHelper;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +52,7 @@ class ActivityFeedMedia extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -64,7 +64,7 @@ class ActivityFeedMedia extends Model
     {
         $response = [
             'success'   => false,
-            'message'   => Translator::phrase('upload.unsuccessful'),
+            'message'   => __('Upload Unsuccessful'),
         ];
         if ($activity_feed_id) {
             if (request('media_files')) {
@@ -82,7 +82,7 @@ class ActivityFeedMedia extends Model
                         if ($add) {
                             $response = [
                                 'success'   => true,
-                                'message'   => Translator::phrase('upload.successfully'),
+                                'message'   => __('Upload Successfully'),
                             ];
                         }
                     }
@@ -116,7 +116,7 @@ class ActivityFeedMedia extends Model
                 }
                 $response = [
                     'success'   => true,
-                    'message'   => Translator::phrase('upload.successfully'),
+                    'message'   => __('Upload Successfully'),
                     'data'      => $data
                 ];
             }

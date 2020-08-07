@@ -10,7 +10,7 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\QuizStudent;
 use App\Helpers\ImageHelper;
 use App\Models\QuizQuestion;
@@ -90,7 +90,7 @@ class QuizStudentController extends Controller
         } elseif ($param1 == 'answer_again') {
             $id = $param2 ? $param2 : request('id');
             return QuizStudentAnswer::updateAnswerAgainToTable($id);
-        } elseif ($param1 == 'marks') {
+        } elseif ($param1 == 'score') {
             if ($param2 == 'update') {
                 $id = $param3 ? $param3 : request('id');
                 return QuizStudentAnswer::updateMarksToTable($id);
@@ -142,7 +142,7 @@ class QuizStudentController extends Controller
     public function list($data)
     {
         $data['view']     = QuizStudent::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.quiz_student');
+         $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student');
         return $data;
     }
 
@@ -150,7 +150,7 @@ class QuizStudentController extends Controller
     {
 
         $data['view']      = QuizStudent::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.quiz_student');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Quiz Student');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -160,7 +160,7 @@ class QuizStudentController extends Controller
     {
         $response = QuizStudent::getData($id);
         $data['response'] = $response;
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.quiz_student');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
@@ -212,7 +212,7 @@ class QuizStudentController extends Controller
                                 'id'        => null,
                                 'question'  => QuizQuestion::getData($q['id'])['data'][0],
                                 'answered'  => null,
-                                'marks'     => $a ? $a->marks : 0,
+                                'score'     => $a ? $a->marks : 0,
                             ];
                         }
                         $quiz_answered = $qa;
@@ -238,17 +238,17 @@ class QuizStudentController extends Controller
             } else {
                 $data['response'] = [
                     'success'   => false,
-                    'message'   => Translator::phrase('no_data'),
+                    'message'   => __('No Data'),
                 ];
             }
         }else{
             $data['response'] = [
                 'success'   => false,
-                'message'   => Translator::phrase('please_filter'),
+                'message'   => __('Please filter'),
             ];
         }
         $data['view']     = QuizStudent::$path['view'] . '.includes.report.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .report.quiz_student');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Report Quiz Student');
         return $data;
     }
 }

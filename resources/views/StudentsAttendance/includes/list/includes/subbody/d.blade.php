@@ -20,13 +20,13 @@ $setToggle = 'data-toggle=attendance';
 @if($holiday[$i]["id"]== null)
 @php
 $setClass= "bg-pink text-center text-white merge";
-$setText=Translator::phrase("holiday");
+$setText=__("Holiday");
 $setTitle=$holiday[$i]["description"];
 @endphp
 @else
 @php
 $setClass="bg-green text-center text-white merge" ;
-$setText=Translator::phrase("national_holiday");
+$setText=__("National holiday");
 $setTitle=$holiday[$i]["description"];
 @endphp
 @endif
@@ -42,7 +42,7 @@ $setTitle=$holiday[$i]["description"];
     </div>
     @else
     <div data-url="{{ $row["action"]["edit"] }}"
-        title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). Translator::day(DateHelper::dayOfWeek(request("year").'-'.request("month").'-'.$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
+        title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). __(DateHelper::dayOfWeek(request("year").'-'.request("month").'-'.$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
         {{$setToggle}} data-id="{{ $row["node"]["id"]}}" data-date="{{ $i }}"
         data-key="{{$row["date"][$i]["attendance"]["id"]}}">
         <span data-toggle="tooltip" rel="tooltip" data-placement="left"
@@ -61,13 +61,13 @@ $setTitle=$holiday[$i]["description"];
     </div>
     @else
     <div data-url="{{ $row["action"]["edit"] }}"
-        title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). Translator::day(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
+        title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). __(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
         {{$setToggle}} data-id="{{ $row["node"]["id"]}}" data-date="{{ $i }}" data-key="0">
         @if ($i <= date("d") ) <span data-toggle="tooltip" rel="tooltip" data-placement="left"
-            title="{{Translator::phrase("absent_was_not_recorded")}}">{{$setToggle ? 0 : ""}}</span>
+            title="{{__("Absent was not recorded")}}">{{$setToggle ? 0 : ""}}</span>
             @else
             <span data-toggle="tooltip" rel="tooltip" data-placement="left"
-                title="{{Translator::phrase("absent_was_not_record_day")}}">{{$setToggle ?  0 : ""}}</span>
+                title="{{__("Absent was not record day")}}">{{$setToggle ?  0 : ""}}</span>
             @endif
     </div>
     @endif

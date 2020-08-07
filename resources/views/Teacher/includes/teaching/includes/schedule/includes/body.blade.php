@@ -12,7 +12,7 @@
                             </span>
                             <br>
                             <span>
-                                {{Translator::phrase("schedule")}}
+                                {{__("Schedule")}}
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_generation"]["name"]}} -
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_academic_year"]["name"]}} -
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_semester"]["name"]}}
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th width=1 class="font-weight-bold">
-                        {{Translator::phrase("time")}}
+                        {{__("Time")}}
                     </th>
                     @foreach ($days["data"] as $day)
                     <th width=170 class="text-center font-weight-bold">

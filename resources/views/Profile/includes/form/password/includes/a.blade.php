@@ -27,7 +27,7 @@
                             </p>
                             @if(config("pages.form.data.account"))
                             <p class="text-sm mb-0 text-green">
-                                {{Translator::phrase("has_account")}}
+                                {{__("has_account")}}
                                 <i class="fas fa-check-circle"></i>
                             </p>
                             @endif
@@ -43,7 +43,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                     </div>
-                    <input class="form-control " placeholder="{{Translator::phrase("old_password")}}" type="password"
+                    <input class="form-control " placeholder=""
                         value="" name="old_password" required="" autocomplete="old-password">
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                     </div>
-                    <input class="form-control " placeholder="{{Translator::phrase("new_password")}}" type="password"
+                    <input class="form-control " placeholder=""
                         value="" name="password" required="" autocomplete="new-password">
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input class="form-control " placeholder="{{Translator::phrase("password_confirm")}}"
+                    <input class="form-control " placeholder=""
                         type="password" value="" name="password_confirmation" required="" autocomplete="new-password">
                 </div>
             </div>

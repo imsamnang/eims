@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormCard;
 use Illuminate\Database\Eloquent\Model;
@@ -69,13 +69,13 @@ class CardFrames extends Model
             foreach ($get as $key => $row) {
                 $data[$key] = array(
                     'id'            => $row['id'],
-                    'type'          => $edit ? $row['type'] : Translator::phrase($row['type']),
+                    'type'          => $edit ? $row['type'] : __($row['type']),
                     'name'          => $row['name'],
                     'front'         => ImageHelper::site(CardFrames::$path['image'], $row['front']),
                     'front_o'         => ImageHelper::site(CardFrames::$path['image'], $row['front'], 'original'),
                     'background'    => ImageHelper::site(CardFrames::$path['image'], $row['background']),
                     'background_o'    => ImageHelper::site(CardFrames::$path['image'], $row['background'], 'original'),
-                    'layout'        => $edit ? $row['layout'] : Translator::phrase($row['layout']),
+                    'layout'        => $edit ? $row['layout'] : __($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
@@ -106,7 +106,7 @@ class CardFrames extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -123,13 +123,13 @@ class CardFrames extends Model
                 $row = $row->toArray();
                 return [
                     'id'            => $row['id'],
-                    'type'          => Translator::phrase($row['type']),
+                    'type'          => __($row['type']),
                     'name'          => $row['name'],
                     'front'         => ImageHelper::site(CardFrames::$path['image'], $row['front']),
                     'front_o'         => ImageHelper::site(CardFrames::$path['image'], $row['front'], 'original'),
                     'background'    => ImageHelper::site(CardFrames::$path['image'], $row['background']),
                     'background_o'    => ImageHelper::site(CardFrames::$path['image'], $row['background'], 'original'),
-                    'layout'        => Translator::phrase($row['layout']),
+                    'layout'        => __($row['layout']),
                     'description'   => $row['description'],
                     'status'        => $row['status'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
@@ -183,12 +183,12 @@ class CardFrames extends Model
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => array(
-                    'title' => Translator::phrase('error'),
-                    'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
-                        . Translator::phrase('( .frame_front. ) .empty'),
+                    'title' => __('Error'),
+                    'text'  => __('Add Unsuccessful') . PHP_EOL
+                        . __('Frame Front empty'),
                     'button'   => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
             );
@@ -198,12 +198,12 @@ class CardFrames extends Model
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => array(
-                    'title' => Translator::phrase('error'),
-                    'text'  => Translator::phrase('add.unsuccessful') . PHP_EOL
-                        . Translator::phrase('( .frame_background. ) .empty'),
+                    'title' => __('Error'),
+                    'text'  => __('Add Unsuccessful') . PHP_EOL
+                        . __('Frame Background empty'),
                     'button'   => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
             );
@@ -245,17 +245,17 @@ class CardFrames extends Model
                         'type'      => 'add',
                         'data'      => CardFrames::getData($add),
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -298,17 +298,17 @@ class CardFrames extends Model
                         'type'      => 'update',
                         'data'      => CardFrames::getData($id),
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -318,7 +318,7 @@ class CardFrames extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($image) {
             try {
@@ -331,17 +331,17 @@ class CardFrames extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
 
@@ -353,23 +353,23 @@ class CardFrames extends Model
     {
         if ($get == 'all') {
             $get = array(
-                'id'           => Translator::phrase('id'),
-                'fullname'     => Translator::phrase('fullname'),
-                '_fullname'    => Translator::phrase('fullname.as.en'),
-                'photo'        => Translator::phrase('photo'),
-                'qrcode'       => Translator::phrase('qrcode'),
-                'gender'       => Translator::phrase('gender'),
-                'course'       => Translator::phrase('course'),
+                'id'           => __('Id'),
+                'fullname'     => __('Fullname'),
+                '_fullname'    => __('Fullname Latin'),
+                'photo'        => __('Photo'),
+                'qrcode'       => __('Qrcode'),
+                'gender'       => __('Gender'),
+                'course'       => __('Course'),
             );
         } else if ($get == 'selected') {
             $get = array(
-                'id'           => Translator::phrase('id'),
-                'fullname'     => Translator::phrase('fullname'),
-                '_fullname'    => Translator::phrase('fullname.as.en'),
-                'photo'        => Translator::phrase('photo'),
-                'qrcode'       => Translator::phrase('qrcode'),
-                'gender'       => Translator::phrase('gender'),
-                'course'       => Translator::phrase('course'),
+                'id'           => __('Id'),
+                'fullname'     => __('Fullname'),
+                '_fullname'    => __('Fullname Latin'),
+                'photo'        => __('Photo'),
+                'qrcode'       => __('Qrcode'),
+                'gender'       => __('Gender'),
+                'course'       => __('Course'),
             );
         } else {
             $get = [];
@@ -381,7 +381,7 @@ class CardFrames extends Model
     {
         $response = array(
             'success'   => false,
-            'message'   => Translator::phrase('update.failed'),
+            'message'   => __('Update Failed'),
         );
         if ($id && request()->ajax()) {
             if (request()->method() == 'POST') {
@@ -397,17 +397,17 @@ class CardFrames extends Model
                             'success'   => true,
                             'data'      => CardFrames::getData($id, true)['data'][0],
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('set.as.default.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Set as default successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         );
                     }
                 } catch (DomainException $e) {
-                    $response       = Exception::exception($e);
+                    $response       = $e;
                 }
             }
         }
@@ -425,29 +425,29 @@ class CardFrames extends Model
                             $response       =  array(
                                 'success'   => true,
                                 'message'   => array(
-                                    'title' => Translator::phrase('deleted.!'),
-                                    'text'  => Translator::phrase('delete.successfully'),
+                                    'title' => __('Deleted'),
+                                    'text'  => __('Delete Successfully'),
                                     'button'   => array(
-                                        'confirm' => Translator::phrase('ok'),
-                                        'cancel'  => Translator::phrase('cancel'),
+                                        'confirm' => __('Ok'),
+                                        'cancel'  => __('Cancel'),
                                     ),
                                 ),
                             );
                         }
                     } catch (\Exception $e) {
-                        $response       = Exception::exception($e);
+                        $response       = $e;
                     }
                 } else {
                     $response = response(
                         array(
                             'success'   => true,
                             'message'   => array(
-                                'title' => Translator::phrase('are_you_sure.?'),
-                                'text'  => Translator::phrase('you_wont_be_able_to_revert_this.!') . PHP_EOL .
+                                'title' => __('Are you sure?'),
+                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
                                     'ID : (' . implode(',', $id) . ')',
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('yes_delete_it.!'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Yes delete!'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         )
@@ -458,11 +458,11 @@ class CardFrames extends Model
                     array(
                         'success'   => false,
                         'message'   => array(
-                            'title' => Translator::phrase('error'),
-                            'text'  => Translator::phrase('no_data'),
+                            'title' => __('Error'),
+                            'text'  => __('No Data'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -473,11 +473,11 @@ class CardFrames extends Model
                 array(
                     'success'   => false,
                     'message'   => array(
-                        'title' => Translator::phrase('error'),
-                        'text'  => Translator::phrase('please_select_data.!'),
+                        'title' => __('Error'),
+                        'text'  => __('Please select data!'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 )

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Embed\Embed;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityFeedLink extends Model
@@ -44,7 +44,7 @@ class ActivityFeedLink extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -71,7 +71,7 @@ class ActivityFeedLink extends Model
                 if ($add) {
                     return [
                         'success'   => true,
-                        'message'   => Translator::phrase('post.successfully'),
+                        'message'   => __('Post Successfully'),
                     ];
                 }
             }

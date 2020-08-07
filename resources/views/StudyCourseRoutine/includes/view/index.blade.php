@@ -6,7 +6,7 @@
             <div class="card-footer">
                 <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
                     class="btn btn-default" type="button">
-                    {{ Translator:: phrase("back") }}
+                    {{ __("Back") }}
                 </a>
             </div>
             @endif

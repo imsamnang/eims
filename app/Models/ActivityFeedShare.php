@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use App\Helpers\VideoHelper;
 use Illuminate\Database\Eloquent\Model;
@@ -53,7 +53,7 @@ class ActivityFeedShare extends Model
             $response = array(
                 'success'   => false,
                 'data'      => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -65,7 +65,7 @@ class ActivityFeedShare extends Model
     {
         $response = [
             'success'   => false,
-            'message'   => Translator::phrase('share.unsuccessful'),
+            'message'   => __('Share Unsuccessful'),
         ];
         if ($activity_feed_id && $node_id) {
             $add = ActivityFeedShare::insertGetId([
@@ -76,7 +76,7 @@ class ActivityFeedShare extends Model
                 $response = array(
                     'success'   => true,
                     'data'      => ActivityFeedShare::getData($activity_feed_id)['data'],
-                    'message'   => Translator::phrase('share.successfully'),
+                    'message'   => __('Share Successfully'),
                 );
             }
         }

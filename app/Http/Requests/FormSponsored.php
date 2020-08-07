@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -36,10 +36,10 @@ class FormSponsored extends FormRequest
     public static function attributeField()
     {
 
-        $attributes["name"]       = Translator::phrase('name');
-        $attributes["link"]        = Translator::phrase('link');
-        $attributes["image"]       = Translator::phrase('image');
-        $attributes["description"] = Translator::phrase('description');
+        $attributes["name"]       = __('Name');
+        $attributes["link"]        = __('Link');
+        $attributes["image"]       = __('Image');
+        $attributes["description"] = __('Description');
         return $attributes;
     }
 

@@ -7,10 +7,10 @@
                     @include('Mailbox.includes.navLeft')
                     <aside class="lg-side">
                         <div class="inbox-head">
-                            <h3 class="text-white"> {{Translator::phrase(config("pages.parameters.param1"))}}</h3>
+                            <h3 class="text-white"> {{__(config("pages.parameters.param1"))}}</h3>
                             <form class="pull-right position" action="#">
                                 <div class="input-append">
-                                    <input type="text" placeholder="Search Mail" class="sr-input">
+                                    <input type="text" placeholder="">
                                     <button type="button" class="btn sr-btn" data-original-title="" title=""><i
                                             class="fas fa-search"></i></button>
                                 </div>
@@ -26,8 +26,8 @@
                                         <strong>{{$row["user"]["name"]}}</strong>
                                         <span>[{{$row["user"]["email"]}}]</span>
 
-                                        {{-- {{Translator::phrase("to")}}
-                                        <strong>{{Translator::phrase("me")}}</strong>
+                                        {{-- {{__("to")}}
+                                        <strong>{{__("me")}}</strong>
                                         <a class="sender-dropdown " href="javascript:;">
                                             <i class="fa fa-chevron-down"></i>
                                         </a> --}}
@@ -72,17 +72,17 @@
                             <div class="py-3">
                                 <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseFormReply">
                                     <i class="fa fa-reply"></i>
-                                    {{Translator::phrase("reply")}}
+                                    {{__("Reply")}}
                                 </a>
                                 <button class="btn btn-sm " data-original-title="" title=""><i
-                                        class="fa fa-arrow-right"></i> {{Translator::phrase("forward")}}</button>
+                                        class="fa fa-arrow-right"></i> {{__("Forward")}}</button>
                                 <button title="" data-placement="top" data-toggle="tooltip" type="button"
-                                    data-original-title="{{Translator::phrase("print")}}"
+                                    data-original-title="{{__("Print")}}"
                                     class="btn  btn-sm tooltips"><i class="fa fa-print"></i>
                                 </button>
                                 @if (config("pages.parameters.param1") != "trash")
                                 <button title="" data-placement="top" data-toggle="tooltip"
-                                    data-original-title="{{Translator::phrase("move_trash")}}"
+                                    data-original-title="{{__("Move trash")}}"
                                     class="btn btn-sm tooltips"><i class="fas fa-trash"></i></button>
                                 @endif
 
@@ -101,7 +101,7 @@
                                                 <input type="hidden" name="subject" value="{{$row["subject"]}}">
                                                 <div class="col-md-12">
                                                     <label class="form-control-label d-none" for="message">
-                                                        {{ Translator:: phrase('message') }}
+                                                        {{ __('Message') }}
                                                         @if(config("pages.form.validate.rules.message")) <span
                                                             class="badge badge-md badge-circle badge-floating badge-danger"
                                                             style="background:unset"><i
@@ -111,7 +111,7 @@
                                                     </label>
                                                     <div>
                                                         <div data-name="message" id="message"
-                                                            data-placeholder="{{ Translator::phrase("message") }}">
+                                                            data-placeholder="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -120,7 +120,7 @@
                                         <div class="card-footer">
                                             <a href="" name="scrollTo"></a>
                                             <button class="btn btn-primary ml-auto float-right" type="submit">
-                                                {{ Translator:: phrase("send_message") }}
+                                                {{ __("Send message") }}
 
                                             </button>
                                         </div>

@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\CourseTypes;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
@@ -105,14 +105,14 @@ class CourseTypeController extends Controller
     public function list($data)
     {
         $data['view']     = CourseTypes::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Course_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Course types');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = CourseTypes::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Course_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Course types');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -122,7 +122,7 @@ class CourseTypeController extends Controller
     {
         $response = CourseTypes::getData($id, true);
         $data['view']       = CourseTypes::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Course_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Course types');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -135,7 +135,7 @@ class CourseTypeController extends Controller
     {
         $response = CourseTypes::getData($id, true);
         $data['view']       = CourseTypes::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Course_Type');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Course types');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

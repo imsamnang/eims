@@ -19,13 +19,13 @@ if($study_start->diff($modify)->invert == 0){
     @if($holiday[$i]["id"]== null)
         @php
             $setClass= "bg-pink text-center text-white merge";
-            $setText=Translator::phrase("holiday");
+            $setText=__("Holiday");
             $setTitle=$holiday[$i]["description"];
         @endphp
     @else
         @php
             $setClass="bg-green text-center text-white merge" ;
-            $setText=Translator::phrase("national_holiday");
+            $setText=__("National holiday");
             $setTitle=$holiday[$i]["description"];
         @endphp
     @endif
@@ -41,7 +41,7 @@ if($study_start->diff($modify)->invert == 0){
         </div>
     @else
         <div data-url="{{ $row["action"]["edit"] }}"
-            title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). Translator::day(DateHelper::dayOfWeek(request("year").'-'.request("month").'-'.$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
+            title="{{ (app()->getLocale() == "km"? "ថ្ងៃ": ""). __(DateHelper::dayOfWeek(request("year").'-'.request("month").'-'.$i)["day"]) }} - {{app()->getLocale() == "km" ? "ទី" .$i : $i}}"
             {{$setToggle}}  data-id="{{ $row["node"]["id"]}}" data-date="{{ $i }}"
             data-key="{{$row["date"][$i]["attendance"]["id"]}}">
             <span data-toggle="tooltip" rel="tooltip" data-placement="left"

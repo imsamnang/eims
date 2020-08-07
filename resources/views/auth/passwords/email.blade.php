@@ -2,7 +2,7 @@
 @section("meta")
 @section('style')
 <!-- Favicon -->
-<title>{{config("app.name")}} | {{ Translator::phrase("login")}}</title>
+<title>{{config("app.name")}} | {{ __("Login")}}</title>
 <link rel="icon" href="{{config("app.favicon")}}" type="image/png">
 <link rel="stylesheet" href="{{asset("assets/vendor/nucleo/css/nucleo.css")}}" type="text/css">
 <link rel="stylesheet" href="{{asset('/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css')}}" type="text/css">
@@ -234,7 +234,7 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-transparent">
                         <div class="text-muted text-center m-2">
-                            {{Translator::phrase('reset_password')}}
+                            {{__('Reset password')}}
                         </div>
                     </div>
                     <div class="card-body px-lg-5 py-lg-3">
@@ -247,7 +247,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('email')}}" type="email"
+                                        placeholder=""
                                         value="{{old('email')}}" name="email" required>
                                     @error('email')
                                     <div class="invalid-feedback" role="alert">
@@ -259,7 +259,7 @@
                             </div>
                             <div class="text-center">
                                 <button type="submit"
-                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{Translator::phrase('send_password_reset_link')}}</button>
+                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{__('Send password reset link')}}</button>
                             </div>
                         </form>
                     </div>

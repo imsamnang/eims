@@ -3,8 +3,8 @@
         <table id="quiz-table" class="table table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th width="1" class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
-                    <th width="1" class="sort" data-sort="quiz">{{Translator::phrase("quiz")}}​</th>
+                    <th width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
+                    <th width="1" class="sort" data-sort="quiz">{{__("Quiz")}}​</th>
                     <th class="sort">
                         @if (request()->segment(3) !== "quiz")
                         <a href="{{str_replace("answer/add","list",config("pages.form.action.detect"))}}"
@@ -33,10 +33,10 @@
                             <table class="table border">
                                 <thead>
                                     <tr>
-                                        <th width="1">{{Translator::phrase("numbering")}}​</th>
-                                        <th width="1">{{Translator::phrase("quiz_type")}}​</th>
-                                        <th>{{Translator::phrase("question. & .answered")}}​</th>
-                                        <th width="1">{{Translator::phrase("marks")}}​</th>
+                                        <th width="1">{{__("Id")}}​</th>
+                                        <th width="1">{{__("Quiz type​")}}​</th>
+                                        <th>{{__("Question & Answered")}}​</th>
+                                        <th width="1">{{__('Score​')}}​</th>
                                     </tr>
                                 </thead>
                                 <tbody class="collapse" id="collapse-{{$row["id"]}}">
@@ -46,16 +46,16 @@
                                         <td>{{ $q['quiz_type']['name']}}</td>
                                         <td>
                                             <div>
-                                                <span class="text-red">{{Translator::phrase("question. :")}}​</span>
+                                                <span class="text-red">{{__("Question")}} :​</span>
                                                 <span class="ml-2 text-pre-wrap text-break">{{ $q['question']}} </span>
                                             </div>
                                             <hr class="my-2">
                                             <div>
                                                 @if ($q['answered'])
-                                                @if (!is_null($q['answered']['marks']))
+                                                @if (!is_null($q['answered']['score']))
                                                 <div class="d-flex mb-3">
                                                     <span
-                                                        class="text-yellow">{{Translator::phrase("answer. :")}}​</span>
+                                                        class="text-yellow">{{__("Answer")}} :​</span>
                                                     <span class="ml-2 w-100">
                                                         @if ($q["quiz_answer_type"]["id"] == 1)
 
@@ -74,7 +74,7 @@
                                                         <div data-toggle="checkbox-limit1"
                                                             data-limit="{{$q["answer_limit"]}}">
                                                             <div>
-                                                                {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
+                                                                {{__("This question can answers",['answer'=>$q["answer_limit"]." ".__('answer')])}}
                                                             </div>
                                                             @foreach ($q["answer"] as $answer)
                                                             <div class="custom-control custom-checkbox">
@@ -97,7 +97,7 @@
                                                 </div>
                                                 <div class="d-flex mb-3">
                                                     <span
-                                                        class="text-green">{{Translator::phrase("answered. :")}}​</span>
+                                                        class="text-green">{{__("Answered")}} :​</span>
                                                     @if ($q["quiz_answer_type"]["id"] == 1)
                                                     @foreach ($q["answer"] as $answer)
                                                     <div class="custom-control custom-radio mx-2">
@@ -112,7 +112,7 @@
                                                     <div data-toggle="checkbox-limit1"
                                                         data-limit="{{$q["answer_limit"]}}">
                                                         <div>
-                                                            {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
+                                                            {{__("This question can answers",['answer'=>$q["answer_limit"]." ".__('answer')])}}
                                                         </div>
                                                         @foreach ($q["answer"] as $answer)
                                                         <div class="custom-control custom-checkbox">
@@ -134,8 +134,8 @@
 
                                                 </div>
                                                 <div class="d-flex mb-3">
-                                                    <span class="text-blue">{{Translator::phrase("marksed. :")}}​</span>
-                                                    <span class="ml-2">{{$q['answered']['marks']}}</span>
+                                                    <span class="text-blue">{{__("Marksed")}} :​</span>
+                                                    <span class="ml-2">{{$q['answered']['score']}}</span>
                                                 </div>
 
                                                 @else
@@ -145,7 +145,7 @@
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">
                                                         <span
-                                                            class="text-green">{{Translator::phrase("answered. :")}}​</span>
+                                                            class="text-green">{{__("Answered")}} :​</span>
                                                         <span class="ml-2 w-100">
                                                             @csrf
                                                             <input type="hidden" name="id"
@@ -173,7 +173,7 @@
                                                             <div data-toggle="checkbox-limit"
                                                                 data-limit="{{$q["answer_limit"]}}">
                                                                 <div>
-                                                                    {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
+                                                                    {{__("This question can answers",['answer'=>$q["answer_limit"]." ".__('answer')])}}
                                                                 </div>
                                                                 @foreach ($q["answer"] as $answer)
                                                                 <div class="custom-control custom-checkbox">
@@ -201,14 +201,14 @@
                                                         <button class="btn btn-danger btn-sm d-none" id="cancel"
                                                             type="button">
                                                             <i class="fas fa-times-circle"></i>
-                                                            {{Translator::phrase("cancel")}}
+                                                            {{__("Cancel")}}
                                                         </button>
                                                         <button class="btn btn-primary btn-sm" id="edit" type="button">
                                                             <i class="fas fa-edit"></i>
-                                                            {{Translator::phrase("edit")}}
+                                                            {{__("Edit")}}
                                                         </button>
                                                         <button class="btn btn-primary btn-sm d-none"
-                                                            type="submit">{{Translator::phrase("update")}}</button>
+                                                            type="submit">{{__("Update")}}</button>
                                                     </div>
                                                 </form>
                                                 @endif
@@ -221,9 +221,9 @@
                                                     id="form-quiz-answer" enctype="multipart/form-data"
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">
-                                                        <span data-update-text="{{Translator::phrase("answered. :")}}"
+                                                        <span data-update-text="{{__("Answered")}} :"
                                                             id="answer-label"
-                                                            class="text-green">{{Translator::phrase("answer. :")}}​</span>
+                                                            class="text-green">{{__("Answer")}}​ :</span>
                                                         <span class="ml-2 w-100">
                                                             @csrf
                                                             <input type="hidden" name="id" value="">
@@ -248,7 +248,8 @@
                                                             <div data-toggle="checkbox-limit"
                                                                 data-limit="{{$q["answer_limit"]}}">
                                                                 <div>
-                                                                    {{Translator::phrase("this_question_can_answer. ". $q["answer_limit"]." .answer")}}
+                                                                    
+                                                                    {{__("This question can answers",['answer'=>$q["answer_limit"]." ".__('answer')])}}
                                                                 </div>
                                                                 @foreach ($q["answer"] as $answer)
                                                                 <div class="custom-control custom-checkbox">
@@ -271,16 +272,16 @@
                                                         <button class="btn btn-danger btn-sm d-none" id="cancel"
                                                             type="button">
                                                             <i class="fas fa-times-circle"></i>
-                                                            {{Translator::phrase("cancel")}}
+                                                            {{__("Cancel")}}
                                                         </button>
                                                         <button class="btn btn-primary btn-sm d-none" id="edit"
                                                             type="button">
                                                             <i class="fas fa-edit"></i>
-                                                            {{Translator::phrase("edit")}}
+                                                            {{__("Edit")}}
                                                         </button>
                                                         <button class="btn btn-primary btn-sm"
-                                                            data-update-text="{{Translator::phrase("update")}}"
-                                                            type="submit">{{Translator::phrase("ok")}}</button>
+                                                            data-update-text="{{__("Update")}}"
+                                                            type="submit">{{__("Ok")}}</button>
                                                     </div>
                                                 </form>
                                                 @endif
@@ -288,7 +289,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span> {{ $q['marks']}} </span>
+                                            <span> {{ $q['score']}} </span>
                                         </td>
                                     </tr>
                                     @endforeach

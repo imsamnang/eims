@@ -12,7 +12,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -22,7 +22,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="name">
-                            {{ Translator:: phrase("name") }}
+                            {{ __("Name") }}
 
                             @if(config("pages.form.validate.rules.name")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -31,7 +31,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="name" id="name"
-                            placeholder="{{ Translator::phrase("sponsored") }}"
+                            placeholder=""
                             value="{{config("pages.form.data.name")}}"
                             {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
@@ -41,7 +41,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="link">
-                            {{ Translator:: phrase("link") }}
+                            {{ __("link") }}
 
                             @if(config("pages.form.validate.rules.link")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -50,7 +50,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="link" id="link"
-                            placeholder="{{ Translator::phrase("link") }}" value="{{config("pages.form.data.link")}}"
+                            placeholder=""
                             {{config("pages.form.validate.rules.link") ? "required" : ""}} />
 
                     </div>
@@ -59,7 +59,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="description">
-                            {{ Translator:: phrase("description") }}
+                            {{ __("Description") }}
 
                             @if(config("pages.form.validate.rules.description"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -74,7 +74,7 @@
                                     <span class="input-group-text"><i class="fas fa-info"></i></span>
                                 </div>
                                 <textarea class="form-control" id="description"
-                                    placeholder="{{ Translator:: phrase("description") }}" value=""
+                                    placeholder=""
                                     {{config("pages.form.validate.rules.description") ? "required" : ""}}
                                     name="description">{{config("pages.form.data.description")}}</textarea>
 
@@ -91,7 +91,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="image">
-                            {{ Translator:: phrase("image") }} (250pixel x 250pixel)
+                            {{ __("Image") }} (250pixel x 250pixel)
 
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset">
@@ -103,12 +103,12 @@
                             data-dropzone-url="{{config("pages.form.data.image")}}?type=slide">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder="{{ Translator:: phrase("drop_image_here") }}"
+                                    <input type="file" placeholder=""
                                         class="custom-file-input" id="dropzoneBasicUpload" name="image"
                                         {{config("pages.form.validate.rules.image") ? "required" : ""}} value="image" />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
-                                        for="dropzoneBasicUpload">{{ Translator:: phrase("choose.image") }}</label>
+                                        for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                                 </div>
                             </div>
 
@@ -129,13 +129,13 @@
                         <div class="custom-control custom-checkbox mb-3">
 
                             <label class="form-control-label"><i class="fas fa-sticky-note "></i>
-                                {{ Translator:: phrase("note") }} </label>
+                                {{ __("Note") }} </label>
                             <br>
                             <label class="form-control-label">
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset">
                                     <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                    {{ Translator:: phrase("field_required") }}</span> </label>
+                                    {{ __("Field required") }}</span> </label>
 
 
                         </div>

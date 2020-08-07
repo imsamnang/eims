@@ -7,7 +7,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase(config("pages.form.role").'.'.str_replace("-","_",config("pages.form.name"))) }}
+                            {{ __(config("pages.form.role")) }}
                         </h6>
 
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
@@ -39,20 +39,20 @@
                                     <a class="btn btn-primary ml-auto" target="_blank"
                                         href="{{str_replace("view","print",config("pages.form.data.action.view"))}}">
                                         <i class="fas fa-print"></i>
-                                        {{ Translator:: phrase("print") }}
+                                        {{ __("Print") }}
                                     </a>
                                     @elseif (config("pages.parameters.param1") == "account")
                                         @if (!config("pages.form.data.account"))
                                         <button class="btn btn-primary ml-auto float-right" type="submit">
-                                            {{ Translator:: phrase("create") }}
+                                            {{ __("create") }}
                                         </button>
                                         @endif
                                     @else
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
                                         @if (config("pages.form.role") == "add")
-                                        {{ Translator:: phrase("save") }}
+                                        {{ __("Save") }}
                                         @elseif(config("pages.form.role") == "edit")
-                                        {{ Translator:: phrase("update") }}
+                                        {{ __("Update") }}
                                         @endif
                                     </button>
                                     @endif

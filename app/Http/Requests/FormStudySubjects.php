@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudySubjects extends FormRequest
@@ -46,20 +46,20 @@ class FormStudySubjects extends FormRequest
     public static function attributeField()
     {
 
-        $attributes['name']                     = Translator::phrase('study_subject_name');
-        $attributes['course_type']              = Translator::phrase('course_type');
+        $attributes['name']                     = __('Name');
+        $attributes['course_type']              = __('Course type');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('study_subject.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
-        $attributes['full_mark_theory']         = Translator::phrase('full_mark_theory');
-        $attributes['pass_mark_theory']         = Translator::phrase('pass_mark_theory');
-        $attributes['full_mark_practical']      = Translator::phrase('full_mark_practical');
-        $attributes['pass_mark_practical']      = Translator::phrase('pass_mark_practical');
-        $attributes['credit_hour']              = Translator::phrase('credit_hour');
-        $attributes['description']              = Translator::phrase('description');
-        $attributes['image']                    = Translator::phrase('image');
+        $attributes['full_mark_theory']         = __('Full mark theory');
+        $attributes['pass_mark_theory']         = __('Pass mark theory');
+        $attributes['full_mark_practical']      = __('Full mark practical');
+        $attributes['pass_mark_practical']      = __('Pass mark practical');
+        $attributes['credit_hour']              = __('Credit hour');
+        $attributes['description']              = __('Description');
+        $attributes['image']                    = __('Image');
 
         return $attributes;
     }

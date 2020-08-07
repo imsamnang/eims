@@ -9,7 +9,7 @@
             @if (request()->segment(3) == "view")
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="id">
-                    {{ Translator:: phrase("numbering") }}
+                    {{ __("Id") }}
                 </label>
                 <span class="form-control" id="id" name="id"
                     value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -21,7 +21,7 @@
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="name">
-                    {{ Translator:: phrase(str_replace("-","_",config("pages.form.name"))) }}
+                    {{ __('Name') }}
 
                     @if(config("pages.form.validate.rules.name")) <span
                         class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -30,7 +30,7 @@
 
                 </label>
                 <input type="text" class="form-control" name="name" id="name"
-                    placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name"))) }}"
+                    placeholder=""
                     value="{{config("pages.form.data.name")}}"
                     {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
@@ -41,7 +41,7 @@
                     title="{{config("pages.form.validate.questions.course_type")}}" class="form-control-label"
                     for="course_type">
 
-                    {{ Translator:: phrase("course_type") }}
+                    {{ __("Course type") }}
 
                     @if(config("pages.form.validate.rules.course_type"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -52,7 +52,7 @@
 
                 <select  class="form-control" data-toggle="select"
                     id="course_type" title="Simple select"
-                    data-placeholder="{{ Translator::phrase("choose.course_type") }}" name="course_type"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.course_type.id",request("courseId"))}}">
                     @foreach($course_type["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -66,7 +66,7 @@
             @foreach (config('app.languages') as $lang)
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="{{$lang["code_name"]}}">
-                    {{ Translator:: phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}
+                    {{ __($lang["translate_name"]) }}
 
                     @if(config("pages.form.validate.rules.".$lang["code_name"]))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -75,7 +75,7 @@
 
                 </label>
                 <input type="text" class="form-control" name="{{$lang["code_name"]}}" id="{{$lang["code_name"]}}"
-                    placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}"
+                    placeholder=""
                     value="{{config("pages.form.data.".$lang["code_name"])}}"
                     {{config("pages.form.validate.rules.".$lang["code_name"]) ? "required" : ""}} />
             </div>

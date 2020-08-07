@@ -4,7 +4,7 @@
             data-target="#modal">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
-                {{Translator::phrase("add")}}
+                {{__("Add")}}
             </span>
         </a>
     </div>

@@ -91,9 +91,9 @@ class DateHelper
             if (Carbon::createFromDate($year, $month, $i)->is($date)) {
                 $result[$i] = array(
                     'id' => null,
-                    'day' => Translator::day($date),
+                    'day' => __($date),
                     'date' => $i,
-                    'description' => Translator::day($date)
+                    'description' => __($date)
                 );
             }
         }

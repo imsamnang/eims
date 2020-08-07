@@ -8,7 +8,7 @@ use App\Models\Languages;
 use App\Models\StudyClass;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStudyClass;
@@ -112,14 +112,14 @@ class StudyClassController extends Controller
     public function list($data)
     {
         $data['view']     = StudyClass::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Class');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Study Class');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyClass::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.Study_Class');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Study Class');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class StudyClassController extends Controller
     {
         $response = StudyClass::getData($id, true);
         $data['view']       = StudyClass::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.Study_Class');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Study Class');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class StudyClassController extends Controller
     {
         $response = StudyClass::getData($id, true);
         $data['view']       = StudyClass::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.Study_Class');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Study Class');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

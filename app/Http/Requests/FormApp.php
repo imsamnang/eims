@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 
 use App\Rules\KhmerCharacter;
 use Illuminate\Foundation\Http\FormRequest;
@@ -47,18 +47,18 @@ class FormApp extends FormRequest
     public static function attributeField()
     {
         $attributes = [
-                'name'                                            => Translator::phrase('app_name'),
-                'phone'                                           => Translator::phrase('phone'),
-                'email'                                           => Translator::phrase('email'),
-                'address'                                         => Translator::phrase('address'),
-                'website'                                         => Translator::phrase('website'),
-                'logo'                                            => Translator::phrase('logo'),
-                'favicon'                                         => Translator::phrase('favicon'),
+                'name'                                            => __('App Name'),
+                'phone'                                           => __('Phone'),
+                'email'                                           => __('Email'),
+                'address'                                         => __('Address'),
+                'website'                                         => __('Website'),
+                'logo'                                            => __('Logo'),
+                'favicon'                                         => __('Favicon'),
             ];
 
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('app_name.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
         return $attributes;

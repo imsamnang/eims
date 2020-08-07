@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Translator;
+
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 
@@ -105,7 +105,7 @@ class ThemesColor extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 

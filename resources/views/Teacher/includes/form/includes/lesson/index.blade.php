@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase(config("pages.form.role").".lesson") }}
+                            {{ __(config("pages.form.role")) }}
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -26,7 +26,7 @@
                                     <div class="card-header py-2 px-3">
                                         <label
                                             class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                            {{Translator::phrase("list")}}
+                                            {{__("List")}}
                                         </label>
                                     </div>
                                     <div class="card-body p-2">
@@ -59,18 +59,18 @@
                     <div class="card-footer">
                         @if (!request()->ajax())
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
-                            class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
+                            class="btn btn-default" type="button">{{ __("Back") }}</a>
                         @endif
                         <a href="" name="scrollTo"></a>
                         <button
                             class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                             type="submit">
                             @if (config("pages.form.role") == "add")
-                            {{ Translator:: phrase("save") }}
+                            {{ __("Save") }}
                             @elseif(config("pages.form.role") == "edit")
-                            {{ Translator:: phrase("update") }}
+                            {{ __("Update") }}
                             @elseif(config("pages.form.role") == "view")
-                            {{ Translator:: phrase("goto.edit") }}
+                            {{ __("Goto Edit") }}
                             @endif
                         </button>
                     </div>

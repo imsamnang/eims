@@ -51,17 +51,17 @@
         <table class="table table-bordered table-hover table-xs">
             <thead class="thead-light">
                 <tr>
-                    <th width="1" class="sort" data-sort="student">{{Translator::phrase("student")}}​</th>
+                    <th width="1" class="sort" data-sort="student">{{__("Student")}}​</th>
 
                     @if ($response["question"])
                     @foreach ($response["question"] as $item)
                     <th data-placement="top" data-toggle="tooltip"
                         data-original-title="{{$item["question"]}}" width="1" class="sort">
-                        {{Translator::phrase("question. ".$item['id'])}}​</th>
+                        {{__("Question").' '.$item['id']}}​</th>
 
                     @endforeach
                     @endif
-                    <th class="sort">{{Translator::phrase("total")}}​</th>
+                    <th class="sort">{{__("Total")}}​</th>
                 </tr>
             </thead>
             <tbody class="list">
@@ -81,13 +81,13 @@
                     $total = 0;
                     @endphp
                     @foreach ($row["quiz_answered"] as $q)
-                    @php $total += $q['marks'];@endphp
+                    @php $total += $q['score'];@endphp
                     <td>
-                        <span>{{ $q['marks'] ? $q['marks'] : 0}} {{Translator::phrase("marks")}}</span>
+                        <span>{{ $q['score'] ? $q['score'] : 0}} {{__('Score​')}}</span>
                     </td>
                     @endforeach
                     <td>
-                        <span>{{$total}} {{Translator::phrase("marks")}}</span>
+                        <span>{{$total}} {{__('Score​')}}</span>
                     </td>
                 </tr>
                 @endforeach

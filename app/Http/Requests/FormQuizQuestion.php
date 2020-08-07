@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormQuizQuestion extends FormRequest
@@ -29,17 +29,17 @@ class FormQuizQuestion extends FormRequest
         $rules['quiz_type']   = 'required';
         $rules['quiz_answer_type']   = 'required';
         $rules['question']   = 'required';
-        $rules['marks']   = 'required';
+        $rules['score']   = 'required';
         return $rules;
     }
 
     public static function attributeField()
     {
-        $attributes['quiz']    = Translator::phrase('quiz_group');
-        $attributes['quiz_type']    = Translator::phrase('quiz_type');
-        $attributes['quiz_answer_type']    = Translator::phrase('quiz_answer_type');
-        $attributes['question']    = Translator::phrase('quiz_question');
-        $attributes['marks']    = Translator::phrase('marks');
+        $attributes['quiz']    = __('Quiz group');
+        $attributes['quiz_type']    = __('Quiz type');
+        $attributes['quiz_answer_type']    = __('Quiz answer type');
+        $attributes['question']    = __('Quiz question');
+        $attributes['score']    = __('Score');
 
         return $attributes;
     }

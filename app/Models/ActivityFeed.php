@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\NewsFeed;
 use App\Helpers\MentionHelper;
-use App\Helpers\Translator;
+
 use Highlight\Highlighter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -90,7 +90,7 @@ class ActivityFeed extends Model
                 'success'   => false,
                 'data'      => [],
                 'pages'     => $pages,
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
             );
         }
 
@@ -100,7 +100,7 @@ class ActivityFeed extends Model
     {
         $response =  [
             'success'   => false,
-            'message'   => Translator::phrase('post.unsuccessful'),
+            'message'   => __('Post Unsuccessful'),
             'data'      => []
         ];
 
@@ -129,7 +129,7 @@ class ActivityFeed extends Model
             }
             $response = [
                 'success'   => true,
-                'message'   => Translator::phrase('post.successfully'),
+                'message'   => __('Post Successfully'),
                 'data'      => $feed['data']
             ];
         }
@@ -140,7 +140,7 @@ class ActivityFeed extends Model
     {
         $response =  [
             'success'   => false,
-            'message'   => Translator::phrase('share.unsuccessful'),
+            'message'   => __('Share Unsuccessful'),
             'data'      => []
         ];
         $values = [
@@ -163,7 +163,7 @@ class ActivityFeed extends Model
 
             $response = [
                 'success'   => true,
-                'message'   => Translator::phrase('share.successfully'),
+                'message'   => __('Share Successfully'),
                 'data'      => $feed['data']
             ];
         }
@@ -179,7 +179,7 @@ class ActivityFeed extends Model
             if ($update) {
                 return [
                     'success'   => true,
-                    'message'   => Translator::phrase('update.successfully')
+                    'message'   => __('Update Successfully')
                 ];
             }
         }
@@ -194,7 +194,7 @@ class ActivityFeed extends Model
             if ($update) {
                 return [
                     'success'   => true,
-                    'message'   => Translator::phrase('update.successfully')
+                    'message'   => __('Update Successfully')
                 ];
             }
         }
@@ -208,7 +208,7 @@ class ActivityFeed extends Model
             if ($update) {
                 return [
                     'success'   => true,
-                    'message'   => Translator::phrase('update.successfully')
+                    'message'   => __('Update Successfully')
                 ];
             }
         }

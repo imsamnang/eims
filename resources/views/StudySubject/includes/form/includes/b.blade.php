@@ -8,7 +8,7 @@
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="full_mark_theory">
-                    {{ Translator:: phrase("full_mark_theory") }}
+                    {{ __("Full mark theory") }}
 
                     @if(config("pages.form.validate.rules.full_mark_theory"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -19,11 +19,11 @@
 
                 <select class="form-control" data-toggle="select" id="full_mark_theory" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.full_mark_theory") }}" name="full_mark_theory"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.full_mark_theory")}}"
                     {{config("pages.form.validate.rules.full_mark_theory") ? "required" : ""}}>
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". Translator::phrase("<s>.points") }}</option>
+                        {{$i.".00 ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -34,7 +34,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="pass_mark_theory">
-                    {{ Translator:: phrase("pass_mark_theory") }}
+                    {{ __("Pass mark theory") }}
 
                     @if(config("pages.form.validate.rules.pass_mark_theory"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -45,11 +45,11 @@
 
                 <select class="form-control" data-toggle="select" id="pass_mark_theory" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.pass_mark_theory") }}" name="pass_mark_theory"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.pass_mark_theory")}}"
                     {{config("pages.form.validate.rules.pass_mark_theory") ? "required" : ""}}>
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". Translator::phrase("<s>.points") }}</option>
+                        {{$i.".00 ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -59,7 +59,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="full_mark_practical">
-                    {{ Translator:: phrase("full_mark_practical") }}
+                    {{ __("Full mark practical") }}
 
                     @if(config("pages.form.validate.rules.full_mark_practical"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -70,11 +70,11 @@
 
                 <select class="form-control" data-toggle="select" id="full_mark_practical" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.full_mark_practical") }}" name="full_mark_practical"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.full_mark_practical")}}"
                     {{config("pages.form.validate.rules.full_mark_practical") ? "required" : ""}}>
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". Translator::phrase("<s>.points") }}</option>
+                        {{$i.".00 ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -85,7 +85,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="pass_mark_practical">
-                    {{ Translator:: phrase("pass_mark_practical") }}
+                    {{ __("Pass mark practical") }}
 
                     @if(config("pages.form.validate.rules.pass_mark_practical"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -96,12 +96,12 @@
 
                 <select class="form-control" data-toggle="select" id="pass_mark_practical" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.pass_mark_practical") }}" name="pass_mark_practical"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.pass_mark_practical")}}"
                     {{config("pages.form.validate.rules.pass_mark_practical") ? "required" : ""}}>
 
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". Translator::phrase("<s>.points") }}</option>
+                        {{$i.".00 ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="credit_hour">
-                    {{ Translator:: phrase("credit_hour") }}
+                    {{ __("Credit hour") }}
 
                     @if(config("pages.form.validate.rules.credit_hour"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -122,12 +122,12 @@
 
                 <select class="form-control" data-toggle="select" id="credit_hour" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.credit_hour") }}" name="credit_hour"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.credit_hour")}}"
                     {{config("pages.form.validate.rules.credit_hour") ? "required" : ""}}>
 
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}">
-                        {{ Translator::phrase($i."<s>.hour") }}</option>
+                        {{ $i.' '. __("Hour") }}</option>
                         @endif
 
                         @endfor

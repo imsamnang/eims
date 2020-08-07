@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudyCourseSchedule extends FormRequest
@@ -32,7 +32,7 @@ class FormStudyCourseSchedule extends FormRequest
             'study_generation'     => 'required',
             'study_academic_year'  => 'required',
             'study_semester'       => 'required',
-            
+
 
         ];
     }
@@ -40,12 +40,12 @@ class FormStudyCourseSchedule extends FormRequest
     public static function attributeField()
     {
         return [
-            'institute'         => Translator::phrase('institute'),
-            'study_program'         => Translator::phrase('study_program'),
-            'study_course'         => Translator::phrase('study_course'),
-            'study_generation'     => Translator::phrase('study_generation'),
-            'study_academic_year'        => Translator::phrase('study_academic_year'),
-            'study_semester'       => Translator::phrase('study_semester'),
+            'institute'         => __('Institute'),
+            'study_program'         => __('Study program'),
+            'study_course'         => __('Study course'),
+            'study_generation'     => __('Study generation'),
+            'study_academic_year'        => __('Study academic year'),
+            'study_semester'       => __('Study semester'),
         ];
     }
 

@@ -10,7 +10,7 @@
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="name">
-                    {{ Translator:: phrase("study_course_name") }}
+                    {{ __("Name") }}
 
                     @if(array_key_exists("name",config("pages.form.validate.rules"))) <span
                         class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -19,7 +19,7 @@
 
                 </label>
                 <input type="text" class="form-control" name="name" id="name"
-                    placeholder="{{ Translator::phrase("study_course_name") }}"
+                    placeholder=""
                     value="{{config("pages.form.data.name")}}"
                     {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
@@ -31,7 +31,7 @@
             @foreach (config('app.languages') as $lang)
             <div class="col-md-6 mb-3">
                 <label class="form-control-label" for="{{$lang["code_name"]}}">
-                    {{ Translator:: phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}
+                    {{ __($lang["translate_name"]) }}
 
                     @if(array_key_exists($lang["code_name"],config("pages.form.validate.rules")))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
@@ -40,7 +40,7 @@
 
                 </label>
                 <input type="text" class="form-control" name="{{$lang["code_name"]}}" id="{{$lang["code_name"]}}"
-                    placeholder="{{ Translator::phrase(str_replace("-","_",config("pages.form.name")).".as.".$lang["translate_name"]) }}"
+                    placeholder=""
                     value="{{config("pages.form.data.".$lang["code_name"])}}"
                     {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
             </div>

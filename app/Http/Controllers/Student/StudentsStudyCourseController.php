@@ -11,7 +11,7 @@ use App\Models\Languages;
 use App\Models\CardFrames;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 
 use App\Models\StudyStatus;
 use App\Models\SocailsMedia;
@@ -50,7 +50,7 @@ class StudentsStudyCourseController extends Controller
         $data['study_status']         = StudyStatus::getData();
         $data['formAction']           = '/add';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
-        $data['title']                = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('List Students study course');
         $data['metaImage']            = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']             = url(Users::role() . '/' . $param1);
 
@@ -185,7 +185,7 @@ class StudentsStudyCourseController extends Controller
         );
         $pages['form']['validate'] = [
             'rules'       => (strtolower($param1) == 'account') ? ['password' => 'required'] :  FormStudentsStudyCourse::rulesField(),
-            'attributes'  => (strtolower($param1) == 'account') ? ['password' => Translator::phrase('password')] :  FormStudentsStudyCourse::attributeField(),
+            'attributes'  => (strtolower($param1) == 'account') ? ['password' => __('Password')] :  FormStudentsStudyCourse::attributeField(),
             'messages'    => (strtolower($param1) == 'account') ? [] :  FormStudentsStudyCourse::customMessages(),
             'questions'   => (strtolower($param1) == 'account') ? [] :  FormStudentsStudyCourse::questionField(),
         ];
@@ -198,7 +198,7 @@ class StudentsStudyCourseController extends Controller
     public function list($data)
     {
         $data['view']     = StudentsStudyCourse::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Student_Study_Course');
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('List Students study course');
         return $data;
     }
 
@@ -208,9 +208,9 @@ class StudentsStudyCourseController extends Controller
     {
 
         $student = StudentsRequest::where('status', 0)->pluck('id')->toArray();
-        
+
         $data['view']       = StudentsStudyCourse::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_Study_Course');
+        $data['title']              = Users::role(app()->getLocale()).'|'.__('Students study course');
         $data['metaImage']  = asset('assets/img/icons/register.png');
 
         if ($id) {
@@ -222,12 +222,6 @@ class StudentsStudyCourseController extends Controller
             $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
         }
         $data['student']              = StudentsRequest::getData($student);
-
-
-
-
-
-
         return $data;
     }
     public function account($data, $id, $type)

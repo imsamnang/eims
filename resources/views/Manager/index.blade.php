@@ -38,7 +38,7 @@
     @include(Auth::user()->role('view_path').".includes.navHeader")
 
 
-    <div class="page-content container-fluid mt--6">
+    <div class="page-content container-fluid">
         @include(config("pages.view"))
         @include(Auth::user()->role('view_path').".includes.navFooter")
     </div>

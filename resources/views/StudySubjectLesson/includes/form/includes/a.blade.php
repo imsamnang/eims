@@ -11,7 +11,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -23,7 +23,7 @@
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.staff_teach_subject")}}"
                             class="form-control-label" for="staff_teach_subject">
-                            {{ Translator:: phrase("staff_teach_subject") }}
+                            {{ __("Staff teach subjects") }}
 
                             @if(config("pages.form.validate.rules.staff_teach_subject"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -34,10 +34,10 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
-                            
 
-                            data-text="{{ Translator::phrase("add_new_option") }}"
-                            data-placeholder="{{ Translator::phrase("choose.staff_teach_subject") }}" name="staff_teach_subject"
+
+                            data-text="{{ __("Add new option") }}"
+                            data-placeholder=""
                             data-select-value="{{config("pages.form.data.staff_teach_subject.id")}}"
                             {{config("pages.form.validate.rules.staff_teach_subject") ? "required" : ""}}>
                             @foreach($staff_teach_subject["data"] as $o)
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="title">
-                            {{ Translator:: phrase("title") }}
+                            {{ __("Title") }}
 
                             @if(config("pages.form.validate.rules.title")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -56,7 +56,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="title" id="title"
-                            placeholder="{{ Translator::phrase("title") }}" value="{{config("pages.form.data.title")}}"
+                            placeholder=""
                             {{config("pages.form.validate.rules.title") ? "required" : ""}} />
 
                     </div>
@@ -66,7 +66,7 @@
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.source_file")}}" class="form-control-label"
                             for="source_file">
-                            {{ Translator:: phrase("File.(.PDF.)") }}
+                            {{ __("File") }} (PDF)
 
                             @if (config("pages.form.role") == "add")
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -94,7 +94,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="link">
-                            {{ Translator:: phrase("link") }}
+                            {{ __("Link") }}
                         </label>
                         <hr class="my-2">
                         <div class="row">
@@ -103,12 +103,12 @@
                                     <a class="list-group-item list-group-item-action rounded-0 active" id="youtube-tab"
                                         data-toggle="tab" href="#youtube" role="tab" aria-controls="youtube"
                                         aria-selected="true">
-                                        {{ Translator:: phrase("youtube") }}
+                                        {{ __("Youtube") }}
                                     </a>
                                     <a class="list-group-item list-group-item-action rounded-0" id="facebook-tab"
                                         data-toggle="tab" href="#facebook" role="tab" aria-controls="facebook"
                                         aria-selected="true">
-                                        {{ Translator:: phrase("facebook") }}
+                                        {{ __("Facebook") }}
                                     </a>
 
                                 </div>
@@ -118,14 +118,14 @@
                                 <div class="tab-content border-0 bg-neutral px-0" id="myTabContent">
                                     <div id="youtube" class="tab-pane fade show active" role="tabpanel"
                                         aria-labelledby="youtube-tab">
-                                        <input type="link" placeholder="{{ Translator:: phrase("youtube") }}"
+                                        <input type="link" placeholder=""
                                             class="form-control" id="source_link_youtube" name="source_link_youtube"
                                             value="{{config("pages.form.data.source_link.youtube.url")}}"
                                             {{config("pages.form.validate.rules.source_link_youtube") ? "required" : ""}}>
                                     </div>
                                     <div id="facebook" class="tab-pane fade" role="tabpanel"
                                         aria-labelledby="facebook-tab">
-                                        <input type="link" placeholder="{{ Translator:: phrase("facebook") }}"
+                                        <input type="link" placeholder=""
                                             class="form-control" id="source_link_facebook" name="source_link_facebook"
                                             value="{{config("pages.form.data.source_link.facebook.url")}}"
                                             {{config("pages.form.validate.rules.source_link_facebook") ? "required" : ""}}>
@@ -140,7 +140,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="image">
-                            {{ Translator:: phrase("image") }}
+                            {{ __("Image") }}
                             @if(config("pages.form.validate.rules.image"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
@@ -150,12 +150,12 @@
                             data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder="{{ Translator:: phrase("drop_image_here") }}"
+                                    <input type="file" placeholder=""
                                         class="custom-file-input" id="dropzoneBasicUpload" name="image"
                                         {{config("pages.form.validate.rules.image") ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
-                                        for="dropzoneBasicUpload">{{ Translator:: phrase("choose.image") }}</label>
+                                        for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                                 </div>
                             </div>
 

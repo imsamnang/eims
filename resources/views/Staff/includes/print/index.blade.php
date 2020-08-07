@@ -5,7 +5,7 @@
             <div class="col">
                 <button data-target=".sheet.card" onclick="print();" class="btn btn-primary d-print-none">
                     <i class="fas fa-print"></i>
-                    {{Translator::phrase("print")}} | (A4) {{Translator::phrase("landscape")}}
+                    {{__("Print")}} | (A4) {{__("Landscape")}}
                 </button>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -37,10 +37,10 @@ class FormFeatureSlider extends FormRequest
 
     public static function attributeField()
     {
-        $attributes["institute"]   = Translator::phrase('institute');
-        $attributes["title"]       = Translator::phrase('title');
-        $attributes["image"]       = Translator::phrase('image');
-        $attributes["description"] = Translator::phrase('description');
+        $attributes["institute"]   = __('Institute');
+        $attributes["title"]       = __('Title');
+        $attributes["image"]       = __('Image');
+        $attributes["description"] = __('Description');
         return $attributes;
     }
 

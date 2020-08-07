@@ -169,13 +169,12 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         NotificationChannels\PusherPushNotifications\PusherPushNotificationsServiceProvider::class,
-        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-        RenatoMarinho\LaravelPageSpeed\ServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,        
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\FractalServiceProvider::class,
         Laravolt\Avatar\ServiceProvider::class,
-
+        Barryvdh\TranslationManager\ManagerServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -186,8 +185,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
+        App\Providers\EventServiceProvider::class,        
         App\Providers\RouteServiceProvider::class,
         App\Providers\AppServiceProvider::class,
 
@@ -242,8 +240,7 @@ return [
         'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,
-        'Translator'   => App\Helpers\Translator::class,
+        'View' => Illuminate\Support\Facades\View::class,        
         'Internet' => App\Helpers\Internet::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'ImageHelper' => App\Helpers\ImageHelper::class,
@@ -257,7 +254,6 @@ return [
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
         'Avatar'    => Laravolt\Avatar\Facade::class,
-
     ],
 
 ];

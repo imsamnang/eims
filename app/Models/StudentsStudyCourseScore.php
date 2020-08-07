@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-use App\Helpers\Exception;
-use App\Helpers\Translator;
+
+
 use Illuminate\Database\Eloquent\Model;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -35,7 +35,7 @@ class StudentsStudyCourseScore extends Model
             'study_subject'   => [],
             'pages'           => $pages,
             'gender'          => Students::gender(null),
-            'message'         => Translator::phrase('no_data'),
+            'message'         => __('No Data'),
         );
 
         $data = array();
@@ -128,24 +128,24 @@ class StudentsStudyCourseScore extends Model
                     );
                 }
 
-                $grade = Translator::phrase('fail');
+                $grade = __('Fail');
 
                 $scores = $scores + [
                     'attendance_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => Translator::phrase('attendance_marks'),
+                            'name'  => __('Attendance marks'),
                         ],
-                        'marks' => $row['attendance_marks'],
+                        'score' => $row['attendance_marks'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
                     ],
                     'other_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => Translator::phrase('other_marks'),
+                            'name'  => __('Other marks'),
                         ],
-                        'marks' => $row['other_marks'],
+                        'score' => $row['other_marks'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
                     ]
@@ -158,20 +158,20 @@ class StudentsStudyCourseScore extends Model
 
                 if ($study_grade['success']) {
                     foreach ($study_grade['data'] as $value) {
-                        if ($average  > 0 && $average <= $value['marks'])
+                        if ($average  > 0 && $average <= $value['score'])
                             $grade = $value['name'];
                     }
                 } else {
                     if ($average >= 0 && $average <= 50)
-                        $grade = Translator::phrase('fail');
+                        $grade = __('Fail');
                     if ($average > 50 && $average <= 70)
-                        $grade = 'C';
+                        $grade = __('C');
                     if ($average > 70 && $average <= 80)
-                        $grade = 'B';
+                        $grade = __('B');
                     if ($average > 80 && $average <= 90)
-                        $grade = 'A';
+                        $grade = __('A');
                     if ($average > 90)
-                        $grade = 'E';
+                        $grade = __('E');
                 }
 
                 $data[$key]         = array(
@@ -295,24 +295,24 @@ class StudentsStudyCourseScore extends Model
                     ->first();
                 $scores = StudentsScore::getData($row['id'], $study_course_session->id);
                 $study_subject = StudyCourseRoutine::getSubject($study_course_session->id);
-                $grade = Translator::phrase('fail');
+                $grade = __('Fail');
 
                 $scores = $scores + [
                     'attendance_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => Translator::phrase('attendance_marks'),
+                            'name'  => __('Attendance marks'),
                         ],
-                        'marks' => $row['attendance_marks'],
+                        'score' => $row['attendance_marks'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
                     ],
                     'other_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => Translator::phrase('other_marks'),
+                            'name'  => __('Other marks'),
                         ],
-                        'marks' => $row['other_marks'],
+                        'score' => $row['other_marks'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
                     ]
@@ -325,20 +325,20 @@ class StudentsStudyCourseScore extends Model
 
                 if ($study_grade['success']) {
                     foreach ($study_grade['data'] as $value) {
-                        if ($average  > 0 && $average <= $value['marks'])
+                        if ($average  > 0 && $average <= $value['score'])
                             $grade = $value['name'];
                     }
                 } else {
                     if ($average >= 0 && $average <= 50)
-                        $grade = Translator::phrase('fail');
+                        $grade = __('Fail');
                     if ($average > 50 && $average <= 70)
-                        $grade = 'C';
+                        $grade = __('C');
                     if ($average > 70 && $average <= 80)
-                        $grade = 'B';
+                        $grade = __('B');
                     if ($average > 80 && $average <= 90)
-                        $grade = 'A';
+                        $grade = __('A');
                     if ($average > 90)
-                        $grade = 'E';
+                        $grade = __('E');   
                 }
                 return [
                     'id'           => $row['id'],
@@ -393,11 +393,11 @@ class StudentsStudyCourseScore extends Model
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => array(
-                    'title' => Translator::phrase('error'),
-                    'text'  => Translator::phrase('exists'),
+                    'title' => __('Error'),
+                    'text'  => __('Exists'),
                     'button'      => array(
-                        'confirm' => Translator::phrase('ok'),
-                        'cancel'  => Translator::phrase('cancel'),
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
                     ),
                 ),
 
@@ -412,11 +412,11 @@ class StudentsStudyCourseScore extends Model
                     'data'      => StudentsStudyCourseScore::getData(null, null, null, $student_study_course_id)['data'],
                     'type'      => 'add',
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('add.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Add Successfully'),
                         'button'      => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
 
@@ -458,17 +458,17 @@ class StudentsStudyCourseScore extends Model
                         'type'      => 'update',
                         'data'      => [],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = Exception::exception($e);
+                $response       = $e;
             }
         }
         return $response;
@@ -493,11 +493,11 @@ class StudentsStudyCourseScore extends Model
                     'type'      => 'update',
                     'data'      => StudentsStudyCourseScore::getData($id)['data'],
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('update.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Update Successfully'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );
@@ -523,11 +523,11 @@ class StudentsStudyCourseScore extends Model
                     'type'      => 'update',
                     //'data'      => StudentsStudyCourseScore::getData($id)['data'],
                     'message'   => array(
-                        'title' => Translator::phrase('success'),
-                        'text'  => Translator::phrase('update.successfully'),
+                        'title' => __('Success'),
+                        'text'  => __('Update Successfully'),
                         'button'   => array(
-                            'confirm' => Translator::phrase('ok'),
-                            'cancel'  => Translator::phrase('cancel'),
+                            'confirm' => __('Ok'),
+                            'cancel'  => __('Cancel'),
                         ),
                     ),
                 );

@@ -3,16 +3,16 @@
         <table class="table table-bordered">
             <thead class="thead-light">
                 <th>
-                    {{Translator::phrase("id.request_study")}}
+                    {{__("Id Request study")}}
                 </th>
                 <th>
-                    {{Translator::phrase("image")}}
+                    {{__("Image")}}
                 </th>
                 <th>
-                    {{Translator::phrase("study_subject")}}
+                    {{__("Study subjects")}}
                 </th>
                 <th>
-                    {{Translator::phrase("study_start. & .study_end")}}
+                    {{__("Study start & Study end")}}
                 </th>
             </thead>
 

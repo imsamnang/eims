@@ -2,7 +2,7 @@
 @section("meta")
 @section('style')
 <!-- Favicon -->
-<title>{{config("app.name")}} | {{ Translator::phrase("login")}}</title>
+<title>{{config("app.name")}} | {{ __("Login")}}</title>
 <link rel="icon" href="{{config("app.favicon")}}" type="image/png">
 <link rel="stylesheet" href="{{asset("assets/vendor/nucleo/css/nucleo.css")}}" type="text/css">
 <link rel="stylesheet" href="{{asset('/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css')}}" type="text/css">
@@ -234,13 +234,13 @@
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-transparent">
                         <div class="text-muted text-center m-2">
-                            <small>{{Translator::phrase('login.with')}}</small></div>
+                            <small>{{__('Login with')}}</small></div>
                         <div class="btn-wrapper text-center">
                             @if (env("FACEBOOK_ENABLED"))
                             <a href="{{url('auth/facebook')}}" class="btn btn-neutral btn-icon">
                                 <span class="btn-inner--icon"><img
                                         src="{{asset('../assets/img/icons/common/facebook.svg')}}"></span>
-                                <span class="btn-inner--text">{{Translator::phrase('facebook')}}</span>
+                                <span class="btn-inner--text">{{__('Facebook')}}</span>
                             </a>
                             @endif
                             @if (env("GOOGLE_ENABLED"))
@@ -248,7 +248,7 @@
                             <a href="{{url('auth/google')}}" class="btn btn-neutral btn-icon">
                                 <span class="btn-inner--icon"><img
                                         src="{{asset('../assets/img/icons/common/google.svg')}}"></span>
-                                <span class="btn-inner--text">{{Translator::phrase('google')}}</span>
+                                <span class="btn-inner--text">{{__('Google')}}</span>
                             </a>
                             @endif
 
@@ -256,10 +256,10 @@
                     </div>
                     <div class="card-body px-lg-5 py-lg-3">
                         <div class="text-center text-muted mb-4">
-                            <small>{{Translator::phrase('or.login.with.account')}}</small>
+                            <small>{{__('Or Login with account')}}</small>
                         </div>
                         <form method="POST"
-                            action="{{ parse_url(request()->getUri(), PHP_URL_QUERY) ? route('login').'?' . parse_url(request()->getUri(), PHP_URL_QUERY) : route('login') }}"
+                            action="{{ parse_url(request()->getUri(), PHP_URL_QUERY) ? route("login").'?' . parse_url(request()->getUri(), PHP_URL_QUERY) : route("login") }}"
                             class="needs-validation {{$errors ? 'has-validated' : 'was-validated'}}" novalidate="">
                             @csrf
                             <div class="form-group mb-3">
@@ -268,7 +268,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('email')}}" type="email"
+                                        placeholder=""
                                         value="{{old('email')}}" name="email" required>
                                     @error('email')
                                     <div class="invalid-feedback" role="alert">
@@ -284,7 +284,7 @@
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="{{Translator::phrase('password')}}" type="password"
+                                        placeholder=""
                                         value="{{old('password')}}" name="password" required>
                                     @error('password')
                                     <div class="invalid-feedback" role="alert">
@@ -297,12 +297,12 @@
                                 <input class="custom-control-input" type="checkbox" name="remember" id="remember"
                                     {{ old('remember') ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="remember">
-                                    <span class="text-muted">{{Translator::phrase('remember_me')}}</span>
+                                    <span class="text-muted">{{__('Remember me')}}</span>
                                 </label>
                             </div>
                             <div class="text-center">
                                 <button type="submit"
-                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{Translator::phrase('login')}}</button>
+                                    class="btn text-white bg-{{config("app.theme_color.name")}} my-4">{{__('Login')}}</button>
                             </div>
                         </form>
                     </div>
@@ -310,11 +310,11 @@
                 <div class="row mt-3">
                     <div class="col-6">
                         <a href="{{ route('password.request') }}"
-                            class="text-white"><small>{{Translator::phrase('forgot.password.?')}}</small></a>
+                            class="text-white"><small>{{__('Forgot password?')}}</small></a>
                     </div>
                     <div class="col-6 text-right">
                         <a href="{{URL::to('/register')}}"
-                            class="text-white"><small>{{Translator::phrase('create_new_account')}}</small></a>
+                            class="text-white"><small>{{__('Create new account')}}</small></a>
                     </div>
                 </div>
             </div>

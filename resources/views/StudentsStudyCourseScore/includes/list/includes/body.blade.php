@@ -16,10 +16,10 @@
 
 
                     <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
 
                     <th width=1 data-type="text" data-key="name">
-                        {{Translator::phrase("name")}}​
+                        {{__("Name")}}​
                     </th>
 
                     @foreach ($response['study_subject'] as $key => $row)
@@ -28,15 +28,15 @@
                     @endforeach
 
                     <th data-type="text" data-key="scores.attendance_marks.marks">
-                        {{  Translator::phrase("attendance_score") }}​</th>
+                        {{  __("Attendance score") }}​</th>
                     <th data-type="text" data-key="scores.other_marks.marks">
-                        {{  Translator::phrase("other_score") }}</th>
+                        {{  __("Other score") }}</th>
                     <th data-type="text" data-key="total_marks">
-                        {{  Translator::phrase("total") }}</th>
+                        {{  __("Total") }}</th>
                     <th data-type="text" data-key="average">
-                        {{  Translator::phrase("average") }}</th>
+                        {{  __("Average") }}</th>
                     <th data-type="text" data-key="grade">
-                        {{  Translator::phrase("grade") }}</th>
+                        {{  __("Grade") }}</th>
 
 
                     <th width=1 data-type="option" data-key="view,edit,delete">
@@ -54,19 +54,19 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item">
                         <i class="fas fa-edit"></i>
-                        {{Translator::phrase("edit")}}
+                        {{__("Edit")}}
                     </a>
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

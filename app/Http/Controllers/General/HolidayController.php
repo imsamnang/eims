@@ -8,7 +8,7 @@ use App\Models\Holidays;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormHoliday;
 use App\Http\Controllers\Controller;
@@ -116,7 +116,7 @@ class HolidayController extends Controller
     public function list($data)
     {
         $data['view']     = Holidays::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.holiday');
+        $data['title']    = Users::role(app()->getLocale()) .'|'.__('List Holiday');
         return $data;
     }
 
@@ -124,14 +124,14 @@ class HolidayController extends Controller
     {
         $data['response'] = Holidays::getData(null, null, 10);
         $data['view']     = Holidays::$path['view'] . '.includes.calendar.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .calendar.holiday');
+        $data['title']    = Users::role(app()->getLocale()) .'|'.__('Calendar Holiday');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.holiday');
+        $data['title']     = Users::role(app()->getLocale()) .'|'.__('Add Holiday');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -141,7 +141,7 @@ class HolidayController extends Controller
     {
         $response = Holidays::getData($id, true);
         $data['view']       = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.holiday');
+        $data['title']      = Users::role(app()->getLocale()) .'|'.__('Holiday');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormLanguages;
@@ -122,14 +122,14 @@ class LanguagesController extends Controller
     {
         $data['response'] = Languages::getData(null, null, 10);
         $data['view']     = Languages::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.language');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Languages');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Languages::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.language');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Languages');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -139,7 +139,7 @@ class LanguagesController extends Controller
     {
         $response = Languages::getData($id, true);
         $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.language');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Languages');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -152,7 +152,7 @@ class LanguagesController extends Controller
     {
         $response = Languages::getData($id, true);
         $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Languages');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -181,7 +181,7 @@ class LanguagesController extends Controller
             } else {
                 $this->response =  array(
                     'success' => false,
-                    'errors'  => Translator::phrase('language') . Translator::phrase($locale, 'en') . Translator::phrase('not_in_list'),
+                    'errors'  => __('language not in list.',['locale'=>$locale]),
                 );
             }
         }

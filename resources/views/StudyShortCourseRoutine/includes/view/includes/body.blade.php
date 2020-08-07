@@ -12,7 +12,7 @@
         <table class="table table-bordered table-xs" data-toggle="course-routine">
             <thead>
                 <th width=1 class="font-weight-bold">
-                    {{Translator::phrase("time")}}
+                    {{__("time")}}
                 </th>
 
                 @foreach ($days["data"] as $day)

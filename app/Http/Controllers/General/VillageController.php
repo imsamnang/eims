@@ -11,7 +11,7 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;;
+;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormVillage;
 use App\Http\Controllers\Controller;
@@ -52,7 +52,7 @@ class VillageController extends Controller
 
         $data['formAction']      = '/add';
         $data['formName']        = 'general/'.Villages::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['title']           = Users::role(app()->getLocale()).'|'. __('List Village');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -131,14 +131,14 @@ class VillageController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.village');
+        $data['title']    = Users::role(app()->getLocale()).'|'. __('List Village');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.village.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.village');
+        $data['title']     = Users::role(app()->getLocale()).'|'. __('Add Village');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -148,7 +148,7 @@ class VillageController extends Controller
     {
         $response           = Villages::getData(request('communeId'),$id, true);
         $data['view']       = 'Cambodia.includes.form.village.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.village');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Village');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -161,7 +161,7 @@ class VillageController extends Controller
     {
         $response           = Villages::getData(request('communeId'),$id, true);
         $data['view']       = 'Cambodia.includes.form.village.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .'.$type.'.village');
+        $data['title']      = Users::role(app()->getLocale()).'|'. __('Village');
         $data['metaImage']  = asset('assets/img/icons/'.$type.'.png');
         $data['metaLink']   = url(Users::role() . '/'.$type.'/' . $id);
         $data['formData']   = $response['data'][0];

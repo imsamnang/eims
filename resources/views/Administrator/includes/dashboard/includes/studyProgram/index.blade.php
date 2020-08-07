@@ -19,7 +19,7 @@ $setId = "";
 @if (count($studyProgram) == ($key + 1))
 <a class="btn btn-sm text-white" data-toggle="collapse" href="#studyProgram-more" role="button" aria-expanded="false"
     aria-controls="studyProgram-more">
-    {{Translator::phrase("more")}}
+    {{__("More")}}
 </a>
 @endif
 @endforeach

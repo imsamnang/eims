@@ -13,11 +13,11 @@
                 </li>
                 <li class="nav-item text-nowrap">
                     <a href="{{url("/home")}}" class="{{request()->segment(1) == "home" ? "active" : ""}} nav-link"
-                        title="{{Translator::phrase("home")}}">
+                        title="{{__("Home")}}">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-home"></i>
                             <span class="d-none d-sm-block mb-0 mx-1 m-sm-3 text-sm">
-                                {{Translator::phrase("home")}}
+                                {{__("Home")}}
                             </span>
                         </div>
                     </a>
@@ -25,11 +25,11 @@
                 <li class="nav-item text-nowrap">
                     <a href="{{url("/training")}}"
                         class="{{request()->segment(1) == "training" ? "active" : ""}} nav-link"
-                        title="{{Translator::phrase("training")}}">
+                        title="{{__("Training")}}">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-graduation-cap"></i>
                             <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                {{Translator::phrase("training")}}
+                                {{__("Training")}}
                             </span>
                         </div>
                     </a>
@@ -39,11 +39,11 @@
                 <li class="nav-item text-nowrap">
                     <a href="{{url("/news-even")}}"
                         class="{{request()->segment(1) == "news-even" ? "active" : ""}} nav-link"
-                        title="{{Translator::phrase("news")}}">
+                        title="{{__("News")}}">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-bullhorn"></i>
                             <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                {{Translator::phrase("news. & .even")}}
+                                {{__("News & Even")}}
                             </span>
                         </div>
                     </a>
@@ -55,11 +55,11 @@
 
                 <li class="nav-item text-nowrap">
                     <a href="{{url("/about")}}" class="{{request()->segment(1) == "about" ? "active" : ""}} nav-link"
-                        title="{{Translator::phrase("about")}}">
+                        title="{{__("About")}}">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-info-circle"></i>
                             <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                {{Translator::phrase("about")}}
+                                {{__("About")}}
                             </span>
                         </div>
                     </a>
@@ -67,11 +67,11 @@
                 <li class="nav-item text-nowrap">
                     <a href="{{url("/contact")}}"
                         class="{{request()->segment(1) == "contact" ? "active" : ""}} nav-link"
-                        title="{{Translator::phrase("contact")}}">
+                        title="{{__("Contact")}}">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-address-book"></i>
                             <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                {{Translator::phrase("contact")}}
+                                {{__("Contact")}}
                             </span>
                         </div>
                     </a>
@@ -89,7 +89,7 @@
                         <li>
                             <a class="dropdown-item" href="{{$lang["action"]["set"]}}">
                                 <span><img width="26" src="{{ $lang["image"]}}" /></span>
-                                <span>{{ Translator::phrase($lang["code_name"],"en")}}</span>
+                                <span>{{ __($lang["code_name"])}}</span>
                             </a>
                         </li>
                         @endforeach
@@ -112,21 +112,21 @@
 
                         <a href="{{url(Auth::user()->role()."/profile")}}" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
-                            <span> {{ Translator::phrase('my_profile') }}</span>
+                            <span> {{ __("My profile") }}</span>
                         </a>
                         <a href="{{url(Auth::user()->role()."/dashboard")}}" class="dropdown-item">
                             <i class="fas fa-tv"></i>
-                            <span> {{ Translator::phrase('dashboard') }}</span>
+                            <span> {{ __("Dashboard") }}</span>
                         </a>
 
                         <div class="dropdown-divider"></div>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ route("logout") }}" method="POST" class="d-none">
                             @csrf
                         </form>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        <a class="dropdown-item" href="{{ route("logout") }}" onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();">
                             <i class="ni ni-user-run"></i>
-                            {{ Translator::phrase('logout') }}
+                            {{ __("Logout") }}
                         </a>
                     </div>
                 </li>
@@ -134,43 +134,43 @@
 
                     @if(strtolower(request()->segment(1)) == "login")
                     <li class="nav-item text-nowrap">
-                        <a href="{{route("register")}}" class="nav-link btn btn-outline-secondary" title="{{Translator::phrase("register")}}">
+                        <a href="{{route("register")}}" class="nav-link btn btn-outline-secondary" title="{{__("Register")}}">
                             <div class="d-flex align-items-center">
                                 <i class="fal fa-user-plus mr-0"></i>
                                 <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                    {{Translator::phrase("register")}}
+                                    {{__("Register")}}
                                 </span>
                             </div>
                         </a>
                     </li>
                     @elseif(strtolower(request()->segment(1)) == "register")
                     <li class="nav-item text-nowrap">
-                        <a href="{{route("login")}}" class="nav-link btn btn-outline-secondary" title="{{Translator::phrase("login")}}">
+                        <a href="{{route("login")}}" class="nav-link btn btn-outline-secondary" title="{{__("Login")}}">
                             <div class="d-flex align-items-center">
                                 <i class="fal fa-sign-in-alt"></i>
                                 <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                    {{Translator::phrase("login")}}
+                                    {{__("Login")}}
                                 </span>
                             </div>
                         </a>
                     </li>
                     @else
                     <li class="nav-item text-nowrap">
-                        <a href="{{route("login")}}" class="nav-link" title="{{Translator::phrase("login")}}">
+                        <a href="{{route("login")}}" class="nav-link" title="{{__("Login")}}">
                             <div class="d-flex align-items-center">
                                 <i class="fal fa-sign-in-alt"></i>
                                 <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                    {{Translator::phrase("login")}}
+                                    {{__("Login")}}
                                 </span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item text-nowrap">
-                        <a href="{{route("register")}}" class="nav-link btn btn-outline-secondary" title="{{Translator::phrase("register")}}">
+                        <a href="{{route("register")}}" class="nav-link btn btn-outline-secondary" title="{{__("Register")}}">
                             <div class="d-flex align-items-center">
                                 <i class="fal fa-user-plus mr-0"></i>
                                 <span class="d-none d-sm-block mb-0 mx-1 text-sm">
-                                    {{Translator::phrase("register")}}
+                                    {{__("Register")}}
                                 </span>
                             </div>
                         </a>

@@ -11,7 +11,7 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.quiz")}}" class="form-control-label" for="quiz">
 
-                    {{ Translator:: phrase("quiz") }}
+                    {{ __("Quiz") }}
 
                     @if(config("pages.form.validate.rules.quiz"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -23,8 +23,8 @@
                 <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
 
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quiz"
+                    data-text="{{ __("Add new option") }}"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.quiz.id")}}"
                     {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                     @foreach($quiz["data"] as $o)
@@ -41,14 +41,14 @@
                 <input checked data-toggle="radio" type="radio" data-hide-collapse="add_by_cid"
                     data-show-collapse="add_by_scid" id="scid" name="add_by" value="scid" class="custom-control-input">
                 <label class="custom-control-label" for="scid">
-                    <span class="d-none d-sm-block">{{Translator::phrase("student_study_course")}}</span>
-                    <span class="d-lg-none">{{Translator::phrase("student")}}</span>
+                    <span class="d-none d-sm-block">{{__("Student study course")}}</span>
+                    <span class="d-lg-none">{{__("Students")}}</span>
                 </label>
             </div>
             <div class="custom-control custom-radio custom-control-inline col-4">
                 <input data-toggle="radio" type="radio" data-hide-collapse="add_by_scid" data-show-collapse="add_by_cid"
                     id="cid" name="add_by" value="cid" class="custom-control-input">
-                <label class="custom-control-label" for="cid"><span>{{Translator::phrase("class")}}</span>
+                <label class="custom-control-label" for="cid"><span>{{__("Class")}}</span>
                 </label>
             </div>
 
@@ -64,7 +64,7 @@
                         title="{{config("pages.form.validate.questions.student")}}" class="form-control-label"
                         for="student">
 
-                        {{ Translator:: phrase("student") }}
+                        {{ __("Students") }}
 
 
                         <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -75,8 +75,8 @@
                     <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
 
 
-                        data-text="{{ Translator::phrase("add_new_option") }}"
-                        data-placeholder="{{ Translator::phrase("choose.student") }}" name="student[]"
+                        data-text="{{ __("Add new option") }}"
+                        data-placeholder=""
                         data-select-value="{{config("pages.form.data.student.id")}}"
                         {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                         @foreach($student["data"] as $o)
@@ -94,7 +94,7 @@
                         title="{{config("pages.form.validate.questions.study_course_session")}}" class="form-control-label"
                         for="study_course_session">
 
-                        {{ Translator:: phrase("study_course_session") }}
+                        {{ __("Study course session") }}
 
 
                         <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -102,9 +102,9 @@
                         </span>
                     </label>
                     <select multiple class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                        
-                        data-text="{{ Translator::phrase("add_new_option") }}"
-                        data-placeholder="{{ Translator::phrase("choose.study_course_session") }}"
+
+                        data-text="{{ __("Add new option") }}"
+                        data-placeholder=""
                         name="study_course_session[]" data-select-value="{{request('course-sessionId')}}">
                         @foreach($study_course_session["data"] as $o)
                         <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

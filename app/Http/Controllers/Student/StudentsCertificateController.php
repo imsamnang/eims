@@ -8,13 +8,13 @@ use App\Models\Users;
 use App\Models\Students;
 use App\Models\Institute;
 use App\Models\Languages;
-use App\Models\CardFrames;
-use App\Helpers\CardHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormCard;
+use App\Http\Requests\FormCertificate;
+use App\Models\CertificateFrames;
+use App\Helpers\CertificateHelper;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -35,12 +35,12 @@ class StudentsCertificateController extends Controller
     {
         $data['institutes']      = Institute::getData();
         $data['formData'] = array(
-            'front' => asset('/assets/img/card/front.png'),
-            'background' => asset('/assets/img/card/background.png'),
+            'front' => asset('/assets/img/Certificate/front.png'),
+            'background' => asset('/assets/img/Certificate/background.png'),
         );
         $data['formAction']      = '/add';
-        $data['formName']        = CardFrames::$path['url'];
-        $data['title']           = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $data['formName']);
+        $data['formName']        = CertificateFrames::$path['url'];
+        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Certificate');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -61,29 +61,29 @@ class StudentsCertificateController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'delete') {
-            return CardFrames::deleteFromTable($param2);
+            return CertificateFrames::deleteFromTable($param2);
         } elseif ($param1 == 'make') {
             if (request()->method() == 'POST') {
                 if (request()->all()) {
-                    Session::put('card', json_decode(request()->post("card"), true));
-                    if (request()->hasFile('front_card')) {
-                        $file = request()->front_card;
+                    Session::put('Certificate', json_decode(request()->post("Certificate"), true));
+                    if (request()->hasFile('front_Certificate')) {
+                        $file = request()->front_Certificate;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $card_front = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('card_front',  $card_front);
+                        $Certificate_front = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('Certificate_front',  $Certificate_front);
                     }
 
-                    if (request()->hasFile('back_card')) {
-                        $file = request()->back_card;
+                    if (request()->hasFile('back_Certificate')) {
+                        $file = request()->back_Certificate;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $card_back = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('card_back',  $card_back);
+                        $Certificate_back = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('Certificate_back',  $Certificate_back);
                     }
 
                     return array(
@@ -97,10 +97,10 @@ class StudentsCertificateController extends Controller
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $d['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
+            $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Certificate');
             MetaHelper::setConfig(
                 [
-                    'title'       => $d['title'],
+                    'title'       => $data['title'],
                     'author'      => config('app.name'),
                     'keywords'    => null,
                     'description' => null,
@@ -108,9 +108,9 @@ class StudentsCertificateController extends Controller
                     'image'       => null
                 ]
             );
-            config()->set('app.title', $d['title']);
-            $d['certificates'] = CardHelper::make($param3);
-            return view('Card.includes.result.index', $d);
+            config()->set('app.title', $data['title']);
+            $d['certificates'] = CertificateHelper::make($param3);
+            return view('Certificate.includes.result.index', $d);
         } else {
             abort(404);
         }
@@ -134,34 +134,34 @@ class StudentsCertificateController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => CardFrames::$path['view'],
+            'parent'     => CertificateFrames::$path['view'],
             'view'       => $data['view'],
         );
 
          $pages['form']['validate'] = [
-            'rules'       =>  FormCard::rulesField(),
-            'attributes'  =>  FormCard::attributeField(),
-            'messages'    =>  FormCard::customMessages(),
-            'questions'   =>  FormCard::questionField(),
+            'rules'       =>  FormCertificate::rulesField(),
+            'attributes'  =>  FormCertificate::attributeField(),
+            'messages'    =>  FormCertificate::customMessages(),
+            'questions'   =>  FormCertificate::questionField(),
         ];
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-        return view('Card.index', $data);
+        return view('Certificate.index', $data);
     }
 
     public function list($data)
     {
-        $data['view']     = CardFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName']);
-        $data['response'] =  CardFrames::getData(null, null, 10);
+        $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Certificate frames');
+        $data['response'] =  CertificateFrames::getData(null, null, 10);
         return $data;
     }
 
     public function add($data)
     {
-        $data['view']  = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['view']  = CertificateFrames::$path['view'] . '.includes.form.index';
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Certificate frames');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
 
@@ -170,9 +170,9 @@ class StudentsCertificateController extends Controller
 
     public function view($data, $id)
     {
-        $response           = CardFrames::getData($id, true);
-        $data['view']       = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .view.' . str_replace('-', '_', $data['formName']));
+        $response           = CertificateFrames::getData($id, true);
+        $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Certificate frames');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -183,9 +183,9 @@ class StudentsCertificateController extends Controller
 
     public function edit($data, $id)
     {
-        $response = CardFrames::getData($id, true);
-        $data['view']       = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .edit.' . str_replace('-', '_', $data['formName']));
+        $response = CertificateFrames::getData($id, true);
+        $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Certificate frames');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -196,15 +196,15 @@ class StudentsCertificateController extends Controller
     public function make($data, $user)
     {
 
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .card.');
-        $data['view']  = CardFrames::$path['view'] . '.includes.make.index';
-        $data['certificates']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];
-        $data['response']        =  CardFrames::getData();
-        $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'];
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Certificate frames');
+        $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
+        $data['certificates']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
+        $data['response']        =  CertificateFrames::getData();
+        $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');
 
-        $data['certificates']['all'] = CardFrames::frameData('all');
-        $data['certificates']['selected'] = CardFrames::frameData('selected');
+        $data['certificates']['all'] = CertificateFrames::frameData('all');
+        $data['certificates']['selected'] = CertificateFrames::frameData('selected');
         if ($user['success']) {
             $data['certificates']['user'] = $user['data'][0];
         } else {
@@ -216,6 +216,6 @@ class StudentsCertificateController extends Controller
 
     public function set($id)
     {
-        return CardFrames::setToTable($id);
+        return CertificateFrames::setToTable($id);
     }
 }

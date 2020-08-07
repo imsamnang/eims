@@ -4,7 +4,7 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use PHPHtmlParser\Dom;
@@ -96,7 +96,7 @@ class MailboxTrash extends Model
             $response = [
                 'success'   => false,
                 'data'   => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
                 'pages' => $pages
             ];
         }
@@ -121,11 +121,11 @@ class MailboxTrash extends Model
                     $response       =  array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('move_trash.!'),
-                            'text'  => Translator::phrase('move_trash.successfully'),
+                            'title' => __('Move trash!'),
+                            'text'  => __('Move trash successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -135,12 +135,12 @@ class MailboxTrash extends Model
                     array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('are_you_sure.?'),
-                            'text'  => Translator::phrase('move_trash.!') . PHP_EOL .
+                            'title' => __('Are you sure?'),
+                            'text'  => __('Move trash.!') . PHP_EOL .
                                 'ID : (' . implode(',', $id) . ')',
                             'button'   => array(
-                                'confirm' => Translator::phrase('yes'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Yes'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )
@@ -169,11 +169,11 @@ class MailboxTrash extends Model
                     $response       =  array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('restore.!'),
-                            'text'  => Translator::phrase('restore.successfully'),
+                            'title' => __('restore.!'),
+                            'text'  => __('restore.successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -183,12 +183,12 @@ class MailboxTrash extends Model
                     array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('are_you_sure.?'),
-                            'text'  => Translator::phrase('restore_mailbox.!') . PHP_EOL .
+                            'title' => __('Are you sure?'),
+                            'text'  => __('restore_mailbox.!') . PHP_EOL .
                                 'ID : (' . implode(',', $id) . ')',
                             'button'   => array(
-                                'confirm' => Translator::phrase('yes'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Yes'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )

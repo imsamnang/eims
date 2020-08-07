@@ -1,13 +1,13 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            (C) {{ Translator:: phrase("address") }}
+            (C) {{ __("Address") }}
         </label>
     </div>
 
     <div class="card-header p-2 px-4">
         <label class="form-control-label">
-            {{ Translator:: phrase("pob") }}
+            {{ __("Pob") }}
             @if(config("pages.form.validate.rules.pob"))
             <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                 <i class="fas fa-asterisk fa-xs"></i>
@@ -20,7 +20,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="pob_province_fk">
-                    {{ Translator:: phrase("province") }}
+                    {{ __("Province") }}
 
                     @if(config("pages.form.validate.rules.pob_province_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -31,8 +31,8 @@
 
                 <select class="form-control" data-toggle="select" id="pob_province_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
+                    data-text="{{ __("Add new option") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="pob_province_fk" data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
                     data-append-to="#pob_district_fk"
                     data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
@@ -48,7 +48,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="pob_district_fk">
-                    {{ Translator:: phrase("district") }}
+                    {{ __("District") }}
                     @if(config("pages.form.validate.rules.pob_district_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -60,8 +60,8 @@
                 <select disabled {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_district_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
+                    data-text="{{ __("Add new option") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="pob_district_fk" data-select-value="{{config("pages.form.data.place_of_birth.district.id")}}"
                     data-append-to="#pob_commune_fk"
                     data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
@@ -76,7 +76,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="pob_commune_fk">
-                    {{ Translator:: phrase("commune") }}
+                    {{ __("Commune") }}
                     @if(config("pages.form.validate.rules.pob_commune_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -89,9 +89,9 @@
                 <select disabled {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_commune_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-text="{{ __("Add new option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="pob_commune_fk" data-select-value="{{config("pages.form.data.place_of_birth.commune.id")}}"
                     data-append-to="#pob_village_fk"
                     data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
@@ -107,7 +107,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="pob_village_fk">
-                    {{ Translator:: phrase("village") }}
+                    {{ __("Village") }}
                     @if(config("pages.form.validate.rules.pob_village_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -120,9 +120,9 @@
                 <select disabled {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="pob_village_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-text="{{ __("Add new option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="pob_village_fk" data-select-value="{{config("pages.form.data.place_of_birth.village.id")}}"
                     {{config("pages.form.validate.rules.pob_village_fk") ? "required" : ""}}>
                     @foreach($villages["data"] as $o)
@@ -134,7 +134,7 @@
             </div>
         </div>
         {{-- <a id="hide-show" class="badge badge-warning mb-3" data-toggle="collapse" href="#other_pob" role="button"
-            aria-expanded="false" aria-controls="other_pob">{{ Translator:: phrase("other") }}</a> --}}
+            aria-expanded="false" aria-controls="other_pob">{{ __("Other") }}</a> --}}
 
         <div class="collapse show" id="other_pob" data-control-value-id="other_pob"
             data-toggle-collapse="{{request()->segment(3) == "view" ? "show" : "pob"}}">
@@ -143,7 +143,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                         class="form-control-label" for="permanent_address">
 
-                        {{ Translator:: phrase("permanent_address") }}
+                        {{ __("Permanent address") }}
                         @if (config("pages.form.validate.rules.permanent_address"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger"
                             style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span> @endif
@@ -154,7 +154,7 @@
                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
                             </div>
                             <textarea type="text" class="form-control" id="permanent_address"
-                                placeholder="{{ Translator::phrase("permanent_address") }}" value=""
+                                placeholder=""
                                 {{config("pages.form.validate.rules.permanent_address") ? "required" : ""}}
                                 name="permanent_address">{{config("pages.form.data.permanent_address")}}</textarea>
 
@@ -172,7 +172,7 @@
         <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
             for="pob_resident">
 
-            {{ Translator:: phrase("current_resident") }}
+            {{ __("Current resident") }}
             @if(config("pages.form.validate.rules.pob_resident"))
             <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                 <i class="fas fa-asterisk fa-xs"></i>
@@ -181,7 +181,7 @@
 
             @if (request()->segment(3) != "view")
             <button type="button" class="btn btn-primary btn-sm" data-collapse="current" data-toggle="same-values"
-                data-same-value="pob" data-append-value="current">{{ Translator:: phrase("same.pob") }}</button>
+                data-same-value="pob" data-append-value="current">{{ __("Same pob") }}</button>
             @endif
         </label>
     </div>
@@ -190,7 +190,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="curr_province_fk">
-                    {{ Translator:: phrase("province") }}
+                    {{ __("Province") }}
 
                     @if(config("pages.form.validate.rules.curr_province_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -201,9 +201,9 @@
 
                 <select class="form-control" data-toggle="select" id="curr_province_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-text="{{ __("Add new option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.province") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="curr_province_fk"
                     data-select-value="{{config("pages.form.data.current_resident.province.id")}}"
                     data-append-to="#curr_district_fk"
@@ -220,7 +220,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="curr_district_fk">
-                    {{ Translator:: phrase("district") }}
+                    {{ __("District") }}
                     @if(config("pages.form.validate.rules.curr_district_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -233,9 +233,9 @@
                 <select disabled {{config("pages.form.data.current_resident.district.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_district_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-text="{{ __("Add new option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.district") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="curr_district_fk"
                     data-select-value="{{config("pages.form.data.current_resident.district.id")}}"
                     data-append-to="#curr_commune_fk"
@@ -251,7 +251,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="curr_commune_fk">
-                    {{ Translator:: phrase("commune") }}
+                    {{ __("Commune") }}
                     @if(config("pages.form.validate.rules.curr_commune_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -264,9 +264,9 @@
                 <select disabled {{config("pages.form.data.current_resident.commune.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_commune_fk" title="Simple select"
 
-                    data-text="{{ Translator::phrase("add_new_option") }}"
+                    data-text="{{ __("Add new option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.commune") }}"
+                    data-allow-clear="true" data-placeholder=""
                     name="curr_commune_fk" data-select-value="{{config("pages.form.data.current_resident.commune.id")}}"
                     data-append-to="#curr_village_fk"
                     data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
@@ -282,7 +282,7 @@
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
                     for="curr_village_fk">
-                    {{ Translator:: phrase("village") }}
+                    {{ __("Village") }}
                     @if(config("pages.form.validate.rules.curr_village_fk"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -294,10 +294,10 @@
 
                 <select disabled {{config("pages.form.data.current_resident.village.id")? "" :"disabled"}} class="form-control"
                     data-toggle="select" id="curr_village_fk" title="Simple select"
-                    
-                    data-text="{{ Translator::phrase("add_new_option") }}"
 
-                    data-allow-clear="true" data-placeholder="{{ Translator::phrase("choose.village") }}"
+                    data-text="{{ __("Add new option") }}"
+
+                    data-allow-clear="true" data-placeholder=""
                     name="curr_village_fk" data-select-value="{{config("pages.form.data.current_resident.village.id")}}"
                     {{config("pages.form.validate.rules.curr_village_fk") ? "required" : ""}}>
                     @foreach($curr_villages["data"] as $o)
@@ -309,7 +309,7 @@
             </div>
         </div>
         {{-- <a class="badge badge-warning mb-3" data-toggle="collapse" href="#other_current" role="button"
-            aria-expanded="false" aria-controls="other_current">{{ Translator:: phrase("other") }}</a> --}}
+            aria-expanded="false" aria-controls="other_current">{{ __("Other") }}</a> --}}
 
         <div class="collapse show" id="other_current" data-control-value-id="other_current"
             data-toggle-collapse="{{request()->segment(3) == "view" ? "show" : "current"}}">
@@ -318,7 +318,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                         class="form-control-label" for="temporaray_address">
 
-                        {{ Translator:: phrase("temporaray_address") }}
+                        {{ __("Temporaray address") }}
                         @if(config("pages.form.validate.rules.temporaray_address"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                             <i class="fas fa-asterisk fa-xs"></i>
@@ -327,7 +327,7 @@
                         @if (request()->segment(3) != "view")
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="same-values"
                             data-same-value="other_pob"
-                            data-append-value="other_current">{{ Translator:: phrase("same.permanent_address") }}</button>
+                            data-append-value="other_current">{{ __("Same permanent address") }}</button>
                         @endif
                     </label>
                     <div class="form-group">
@@ -336,7 +336,7 @@
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                             </div>
                             <textarea type="text" class="form-control" id="temporaray_address"
-                                placeholder="{{ Translator::phrase("temporaray_address") }}" value=""
+                                placeholder=""
                                 {{config("pages.form.validate.rules.temporaray_address") ? "required" : ""}}
                                 name="temporaray_address">{{config("pages.form.data.temporaray_address")}}</textarea>
 

@@ -8,7 +8,7 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudentsScore;
 use App\Models\StudyCourseSession;
@@ -68,21 +68,21 @@ class StudentsStudyCourseScoreController extends Controller
 
             if (strtolower($param2) == 'add') {
                 if (request()->method() == "POST") {
-                    return StudentsScore::addToTable(request('id'), request('subject'), request('marks'));
+                    return StudentsScore::addToTable(request('id'), request('subject'), request('score'));
                 }
             } elseif (strtolower($param2) == 'edit') {
                 if (request()->method() == "POST") {
-                    return StudentsScore::updateToTable(request('id'), request('subject'), request('marks'));
+                    return StudentsScore::updateToTable(request('id'), request('subject'), request('score'));
                 }
             }
         } elseif (strtolower($param1) == 'attendance' || strtolower($param1) == 'other') {
             if (strtolower($param1) == 'attendance') {
                 if (request()->method() == "POST") {
-                    return StudentsStudyCourseScore::updateMarksToTable(request('id'), 'attendance_marks', request('marks'));
+                    return StudentsStudyCourseScore::updateMarksToTable(request('id'), 'attendance_marks', request('score'));
                 }
             } elseif (strtolower($param1) == 'other') {
                 if (request()->method() == "POST") {
-                    return StudentsStudyCourseScore::updateMarksToTable(request('id'), 'other_marks', request('marks'));
+                    return StudentsStudyCourseScore::updateMarksToTable(request('id'), 'other_marks', request('score'));
                 }
             }
         } elseif (strtolower($param1) == 'report') {
@@ -127,8 +127,8 @@ class StudentsStudyCourseScoreController extends Controller
     }
     public function add($data)
     {
-        $data['view']  = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . $data['formName']);
+        $data['view']  = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';        
+        $data['title']  = Users::role(app()->getLocale()).'|'.__('Add Students study course score');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -138,14 +138,14 @@ class StudentsStudyCourseScoreController extends Controller
     {
         $data['response'] = StudentsStudyCourseScore::getData(null, null, null,null,true);
         $data['view']     = StudentsStudyCourseScore::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Student_score');
+        $data['title']  = Users::role(app()->getLocale()).'|'.__('List Students study course score');
         return $data;
     }
     public function show($data, $id, $type)
     {
         $response           = StudentsStudyCourseScore::getData($id, true);
         $data['view']       = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Student_score');
+        $data['title']  = Users::role(app()->getLocale()).'|'.__('Students study course score');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
@@ -161,7 +161,7 @@ class StudentsStudyCourseScoreController extends Controller
     {
         $data['response']  = StudentsStudyCourseScore::getData();
         $data['view']      = StudentsStudyCourseScore::$path['view'] . '.includes.report.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . $data['formName'] . '.');
+        $data['title']  = Users::role(app()->getLocale()).'|'.__('Students study course score report');
         return $data;
     }
 }

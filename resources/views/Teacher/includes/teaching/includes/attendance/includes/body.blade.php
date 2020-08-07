@@ -61,7 +61,7 @@
                 id="form-edit-attendance" enctype="multipart/form-data">
                 <select class="form-control" data-toggle="select" id="attendance_type" title="Simple select"
                     data-minimum-results-for-search="Infinity"
-                    data-placeholder="{{ Translator::phrase("choose.attendance_type") }}" name="attendance_type">
+                    data-placeholder="">
                     @foreach($attendances_type["data"] as $o)
                     <option value="{{$o["id"]}}" data-absent="{{$o["credit_absent"]}}">{{ $o["name"]}}</option>
                     @endforeach

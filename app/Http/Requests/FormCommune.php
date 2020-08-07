@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormCommune extends FormRequest
@@ -41,17 +41,17 @@ class FormCommune extends FormRequest
     public static function attributeField()
     {
 
-        $attributes['province']  = Translator::phrase('province');
-        $attributes['district']  = Translator::phrase('district');
-        $attributes['name']      = Translator::phrase('commune');
+        $attributes['province']  = __('Province');
+        $attributes['district']  = __('District');
+        $attributes['name']      = __('Commune');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('commune.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
 
-        $attributes['description'] = Translator::phrase('description');
-        $attributes['image']       = Translator::phrase('image');
+        $attributes['description'] = __('Description');
+        $attributes['image']       = __('Image');
 
         return $attributes;
     }

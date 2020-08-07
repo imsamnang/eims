@@ -24,7 +24,7 @@
                                                     {{$row["study_subject"]["name"]}}</h5>
                                                 <span class="font-weight-bold mb-0 text-muted">
                                                     {{$row["lesson_count"]}}
-                                                    {{Translator::phrase("lesson")}}
+                                                    {{__("Lesson")}}
                                                 </span>
                                             </div>
                                             <div class="col-4">

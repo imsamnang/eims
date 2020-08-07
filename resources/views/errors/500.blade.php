@@ -1,5 +1,5 @@
 @extends('errors::minimal')
 
-@section('title', Translator::phrase('Server_Error'))
+@section('title', __('Server Error'))
 @section('code', '500')
-@section('message', Translator::phrase('Server_Error'))
+@section('message', __('Server Error'))

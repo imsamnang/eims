@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudyCourse extends FormRequest
@@ -49,23 +49,23 @@ class FormStudyCourse extends FormRequest
     public static function attributeField()
     {
 
-            $attributes['name']                     = Translator::phrase('study_program_name');
+            $attributes['name']                     = __('Name');
             if (config('app.languages')) {
                 foreach (config('app.languages') as $lang) {
-                    $attributes[$lang['code_name']] =  Translator::phrase('study_academic_year.as.' . $lang['translate_name']);
+                    $attributes[$lang['code_name']] =  $lang['translate_name'];
                 }
             }
 
-            $attributes['institute']                = Translator::phrase('institute');
-            $attributes['study_faculty']            = Translator::phrase('study_faculty');
-            $attributes['course_type']              = Translator::phrase('course_type');
-            $attributes['study_modality']           = Translator::phrase('study_modality');
-            $attributes['study_program']            = Translator::phrase('study_program');
-            $attributes['study_overall_fund']       = Translator::phrase('study_overall_fund');
-            $attributes['curriculum_author']        = Translator::phrase('curriculum_author');
-            $attributes['curriculum_endorsement']   = Translator::phrase('curriculum_endorsement');
-            $attributes['description']              = Translator::phrase('description');
-            $attributes['image']                    = Translator::phrase('image');
+            $attributes['institute']                = __('Institute');
+            $attributes['study_faculty']            = __('Study faculty');
+            $attributes['course_type']              = __('Course type');
+            $attributes['study_modality']           = __('Study Modality');
+            $attributes['study_program']            = __('Study Program');
+            $attributes['study_overall_fund']       = __('Study overall fund');
+            $attributes['curriculum_author']        = __('Curriculum Author');
+            $attributes['curriculum_endorsement']   = __('Curriculum Endorsement');
+            $attributes['description']              = __('Description');
+            $attributes['image']                    = __('Image');
 
             return $attributes;
 

@@ -15,7 +15,7 @@
             <div class="card sticky-top">
                 <div class="card-header py-2 px-3">
                     <label class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                        {{Translator::phrase("list")}}
+                        {{__("List")}}
                     </label>
                 </div>
                 <div class="card-body p-2">

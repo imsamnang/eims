@@ -14,32 +14,32 @@
                         </div>
                     </th>
                     <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
-                        {{Translator::phrase("numbering")}}​</th>
+                        {{__("Id")}}​</th>
 
                     <th width=1 data-type="text" data-key="name">
-                        {{Translator::phrase("name")}}​
+                        {{__("Name")}}​
                     </th>
                     <th width=1 data-type="text" data-key="email,phone" data-join="<br>">
-                        {{Translator::phrase("email. &  .phone")}}​
+                        {{__("Email & Phone")}}​
                     </th>
                     @if (Auth::user()->role_id != 2)
                     <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
-                        {{Translator::phrase("institute")}}​</th>
+                        {{__("Institute"}}​</th>
                     @endif
                     <th data-type="text-image" data-key="study_subject.name" data-url="study_subject.image" width="1" class="sort"
                         data-sort="study_subject">
-                        {{Translator::phrase("study_subject")}}
+                        {{__("Study subjects")}}
                     </th>
 
                     <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
-                        {{Translator::phrase("study_session")}}
+                        {{__("Study Session")}}
                     </th>
 
                     <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
-                        {{Translator::phrase("status")}}
+                        {{__("Status")}}
                     </th>
 
-                    <th width=1 data-type="image" data-key="photo">{{Translator::phrase("photo")}}​</th>
+                    <th width=1 data-type="image" data-key="photo">{{__("Photo")}}​</th>
                     <th width=1 data-type="option" data-key="edit,approve,delete">
                     </th>
 
@@ -55,24 +55,24 @@
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="disabled dropdown-item" href="">
-                        <i class="fas fa-eye"></i> {{Translator::phrase("view")}}
+                        <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-edit" class="dropdown-item">
                         <i class="fas fa-edit"></i>
-                        {{Translator::phrase("edit")}}
+                        {{__("Edit")}}
                     </a>
 
                     <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-approve" class="dropdown-item">
                         <i class="fas fa-check-circle"></i>
-                        {{Translator::phrase("approve")}}
+                        {{__("Approve")}}
                     </a>
 
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item sweet-alert-reload" data-toggle="sweet-alert" id="btn-option-delete"
                         data-sweet-alert="confirm" data-sweet-id="" href="">
-                        <i class="fas fa-trash"></i> {{Translator::phrase("delete")}}</a>
+                        <i class="fas fa-trash"></i> {{__("Delete")}}</a>
                 </div>
             </div>
         </div>

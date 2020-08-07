@@ -14365,8 +14365,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '3130210',
-                'name'       => 'Ta Ok',
-                'km'         => 'Ta Ok',
+                'name'       => 'Ta ok',
+                'km'         => 'Ta ok',
                 'commune_id' => '31302',
 
                 ],
@@ -45816,8 +45816,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '9010107',
-                'name'       => 'Ta Ok',
-                'km'         => 'Ta Ok',
+                'name'       => 'Ta ok',
+                'km'         => 'Ta ok',
                 'commune_id' => '90101',
 
                 ],
@@ -53439,8 +53439,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '12090104',
-                'name'       => 'Prey Doun Ok',
-                'km'         => 'Prey Doun Ok',
+                'name'       => 'Prey Doun ok',
+                'km'         => 'Prey Doun ok',
                 'commune_id' => '120901',
 
                 ],
@@ -55175,8 +55175,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '12120503',
-                'name'       => 'Svay Ta Ok',
-                'km'         => 'Svay Ta Ok',
+                'name'       => 'Svay Ta ok',
+                'km'         => 'Svay Ta ok',
                 'commune_id' => '121205',
 
                 ],
@@ -55189,8 +55189,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '12120505',
-                'name'       => 'Svay Ta Ok 1',
-                'km'         => 'Svay Ta Ok 1',
+                'name'       => 'Svay Ta ok 1',
+                'km'         => 'Svay Ta ok 1',
                 'commune_id' => '121205',
 
                 ],
@@ -90871,8 +90871,8 @@ class VillagesTableSeeder extends Seeder
                 ],
                 [
                 'id'         => '25021201',
-                'name'       => 'Tuol Ok',
-                'km'         => 'Tuol Ok',
+                'name'       => 'Tuol ok',
+                'km'         => 'Tuol ok',
                 'commune_id' => '250212',
                 ],
                 [

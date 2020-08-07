@@ -23,21 +23,21 @@
                         <a class="nav-link {{ (request()->segment(2) == "dashboard" || request()->segment(2) == null) ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/dashboard")}}">
                             <i class="fas fa-tv"></i>
-                            <span class="nav-link-text">{{Translator::phrase("dashboard")}}</span>
+                            <span class="nav-link-text">{{__("Dashboard")}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->segment(2) == "feed" ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/feed")}}">
                             <i class="fas fa-bullhorn"></i>
-                            <span class="nav-link-text">{{Translator::phrase("news. & .even")}}</span>
+                            <span class="nav-link-text">{{__("News & Even")}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a data-toggle="navbar" class="nav-link {{ (request()->segment(2) == "study") ? "active text-blue": "" }}"
                             href="{{URL::to(config("pages.host").config("pages.path")."/study")}}">
                             <i class="fas fa-tv"></i>
-                            <span class="nav-link-text">{{Translator::phrase("study")}}</span>
+                            <span class="nav-link-text">{{__("Study")}}</span>
                         </a>
                     </li>
                 </ul>
@@ -50,7 +50,7 @@
                             aria-expanded="{{ (request()->segment(2) == "profile") ? "true": "false" }}"
                             aria-controls="navbar-tables">
                             <i class="fas fa-user"></i>
-                            <span class="nav-link-text">{{Translator:: phrase("profile")}} </span>
+                            <span class="nav-link-text">{{__("Profile")}} </span>
                         </a>
 
                         <div class="collapse {{ (request()->segment(2) == "profile") ? "show": "" }}"
@@ -59,13 +59,13 @@
                                 <li class="nav-item">
                                     <a href="{{URL::to(config("pages.host").config("pages.path")."/profile/general")}}"
                                         class="nav-link  {{(request()->segment(2) == "profile") ? ((request()->segment(3) == "general" || request()->segment(3) == null) ? "active text-blue": ""): ""}}">
-                                        {{Translator:: phrase("general")}}
+                                        {{__("General")}}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{URL::to(config("pages.host").config("pages.path")."/profile/password")}}"
                                         class="nav-link  {{(request()->segment(2) == "profile") ? ((request()->segment(3) == "password") ? "active text-blue": ""): "" }}">
-                                        {{Translator:: phrase("password")}}
+                                        {{__("Password")}}
                                     </a>
                                 </li>
                             </ul>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormContact extends FormRequest
@@ -35,10 +35,10 @@ class FormContact extends FormRequest
     public static function attributeField()
     {
 
-        $attributes['name']    = Translator::phrase('name');
-        $attributes['email']   = Translator::phrase('email');
-        $attributes['phone']   = Translator::phrase('phone');
-        $attributes['message']   = Translator::phrase('message');
+        $attributes['name']    = __('Name');
+        $attributes['email']   = __('Email');
+        $attributes['phone']   = __('Phone');
+        $attributes['message']   = __('Message');
         return $attributes;
     }
 

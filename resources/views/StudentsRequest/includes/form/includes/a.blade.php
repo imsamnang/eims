@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
-            (A) {{ Translator:: phrase("institute_info") }}
+            (A) {{ __("Institute info") }}
         </label>
     </div>
     <div class="card-body">
@@ -14,7 +14,7 @@
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                         title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
                         for="institute">
-                        {{ Translator:: phrase("institute") }}
+                        {{ __("Institute") }}
                         @if(config("pages.form.validate.rules.institute"))
                         <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                             <i class="fas fa-asterisk fa-xs"></i>
@@ -23,7 +23,7 @@
                     </label>
 
                     <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                        data-placeholder="{{ Translator::phrase("choose.institute") }}" name="institute"
+                        data-placeholder=""
                         data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
                         {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                         @foreach($institute["data"] as $o)
@@ -39,7 +39,7 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.study_program")}}" class="form-control-label"
                     for="study_program">
-                    {{ Translator:: phrase("study_program") }}
+                    {{ __("Study Program") }}
                     @if(config("pages.form.validate.rules.study_program"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
@@ -48,7 +48,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
-                    data-placeholder="{{ Translator::phrase("choose.study_program") }}" name="study_program"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_program.id",request("programId"))}}" data-append-to="#study_course"
                     data-append-url="{{str_replace("add","list?programId=",$study_course["pages"]["form"]["action"]["add"])}}">
                     @foreach($study_program["data"] as $o)
@@ -63,7 +63,7 @@
                     title="{{config("pages.form.validate.questions.study_course")}}" class="form-control-label"
                     for="study_course">
 
-                    {{ Translator:: phrase("study_course") }}
+                    {{ __("Study Course") }}
 
                     @if(config("pages.form.validate.rules.study_course"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -75,7 +75,7 @@
                 <select {{$study_course['success']? "" : "disabled" }} class="form-control" data-toggle="select"
                     id="study_course" title="Simple select"
 
-                    data-placeholder="{{ Translator::phrase("choose.study_course") }}" name="study_course"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_course.id",request("courseId"))}}">
                     @foreach($study_course["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -88,7 +88,7 @@
                     title="{{config("pages.form.validate.questions.study_generation")}}" class="form-control-label"
                     for="study_generation">
 
-                    {{ Translator:: phrase("study_generation") }}
+                    {{ __("study_generation") }}
 
                     @if(config("pages.form.validate.rules.study_generation"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -99,7 +99,7 @@
 
                 <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
 
-                    data-placeholder="{{ Translator::phrase("choose.study_generation") }}" name="study_generation"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_generation.id",request("generationId"))}}">
                     @foreach($study_generation["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -113,7 +113,7 @@
                     title="{{config("pages.form.validate.questions.study_academic_year")}}" class="form-control-label"
                     for="study_academic_year">
 
-                    {{ Translator:: phrase("study_academic_year") }}
+                    {{ __("Study Academic year") }}
 
                     @if(config("pages.form.validate.rules.study_academic_year"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -123,7 +123,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
 
-                    data-placeholder="{{ Translator::phrase("choose.study_academic_year") }}" name="study_academic_year"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_academic_year.id",request("yearId"))}}">
                     @foreach($study_academic_year["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -135,7 +135,7 @@
                     title="{{config("pages.form.validate.questions.study_semester")}}" class="form-control-label"
                     for="study_semester">
 
-                    {{ Translator:: phrase("study_semester") }}
+                    {{ __("Study Semester") }}
 
                     @if(config("pages.form.validate.rules.study_semester"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -145,7 +145,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
 
-                    data-placeholder="{{ Translator::phrase("choose.study_semester") }}" name="study_semester"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_semester.id",request("semesterId"))}}">
                     @foreach($study_semester["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -158,7 +158,7 @@
                     title="{{config("pages.form.validate.questions.study_session")}}" class="form-control-label"
                     for="study_session">
 
-                    {{ Translator:: phrase("study_session") }}
+                    {{ __("Study Session") }}
 
                     @if(config("pages.form.validate.rules.study_session"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -168,7 +168,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
 
-                    data-placeholder="{{ Translator::phrase("choose.study_session") }}" name="study_session"
+                    data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">
                     @foreach($study_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

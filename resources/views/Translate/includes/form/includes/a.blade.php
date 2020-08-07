@@ -12,7 +12,7 @@
                     @if (request()->segment(3) == "view")
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="id">
-                            {{ Translator:: phrase("numbering") }}
+                            {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
                             value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
@@ -24,7 +24,7 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="phrase">
-                            {{ Translator:: phrase("phrase") }}
+                            {{ __("phrase") }}
 
                             @if(config("pages.form.validate.rules.phrase")) <span
                                 class="badge badge-md badge-circle badge-floating badge-danger"
@@ -33,7 +33,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="phrase" id="phrase"
-                            placeholder="{{ Translator::phrase("phrase") }}"
+                            placeholder=""
                             value="{{config("pages.form.data.phrase")}}"
                             {{config("pages.form.validate.rules.phrase") ? "required" : ""}} />
 
@@ -45,7 +45,7 @@
                     @foreach (config('app.languages') as $lang)
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="{{$lang["code_name"]}}">
-                            {{ Translator:: phrase("translate".".as.".$lang["translate_name"]) }}
+                            {{ __($lang["translate_name"]) }}
                             @if(config("pages.form.validate.rules.".$lang["code_name"]))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
@@ -54,7 +54,7 @@
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
-                            placeholder="{{ Translator::phrase("translate".".as.".$lang["translate_name"]) }}"
+                            placeholder=""
                             value="{{config("pages.form.data.".$lang["code_name"])}}"
                             {{config("pages.form.validate.rules.".$lang["code_name"]) ? "required" : ""}} />
                     </div>

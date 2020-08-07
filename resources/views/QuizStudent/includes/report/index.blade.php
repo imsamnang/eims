@@ -30,18 +30,18 @@
                 <button data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name=""
                     class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
                     <i class="fas fa-file-excel"></i>
-                    {{Translator::phrase("Excel")}}
+                    {{__("Excel")}}
                 </button>
                 <button data-toggle="table-to-print" data-target=".sheet.card"
                     class="btn btn-primary d-print-none {{$response["success"] == false ? "d-none":""}}">
                     <i class="fas fa-print"></i>
-                    {{Translator::phrase("print")}} | (A4) {{Translator::phrase("landscape")}}
+                    {{__("Print")}} | (A4) {{__("Landscape")}}
                 </button>
                 <button href="#filter" data-toggle="collapse" class="btn btn-primary" role="button"
                     aria-expanded="false">
                     <i class="fa fa-filter m-0"></i>
                     <span class="d-none d-sm-inline">
-                        {{Translator::phrase("filter")}}
+                        {{__("Filter")}}
                     </span>
                 </button>
             </div>
@@ -53,7 +53,7 @@
                     <label class="custom-control-label" for="table-toggle-color">
                         <span class="ml-4"></span>
                         <span class="fas fa-palette"></span>
-                        {{Translator::phrase("color.black. & .white")}}
+                        {{__("Color Black & White")}}
                     </label>
                 </div>
             </div>
@@ -68,8 +68,8 @@
                                 <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
                                     data-allow-clear="true"
 
-                                    data-text="{{ Translator::phrase("add_new_option") }}"
-                                    data-placeholder="{{ Translator::phrase("choose.quiz") }}" name="quizId"
+                                    data-text="{{ __("Add new option") }}"
+                                    data-placeholder=""
                                     data-select-value="{{request('quizId')}}">
                                     @foreach($quiz["data"] as $o)
                                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -79,7 +79,7 @@
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary float-right"><i
                                         class="fa fa-filter-search"></i>
-                                    {{ Translator::phrase("search_filter") }}</button>
+                                    {{ __("Search filter") }}</button>
                             </div>
                         </div>
 

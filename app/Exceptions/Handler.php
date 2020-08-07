@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        
+
         // if (!Auth::check()) {
         //     return redirect()->route('login');
         // }
@@ -72,19 +72,19 @@ class Handler extends ExceptionHandler
 
         //     switch ($statusCode) {
         //         case 401:
-        //             $response['message'] = Translator::phrase('unauthorized');
+        //             $response['message'] = __('Unauthorized');
         //             break;
         //         case 403:
-        //             $response['message'] = Translator::phrase('Forbidden');
+        //             $response['message'] = __('Forbidden');
         //             break;
         //         case 404:
-        //             $response['message'] = Translator::phrase('Not Found');
+        //             $response['message'] = __('Not Found');
         //             break;
         //         case 405:
-        //             $response['message'] = Translator::phrase('Method Not Allowed');
+        //             $response['message'] = __('Method Not Allowed');
         //             break;
         //         case 422:
-        //             $response['message'] = Translator::phrase($exception->original['message']);
+        //             $response['message'] = __($exception->original['message']);
         //             $response['errors'] = $exception->original['errors'];
         //             break;
         //         default:

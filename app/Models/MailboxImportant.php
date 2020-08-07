@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use PHPHtmlParser\Dom;
@@ -96,7 +96,7 @@ class MailboxImportant extends Model
             $response = [
                 'success'   => false,
                 'data'   => [],
-                'message'   => Translator::phrase('no_data'),
+                'message'   => __('No Data'),
                 'pages' => $pages
             ];
         }
@@ -114,7 +114,7 @@ class MailboxImportant extends Model
                 if ($exists) {
                     $response = [
                         'success'   => false,
-                        'message'   => Translator::phrase('already_exists')
+                        'message'   => __('Already exists')
                     ];
                 } else {
                     $add = MailboxImportant::insert([
@@ -127,11 +127,11 @@ class MailboxImportant extends Model
                             'success'   => true,
                             'type'      => 'mark-read',
                             'message'   => array(
-                                'title' => Translator::phrase('success'),
-                                'text'  => Translator::phrase('mark_read.successfully'),
+                                'title' => __('Success'),
+                                'text'  => __('Mark read successfully'),
                                 'button'   => array(
-                                    'confirm' => Translator::phrase('ok'),
-                                    'cancel'  => Translator::phrase('cancel'),
+                                    'confirm' => __('Ok'),
+                                    'cancel'  => __('Cancel'),
                                 ),
                             ),
                         ];
@@ -168,11 +168,11 @@ class MailboxImportant extends Model
                     $response       =  array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('Delete.!'),
-                            'text'  => Translator::phrase('delete_from_important.successfully'),
+                            'title' => __('Delete!'),
+                            'text'  => __('Delete from important successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -182,12 +182,12 @@ class MailboxImportant extends Model
                     array(
                         'success'   => true,
                         'message'   => array(
-                            'title' => Translator::phrase('are_you_sure.?'),
-                            'text'  => Translator::phrase('delete_from_important.!') . PHP_EOL .
+                            'title' => __('Are you sure?'),
+                            'text'  => __('Delete from important!') . PHP_EOL .
                                 'ID : (' . implode(',', $id) . ')',
                             'button'   => array(
-                                'confirm' => Translator::phrase('yes'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Yes'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     )

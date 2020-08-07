@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormQuizAnswerType;
 use App\Http\Controllers\Controller;
@@ -107,14 +107,14 @@ class QuizAnswerTypeController extends Controller
     public function list($data)
     {
         $data['view']     = QuizAnswerType::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Quiz answer type');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = QuizAnswerType::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.' . str_replace('-', '_', $data['formName']));
+        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Quiz answer type');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -125,7 +125,7 @@ class QuizAnswerTypeController extends Controller
         $response = QuizAnswerType::getData($id, true);
 
         $data['view']       = QuizAnswerType::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . str_replace('-', '_', $data['formName']));
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Quiz answer type');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

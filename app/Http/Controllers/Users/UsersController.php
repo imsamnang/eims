@@ -11,7 +11,7 @@ use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\AttendancesType;
 use App\Http\Requests\FormUsers;
@@ -138,7 +138,7 @@ class usersController extends Controller
         if (Auth::user()->role_id == 9) {
             $pages['form']['validate'] = [
                 'rules'       =>  FormUsers::rulesField2(),
-                'attributes'  =>  FormStaff::attributeField() + ['teacher_or_student' => Translator::phrase('teacher. .or. .student')],
+                'attributes'  =>  FormStaff::attributeField() + ['teacher_or_student' => __('Teacher or Student')],
                 'messages'    =>  FormStaff::customMessages(),
                 'questions'   =>  FormStaff::questionField(),
             ];
@@ -205,7 +205,7 @@ class usersController extends Controller
 
 
 
-        $data['title'] = Translator::phrase(Users::role(app()->getLocale()) . '. | .dashboard');
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('Dashboard');
         $data['view']    = 'Users.includes.dashboard.index';
         return $data;
     }
@@ -214,7 +214,7 @@ class usersController extends Controller
     {
         $data['response'] =  users::getData(null, null, 10);
         $data['view']     =  users::$path['view'] . '.includes.list.index';
-        $data['title']    =  Translator::phrase(Users::role(app()->getLocale()) . '. | .list.' . str_replace('-', '_', $data['formName']));
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('List Users');
         return $data;
     }
 
@@ -247,7 +247,7 @@ class usersController extends Controller
 
 
         $data['view']       = Users::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.' . str_replace('-', '_', $data['formName']));
+        $data['title']   = Users::role(app()->getLocale()).'|'.__('Users');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormSettingsColor extends FormRequest
@@ -35,8 +35,8 @@ class FormSettingsColor extends FormRequest
     public static function attributeField()
     {
         return [
-            'id'         => Translator::phrase('numbering'),
-            'color'      => Translator::phrase('color'),
+            'id'         => __('Id'),
+            'color'      => __('Color'),
          ];
     }
 

@@ -7,7 +7,7 @@
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
-                            {{ Translator:: phrase("register") }}
+                            {{ __("Register") }}
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -22,7 +22,7 @@
                                     <div class="card-header py-2 px-3">
                                         <label
                                             class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                            {{Translator::phrase("list")}}
+                                            {{__("List")}}
                                         </label>
                                     </div>
                                     <div class="card-body p-2">
@@ -57,12 +57,12 @@
                         <div class="row">
                             {{-- <div class="col">
                                 <select class="form-control" data-toggle="select" id="teacher_or_student"
-                                    title="Simple select" data-text="{{ Translator::phrase("add_new_option") }}"
-                                    data-placeholder="{{ Translator::phrase("choose.teacher. .or. .student") }}"
+                                    title="Simple select" data-text="{{ __("Add new option") }}"
+                                    data-placeholder=""
                                     name="teacher_or_student"
                                     {{config("pages.form.validate.rules.teacher_or_student") ? "required" : ""}}>
-                                    <option value="6">{{ Translator::phrase("student")}}</option>
-                                    <option value="8">{{ Translator::phrase("teacher")}}</option>
+                                    <option value="6">{{ __("Student")}}</option>
+                                    <option value="8">{{ __("Teacher")}}</option>
                                 </select>
                             </div> --}}
                             <div class="col">
@@ -70,7 +70,7 @@
                                     class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                                     type="submit">
                                     @if (config("pages.form.role") == "add")
-                                    {{ Translator:: phrase("register") }}
+                                    {{ __("Register") }}
                                     @endif
                                 </button>
                             </div>

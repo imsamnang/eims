@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Translator;
+
 use Illuminate\Database\Eloquent\Model;
 
 class StudentsScore extends Model
@@ -23,7 +23,7 @@ class StudentsScore extends Model
                     $data[$row['subject']['id']] = array(
                         'id'            => $score[0]['id'],
                         'study_subject' => $row['subject'],
-                        'marks'         => $score[0]['subject_marks'],
+                        'score'         => $score[0]['subject_marks'],
                         'pass_or_fail'  => ($score[0]['subject_marks'] >= $row['subject']['pass_mark_theory']) ? 'pass' : 'fail',
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/subject/edit/' . $score[0]['id']),
                     );
@@ -31,7 +31,7 @@ class StudentsScore extends Model
                     $data[$row['subject']['id']] = array(
                         'id'            => null,
                         'study_subject' => $row['subject'],
-                        'marks'         => 0,
+                        'score'         => 0,
                         'pass_or_fail'  => 'fail',
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/subject/add/'),
                     );
@@ -65,11 +65,11 @@ class StudentsScore extends Model
                         //'data'      => StudentsStudyCourseScore::getData($student_study_course_score_id)['data'],
                         'type'      => 'add',
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('add.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Add Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );
@@ -101,11 +101,11 @@ class StudentsScore extends Model
                         'type'      => 'update',
                         //'data'      => StudentsStudyCourseScore::getData($student_study_course_score_id)['data'],
                         'message'   => array(
-                            'title' => Translator::phrase('success'),
-                            'text'  => Translator::phrase('update.successfully'),
+                            'title' => __('Success'),
+                            'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => Translator::phrase('ok'),
-                                'cancel'  => Translator::phrase('cancel'),
+                                'confirm' => __('Ok'),
+                                'cancel'  => __('Cancel'),
                             ),
                         ),
                     );

@@ -14,33 +14,33 @@
                         </div>
 
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">{{Translator::phrase("numbering")}}​</th>
+                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
                     <th data-type="text" data-key="study_program.name" width="1" class="sort" data-sort="study_program">
-                        {{Translator::phrase("study_program")}}
+                        {{__("Study Program")}}
                     </th>
                     <th data-type="text" data-key="study_course.name" width="1" class="sort" data-sort="study_course">
-                        {{Translator::phrase("study_course")}}
+                        {{__("Study Course")}}
                     </th>
                     <th data-type="text" data-key="study_generation.name" width="1" class="sort" data-sort="study_generation">
-                        {{Translator::phrase("study_generation")}}
+                        {{__("Study Generation")}}
                     </th>
                     <th data-type="text" data-key="study_academic_year.name" width="1" class="sort" data-sort="study_academic_year">
-                        {{Translator::phrase("study_academic_year")}}
+                        {{__("Study Academic year")}}
                     </th>
                     <th data-type="text" data-key="study_semester.name" width="1" class="sort" data-sort="study_semester">
-                        {{Translator::phrase("study_semester")}}
+                        {{__("Study Semester")}}
                     </th>
                     <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
-                        {{Translator::phrase("study_session")}}
+                        {{__("Study Session")}}
                     </th>
                     <th data-type="text" data-key="description">
-                        {{Translator::phrase("description")}}
+                        {{__("Description")}}
                     </th>
                     <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
-                        {{Translator::phrase("status")}}
+                        {{__("Status")}}
                     </th>
                     <th data-type="image" data-key="photo">
-                        {{Translator::phrase("photo")}}
+                        {{__("Photo")}}
                     </th>
                 </tr>
 

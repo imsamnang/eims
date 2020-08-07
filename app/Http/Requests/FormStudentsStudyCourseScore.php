@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudentsStudyCourseScore extends FormRequest
@@ -39,10 +39,10 @@ class FormStudentsStudyCourseScore extends FormRequest
     public static function attributeField($flag = '[]')
     {
         return [
-            'student'        => Translator::phrase('student'),
-            'study_subject'.$flag        => Translator::phrase('study_subject'),
-            'attendance_marks'     => Translator::phrase('attendance_marks'),
-            'other_marks'          => Translator::phrase('other_marks'),
+            'student'        => __('Student'),
+            'study_subject'.$flag        => __('Study subjects'),
+            'attendance_marks'     => __('Attendance Score'),
+            'other_marks'          => __('Other score'),
         ];
 
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormStudyShortCourseSession extends FormRequest
@@ -36,10 +36,10 @@ class FormStudyShortCourseSession extends FormRequest
     public static function attributeField()
     {
         return [
-            'study_short_course_schedule'      => Translator::phrase('short_course_schedule'),
-            'study_session'              => Translator::phrase('study_session'),
-            'study_start'                => Translator::phrase('study_start'),
-            'study_end'                  => Translator::phrase('study_end'),
+            'study_short_course_schedule'      => __('Short course schedule'),
+            'study_session'              => __('Study session'),
+            'study_start'                => __('Study start'),
+            'study_end'                  => __('Study end'),
 
         ];
     }

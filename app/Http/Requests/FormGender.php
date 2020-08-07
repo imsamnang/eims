@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Helpers\Translator;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormGender extends FormRequest
@@ -39,14 +39,14 @@ class FormGender extends FormRequest
     public static function attributeField()
     {
 
-        $attributes['name']    = Translator::phrase('gender');
+        $attributes['name']    = __('Gender');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
-                $attributes[$lang['code_name']] =  Translator::phrase('gender.as.' . $lang['translate_name']);
+                $attributes[$lang['code_name']] =  $lang['translate_name'];
             }
         }
-        $attributes['description']            = Translator::phrase('description');
-        $attributes['image']                  = Translator::phrase('image');
+        $attributes['description']            = __('Description');
+        $attributes['image']                  = __('Image');
         return $attributes;
     }
 

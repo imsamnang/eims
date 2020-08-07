@@ -8,7 +8,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{ Translator:: phrase(config("pages.form.role").'.'.str_replace("-","_",config("pages.form.name"))) }}
+                            {{ __(config("pages.form.role")) }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -32,7 +32,7 @@
                                 <div class="{{count($listData) > 1 ? "col-md-8":"col-md-12"}}">
                                     <a href="" name="scrollTo"></a>
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
-                                        {{ Translator:: phrase("crop") }}
+                                        {{ __("Crop") }}
                                     </button>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" class="h3 mr-2">
-                            {{Translator::phrase("add_absent.(.qrcode.)")}}
+                            {{__("Add absent")}} ({{__('Qrcode')}})
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i
                                 class="fas fa-external-link"></i> </a>
@@ -66,10 +66,10 @@
                             <div class="card-body">
                                 <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}"
                                     class="text-center"
-                                    data-camera-error="{{Translator::phrase("there_was_a_problem_with_your_camera.<br>.no_cameras_found")}}">
+                                    data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                     <div class="please_wait"
                                         style="position: absolute;    z-index: 1;    top: 50%;    left: 50%;    font-size: 1.5rem;    font-weight: 600;    color: white;    user-select: none;    transform: translate(-50%, -50%);">
-                                        {{Translator::phrase("please_wait")}}</div>
+                                        {{__("Please wait")}}</div>
                                 </div>
                                 <div class="message"></div>
                             </div>

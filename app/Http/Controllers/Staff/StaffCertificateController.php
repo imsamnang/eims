@@ -8,7 +8,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StaffCertificate;
 use App\Http\Controllers\Controller;
@@ -113,14 +113,14 @@ class StaffCertificateController extends Controller
     {
         $data['response'] = StaffCertificate::getData(null, null, 10);
         $data['view']     = StaffCertificate::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.staff_certificate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Staff Certificate');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StaffCertificate::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.staff_certificate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Staff Certificate');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -130,7 +130,7 @@ class StaffCertificateController extends Controller
     {
         $response = StaffCertificate::getData($id, true);
         $data['view']       = StaffCertificate::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.staff_certificate');
+        $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff Certificate');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

@@ -10,7 +10,7 @@ use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudySubjects;
 use App\Models\StaffTeachSubject;
@@ -133,7 +133,7 @@ class StaffTeachSubjectController extends Controller
     {
         $data['response'] = StaffTeachSubject::getData(null, null, 10);
         $data['view']     = StaffTeachSubject::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.staff_teach_subject');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('List Staff teach subject');
         return $data;
     }
     public function grid($data)
@@ -141,14 +141,14 @@ class StaffTeachSubjectController extends Controller
         $data['response'] = StaffTeachSubject::getTeachSubjects(null, null, null, 10);
 
         $data['view']     = StaffTeachSubject::$path['view'] . '.includes.grid.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .grid.staff_teach_subject');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Grid Staff teach subject');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StaffTeachSubject::$path['view'] . '.includes.form.index';
-        $data['title']     = Translator::phrase(Users::role(app()->getLocale()) . '. | .add.staff_teach_subject');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Add Staff teach subject');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -160,7 +160,7 @@ class StaffTeachSubjectController extends Controller
     {
         $response = StaffTeachSubject::getData(null, $id, true);
         $data['view']       = StaffTeachSubject::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.staff_teach_subject');
+        $data['title']               = Users::role(app()->getLocale()).'|'.__('Staff teach subject');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

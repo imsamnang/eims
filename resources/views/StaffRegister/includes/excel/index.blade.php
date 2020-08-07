@@ -41,7 +41,7 @@
                             <div class="card sticky-top">
                                 <div class="card-header py-2 px-3">
                                     <label class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                        {{Translator::phrase("list")}}
+                                        {{__("List")}}
                                     </label>
                                 </div>
                                 <div class="card-body p-2">
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                <a href="{{str_replace("/add","",config("pages.form.action.add"))}}" class="btn btn-default">{{Translator::phrase("back")}}</a>
+                <a href="{{str_replace("/add","",config("pages.form.action.add"))}}" class="btn btn-default">{{__("Back")}}</a>
                 </div>
             </div>
         </div>

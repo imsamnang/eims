@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header">
             <h5 class="h3 mb-0">
-                {{ Translator:: phrase(str_replace("-","_",config("pages.form.name")).".color" ) }}
+                {{ __('Name' ) }}
             </h5>
         </div>
         <div class="card-body">
@@ -19,7 +19,7 @@
                     <div class="card sticky-top">
                         <div class="card-header py-2 px-3">
                             <label class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
-                                {{Translator::phrase("list")}}
+                                {{__("List")}}
                             </label>
                         </div>
                         <div class="card-body p-2">
@@ -50,7 +50,7 @@
         <div class="card-footer">
             @if (!request()->ajax())
             <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview"))}}"
-                class="btn btn-default" type="button">{{ Translator:: phrase("back") }}</a>
+                class="btn btn-default" type="button">{{ __("Back") }}</a>
             @endif
         </div>
 

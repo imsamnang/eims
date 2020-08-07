@@ -19,7 +19,7 @@ class CreateStudyGradesTable extends Migration
             $table->string('name')->nullable();
             $table->string('en')->nullable();
             $table->string('km')->nullable();
-            $table->float('marks')->nullable();
+            $table->float('score')->nullable();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
              $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();

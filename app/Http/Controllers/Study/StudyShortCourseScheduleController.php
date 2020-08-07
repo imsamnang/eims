@@ -7,7 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudySubjects;
 use App\Models\StudyGeneration;
@@ -120,7 +120,7 @@ class StudyShortCourseScheduleController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyShortCourseSchedule::$path['view'] . '.includes.list.index';
-        $data['title']    = Translator::phrase(Users::role(app()->getLocale()) . '. | .list.Study_Course_Schedule' . '.' . $param1);
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Short Course Schedule');
         return $data;
     }
 
@@ -136,7 +136,7 @@ class StudyShortCourseScheduleController extends Controller
 
 
         $data['view']       = StudyShortCourseSchedule::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .' . $type . '.Study_Course_Schedule');
+        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Short Course Schedule');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
 

@@ -8,7 +8,7 @@ use App\Helpers\QRHelper;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Helpers\Translator;
+
 use App\Models\SocailsMedia;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
@@ -79,7 +79,7 @@ class QrCodeController extends Controller
     public function make($data, $user)
     {
         $data['view']       = QRHelper::$path['view'] . '.includes.form.index';
-        $data['title']      = Translator::phrase(Users::role(app()->getLocale()) . '. | .make.' . str_replace('-', '_', $data['formName']));
+        $data['title']      = Users::role(app()->getLocale()).'|'.__('Qrcode');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $user['data'][0]['id']);
         $data['formData']   = $user['data'][0];
