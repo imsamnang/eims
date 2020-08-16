@@ -13,6 +13,7 @@ use App\Helpers\CertificateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCertificate;
 use App\Models\StudentsStudyCourse;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Session;
 
 class CertificateController extends Controller
 {
+
 
     public function __construct()
     {
@@ -32,14 +34,16 @@ class CertificateController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['institutes']      = Institute::getData();
+
         $data['formData'] = array(
-            'front' => asset('/assets/img/certificate/front.png'),
-            'background' => asset('/assets/img/certificate/background.png'),
+            [
+                'front' => asset('/assets/img/certificate/front.png'),
+                'background' => asset('/assets/img/certificate/background.png'),
+            ]
         );
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . CertificateFrames::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()).'|'.__('Certificate');
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' .  __('Certificate');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -52,21 +56,24 @@ class CertificateController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            $data = $this->add($data);
+            if (request()->method() == 'POST') {
+                return CertificateFrames::addToTable();
+            }
+            $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
-            if ($id) {
-                $data = $this->view($data, $param2);
+            if ($param2) {
+                $data = $this->show($data, $id, $param1);
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
             if ($id) {
-                if (request()->method() == 'POST') {
+                if (request()->method() == "POST") {
                     return CertificateFrames::updateToTable($id);
                 }
-                $data = $this->edit($data, $param2);
+                $data = $this->show($data, $id, $param1);
             } else {
                 $data = $this->list($data);
             }
@@ -75,7 +82,7 @@ class CertificateController extends Controller
         } elseif ($param1 == 'make') {
             if (request()->method() == 'POST') {
                 if (request()->all()) {
-                    Session::put('certificate', json_decode(request("certificate"), true));
+                    Session::put('certificate', json_decode(request()->post("certificate"), true));
                     if (request()->hasFile('front_certificate')) {
                         $file = request()->front_certificate;
                         $file_tmp  = $file->getPathName();
@@ -106,7 +113,7 @@ class CertificateController extends Controller
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $d['title'] = Users::role(app()->getLocale()).'|'.__('Certificate');
+            $d['title'] = Users::role(app()->getLocale()) . ' | ' . __('Certificate');
             MetaHelper::setConfig(
                 [
                     'title'       => $d['title'],
@@ -118,8 +125,18 @@ class CertificateController extends Controller
                 ]
             );
             config()->set('app.title', $d['title']);
-            $d['certificates'] = CertificateHelper::make($param3);
+            request()->merge([
+                'size'  => request('size', 'A4'),
+                'layout'  => request('layout', 'landscape'),
+            ]);
+
+
+            $d['response'] = CertificateHelper::make($param3);
+
             return view('Certificate.includes.result.index', $d);
+        } elseif ($param1 == 'save') {
+
+            return StudentsStudyCourse::makeCertificateToTable();
         } else {
             abort(404);
         }
@@ -155,72 +172,113 @@ class CertificateController extends Controller
         ];
 
 
+        //Select Option
+
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data'] = Institute::whereIn('id', CertificateFrames::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-        return view(CertificateFrames::$path['view'] . '.index', $data);
+        return view('Certificate.index', $data);
     }
 
     public function list($data)
     {
+        $table = CertificateFrames::orderBy('id', 'DESC');
+
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+        $response = $table->get()->map(function ($row) {
+            $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+            $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+            $row['layout'] = __($row->layout);
+            $row['action']  = [
+                'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/set/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Certificate');
-        $data['response'] =  CertificateFrames::getData(null, null, 10);
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Certificate');
         return $data;
     }
 
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']  = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Certificate');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-
-        return $data;
-    }
-
-    public function view($data, $id)
-    {
-        $response = CertificateFrames::getData($id, true);
-        $data['view']       = CertificateFrames::$path['view'] . '.includes.view.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Certificate');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
-        return $data;
-    }
-
-    public function edit($data, $id)
-    {
-        $response = CertificateFrames::getData($id, true);
         $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Certificate');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
+        if ($id) {
+
+            $response           = CertificateFrames::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+                $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->name,
+                    'image'  => $row->front,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
-    public function make($data, $user)
+
+
+
+    public function make($data, $ts)
     {
 
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Certificate');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Certificate');
         $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
-        $data['certificates']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
-        $data['certificates']['frame']['front'] = $data['certificates']['frame']['front_o'];
+        $data['response']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
+        $data['response']['frame']['front'] = $data['response']['frame']['front_o'];
+
         $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');
 
-        $data['certificates']['all'] = CertificateFrames::frameData('all');
-        $data['certificates']['selected'] = CertificateFrames::frameData('selected');
-
-        if ($user['success']) {
-            $data['certificates']['user'] = $user['data'][0];
+        $data['response']['all'] = CertificateFrames::frameData('all');
+        $data['response']['selected'] = CertificateFrames::frameData('selected');
+        if ($ts['success']) {
+            $data['response']['data'] = $ts['data'];
         } else {
-            $data['certificates']['user'] =  [];
+            $data['response']['data'] =  [];
         }
+
+        $data['certificates']['data'] = CertificateFrames::get()->map(function ($row) {
+            $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+            $row['layout'] = __($row->layout);
+            $row['action']  = [
+                'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/set/' . $row['id']),
+            ];
+
+            return $row;
+        });
 
         return $data;
     }

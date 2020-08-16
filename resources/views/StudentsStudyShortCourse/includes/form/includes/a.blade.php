@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card m-0">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
             (A)
@@ -8,9 +8,9 @@
         <div class="form-row">
             <div class="col-md-12 mb-3">
                 <label class="form-control-label" for="study_short_course_session">
-                    {{ __("short_course_session") }}
+                    {{ __("Short course session") }}
 
-                    @if(array_key_exists("study_short_course_session",config("pages.form.validate.rules")))
+                    @if(config("pages.form.validate.rules.study_short_course_session"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
                     @endif
@@ -18,11 +18,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_short_course_session" title="Simple select"
-
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    name="study_short_course_session"
+                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_short_course_session"
                     data-select-value="{{config("pages.form.data.study_short_course_session.id")}}">
                     @foreach($study_short_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -33,20 +29,18 @@
                 <label class="form-control-label" for="student">
                     {{ __("Students request study") }}
 
-                    @if(array_key_exists("student[]",config("pages.form.validate.rules")))
+                    @if(config("pages.form.validate.rules.student[]"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
                     @endif
 
                 </label>
 
-                <select {{config("pages.form.role") == "add" ? "multiple" : ""}}  class="form-control" data-toggle="select" id="student" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                <select {{config("pages.form.role") == "add" ? "multiple" : ""}} class="form-control"
+                    data-toggle="select" id="student" title="Simple select" data-text="{{ __("Add new option") }}"
+                    data-placeholder="" name="student[]"
                     data-select-value="{{config("pages.form.data.request_id",request("studRequestId"))}}"
-
-                    {{(array_key_exists("student[]",config("pages.form.validate.rules"))) ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.student[]") ? "required" : ""}}>
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>

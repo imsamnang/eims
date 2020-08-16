@@ -9,6 +9,7 @@ use App\Helpers\QRHelper;
 use App\Models\CardFrames;
 use App\Helpers\ImageHelper;
 use App\Models\StudentsRequest;
+use App\Models\CertificateFrames;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use App\Models\StudentsShortCourseRequest;
@@ -36,6 +37,7 @@ class ImagesController extends Controller
                 StudentsStudyCourse::$path['image'],
                 QRHelper::$path['image'],
                 CardFrames::$path['image'],
+                CertificateFrames::$path['image'],
                 StudentsRequest::$path['image'],
                 StudentsShortCourseRequest::$path['image'],
             ])) {

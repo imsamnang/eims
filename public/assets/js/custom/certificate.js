@@ -320,6 +320,18 @@ function Certificate(options) {
             ajax(url, formData);
         });
 
+        settings.form.find("#submit-one").click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-one"));
+            settings.form.submit();
+        });
+
+        settings.form.find("#submit-all").click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-all"));
+            settings.form.submit();
+        });
+
         $(document)
             .unbind("keydown")
             .on("keydown", e => {

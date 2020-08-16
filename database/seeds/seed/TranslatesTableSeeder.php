@@ -180,7 +180,7 @@ class TranslatesTableSeeder extends Seeder
             ],
             [
                 'phrase' => 'attendance_marks',
-                'en' => 'Attendance marks',
+                'en' => 'Attendance score',
                 'km' => 'ពិន្ទុចូលរួម'
             ],
             [
@@ -1295,7 +1295,7 @@ class TranslatesTableSeeder extends Seeder
             ],
             [
                 'phrase' => 'other_marks',
-                'en' => 'Other marks',
+                'en' => 'Other score',
                 'km' => 'ពិន្ទុផ្សេងទៀត'
             ],
             [

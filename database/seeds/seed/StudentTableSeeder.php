@@ -28,18 +28,18 @@ class StudentTableSeeder extends Seeder
                 'marital_id'            => 1,
                 'blood_group_id'        => 7,
                 'date_of_birth'         => '1998-10-16',
-                'place_of_birth'        => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
-                'current_resident'      => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
+
+                'pob_province_id'       => 17,
+                'pob_district_id'       => 1709,
+                'pob_commune_id'        => 170906,
+                'pob_village_id'        => 17090602,
+
+
+                'curr_province_id'      => 17,
+                'curr_district_id'      => 1709,
+                'curr_commune_id'       => 170906,
+                'curr_village_id'       => 17090602,
+
                 'permanent_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'temporaray_address'    => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'phone'                 => '0969140554',
@@ -61,18 +61,18 @@ class StudentTableSeeder extends Seeder
                 'marital_id'            => 1,
                 'blood_group_id'        => 7,
                 'date_of_birth'         => '1998-10-16',
-                'place_of_birth'        => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
-                'current_resident'      => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
+
+                'pob_province_id'       => 17,
+                'pob_district_id'       => 1709,
+                'pob_commune_id'        => 170906,
+                'pob_village_id'        => 17090602,
+
+
+                'curr_province_id'      => 17,
+                'curr_district_id'      => 1709,
+                'curr_commune_id'       => 170906,
+                'curr_village_id'       => 17090602,
+
                 'permanent_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'temporaray_address'    => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'phone'                 => '0969140554',
@@ -95,18 +95,16 @@ class StudentTableSeeder extends Seeder
                 'marital_id'            => 1,
                 'blood_group_id'        => 7,
                 'date_of_birth'         => '1997-06-26',
-                'place_of_birth'        => json_encode([
-                    'province' => 22,
-                    'district' => 2204,
-                    'commune'  => 220404,
-                    'village'  => 22040413,
-                ]),
-                'current_resident'      => json_encode([
-                    'province' => 17,
-                    'district' => 1710,
-                    'commune'  => 171003,
-                    'village'  => 17100302,
-                ]),
+                'pob_province_id'       => 17,
+                'pob_district_id'       => 1709,
+                'pob_commune_id'        => 170906,
+                'pob_village_id'        => 17090602,
+
+
+                'curr_province_id'      => 17,
+                'curr_district_id'      => 1709,
+                'curr_commune_id'       => 170906,
+                'curr_village_id'       => 17090602,
                 'permanent_address'     => 'វាល គោកចក សៀមរាប ខេត្តសៀមរាប',
                 'temporaray_address'    => 'វាល គោកចក សៀមរាប ខេត្តសៀមរាប',
                 'phone'                 => '093210060',
@@ -129,18 +127,18 @@ class StudentTableSeeder extends Seeder
                 'marital_id'            => 1,
                 'blood_group_id'        => 7,
                 'date_of_birth'         => '1998-10-16',
-                'place_of_birth'        => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
-                'current_resident'      => json_encode([
-                    'province' => 17,
-                    'district' => 1709,
-                    'commune'  => 170906,
-                    'village'  => 17090602,
-                ]),
+
+                'pob_province_id'       => 17,
+                'pob_district_id'       => 1709,
+                'pob_commune_id'        => 170906,
+                'pob_village_id'        => 17090602,
+
+
+                'curr_province_id'      => 17,
+                'curr_district_id'      => 1709,
+                'curr_commune_id'       => 170906,
+                'curr_village_id'       => 17090602,
+
                 'permanent_address'     => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'temporaray_address'    => 'ត្រពាំងទឹម កណ្តែក ប្រាសាទបាគង ខេត្តសៀមរាប',
                 'phone'                 => '0969140554',

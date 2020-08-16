@@ -15,7 +15,7 @@
     @foreach ($row['scores'] as $key => $scores)
     @if($key != "attendance_marks" && $key != "other_marks")
     <td class="text-center {{$scores["pass_or_fail"] == "fail" ? "bg-gray text-white" :"" }}">
-        <span>{{$scores["marks"]}}</span>
+        <span>{{$scores["score"]}}</span>
     </td>
     @endif
     @endforeach

@@ -6,33 +6,34 @@
     </div>
     <div class="card-body">
         <div class="form-row">
-        <input type="hidden" name="id" value="{{config("pages.form.data.id")}}">
+            <input type="hidden" name="id" value="{{config("pages.form.data.".$key.".id")}}">
         </div>
         <div class="form-row">
             @if (Auth::user()->role_id != 2)
-                <div class="col-md-12 mb-3">
-                    <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
-                        for="institute">
-                        {{ __("Institute") }}
-                        @if(config("pages.form.validate.rules.institute"))
-                        <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                            <i class="fas fa-asterisk fa-xs"></i>
-                        </span>
-                        @endif
-                    </label>
+            <div class="col-md-12 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
+                    for="institute">
+                    {{ __("Institute") }}
+                    @if(config("pages.form.validate.rules.institute"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
 
-                    <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                        data-placeholder=""
-                        data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
-                        {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
-                        @foreach($institute["data"] as $o)
-                        <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                    data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".institute_id",Auth::user()->institute_id)}}"
+                    {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
+                    @foreach($institute["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+            </div>
             @else
-             <input type="hidden" name="institute" id="institute" value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}">
+            <input type="hidden" name="institute" id="institute"
+                value="{{config("pages.form.data.".$key.".institute_id",Auth::user()->institute_id)}}">
             @endif
 
             <div class="col-md-4 mb-3">
@@ -49,8 +50,8 @@
 
                 <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_program.id",request("programId"))}}" data-append-to="#study_course"
-                    data-append-url="{{str_replace("add","list?programId=",$study_course["pages"]["form"]["action"]["add"])}}">
+                    data-select-value="{{config("pages.form.data.".$key.".study_program_id",request("programId"))}}"
+                    data-append-to="#study_course-{{$key}}" data-append-url="{{$study_course["action"]["list"]}}?programId=">
                     @foreach($study_program["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
@@ -72,23 +73,20 @@
                     @endif
                 </label>
 
-                <select {{$study_course['success']? "" : "disabled" }} class="form-control" data-toggle="select"
-                    id="study_course" title="Simple select"
-
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_course.id",request("courseId"))}}">
+                <select {{$study_course['data']? "" : "disabled" }} class="form-control" data-toggle="select"
+                    id="study_course-{{$key}}" title="Simple select" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".study_course_id",request("courseId"))}}">
                     @foreach($study_course["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-4 mb-3">
-
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.study_generation")}}" class="form-control-label"
                     for="study_generation">
 
-                    {{ __("study_generation") }}
+                    {{ __("Study Generation") }}
 
                     @if(config("pages.form.validate.rules.study_generation"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -98,11 +96,10 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
-
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_generation.id",request("generationId"))}}">
+                    data-select-value="{{config("pages.form.data.".$key.".study_generation_id",request("generationId"))}}">
                     @foreach($study_generation["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    <option value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
 
                 </select>
@@ -122,11 +119,10 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
-
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_academic_year.id",request("yearId"))}}">
+                    data-select-value="{{config("pages.form.data.".$key.".study_academic_year_id",request("yearId"))}}">
                     @foreach($study_academic_year["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    <option  value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
             </div>
@@ -144,11 +140,10 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
-
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_semester.id",request("semesterId"))}}">
+                    data-select-value="{{config("pages.form.data.".$key.".study_semester_id",request("semesterId"))}}">
                     @foreach($study_semester["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    <option  value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
             </div>
@@ -167,11 +162,10 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
-
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">
+                    data-select-value="{{config("pages.form.data.".$key.".study_session_id",request("sessionId"))}}">
                     @foreach($study_session["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    <option  value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
             </div>

@@ -1,84 +1,85 @@
 <?php
 
-use App\Models\ActivityFeed;
-use App\Models\ActivityFeedComment;
-use App\Models\ActivityFeedCommentsReply;
-use App\Models\ActivityFeedLink;
-use App\Models\ActivityFeedMedia;
-use App\Models\ActivityFeedReaction;
-use App\Models\Days;
-use App\Models\Staff;
-use App\Models\Gender;
-use App\Models\Marital;
+use App\User;
 use App\Models\App;
+use App\Models\Days;
+use App\Models\Quiz;
+use App\Models\Roles;
+use App\Models\Staff;
+use App\Models\Users;
+use App\Models\Gender;
+use App\Models\Mailbox;
+use App\Models\Marital;
+use App\Models\Communes;
 use App\Models\Students;
+use App\Models\Villages;
+use App\Models\Districts;
 use App\Models\Institute;
+use App\Models\Provinces;
 use App\Models\BloodGroup;
 use App\Models\CardFrames;
 use App\Models\MotherTong;
+use App\Models\QuizAnswer;
+use App\Models\SocialAuth;
 use App\Models\StudyClass;
 use App\Models\CourseTypes;
+use App\Models\MailboxRead;
 use App\Models\Nationality;
-use App\Models\StudyOverallFund;
+use App\Models\QuizStudent;
+use App\Models\StaffStatus;
 use App\Models\StudyCourse;
 use App\Models\StudyStatus;
+use App\Models\ThemesColor;
+use App\Models\ActivityFeed;
+use App\Models\MailboxReply;
+use App\Models\MailboxTrash;
+use App\Models\QuizQuestion;
+use App\Models\SocailsMedia;
 use App\Models\StudyFaculty;
+use App\Models\StudySession;
+use App\Models\FeatureSlider;
+use App\Models\StudentsScore;
 use App\Models\StudyModality;
 use App\Models\StudyPrograms;
 use App\Models\StudySubjects;
+use App\Models\QuizAnswerType;
+use App\Models\StaffGuardians;
 use App\Models\StudySemesters;
 use App\Models\AttendancesType;
-use App\Models\Communes;
+use App\Models\StaffExperience;
+use App\Models\StaffInstitutes;
+use App\Models\StudentsRequest;
 use App\Models\StudyGeneration;
+use App\Models\ActivityFeedLink;
 use App\Models\CurriculumAuthor;
+use App\Models\MailboxImportant;
+use App\Models\QuizQuestionType;
+use App\Models\StaffCertificate;
+use App\Models\StudyOverallFund;
+use App\Models\ActivityFeedMedia;
+use App\Models\StaffDesignations;
+use App\Models\StaffTeachSubject;
 use App\Models\StudentsGuardians;
 use App\Models\StudyAcademicYears;
 use App\Models\StudyCourseRoutine;
+use App\Models\StudyCourseSession;
+use App\Models\StudySubjectLesson;
+use App\Models\ActivityFeedComment;
+use App\Models\StaffQualifications;
 use App\Models\StudentsAttendances;
+use App\Models\StudentsCertificate;
 use App\Models\StudentsStudyCourse;
 use App\Models\StudyCourseSchedule;
+use App\Models\ActivityFeedReaction;
 use App\Models\CurriculumEndorsement;
-use App\Models\Districts;
-use App\Models\FeatureSlider;
-use App\Models\Mailbox;
-use App\Models\MailboxImportant;
-use App\Models\MailboxRead;
-use App\Models\MailboxReply;
-use App\Models\MailboxTrash;
-use App\Models\Provinces;
-use App\Models\Quiz;
-use App\Models\QuizAnswer;
-use App\Models\QuizAnswerType;
-use App\Models\QuizQuestion;
-use App\Models\QuizQuestionType;
-use App\Models\QuizStudent;
-use App\Models\Roles;
-use App\Models\SocailsMedia;
-use App\Models\SocialAuth;
-use App\Models\StaffDesignations;
-use App\Models\StaffExperience;
-use App\Models\StaffGuardians;
-use App\Models\StaffInstitutes;
-use App\Models\StaffQualifications;
-use App\Models\StaffStatus;
-use App\Models\StaffTeachSubject;
-use App\Models\StudentsCertificate;
-use App\Models\StudentsRequest;
-use App\Models\StudentsScore;
-use App\Models\StudentsShortCourseRequest;
+use Illuminate\Support\Facades\Schema;
+use App\Models\StudyShortCourseSession;
 use App\Models\StudentsStudyCourseScore;
 use App\Models\StudentsStudyShortCourse;
-use App\Models\StudyCourseSession;
-use App\Models\StudySession;
 use App\Models\StudyShortCourseSchedule;
-use App\Models\StudyShortCourseSession;
-use App\Models\StudySubjectLesson;
-use App\Models\ThemesColor;
-use App\Models\Users;
-use App\Models\Villages;
-use App\User;
-use Illuminate\Support\Facades\Schema;
+use App\Models\ActivityFeedCommentsReply;
 use Illuminate\Database\Schema\Blueprint;
+use App\Models\StudentsShortCourseRequest;
 use Illuminate\Database\Migrations\Migration;
 
 class ForeignKey extends Migration
@@ -162,6 +163,16 @@ class ForeignKey extends Migration
             $table->foreign('gender_id')->references('id')->on((new Gender())->getTable())->onDelete('cascade');
             $table->foreign('marital_id')->references('id')->on((new Marital())->getTable())->onDelete('cascade');
             $table->foreign('blood_group_id')->references('id')->on((new BloodGroup())->getTable())->onDelete('cascade');
+
+            $table->foreign('pob_province_id')->references('id')->on((new Provinces)->getTable())->onDelete('cascade');
+            $table->foreign('pob_district_id')->references('id')->on((new Districts)->getTable())->onDelete('cascade');
+            $table->foreign('pob_commune_id')->references('id')->on((new Communes)->getTable())->onDelete('cascade');
+            $table->foreign('pob_village_id')->references('id')->on((new Villages)->getTable())->onDelete('cascade');
+
+            $table->foreign('curr_province_id')->references('id')->on((new Provinces)->getTable())->onDelete('cascade');
+            $table->foreign('curr_district_id')->references('id')->on((new Districts)->getTable())->onDelete('cascade');
+            $table->foreign('curr_commune_id')->references('id')->on((new Communes)->getTable())->onDelete('cascade');
+            $table->foreign('curr_village_id')->references('id')->on((new Villages)->getTable())->onDelete('cascade');
         });
 
         Schema::table((new StudentsGuardians())->getTable(), function (Blueprint $table) {
@@ -229,6 +240,16 @@ class ForeignKey extends Migration
             $table->foreign('marital_id')->references('id')->on((new Marital())->getTable())->onDelete('cascade');
             $table->foreign('blood_group_id')->references('id')->on((new BloodGroup())->getTable())->onDelete('cascade');
             $table->foreign('staff_status_id')->references('id')->on((new StaffStatus())->getTable())->onDelete('cascade');
+
+            $table->foreign('pob_province_id')->references('id')->on((new Provinces)->getTable())->onDelete('cascade');
+            $table->foreign('pob_district_id')->references('id')->on((new Districts)->getTable())->onDelete('cascade');
+            $table->foreign('pob_commune_id')->references('id')->on((new Communes)->getTable())->onDelete('cascade');
+            $table->foreign('pob_village_id')->references('id')->on((new Villages)->getTable())->onDelete('cascade');
+
+            $table->foreign('curr_province_id')->references('id')->on((new Provinces)->getTable())->onDelete('cascade');
+            $table->foreign('curr_district_id')->references('id')->on((new Districts)->getTable())->onDelete('cascade');
+            $table->foreign('curr_commune_id')->references('id')->on((new Communes)->getTable())->onDelete('cascade');
+            $table->foreign('curr_village_id')->references('id')->on((new Villages)->getTable())->onDelete('cascade');
         });
 
         Schema::table((new StaffInstitutes())->getTable(), function (Blueprint $table) {
@@ -242,7 +263,7 @@ class ForeignKey extends Migration
 
         Schema::table((new StaffQualifications())->getTable(), function (Blueprint $table) {
             $table->foreign('staff_id')->references('id')->on((new Staff())->getTable())->onDelete('cascade');
-            // $table->foreign('certificate_id')->references('id')->on((new Certificate())->getTable())->onDelete('cascade');
+            $table->foreign('certificate_id')->references('id')->on((new StaffCertificate())->getTable())->onDelete('cascade');
         });
         Schema::table((new StaffExperience())->getTable(), function (Blueprint $table) {
             $table->foreign('staff_id')->references('id')->on((new Staff())->getTable())->onDelete('cascade');

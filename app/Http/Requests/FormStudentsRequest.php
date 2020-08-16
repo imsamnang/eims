@@ -23,7 +23,7 @@ class FormStudentsRequest extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public static function rulesField($flag = '[]')
     {
         $rules['institute']           = 'required';
         $rules['study_program']       = 'required';
@@ -32,20 +32,22 @@ class FormStudentsRequest extends FormRequest
         $rules['study_academic_year'] = 'required';
         $rules['study_semester']      = 'required';
         $rules['study_session']       = 'required';
+        $rules['student' . $flag]       = 'required';
         return  $rules;
     }
 
-    public static function attributeField()
+    public static function attributeField($flag = '[]')
     {
 
         $attributes['institute']          = __('Institute');
         $attributes['study_program']      = __('Study program');
         $attributes['study_course']       = __('Study course');
         $attributes['study_generation']   = __('Study generation');
-        $attributes['study_academic_year']= __('Study academic​ year');
+        $attributes['study_academic_year'] = __('Study academic​ year');
         $attributes['study_semester']     = __('Study semester');
         $attributes['study_session']      = __('Study session');
         $attributes['photo']              = __('Photo');
+        $attributes['student' . $flag]    = __('Students');
 
         return $attributes;
     }

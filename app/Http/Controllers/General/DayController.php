@@ -38,7 +38,7 @@ class DayController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Days::getData(null, null, 10,request('search'));
+                return Days::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
@@ -113,14 +113,14 @@ class DayController extends Controller
     {
 
         $data['view']     = Days::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Day');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Day');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Days::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Day');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Day');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -130,7 +130,7 @@ class DayController extends Controller
     {
         $response = Days::getData($id, true);
         $data['view']       = Days::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Day');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Day');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -143,7 +143,7 @@ class DayController extends Controller
     {
         $response = Days::getData($id, true);
         $data['view']       = Days::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Day');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Day');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

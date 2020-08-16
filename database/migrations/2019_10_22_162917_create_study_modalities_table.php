@@ -15,6 +15,7 @@ class CreateStudyModalitiesTable extends Migration
     {
         Schema::create('study_modalities', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned();
             $table->string('name');
             $table->string('en')->nullable();
             $table->string('km')->nullable();

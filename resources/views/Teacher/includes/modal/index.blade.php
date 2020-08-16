@@ -7,7 +7,7 @@
             {{config("pages.parameters.param1") == "subject-lesson" ? "data-validation=" : "data-validate="}}{{json_encode(config("pages.form.validate"))}}>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" class="h3 mr-2">
+                    <h6 class="modal-title mr-3" class="h3 mr-2">
                         @if(config("pages.parameters.param1") == "subject-lesson")
                         {{ __(config("pages.form.role").".lesson") }}
                         @else
@@ -68,7 +68,7 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" class="h3 mr-2">
+                    <h6 class="modal-title mr-3" class="h3 mr-2">
                         {{ __("Add Absent") }}
                     </h6>
                     <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i

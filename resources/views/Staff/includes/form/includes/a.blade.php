@@ -14,7 +14,6 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
                     for="institute">
-
                     {{ __("Institute") }}
 
                     @if(config("pages.form.validate.rules.institute"))
@@ -26,8 +25,8 @@
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.staff_institute.institute.id")}}"
+                    data-placeholder=""  name="institute"
+                    data-select-value="{{config("pages.form.data.".$key.".staff_institute.institute_id")}}"
                     {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                     @foreach($institute["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -53,8 +52,8 @@
                 <select class="form-control" data-toggle="select" id="designation" title="Simple select"
 
                     data-text="{{ __("Add new option") }}" data-allow-clear="true"
-                    data-select-value="{{config("pages.form.data.staff_institute.designation.id")}}"
-                    data-placeholder="">
+                    data-select-value="{{config("pages.form.data.".$key.".staff_institute.designation_id")}}"
+                    data-placeholder="" name="designation">
 
                     @foreach($designation["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
@@ -75,11 +74,9 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="status" title="Simple select"
-
-
                     data-text="{{ __("Add new option") }}" data-allow-clear="true"
-                    data-select-value="{{config("pages.form.data.staff_status.id")}}"
-                    data-placeholder="">
+                    data-select-value="{{config("pages.form.data.".$key.".staff_status_id")}}"
+                    data-placeholder="" name="status">
                     @foreach($status["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
@@ -108,7 +105,7 @@
                         <textarea type="text" class="form-control" id="institute_extra_info"
                             placeholder=""
                             {{config("pages.form.validate.rules.institute_extra_info") ? "required" : ""}}
-                            name="institute_extra_info">{{config("pages.form.data.staff_institute.extra_info")}}</textarea>
+                            name="institute_extra_info">{{config("pages.form.data.".$key.".staff_institute.extra_info")}}</textarea>
 
                     </div>
                 </div>

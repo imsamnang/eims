@@ -122,7 +122,7 @@ class FeatureSliderController extends Controller
     {
         $data['response'] = FeatureSlider::getData(null, 10);
         $data['view']     = FeatureSlider::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Feature');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature');
         return $data;
     }
 
@@ -130,14 +130,14 @@ class FeatureSliderController extends Controller
     {
         $data['response'] = FeatureSlider::getData();
         $data['view']     = FeatureSlider::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Qallery');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Qallery');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Feature');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -147,7 +147,7 @@ class FeatureSliderController extends Controller
     {
         $response           = FeatureSlider::getData($id);
         $data['view']       = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Feature');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Feature');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

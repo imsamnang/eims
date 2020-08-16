@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            ProvincesTableSeeder::class,
+            DistrictsTableSeeder::class,
+            CommunesTableSeeder::class,
+            VillagesTableSeeder::class,
 
             NationalityTableSeeder::class,
             MotherTongTableSeeder::class,
@@ -19,7 +23,7 @@ class DatabaseSeeder extends Seeder
             MaritalTableSeeder::class,
             BloodGroupTableSeeder::class,
             InstituteTableSeeder::class,
-            
+
             StudentTableSeeder::class,
             FeatureSliderTableSeeder::class,
             SponsoredSeeder::class,
@@ -61,13 +65,10 @@ class DatabaseSeeder extends Seeder
             SocailMediaTableSeeder::class,
             HolidaysTableSeeder::class,
             LanguagesTableSeeder::class,
-            TranslatesTableSeeder::class,
+            //TranslatesTableSeeder::class,
             RolesTableSeeder::class,
             UsersTableSeeder::class,
-            ProvincesTableSeeder::class,
-            DistrictsTableSeeder::class,
-            CommunesTableSeeder::class,
-            VillagesTableSeeder::class,
+
             //ActivityFeedTableSeeder::class,
             QuizQuestionTypeTableSeeder::class,
             QuizTableSeeder::class,

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Carbon\Carbon;
 use App\Models\App;
 use App\Models\Staff;
 use App\Models\Users;
+use App\Models\Institute;
 use App\Models\Languages;
+use App\Helpers\DateHelper;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\StaffDesignations;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStaffDesignations;
 
@@ -29,7 +34,7 @@ class StaffDesignationController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = Staff::$path['url'] . '/' . StaffDesignations::$path['url'];
         $data['formAction'] = '/add';
@@ -53,16 +58,21 @@ class StaffDesignationController extends Controller
                     return StaffDesignations::addToTable();
                 }
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Designations');
         } elseif ($param1 == 'edit') {
             if (request()->method() === 'POST') {
                 return StaffDesignations::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Designations');
         } elseif ($param1 == 'view') {
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Designations');
         } elseif ($param1 == 'delete') {
             return StaffDesignations::deleteFromTable($id);
+        } elseif ($param1 == 'report') {
+            return $this->report();
         } else {
             abort(404);
         }
@@ -95,7 +105,16 @@ class StaffDesignationController extends Controller
             'messages'    =>  FormStaffDesignations::customMessages(),
             'questions'   =>  FormStaffDesignations::questionField(),
         ];
-
+        //Select Option
+        $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data']           = Institute::whereIn('id', StaffDesignations::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
@@ -103,30 +122,124 @@ class StaffDesignationController extends Controller
 
     public function list($data)
     {
-        $data['view']     = StaffDesignations::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Staff Designations');
-        return $data;
-    }
+        $table = StaffDesignations::orderBy('id', 'DESC');
 
-    public function add($data)
-    {
-        $data['view']      = StaffDesignations::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Staff Designations');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(StaffDesignations::$path, $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
+        $data['view']     = StaffDesignations::$path['view'] . '.includes.list.index';
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff Designations');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $response = StaffDesignations::getData($id, true);
         $data['view']       = StaffDesignations::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff Designations');
-        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        if ($id) {
+
+            $response           = StaffDesignations::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(StaffDesignations::$path, $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
+    }
+
+    public function report()
+    {
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List Staff Designations'));
+        config()->set('pages.parent', StaffDesignations::$path['view']);
+
+
+        $data['instituteFilter']['data']           = Institute::whereIn('id', StaffDesignations::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+
+        $table = new StaffDesignations;
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = $row['image'] ? ImageHelper::site(StaffDesignations::$path['image'], $row['image']) : ImageHelper::prefix();
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
+        }
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+        config()->set('pages.title', __('List Staff Designations'));
+        return view(StaffDesignations::$path['view'] . '.includes.report.index', $data);
     }
 }

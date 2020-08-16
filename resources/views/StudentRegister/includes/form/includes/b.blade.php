@@ -24,8 +24,7 @@
                                 <i class="fas fa-user-tie"></i>
                             </span>
                         </div>
-                        <input type="text" class="form-control" name="first_name_km" id="first_name_km"
-                            placeholder=""
+                        <input type="text" class="form-control" name="first_name_km" id="first_name_km" placeholder=""
                             value="{{config("pages.form.data.first_name_km")}}"
                             {{config("pages.form.validate.rules.first_name_km") ? "required" : ""}} />
 
@@ -51,8 +50,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fal fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" name="last_name_km" id="last_name_km"
-                            placeholder=""
+                        <input type="text" class="form-control" name="last_name_km" id="last_name_km" placeholder=""
                             value="{{config("pages.form.data.last_name_km")}}"
                             {{config("pages.form.validate.rules.last_name_km") ? "required" : ""}} />
                     </div>
@@ -79,8 +77,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input type="text" class="form-control" name="first_name_en" id="first_name_en"
-                            placeholder=""
+                        <input type="text" class="form-control" name="first_name_en" id="first_name_en" placeholder=""
                             value="{{config("pages.form.data.first_name_en")}}"
                             {{config("pages.form.validate.rules.first_name_en") ? "required" : ""}} />
                     </div>
@@ -103,8 +100,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fal fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" name="last_name_en" id="last_name_en"
-                            placeholder=""
+                        <input type="text" class="form-control" name="last_name_en" id="last_name_en" placeholder=""
                             value="{{config("pages.form.data.last_name_en")}}"
                             {{config("pages.form.validate.rules.last_name_en") ? "required" : ""}} />
                     </div>
@@ -118,7 +114,7 @@
                     title="{{config("pages.form.validate.questions.nationality")}}" class="form-control-label "
                     for="nationality">
 
-                    {{ __("Nationality ") }}
+                    {{ __("Nationality") }}
 
                     @if(config("pages.form.validate.rules.nationality"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -133,10 +129,7 @@
                             <span class="input-group-text"><i class="fas fa-flag"></i></span>
                         </div>
                         <select class="form-control" data-toggle="select" id="nationality" title="Simple select"
-
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true"
-
-                            data-placeholder=""
+                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
                             data-select-value="{{config("pages.form.data.nationality.id")}}">
                             @foreach($nationality["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -159,10 +152,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="mother_tong" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
                     name="mother_tong" data-select-value="{{config("pages.form.data.mother_tong.id")}}">
                     @foreach($mother_tong["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -190,8 +180,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         </div>
-                        <input type="number" class="form-control" name="national_id" id="national_id"
-                            placeholder=""
+                        <input type="number" class="form-control" name="national_id" id="national_id" placeholder=""
                             value="{{config("pages.form.data.national_id")}}"
                             {{ config("pages.form.validate.rules.national_id") ? "required" : ""}} />
                     </div>
@@ -266,9 +255,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input type="text" class="form-control datepicker"
-                            placeholder=""
-                            name="date_of_birth" value="{{config("pages.form.data.date_of_birth")}}"
+                        <input type="text" class="form-control datepicker" placeholder="" name="date_of_birth"
+                            value="{{config("pages.form.data.date_of_birth")}}"
                             {{config("pages.form.validate.rules.date_of_birth") ? "required" : ""}} />
                     </div>
                 </div>
@@ -290,11 +278,8 @@
 
 
                 <select class="form-control" data-toggle="select" id="marital" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="marital" data-select-value="{{config("pages.form.data.marital.id")}}">
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder="" name="marital"
+                    data-select-value="{{config("pages.form.data.marital.id")}}">
                     @foreach($marital["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach

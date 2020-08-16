@@ -24,7 +24,7 @@ class StudentsRequest extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/'  . StudentsRequest::$path['url'] . '/add?ref='.request('ref')),
+                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/'  . StudentsRequest::$path['url'] . '/add?ref=' . request('ref')),
             ),
         );
 
@@ -48,7 +48,7 @@ class StudentsRequest extends Model
             $get = $get->whereIn('id', $id);
         } else {
             if (request('ref') == StudentsStudyCourse::$path['url']) {
-                $get = $get->where('status', 0);
+                $get = $get->where('status', '0');
             }
             if ($student_id) {
                 $get = $get->where('student_id', $student_id);
@@ -210,7 +210,7 @@ class StudentsRequest extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField(), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField('.*'), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
 
         if ($validator->fails()) {
             $response       = array(
@@ -288,7 +288,7 @@ class StudentsRequest extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField(), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField('.*'), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
 
         if ($validator->fails()) {
             $response       = array(

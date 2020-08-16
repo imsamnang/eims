@@ -8,15 +8,15 @@
                     <th data-type="checkbox" data-key="null" width="1">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
-                                data-checked-controls="table-checked"
-                                data-checked-show-controls='["edit","delete"]' type="checkbox">
+                                data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
+                                type="checkbox">
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{__("Id")}}​</th>
-                        @if(Auth::user()->role_id  == 1)
-                            <th data-type="text" data-key="institute.short_name">{{__("Institute"}}​
+                    @if(Auth::user()->role_id == 1)
+                    <th data-type="text" data-key="institute.short_name">{{__("Institute")}}​
                         @endif
                     </th>
 
@@ -38,7 +38,8 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="disabled dropdown-item" href="">
+                    <a data-toggle="modal-ajax" data-target="#modal" id="btn-option-view" class="disabled dropdown-item"
+                        href="">
                         <i class="fas fa-eye"></i> {{__("View")}}
                     </a>
 

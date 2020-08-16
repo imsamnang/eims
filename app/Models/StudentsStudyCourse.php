@@ -152,7 +152,7 @@ class StudentsStudyCourse extends Model
                 $data[$key] = [
                     'id'    => $row['id'],
                     'request_id'  => $row['student_request_id'],
-                    'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] .' - '.$student['first_name_en'] . ' ' . $student['last_name_en'],
+                    'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
                     'study_course_session'    => $row['study_course_session_id'] == null ? null : StudyCourseSession::getData($row['study_course_session_id'])['data'][0],
                     'node'      =>  $node,
                     'photo' => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $row['photo'])) : $node['photo'],
@@ -182,7 +182,7 @@ class StudentsStudyCourse extends Model
                         'photo'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/photo/make/' . $row['id']),
                         'qrcode' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . QRHelper::$path['url'] . '/make/' . $row['id']),
                         'card'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'] . '/make/' . $row['id']),
-                        'certificate'=> url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $row['id']),
+                        'certificate' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $row['id']),
                         'account' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/account/create/' . $row['id']),
                         'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/delete/' . $row['id']),
                     ];
@@ -213,8 +213,8 @@ class StudentsStudyCourse extends Model
                         'gender'    => $data[$key]['node']['gender']['name'],
                         'course'    => $data[$key]['study_course_session']['study_course_schedule']['study_course']['name'],
                         'dob'       => $data[$key]['node']['date_of_birth'],
-                        'photo'     => $data[$key]['photo'].'?type=original',
-                        'qrcode'    => $row['qrcode'] ? (ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row['qrcode'],'original')) : null,
+                        'photo'     => $data[$key]['photo'] . '?type=original',
+                        'qrcode'    => $row['qrcode'] ? (ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row['qrcode'], 'original')) : null,
                     );
                 } elseif (request('ref') == StudentsStudyCourse::$path['image'] . '-certificate') {
                     $data[$key] = array(
@@ -227,8 +227,8 @@ class StudentsStudyCourse extends Model
                         '_course'   => $data[$key]['study_course_session']['study_course_schedule']['study_course']['_name'],
                         'dob'       => $data[$key]['node']['date_of_birth'],
                         '_dob'      => $data[$key]['node']['_date_of_birth'],
-                        'photo'     => $data[$key]['photo'].'?type=original',
-                        'qrcode'    => $row['qrcode'] ? (ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row['qrcode'],'original')) : null,
+                        'photo'     => $data[$key]['photo'] . '?type=original',
+                        'qrcode'    => $row['qrcode'] ? (ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row['qrcode'], 'original')) : null,
                     );
                 }
 
@@ -398,7 +398,7 @@ class StudentsStudyCourse extends Model
                 return [
                     'id'    => $row['id'],
                     'request_id'  => $row['student_request_id'],
-                    'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] .' - '.$student['first_name_en'] . ' ' . $student['last_name_en'],
+                    'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
                     'study_course_session'    => $row['study_course_session_id'] == null ? null : StudyCourseSession::getData($row['study_course_session_id'])['data'][0],
                     'node'      =>  $node,
                     'account'   => $account ? Users::getData($account->id)['data'][0] : null,
@@ -412,7 +412,7 @@ class StudentsStudyCourse extends Model
                         'photo'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/photo/make/' . $row['id']),
                         'qrcode' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . QRHelper::$path['url'] . '/make/' . $row['id']),
                         'card'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'] . '/make/' . $row['id']),
-                        'certificate'=> url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $row['id']),
+                        'certificate' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $row['id']),
                         'account' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/account/create/' . $row['id']),
                         'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/delete/' . $row['id']),
                     ]
@@ -439,7 +439,7 @@ class StudentsStudyCourse extends Model
             if ($studyStatus['success']) {
                 foreach ($studyStatus['data'] as  $status) {
                     $data[$status['id']] = [
-                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('Students'). $status['name'],
+                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('Students') . $status['name'],
                         'color' => $status['color'],
                         'text'  => [],
                     ];
@@ -909,6 +909,46 @@ class StudentsStudyCourse extends Model
         }
         return $response;
     }
+    public static function makeCertificateToTable()
+    {
+        
+        $response = array(
+            'success'   => false,
+            'type'   => 'make',
+            'data'   => [],
+        );
+        $id = '';
+
+        if (request('certificates')) {
+            foreach (request('certificates') as $key => $certificate) {
+                if (count(request('certificates')) == $key + 1) {
+                    $id .= $certificate['id'];
+                } else {
+                    $id .= $certificate['id'] . ',';
+                }
+
+                $image =  ImageHelper::uploadImage($certificate['image'], Students::$path['image'] . '/' . CertificateFrames::$path['image']);
+                if ($image) {
+                    StudentsStudyCourse::where('id', $certificate['id'])->update([
+                        'certificate'  => $image,
+                    ]);
+                }
+            }
+            $response       = array(
+                'success'   => true,
+                'type'   => 'make',
+                'message'   => array(
+                    'title' => __('Success'),
+                    'text'  => __('Make Successfully'),
+                    'button'   => array(
+                        'confirm' => __('Ok'),
+                        'cancel'  => __('Cancel'),
+                    ),
+                ),
+            );
+        }
+        return $response;
+    }
 
     public static function deleteFromTable($id)
     {
@@ -986,7 +1026,7 @@ class StudentsStudyCourse extends Model
     public static function getStudy($student_id)
     {
         $get =  StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
             ->where((new StudentsRequest())->getTable() . '.student_id', $student_id)
             ->groupBy('study_course_session_id')
             ->get()->toArray();
@@ -997,9 +1037,8 @@ class StudentsStudyCourse extends Model
                 $study_course_session_id[] = $row['study_course_session_id'];
             }
             return StudyCourseSession::getData($study_course_session_id);
-        }else{
+        } else {
             return StudyCourseSession::getData('null');
         }
-
     }
 }

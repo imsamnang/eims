@@ -4,13 +4,13 @@
             <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
                 action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
                 enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
-                <div class="card p-0">
+                <div class="card p-0 m-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
                             {{ __(config("pages.form.role")) }}
                         </h5>
                     </div>
-                    <div class="card-body p-0" >
+                    <div class="card-body p-0">
                         <div class="row">
                             <div class="{{count($listData) <= 1 ? "col-md-12":"col-md-8"}}" data-list-group>
                                 <div class="row">
@@ -57,22 +57,41 @@
                             @endif
                         </div>
                     </div>
+                    <a href="" name="scrollTo"></a>
+
+
+                    @if (config('pages.parameters.param1') == 'add')
+
+                    @if (!request()->ajax())
                     <div class="card-footer">
-                        @if (!request()->ajax())
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
-                            class="btn btn-default" type="button">{{ __("Back") }}</a>
-                        @endif
-                        <a href="" name="scrollTo"></a>
-                        <button
-                            class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
-                            type="submit">
-                            @if (config("pages.form.role") == "add")
-                            {{ __("Request") }}
-                            @elseif(config("pages.form.role") == "edit")
-                            {{ __("Update") }}
-                            @endif
-                        </button>
+                            class="btn btn-default" type="button">
+                            {{ __("Back") }}
+                        </a>
+
+                        <input class="btn btn-primary float-right" type="submit" value="{{__('Save')}}" id="submit">
                     </div>
+                    @endif
+                    @elseif(config('pages.parameters.param1') == 'edit')
+                    @if (!request()->ajax())
+                    <div class="card-footer">
+                        <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
+                            class="btn btn-default" type="button">
+                            {{ __("Back") }}
+                        </a>
+
+
+                        <input class="btn btn-primary float-right" type="submit" value="{{__('Update')}}" id="submit">
+                    </div>
+                    @else
+                    @if (count($listData) > 1)
+                    <div class="card-footer">
+
+                        <input class="btn btn-primary float-right" type="submit" value="{{__('Update')}}" id="submit">
+                    </div>
+                    @endif
+                    @endif
+                    @endif
 
                 </div>
             </form>

@@ -7,8 +7,8 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
-use App\Helpers\MetaHelper;
-;
+use App\Helpers\MetaHelper;;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormProvince;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ class ProvinceController extends Controller
 {
     public function __construct()
     {
-       $this->middleware('auth');
+        $this->middleware('auth');
         App::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
@@ -31,8 +31,8 @@ class ProvinceController extends Controller
         );
 
         $data['formAction']      = '/add';
-        $data['formName']        = 'general/'.Provinces::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()).'|'. __('List Provinces');
+        $data['formName']        = 'general/' . Provinces::$path['url'];
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('List Provinces');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -43,9 +43,9 @@ class ProvinceController extends Controller
 
 
         if ($param1 == 'list' || $param1 == null) {
-            if(strtolower(request()->server('CONTENT_TYPE')) == 'application/json'){
-                return  Provinces::getData(request('id'),null,10,request('search'));
-            }else{
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return  Provinces::getData(request('id'), null, 10, request('search'));
+            } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
@@ -58,17 +58,17 @@ class ProvinceController extends Controller
             if (request()->method() === 'POST') {
                 return Provinces::addToTable();
             }
-            $data = $this->add($data );
+            $data = $this->add($data);
         } elseif ($param1 == 'edit') {
             if (request()->method() === 'POST') {
                 return Provinces::updateToTable($param2);
             }
-            $data = $this->edit($data,$param2 );
+            $data = $this->edit($data, $param2);
         } elseif ($param1 == 'view') {
-            $data = $this->view($data,$param2 );
+            $data = $this->view($data, $param2);
         } elseif ($param1 == 'delete') {
             return Provinces::deleteFromTable($param2);
-        }else{
+        } else {
             abort(404);
         }
 
@@ -110,14 +110,14 @@ class ProvinceController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'. __('List Provinces');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Provinces');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.province.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'. ('Add Provinces');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . ('Add Provinces');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -127,7 +127,7 @@ class ProvinceController extends Controller
     {
         $response           = Provinces::getData($id, true);
         $data['view']       = 'Cambodia.includes.form.province.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Provinces');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Provinces');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -140,7 +140,7 @@ class ProvinceController extends Controller
     {
         $response           = Provinces::getData($id, true);
         $data['view']       = 'Cambodia.includes.form.province.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('View Provinces');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Provinces');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -148,6 +148,4 @@ class ProvinceController extends Controller
         $data['formAction'] = '/view/' . $response['data'][0]['id'];
         return $data;
     }
-
-
 }

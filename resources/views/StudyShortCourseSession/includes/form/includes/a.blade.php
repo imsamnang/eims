@@ -21,7 +21,7 @@
 
 
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                    data-placeholder="" name="study_short_course_schedule"
                     data-select-value="{{config("pages.form.data.study_short_course_schedule.id")}}">
                     @foreach($study_short_course_schedule["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -43,7 +43,7 @@
 
 
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                    data-placeholder="" name="study_session"
                     data-select-value="{{config("pages.form.data.study_session.id")}}">
                     @foreach($study_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -66,7 +66,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input value="{{config("pages.form.data.study_start")}}" class="form-control" placeholder="">
+                        <input value="{{config("pages.form.data.study_start")}}" class="form-control" placeholder="" name="study_start">
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input value="{{config("pages.form.data.study_end")}}" class="form-control" placeholder="">
+                        <input value="{{config("pages.form.data.study_end")}}" class="form-control" placeholder="" name="study_end">
                     </div>
                 </div>
             </div>

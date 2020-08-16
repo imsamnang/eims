@@ -7,7 +7,7 @@
                 enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" class="h3 mr-2">
+                        <h6 class="modal-title mr-3" class="h3 mr-2">
                             {{ __(config("pages.form.role"))}}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i

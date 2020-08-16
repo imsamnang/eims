@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Quiz;
 
+use Carbon\Carbon;
 use App\Models\App;
-use App\Models\QuizAnswerType;
 use App\Models\Users;
+use App\Models\Institute;
 use App\Models\Languages;
+use App\Helpers\DateHelper;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormQuizAnswerType;
+use App\Models\QuizAnswerType;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FormQuizAnswerType;
 use App\Models\Quiz;
-
 
 class QuizAnswerTypeController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -30,16 +32,16 @@ class QuizAnswerTypeController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return QuizAnswerType::getData(null, null, 10 ,request('search'));
+                return QuizAnswerType::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
@@ -50,22 +52,25 @@ class QuizAnswerTypeController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
+
             if (request()->method() === 'POST') {
                 return QuizAnswerType::addToTable();
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Quiz Designations');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
             if (request()->method() === 'POST') {
                 return QuizAnswerType::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Quiz Designations');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Quiz Designations');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
             return QuizAnswerType::deleteFromTable($id);
+        } elseif ($param1 == 'report') {
+            return $this->report();
         } else {
             abort(404);
         }
@@ -98,6 +103,7 @@ class QuizAnswerTypeController extends Controller
             'messages'    =>  FormQuizAnswerType::customMessages(),
             'questions'   =>  FormQuizAnswerType::questionField(),
         ];
+        //Select Option
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
@@ -106,31 +112,115 @@ class QuizAnswerTypeController extends Controller
 
     public function list($data)
     {
-        $data['view']     = QuizAnswerType::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Quiz answer type');
-        return $data;
-    }
+        $table = QuizAnswerType::orderBy('id', 'DESC');
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(QuizAnswerType::$path, $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/delete/' . $row['id']),
+            ];
 
-    public function add($data)
-    {
-        $data['view']      = QuizAnswerType::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Quiz answer type');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
+            return $row;
+        });
+        $data['response']['data'] = $response;
+        $data['view']     = QuizAnswerType::$path['view'] . '.includes.list.index';
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Quiz Designations');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $response = QuizAnswerType::getData($id, true);
-
         $data['view']       = QuizAnswerType::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Quiz answer type');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        if ($id) {
+
+            $response           = QuizAnswerType::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerType::$path, $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
+    }
+
+    public function report()
+    {
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List Quiz answer type'));
+        config()->set('pages.parent', QuizAnswerType::$path['view']);
+
+
+
+        $table = new QuizAnswerType;
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerType::$path['image'], $row['image']) : ImageHelper::prefix();
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
+        }
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+        config()->set('pages.title', __('List Quiz answer type'));
+        return view(QuizAnswerType::$path['view'] . '.includes.report.index', $data);
     }
 }

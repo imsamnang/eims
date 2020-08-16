@@ -23,7 +23,7 @@
                     </label>
 
                     <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                        data-placeholder=""
+                        data-placeholder="" name="institute"
                         data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
                         {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                         @foreach($institute["data"] as $o)
@@ -41,7 +41,7 @@
                     title="{{config("pages.form.validate.questions.study_subject")}}" class="form-control-label"
                     for="study_subject">
 
-                    {{ __("study_subject") }}
+                    {{ __("Study Subjects") }}
 
                     @if(config("pages.form.validate.rules.study_subject"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -51,9 +51,9 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_subject" title="Simple select"
 
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_subject.id",request("semesterId"))}}">
-                    @foreach($study_subject["data"] as $o)
+                    data-placeholder="" name="study_subject"
+                    data-select-value="{{config("pages.form.data.study_subject_id",request("semesterId"))}}">
+                    @foreach($study_subjects["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -74,7 +74,7 @@
                 </label>
                 <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
 
-                    data-placeholder=""
+                    data-placeholder="" name="study_session"
                     data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">
                     @foreach($study_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

@@ -38,7 +38,7 @@ class MotherTongController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return MotherTong::getData(null, null, 10,request('search'));
+                return MotherTong::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
@@ -112,14 +112,14 @@ class MotherTongController extends Controller
     public function list($data)
     {
         $data['view']     = MotherTong::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'. __('List Mother tong');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Mother tong');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = MotherTong::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'. __('Add Mother tong');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Mother tong');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class MotherTongController extends Controller
     {
         $response = MotherTong::getData($id, true);
         $data['view']       = MotherTong::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Mother tong');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Mother tong');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class MotherTongController extends Controller
     {
         $response = MotherTong::getData($id, true);
         $data['view']       = MotherTong::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('View Mother tong');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Mother tong');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

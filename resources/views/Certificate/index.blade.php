@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="{{asset("/assets/vendor/nucleo/css/nucleo.css")}}" type="text/css">
 <link rel="stylesheet" href="{{asset("/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css")}}" type="text/css">
-<link rel="stylesheet" href="{{asset('/assets/css/paper.css') }}" />
+
 <link rel="stylesheet" href="{{asset("/assets/vendor/select2/4.0.2/css/select2.min.css") }}" />
 <link rel="stylesheet" href="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/animate.css/animate.min.css")}}">
@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="{{asset("/assets/css/spinner.css")}}" type="text/css">
 <link rel="stylesheet" href="{{asset("/assets/css/custom.css") }}" />
 <link rel="stylesheet" href="{{asset("/assets/css/icon.css") }}" />
-<link rel="stylesheet" href="{{asset("/assets/vendor/color-picker-pro/dist/light.min.css") }}" />
 
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css")}}">
+
 @endsection
 
 
@@ -31,7 +31,7 @@
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
     @include(Auth::user()->role('view_path').".includes.navTop")
- 
+
     <div class="page-content container-fluid {{Agent::isDesktop() ?: "p-1"}}">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))
@@ -52,18 +52,16 @@
 <script src="{{asset("/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/select2.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/select2/dist/js/select2.dropdownPosition.js")}}"></script>
+
 <script src="{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/dropzone/dist/min/dropzone.min.js")}}"></script>
+
 <script src="{{asset("/assets/vendor/list.js/dist/list.min.js")}}"></script>
-<script src="{{asset("/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/validator.js")}}"></script>
 @if (app()->getLocale() !== "en")
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
-<script
-    src="{{asset("/assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.".app()->getLocale().".min.js")}}">
-</script>
 @endif
 <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
 <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>
@@ -75,12 +73,9 @@
 <script src="{{asset("/assets/vendor/autogrow/autogrow-ui.js")}}"></script>
 <script src="{{asset("/assets/vendor/pagination/simplePagination.js")}}"></script>
 <script src="{{asset("/assets/js/custom/main-content.js")}}"></script>
+<script src="{{asset("/assets/js/custom/ajaxTableData.js")}}"></script>
 <script src="{{ asset('/assets/vendor/konva/konva.min.js')}}"></script>
 <script src="{{asset('/assets/js/custom/certificate.js')}}"></script>
-<script src="{{asset('/assets/vendor/color-picker-pro/dist/default-picker.min.js')}}"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script> --}}
-<script src="{{asset('/assets/vendor/select-google-font/dist/selectGfont.min.js') }}"></script>
-<script src="{{asset("/assets/js/custom/ajaxTableData.js")}}"></script>
 
 <script src="{{asset("/assets/vendor/datatables.net/js/jquery.dataTables.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")}}"></script>

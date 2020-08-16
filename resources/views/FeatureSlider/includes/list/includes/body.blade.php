@@ -17,7 +17,7 @@
                         {{__("Id")}}​</th>
                     <th data-type="text" data-key="title" class="sort" data-sort="name">
                         {{__("Title")}}​</th>
-                    <th data-type="text" data-key="institute.short_name">{{__("Institute"}}​
+                    <th data-type="text" data-key="institute.short_name">{{__("Institute")}}​
                     </th>
                     <th data-type="text" data-key="description">{{__("Description")}}​</th>
                     <th data-type="image" data-key="image">{{__("Feature")}}​</th>

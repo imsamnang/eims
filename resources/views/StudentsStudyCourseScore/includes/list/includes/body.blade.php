@@ -23,13 +23,13 @@
                     </th>
 
                     @foreach ($response['study_subject'] as $key => $row)
-                    <th data-type="text" data-key="scores.{{$row["subject"]["id"]}}.marks">
+                    <th data-type="text" data-key="scores.{{$row["subject"]["id"]}}.score">
                         {{$row['subject']['name'] }}</th>
                     @endforeach
 
-                    <th data-type="text" data-key="scores.attendance_marks.marks">
+                    <th data-type="text" data-key="scores.attendance_marks.score">
                         {{  __("Attendance score") }}​</th>
-                    <th data-type="text" data-key="scores.other_marks.marks">
+                    <th data-type="text" data-key="scores.other_marks.score">
                         {{  __("Other score") }}</th>
                     <th data-type="text" data-key="total_marks">
                         {{  __("Total") }}</th>

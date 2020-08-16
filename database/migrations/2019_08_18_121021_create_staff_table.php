@@ -27,8 +27,16 @@ class CreateStaffTable extends Migration
             $table->bigInteger('marital_id')->unsigned()->nullable();
             $table->bigInteger('blood_group_id')->unsigned()->nullable();
 
-            $table->string('place_of_birth')->nullable();
-            $table->string('current_resident')->nullable();
+            $table->bigInteger('pob_province_id')->unsigned()->nullable();
+            $table->bigInteger('pob_district_id')->unsigned()->nullable();
+            $table->bigInteger('pob_commune_id')->unsigned()->nullable();
+            $table->bigInteger('pob_village_id')->unsigned()->nullable();
+
+            $table->bigInteger('curr_province_id')->unsigned()->nullable();
+            $table->bigInteger('curr_district_id')->unsigned()->nullable();
+            $table->bigInteger('curr_commune_id')->unsigned()->nullable();
+            $table->bigInteger('curr_village_id')->unsigned()->nullable();
+
             $table->string('permanent_address')->nullable();
             $table->string('temporaray_address')->nullable();
 

@@ -38,7 +38,7 @@ class NationalityController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Nationality::getData(null, null, 10,request('search'));
+                return Nationality::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
@@ -112,14 +112,14 @@ class NationalityController extends Controller
     public function list($data)
     {
         $data['view']     =  Nationality::$path['view'] . '.includes.list.index';
-        $data['title']    =  Users::role(app()->getLocale()).'|'. __('List Nationality');
+        $data['title']    =  Users::role(app()->getLocale()) . ' | ' . __('List Nationality');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'. __('Add Nationality');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Nationality');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -129,7 +129,7 @@ class NationalityController extends Controller
     {
         $response = Nationality::getData($id, true);
         $data['view']       = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('Edit Nationality');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Nationality');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -142,7 +142,7 @@ class NationalityController extends Controller
     {
         $response = Nationality::getData($id, true);
         $data['view']       = Nationality::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('View Nationality');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Nationality');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

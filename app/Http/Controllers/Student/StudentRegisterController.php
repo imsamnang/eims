@@ -47,7 +47,7 @@ class StudentRegisterController extends Controller
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
         $data['formName']            = '';
-        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Student Register');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Student Register');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
 
@@ -135,14 +135,14 @@ class StudentRegisterController extends Controller
 
         $rules = FormStudents::rulesField();
 
-        unset($rules['pob_province_fk']);
-        unset($rules['pob_district_fk']);
-        unset($rules['pob_commune_fk']);
-        unset($rules['pob_village_fk']);
-        unset($rules['curr_province_fk']);
-        unset($rules['curr_district_fk']);
-        unset($rules['curr_commune_fk']);
-        unset($rules['curr_village_fk']);
+        unset($rules['pob_province']);
+        unset($rules['pob_district']);
+        unset($rules['pob_commune']);
+        unset($rules['pob_village']);
+        unset($rules['curr_province']);
+        unset($rules['curr_district']);
+        unset($rules['curr_commune']);
+        unset($rules['curr_village']);
         unset($rules['father_fullname']);
         unset($rules['father_occupation']);
         unset($rules['father_phone']);
@@ -172,7 +172,7 @@ class StudentRegisterController extends Controller
     public function add($data)
     {
         $data['view']  = 'StudentRegister.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Student Register');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Student Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -190,7 +190,7 @@ class StudentRegisterController extends Controller
         $data['gender'] = Gender::pluck('km')->toArray();
         $data['marital'] = Marital::pluck('km')->toArray();
         $data['view']  = 'StudentRegister.includes.excel.index';
-        $data['title'] = Users::role(app()->getLocale()) .' | '.__('Excel Register');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Excel Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;

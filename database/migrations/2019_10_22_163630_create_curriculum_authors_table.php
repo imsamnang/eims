@@ -15,6 +15,7 @@ class CreateCurriculumAuthorsTable extends Migration
     {
         Schema::create('curriculum_authors', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned();
             $table->text('name')->nullable();
             $table->text('en')->nullable();
             $table->text('km')->nullable();

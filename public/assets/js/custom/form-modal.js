@@ -44,6 +44,8 @@ AjaxFormModal = function(opts) {
             settings.modalContainer.find(".full-link").attr("href",settings.url);
             settings.modalContainer
                 .find(".modal-dialog")
+                .removeClass("modal-xlll")
+                .removeClass("modal-xll")
                 .removeClass("modal-xl")
                 .removeClass("modal-lg")
                 .removeClass("modal-md")

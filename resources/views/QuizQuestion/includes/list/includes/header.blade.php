@@ -1,7 +1,7 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal-ajax"
-            data-target="#modal" data-backdrop="static" data-keyboard="false">
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+            data-target="#modal-add" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Add")}}
@@ -35,33 +35,108 @@
                 {{__("Filter")}}
             </span>
         </a>
+        <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
+            <i class="fas fa-file-export m-0"></i>
+            <span class="d-none d-sm-inline">
+                {{__("Report")}}
+            </span>
+        </a>
     </div>
 
 </div>
-
 <div class="card-header border-0 pb-0">
-    <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter"
+    <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 {{request("quizId") ? "show" : ""}}" id="filter">
+            <div class="col-12 collapse mb-3 {{array_intersect(array_keys(request()->all()),['staffId','quizId','questionTypeId','answerTypeId']) ? "show" : ""}}"
+                id="filter">
                 <div class="form-row">
-                    <div class="col-md-8">
-                        <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                            data-allow-clear="true"
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{request('quizId')}}">
-                            @foreach($quiz["data"] as $o)
-                            <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                            @endforeach
-                        </select>
+                    <div class="col-md-9 mb-3">
+                        <div class="form-row">
+                            <div class="col-md-8 mb-3">
+                                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                    data-placeholder="{{__('Institute')}}" name="instituteId"
+                                    data-select-value="{{request('instituteId')}}">
+                                    @foreach($instituteFilter["data"] as $o)
+                                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <select class="form-control" data-toggle="select" id="staff" title="Simple select"
+                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                    data-placeholder="{{__('Staff')}}" name="staffId"
+                                    data-select-value="{{request('staffId')}}">
+                                    @foreach($staffFilter["data"] as $o)
+                                    <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
+                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                    data-placeholder="{{__('Quiz')}}" name="quizId"
+                                    data-select-value="{{request('quizId')}}">
+                                    @foreach($quizFilter["data"] as $o)
+                                    <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <select class="form-control" data-toggle="select" id="questionType"
+                                    title="Simple select" data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                    data-placeholder="{{__('Quiz Question type')}}" name="questionTypeId"
+                                    data-select-value="{{request('questionTypeId')}}">
+                                    @foreach($questionTypeFilter["data"] as $o)
+                                    <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <select class="form-control" data-toggle="select" id="answerType" title="Simple select"
+                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                    data-placeholder="{{__('Quiz answer type')}}" name="answerTypeId"
+                                    data-select-value="{{request('answerTypeId')}}">
+                                    @foreach($answerTypeFilter["data"] as $o)
+                                    <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="col-md-4">
+
+                    <div class="col-md-3 mb-3">
                         <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
                             {{ __("Search filter") }}</button>
                     </div>
                 </div>
 
+            </div>
+            <div class="col-8">
+            </div>
+            <div class="col-4 d-none">
+                <div class="form-group w-100">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="dropdown" data-close="false">
+                                <span class="input-group-text h-100" data-toggle="dropdown">
+                                    <i class="fas fa-filter"></i>
+                                </span>
+
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" name="search" id="search" data-toggle="table-filter"
+                            data-target="#table" placeholder="{{ __('Search') }}" value="{{request("search")}}" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </form>

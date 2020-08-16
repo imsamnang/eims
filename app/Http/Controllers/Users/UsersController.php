@@ -205,7 +205,7 @@ class usersController extends Controller
 
 
 
-        $data['title']   = Users::role(app()->getLocale()).'|'.__('Dashboard');
+        $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('Dashboard');
         $data['view']    = 'Users.includes.dashboard.index';
         return $data;
     }
@@ -214,7 +214,7 @@ class usersController extends Controller
     {
         $data['response'] =  users::getData(null, null, 10);
         $data['view']     =  users::$path['view'] . '.includes.list.index';
-        $data['title']   = Users::role(app()->getLocale()).'|'.__('List Users');
+        $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('List Users');
         return $data;
     }
 
@@ -247,7 +247,7 @@ class usersController extends Controller
 
 
         $data['view']       = Users::$path['view'] . '.includes.form.index';
-        $data['title']   = Users::role(app()->getLocale()).'|'.__('Users');
+        $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('Users');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
 

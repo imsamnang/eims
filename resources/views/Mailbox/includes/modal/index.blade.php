@@ -8,7 +8,7 @@
                 data-validation="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" class="h3 mr-2">
+                        <h6 class="modal-title mr-3" class="h3 mr-2">
                             {{ __("Compose") }}
                         </h6>
                         <a href="{{str_replace("/add","compose",config("pages.form.action.add"))}}" target="_blank"
@@ -51,7 +51,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header border-bottom">
-                    <h6 class="modal-title" class="h3 mr-2">Insert Link</h6>
+                    <h6 class="modal-title mr-3" class="h3 mr-2">Insert Link</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -64,8 +64,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-globe"></i></span>
                                 </div>
-                                <input class="form-control" data-placeholder=""
-                                    id="url">
+                                <input class="form-control" data-placeholder="" id="url">
                             </div>
                         </div>
                     </div>
@@ -77,16 +76,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-font-case"></i></span>
                                 </div>
-                                <input class="form-control" data-placeholder=""
-                                    type="text" id="text_to_display">
+                                <input class="form-control" data-placeholder="" type="text" id="text_to_display">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer border-top">
                     <button id="btn-remove" class="btn btn-danger">{{__("Remove")}}</button>
-                    <button type="button" class="btn" data-dismiss="modal"
-                        aria-label="Close">{{__("Cancel")}}</button>
+                    <button type="button" class="btn" data-dismiss="modal" aria-label="Close">{{__("Cancel")}}</button>
                     <button id="btn-save" class="btn btn-primary">{{__("Ok")}}</button>
                 </div>
             </div>
@@ -96,7 +93,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header border-bottom">
-                    <h6 class="modal-title" class="h3 mr-2">Insert Image</h6>
+                    <h6 class="modal-title mr-3" class="h3 mr-2">Insert Image</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -116,11 +113,9 @@
                             aria-labelledby="nav-link-tab">
                             <div class="col mb-3">
                                 <div class="form-group">
-                                    <label class="form-control-label mb-0"
-                                        for="url">{{__("Image url")}}</label>
+                                    <label class="form-control-label mb-0" for="url">{{__("Image url")}}</label>
                                     <div class="input-group input-group-merge">
-                                        <input class="form-control"
-                                            data-placeholder="">
+                                        <input class="form-control" data-placeholder="">
 
                                     </div>
                                 </div>
@@ -129,8 +124,7 @@
                         <div class="tab-pane fade" id="nav-upload" role="tabpanel" aria-labelledby="nav-upload-tab">
                             <div class="col mb-3">
                                 <div class="form-group">
-                                    <label class="form-control-label mb-0"
-                                        for="url">{{__("Upload image")}}</label>
+                                    <label class="form-control-label mb-0" for="url">{{__("Upload image")}}</label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="upload" data-name="image"
                                             data-url="{{str_replace("/add","upload",config("pages.form.action.add"))}}">
@@ -146,8 +140,7 @@
                 </div>
 
                 <div class="modal-footer border-top">
-                    <button type="button" class="btn" data-dismiss="modal"
-                        aria-label="Close">{{__("Cancel")}}</button>
+                    <button type="button" class="btn" data-dismiss="modal" aria-label="Close">{{__("Cancel")}}</button>
                     <button id="btn-save" class="btn btn-primary">{{__("Ok")}}</button>
                 </div>
             </div>

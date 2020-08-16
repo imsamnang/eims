@@ -31,5 +31,8 @@ window.datatable_i18n = {
     "aria": {
         "sortAscending": " => activate to sort column ascending",
         "sortDescending": " => activate to sort column descending"
+    },
+    select: {
+        rows: "%d ជួរដែលបានជ្រើស"
     }
 };

@@ -40,7 +40,7 @@ class StudentsCertificateController extends Controller
         );
         $data['formAction']      = '/add';
         $data['formName']        = CertificateFrames::$path['url'];
-        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Certificate');
+        $data['title']                = Users::role(app()->getLocale()) . ' | ' . __('Student Certificate');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -93,11 +93,10 @@ class StudentsCertificateController extends Controller
                 }
             }
             $data = $this->make($data, $param3);
-
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Certificate');
+            $data['title']                = Users::role(app()->getLocale()) . ' | ' . __('Student Certificate');
             MetaHelper::setConfig(
                 [
                     'title'       => $data['title'],
@@ -138,7 +137,7 @@ class StudentsCertificateController extends Controller
             'view'       => $data['view'],
         );
 
-         $pages['form']['validate'] = [
+        $pages['form']['validate'] = [
             'rules'       =>  FormCertificate::rulesField(),
             'attributes'  =>  FormCertificate::attributeField(),
             'messages'    =>  FormCertificate::customMessages(),
@@ -153,7 +152,7 @@ class StudentsCertificateController extends Controller
     public function list($data)
     {
         $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Certificate frames');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Certificate frames');
         $data['response'] =  CertificateFrames::getData(null, null, 10);
         return $data;
     }
@@ -161,7 +160,7 @@ class StudentsCertificateController extends Controller
     public function add($data)
     {
         $data['view']  = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Certificate frames');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Certificate frames');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
 
@@ -172,7 +171,7 @@ class StudentsCertificateController extends Controller
     {
         $response           = CertificateFrames::getData($id, true);
         $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Certificate frames');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Certificate frames');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -185,7 +184,7 @@ class StudentsCertificateController extends Controller
     {
         $response = CertificateFrames::getData($id, true);
         $data['view']       = CertificateFrames::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Certificate frames');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Certificate frames');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -196,7 +195,7 @@ class StudentsCertificateController extends Controller
     public function make($data, $user)
     {
 
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Certificate frames');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Certificate frames');
         $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
         $data['certificates']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
         $data['response']        =  CertificateFrames::getData();

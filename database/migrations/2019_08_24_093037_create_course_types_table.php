@@ -15,6 +15,7 @@ class CreateCourseTypesTable extends Migration
     {
         Schema::create('course_types', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned();
             $table->string('name')->nullable();
             $table->string('en')->nullable();
             $table->string('km')->nullable();

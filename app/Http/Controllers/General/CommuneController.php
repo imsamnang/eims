@@ -9,8 +9,7 @@ use App\Models\Districts;
 use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
-use App\Helpers\MetaHelper;
-;
+use App\Helpers\MetaHelper;;
 
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCommune;
@@ -29,7 +28,7 @@ class CommuneController extends Controller
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
         $data['provinces']   = Provinces::getData();
-        $data['districts']   = Districts::getData('null','null');
+        $data['districts']   = Districts::getData('null', 'null');
 
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
@@ -37,7 +36,7 @@ class CommuneController extends Controller
 
         $data['formAction']      = '/add';
         $data['formName']        = 'general/' . Communes::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()).'|'.__('Communes');
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('Communes');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -115,14 +114,14 @@ class CommuneController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Communes');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Communes');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.commune.index';
-        $data['title']     =Users::role(app()->getLocale()).'|'.__('Add Communes');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Communes');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -132,7 +131,7 @@ class CommuneController extends Controller
     {
         $response           = Communes::getData(request('districtId'), $id, true);
         $data['view']       = 'Cambodia.includes.form.commune.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Communes');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Communes');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

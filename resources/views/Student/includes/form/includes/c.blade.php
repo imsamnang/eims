@@ -19,26 +19,24 @@
         <div class="form-row" data-collapse="pob" data-control-value-id="pob">
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="pob_province_fk">
+                    for="pob_province">
                     {{ __("Province") }}
 
-                    @if(config("pages.form.validate.rules.pob_province_fk"))
+                    @if(config("pages.form.validate.rules.pob_province"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="pob_province_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-                    data-allow-clear="true" data-placeholder=""
-                    name="pob_province_fk" data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
-                    data-append-to="#pob_district_fk"
+                <select class="form-control" data-toggle="select" id="pob_province" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="pob_province" data-select-value="{{config("pages.form.data.".$key.".pob_province_id")}}"
+                    data-append-to="#pob_district_{{$key}}"
                     data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.pob_province_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.pob_province") ? "required" : ""}}>
                     @foreach($provinces["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -47,9 +45,9 @@
 
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="pob_district_fk">
+                    for="pob_district">
                     {{ __("District") }}
-                    @if(config("pages.form.validate.rules.pob_district_fk"))
+                    @if(config("pages.form.validate.rules.pob_district"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -57,17 +55,15 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="pob_district_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-                    data-allow-clear="true" data-placeholder=""
-                    name="pob_district_fk" data-select-value="{{config("pages.form.data.place_of_birth.district.id")}}"
-                    data-append-to="#pob_commune_fk"
+                <select disabled {{config("pages.form.data.".$key.".pob_district_id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="pob_district_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="pob_district" data-select-value="{{config("pages.form.data.".$key.".pob_district_id")}}"
+                    data-append-to="#pob_commune_{{$key}}"
                     data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.pob_district_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.pob_district") ? "required" : ""}}>
                     @foreach($districts["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -75,9 +71,9 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="pob_commune_fk">
+                    for="pob_commune">
                     {{ __("Commune") }}
-                    @if(config("pages.form.validate.rules.pob_commune_fk"))
+                    @if(config("pages.form.validate.rules.pob_commune"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -86,18 +82,15 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="pob_commune_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="pob_commune_fk" data-select-value="{{config("pages.form.data.place_of_birth.commune.id")}}"
-                    data-append-to="#pob_village_fk"
+                <select disabled {{config("pages.form.data.".$key.".pob_commune_id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="pob_commune_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="pob_commune" data-select-value="{{config("pages.form.data.".$key.".pob_commune_id")}}"
+                    data-append-to="#pob_village_{{$key}}"
                     data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.pob_commune_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.pob_commune") ? "required" : ""}}>
                     @foreach($communes["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -106,9 +99,9 @@
 
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="pob_village_fk">
+                    for="pob_village">
                     {{ __("Village") }}
-                    @if(config("pages.form.validate.rules.pob_village_fk"))
+                    @if(config("pages.form.validate.rules.pob_village"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -117,21 +110,21 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="pob_village_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="pob_village_fk" data-select-value="{{config("pages.form.data.place_of_birth.village.id")}}"
-                    {{config("pages.form.validate.rules.pob_village_fk") ? "required" : ""}}>
+                <select disabled {{config("pages.form.data.".$key.".pob_village_id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="pob_village_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="pob_village" data-select-value="{{config("pages.form.data.".$key.".pob_village_id")}}"
+                    {{config("pages.form.validate.rules.pob_village") ? "required" : ""}}>
                     @foreach($villages["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
 
             </div>
+
+
+
         </div>
         {{-- <a id="hide-show" class="badge badge-warning mb-3" data-toggle="collapse" href="#other_pob" role="button"
             aria-expanded="false" aria-controls="other_pob">{{ __("Other") }}</a> --}}
@@ -153,10 +146,9 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
                             </div>
-                            <textarea type="text" class="form-control" id="permanent_address"
-                                placeholder=""
+                            <textarea type="text" class="form-control" id="permanent_address" placeholder=""
                                 {{config("pages.form.validate.rules.permanent_address") ? "required" : ""}}
-                                name="permanent_address">{{config("pages.form.data.permanent_address")}}</textarea>
+                                name="permanent_address">{{config("pages.form.data.".$key.".permanent_address")}}</textarea>
 
                         </div>
                     </div>
@@ -189,28 +181,25 @@
         <div class="form-row" data-collapse="current" data-control-value-id="current">
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="curr_province_fk">
+                    for="curr_province">
                     {{ __("Province") }}
 
-                    @if(config("pages.form.validate.rules.curr_province_fk"))
+                    @if(config("pages.form.validate.rules.curr_province"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="curr_province_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="curr_province_fk"
-                    data-select-value="{{config("pages.form.data.current_resident.province.id")}}"
-                    data-append-to="#curr_district_fk"
+                <select class="form-control" data-toggle="select" id="curr_province" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="curr_province"
+                    data-select-value="{{config("pages.form.data.".$key.".curr_province_id")}}"
+                    data-append-to="#curr_district_{{$key}}"
                     data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.curr_province_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.curr_province") ? "required" : ""}}>
                     @foreach($provinces["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -219,9 +208,9 @@
 
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="curr_district_fk">
+                    for="curr_district">
                     {{ __("District") }}
-                    @if(config("pages.form.validate.rules.curr_district_fk"))
+                    @if(config("pages.form.validate.rules.curr_district"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -230,19 +219,16 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.current_resident.district.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="curr_district_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="curr_district_fk"
-                    data-select-value="{{config("pages.form.data.current_resident.district.id")}}"
-                    data-append-to="#curr_commune_fk"
+                <select disabled {{config("pages.form.data.".$key.".curr_district.id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="curr_district_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="curr_district"
+                    data-select-value="{{config("pages.form.data.".$key.".curr_district_id")}}"
+                    data-append-to="#curr_commune_{{$key}}"
                     data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.curr_district_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.curr_district") ? "required" : ""}}>
                     @foreach($curr_districts["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -250,9 +236,9 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="curr_commune_fk">
+                    for="curr_commune">
                     {{ __("Commune") }}
-                    @if(config("pages.form.validate.rules.curr_commune_fk"))
+                    @if(config("pages.form.validate.rules.curr_commune"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -261,18 +247,16 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.current_resident.commune.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="curr_commune_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="curr_commune_fk" data-select-value="{{config("pages.form.data.current_resident.commune.id")}}"
-                    data-append-to="#curr_village_fk"
+                <select disabled {{config("pages.form.data.".$key.".curr_commune.id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="curr_commune_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="curr_commune"
+                    data-select-value="{{config("pages.form.data.".$key.".curr_commune_id")}}"
+                    data-append-to="#curr_village_{{$key}}"
                     data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
-                    {{config("pages.form.validate.rules.curr_commune_fk") ? "required" : ""}}>
+                    {{config("pages.form.validate.rules.curr_commune") ? "required" : ""}}>
                     @foreach($curr_communes["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -281,9 +265,9 @@
 
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123" class="form-control-label"
-                    for="curr_village_fk">
+                    for="curr_village">
                     {{ __("Village") }}
-                    @if(config("pages.form.validate.rules.curr_village_fk"))
+                    @if(config("pages.form.validate.rules.curr_village"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
@@ -292,21 +276,21 @@
                 </label>
 
 
-                <select disabled {{config("pages.form.data.current_resident.village.id")? "" :"disabled"}} class="form-control"
-                    data-toggle="select" id="curr_village_fk" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-
-                    data-allow-clear="true" data-placeholder=""
-                    name="curr_village_fk" data-select-value="{{config("pages.form.data.current_resident.village.id")}}"
-                    {{config("pages.form.validate.rules.curr_village_fk") ? "required" : ""}}>
+                <select disabled {{config("pages.form.data.".$key.".curr_village_id")? "" :"disabled"}}
+                    class="form-control" data-toggle="select" id="curr_village_{{$key}}" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                    name="curr_village"
+                    data-select-value="{{config("pages.form.data.".$key.".curr_village_id")}}"
+                    {{config("pages.form.validate.rules.curr_village") ? "required" : ""}}>
                     @foreach($curr_villages["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
 
             </div>
+
+
         </div>
         {{-- <a class="badge badge-warning mb-3" data-toggle="collapse" href="#other_current" role="button"
             aria-expanded="false" aria-controls="other_current">{{ __("Other") }}</a> --}}
@@ -335,10 +319,9 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                             </div>
-                            <textarea type="text" class="form-control" id="temporaray_address"
-                                placeholder=""
+                            <textarea type="text" class="form-control" id="temporaray_address" placeholder=""
                                 {{config("pages.form.validate.rules.temporaray_address") ? "required" : ""}}
-                                name="temporaray_address">{{config("pages.form.data.temporaray_address")}}</textarea>
+                                name="temporaray_address">{{config("pages.form.data.".$key.".temporaray_address")}}</textarea>
 
                         </div>
                     </div>

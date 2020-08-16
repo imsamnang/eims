@@ -134,7 +134,7 @@ class StudentsStudyCourseScore extends Model
                     'attendance_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => __('Attendance marks'),
+                            'name'  => __('Attendance score'),
                         ],
                         'score' => $row['attendance_marks'],
                         'pass_or_fail' => null,
@@ -143,7 +143,7 @@ class StudentsStudyCourseScore extends Model
                     'other_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => __('Other marks'),
+                            'name'  => __('Other score'),
                         ],
                         'score' => $row['other_marks'],
                         'pass_or_fail' => null,
@@ -301,7 +301,7 @@ class StudentsStudyCourseScore extends Model
                     'attendance_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => __('Attendance marks'),
+                            'name'  => __('Attendance score'),
                         ],
                         'score' => $row['attendance_marks'],
                         'pass_or_fail' => null,
@@ -310,7 +310,7 @@ class StudentsStudyCourseScore extends Model
                     'other_marks' => [
                         'id'    => $row['id'],
                         'study_subject' => [
-                            'name'  => __('Other marks'),
+                            'name'  => __('Other score'),
                         ],
                         'score' => $row['other_marks'],
                         'pass_or_fail' => null,
@@ -338,7 +338,7 @@ class StudentsStudyCourseScore extends Model
                     if ($average > 80 && $average <= 90)
                         $grade = __('A');
                     if ($average > 90)
-                        $grade = __('E');   
+                        $grade = __('E');
                 }
                 return [
                     'id'           => $row['id'],
@@ -474,16 +474,16 @@ class StudentsStudyCourseScore extends Model
         return $response;
     }
 
-    public static function updateMarksToTable($id, $type_marks, $marks)
+    public static function updateMarksToTable($id, $type_marks, $score)
     {
         $response = [
             'sucess'    => false,
             'error'     => []
         ];
-        if ($id && $type_marks &&  $marks) {
+        if ($id && $type_marks &&  $score) {
 
             $update =  StudentsStudyCourseScore::where('id', $id)->update([
-                $type_marks => $marks,
+                $type_marks => $score,
             ]);
 
             if ($update) {

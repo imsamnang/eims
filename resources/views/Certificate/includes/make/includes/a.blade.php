@@ -1,75 +1,49 @@
-<div class="card">
+<div class="card m-0">
     <div class="card-header">
-        <h5 class="h3 mb-0">
-            {{ __("Edit Certificate") }}
-        </h5>
-    </div>
-    <div class="card-header">
-        <label class="btn btn-outline-primary" for="front_certificate">
-            <img width="25px" src="{{config("pages.form.data.front")}}" alt="">
+        <label class="btn btn-outline-primary m-0" for="front_card-{{$row['id']}}">
+            <img width="25px" src="{{config("pages.form.data.0.front")}}" alt="">
             {{__("Frame Front")}}
         </label>
-        <input hidden type="file" name="front_certificate" id="front_certificate">
+        <input hidden type="file" name="front_card" id="front_card-{{$row['id']}}">
 
-        <label class="btn btn-outline-primary" for="back_certificate">
-
-            <img width="25px" src="{{config("pages.form.data.background")}}" alt="">
-            {{__("Frame Background")}}
-        </label>
-        <input hidden type="file" name="back_certificate" id="back_certificate">
         <button id="layout" class="btn btn-outline-primary">
             <i class="fas fa-columns"></i>
             {{__("Layout")}}
         </button>
         <div class="dropdown" data-close="false">
-            <a class="btn btn-outline-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn btn-outline-primary " href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
                 <i class="fad fa-cog"></i>
                 <span class="caret"></span>
             </a>
             <div class="p-2 dropdown-menu dropdown-menu-lg dropdown-menu-right dropdown-menu-arrow">
-                @foreach ($certificates["all"] as $key => $item)
+                @foreach ($all as $key => $item)
                 <div class="custom-control custom-checkbox">
-                    <input {{array_key_exists($key,$certificates["selected"]) ? "checked" : "" }} value="{{$key}}"
-                        type="checkbox" class="custom-control-input" id="customCheck-{{$key}}">
-                    <label class="custom-control-label" for="customCheck-{{$key}}">{{$item}}</label>
+                    <input {{array_key_exists($key,$selected) ? "checked" : "" }} value="{{$key}}" type="checkbox"
+                        class="custom-control-input card-value-check" id="customCheck-{{$row['id']}}-{{$key}}">
+                    <label class="custom-control-label" for="customCheck-{{$row['id']}}-{{$key}}">{{$item}}</label>
                 </div>
                 @endforeach
             </div>
         </div>
     </div>
 
+    <div class="card-body p-0 bg-translucent-dark">
+        <style>
+            [id^="stage"] {
+                margin: auto;
+                background: #fff;
+            }
 
-    <div class="card-body">
+            [id^="stage"] .konvajs-content {
+                margin: auto;
+            }
+        </style>
 
-<style>
-    [id^="stage"] {
-        margin: auto;
-        width: 1000px !important;
-        @if ($certificates["frame"] && $certificates["frame"]["layout"]=="vertical")
-        /* height: 350px;
-               width: 504px !important; */
-        @endif
-    }
-
-    [id^="stage"] .konvajs-content {
-        margin: auto;
-    }
-</style>
-@if ($certificates["user"] == null)
-<div class="text-danger text-center">
-    {{ __("No Data") }}
-</div>
-@endif
-<div class="col-12">
-    <div id="stage" data-toggle="certificate-maker" data-layout="{{$certificates["frame"]["layout"]}}"
-        data-front="{{$certificates["frame"]["front"]}}" data-background="{{$certificates["frame"]["background"]}}"
-        data-user='{!! json_encode($certificates["user"])!!}'></div>
-</div>
-</div>
-
-<div class="card-footer">
-    <button class="btn btn-primary ml-auto float-right {{request()->ajax() ? "d-none" : ""}}" type="submit">
-        {{ __("Update") }}
-    </button>
-</div>
+        <div class="col-12">
+            <div id="stage" data-toggle="certificate-maker" data-layout="{{$frame["layout"]}}"
+                data-front="{{$frame["front"]}}" data-background="{{$frame["background"]}}"
+                data-user='{!! json_encode($row)!!}'></div>
+        </div>
+    </div>
 </div>

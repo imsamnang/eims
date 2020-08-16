@@ -7,6 +7,7 @@ use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 
 use App\Models\SocailsMedia;
@@ -37,7 +38,7 @@ class InstituteController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Institute::getData(null, null, 10,request('search'));
+                return Institute::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
@@ -52,24 +53,25 @@ class InstituteController extends Controller
                 return Institute::addToTable();
             }
 
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return Institute::updateToTable($id);
-                }
+
+            if (request()->method() === 'POST') {
+                return Institute::updateToTable($id);
             }
 
-            $data = $this->edit($data, $id);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Institute');
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
-
-            $data = $this->view($data, $id);
+            $data = $this->show($data, $id, $param1);
+            $data['view']       = Institute::$path['view'] . '.includes.view.index';
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Institute');
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return Institute::deleteFromTable($id);
-        }else{
+        } else {
             abort(404);
         }
 
@@ -110,42 +112,46 @@ class InstituteController extends Controller
     public function list($data)
     {
         $data['view']     = Institute::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Institute');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Institute');
+        $data['response']['data'] = Institute::get()->map(function ($row) {
+            $row['logo'] = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['name'] = $row->{app()->getLocale()};
+            $row['action']        = [
+                'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
+                'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
+            ];
+            return $row;
+        });
         return $data;
     }
-
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']      = Institute::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Institute');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
-
-    public function edit($data, $id)
-    {
-        $response = Institute::getData($id, true);
         $data['view']       = Institute::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Institute');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
-        return $data;
-    }
+        if ($id) {
 
-    public function view($data, $id)
-    {
-        $response = Institute::getData($id, true);
-        $data['view']       = Institute::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Institute');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
+            $response           = Institute::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['logo'] = $row['logo'] ? ImageHelper::site(Institute::$path['image'], $row->logo) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->short_name,
+                    'image'  => $row->logo,
+                    'action'  => $row->action,
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 }

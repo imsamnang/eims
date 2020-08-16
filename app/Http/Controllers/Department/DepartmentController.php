@@ -79,7 +79,7 @@ class DepartmentController extends Controller
 
         $data['formAction']          = '/add';
         $data['formName']            = Staff::$path['url'];
-        $data['title']               = Users::role(app()->getLocale()).'|'.__('Department');
+        $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Department');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -110,12 +110,12 @@ class DepartmentController extends Controller
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4);
         } elseif (strtolower($param1)  == 'myclass') {
-            $data['title']      = Users::role(app()->getLocale()).'|'.__('My Class');
+            $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('My Class');
             $data['response']   = Staff::getClassTeaching(Auth::user()->node_id);
             $data['view']       = Users::role('view_path') . '.includes.myclass.index';
         } elseif (strtolower($param1)  == 'teaching') {
             $view = new TeacherController;
-            return $view->teaching($param2,$param3,$param4);
+            return $view->teaching($param2, $param3, $param4);
         } else {
             abort(404);
         }

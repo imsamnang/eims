@@ -16,19 +16,27 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Models\BloodGroup;
 use App\Models\MotherTong;
+use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Models\Nationality;
 use App\Models\StaffStatus;
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
+use App\Models\StaffGuardians;
+use App\Models\StaffExperience;
+use App\Models\StaffInstitutes;
 use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
 use App\Models\StaffTeachSubject;
+use App\Models\StaffQualifications;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Staff\StaffCertificateController;
 use App\Http\Controllers\Staff\StaffDesignationController;
-use App\Models\StaffInstitutes;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
+
 
 class StaffController extends Controller
 {
@@ -44,16 +52,19 @@ class StaffController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
+
         $data['formAction']          = '/add';
-        $data['formName']            = Staff::$path['url'];       
+        $data['formName']            = Staff::$path['url'];
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
-            'photo'                  => asset('/assets/img/user/male.jpg'),
+            [
+                'photo'                  => asset('/assets/img/user/male.jpg'),
+            ]
         );
         $data['listData']            = array();
 
-        if (strtolower($param1) == null) {
+        if ($param1 == null) {
             $data['shortcut'] = [
                 [
                     'name'  => __('Add Staff'),
@@ -102,69 +113,92 @@ class StaffController extends Controller
 
             ];
             $data['view']  = Staff::$path['view'] . '.includes.dashboard.index';
-            $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff & Teacher');
-        } elseif (strtolower($param1) == 'list') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff & Teacher');
+        } elseif ($param1 == 'list') {
+            if ((request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  Staff::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+        } elseif ($param1 == 'list-datatable') {
+            if ((request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  Staff::getDataTable();
             } else {
                 $data = $this->list($data);
             }
-        } elseif (strtolower($param1) == 'add') {
+        } elseif ($param1 == 'add') {
 
             if (request()->method() === 'POST') {
                 return Staff::addToTable();
             }
-
-
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff');
             $data = $this->show($data, null, $param1);
-        } elseif (strtolower($param1) == 'view') {
+        } elseif (($param1) == 'view') {
             $id = request('id', $param2);
-            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff');
+            $data['response']['data'] = Staff::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+                $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+                $row['nationality'] = Nationality::where('id', $row->nationality_id)->pluck(app()->getLocale())->first();
+                $row['mother_tong'] = MotherTong::where('id', $row->mother_tong_id)->pluck(app()->getLocale())->first();
+                $row['marital'] = Marital::where('id', $row->marital_id)->pluck(app()->getLocale())->first();
+                $row['blood_group'] = BloodGroup::where('id', $row->blood_group_id)->pluck(app()->getLocale())->first();
+                $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
+                    'print' => url(Users::role() . '/' . Staff::$path['url'] . '/print/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['formAction']          = '/view/' . $id;
             $data['view']  = Staff::$path['view'] . '.includes.view.index';
-        } elseif (strtolower($param1) == 'print') {
+        } elseif (($param1) == 'print') {
             $id = request('id', $param2);
-            if ($id) {
-                $data['response'] = Staff::getData($id, true);
-                $data['view']  = Staff::$path['view'] . '.includes.print.index';
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif (strtolower($param1) == 'edit') {
+            return $this->print($id);
+        } elseif (($param1) == 'edit') {
 
             $id = request('id', $param2);
             if (request()->method() === 'POST') {
                 return Staff::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-        } elseif (strtolower($param1) == 'delete') {
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff');
+        } elseif (($param1) == 'delete') {
             $id = request('id', $param2);
             return Staff::deleteFromTable($id);
-        } elseif (strtolower($param1) == 'account') {
-            $id = $param3 ? $param3 : request('id');
-            if ($param2 == 'create') {
+        } elseif (($param1) == 'report') {
+            return $this->report();
+        } elseif (($param1) == 'account') {
 
+            $id = request('id', $param3);
+            if ($param2 == 'create') {
                 if (request()->method() == "POST") {
                     return Staff::createAccountToTable($id);
                 }
 
-                $data =  $this->account($data, $id, $param2);
+                $data = $this->show($data, $id, $param1);
+                $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Create account');
+                $data['view']       = Staff::$path['view'] . '.includes.account.index';
+
+                $data['roles']['data']  = Roles::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                    $row['image']   = $row->image ?  ImageHelper::site(Roles::$path['image'], $row->image) : ImageHelper::prefix();
+                    return $row;
+                });
             }
-        } elseif (strtolower($param1) == StaffDesignations::$path['url']) {
+        } elseif (($param1) == StaffDesignations::$path['url']) {
             $view = new StaffDesignationController();
             return $view->index($param2, $param3, $param4);
-        } elseif (strtolower($param1) == StaffStatus::$path['url']) {
+        } elseif (($param1) == StaffStatus::$path['url']) {
             $view = new StaffStatusController();
             return $view->index($param2, $param3, $param4);
-        } elseif (strtolower($param1) == StaffCertificate::$path['url']) {
+        } elseif (($param1) == StaffCertificate::$path['url']) {
             $view = new StaffCertificateController();
             return $view->index($param2, $param3, $param4);
-        } elseif (strtolower($param1) == StaffTeachSubject::$path['url']) {
+        } elseif (($param1) == StaffTeachSubject::$path['url']) {
             $view = new StaffTeachSubjectController();
             return $view->index($param2, $param3, $param4);
         } else {
@@ -199,11 +233,70 @@ class StaffController extends Controller
         );
 
         $pages['form']['validate'] = [
-            'rules'       => strtolower($param1) == 'account' ? [] : FormStaff::rulesField(),
-            'attributes'  => strtolower($param1) == 'account' ? [] : FormStaff::attributeField(),
-            'messages'    => strtolower($param1) == 'account' ? [] : FormStaff::customMessages(),
-            'questions'   => strtolower($param1) == 'account' ? [] : FormStaff::questionField(),
+            'rules'       => ($param1) == 'account' ? [] : FormStaff::rulesField(),
+            'attributes'  => ($param1) == 'account' ? [] : FormStaff::attributeField(),
+            'messages'    => ($param1) == 'account' ? [] : FormStaff::customMessages(),
+            'questions'   => ($param1) == 'account' ? [] : FormStaff::questionField(),
         ];
+
+
+        //Select Option
+
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data'] = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+        $data['designationFilter']['data']  = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                return $row;
+            });
+
+        $data['status']['data']   = StaffStatus::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['designation']['data']  = StaffDesignations::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+
+        $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['provinces']['data']           = Provinces::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['districts']           = Districts::getData('null');
+        $data['communes']            = Communes::getData('null');
+        $data['villages']            = Villages::getData('null');
+        $data['staff_certificate']['data']   = StaffCertificate::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['curr_districts']      = $data['districts'];
+        $data['curr_communes']       = $data['communes'];
+        $data['curr_villages']       = $data['villages'];
+
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
@@ -213,99 +306,215 @@ class StaffController extends Controller
 
     public function list($data)
     {
-       $staff = Staff::join((new StaffInstitutes())->getTable(), (new StaffInstitutes())->getTable() . '.staff_id', (new Staff())->getTable() . '.id');
-        if  (request('instituteId')) {
-            $staff = $staff->where('institute_id', request('instituteId'))
-                ->whereNotIn('designation_id', [1]);
+        $table = Staff::join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
         }
+        if (request('designationId')) {
+            $table->where('designation_id', request('designationId'));
+        }
+
+        $response = $table->orderBy((new Staff)->getTable() . '.id', 'DESC')
+            ->get()->map(function ($row) {
+                $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+                $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+                $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
+                $row['designation'] = StaffDesignations::where('id', $row->designation_id)->pluck(app()->getLocale())->first();
+                $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['account'] = Users::where('node_id', $row->id)->where('email', $row->email)->exists();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                ];
+
+                return $row;
+            })->toArray();
+
+
         $data['response'] = [
-            'gender'      => Staff::gender($staff),
-            'staffStatus' => Staff::staffStatus($staff),
+            'data'      => $response,
+            'gender'    => Staff::gender($table),
+            'staffStatus' => Staff::staffStatus($table),
         ];
 
 
         $data['view']  = Staff::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Staff');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-
-        $data['institute']           = Institute::getData();
-        $data['status']              = StaffStatus::getData();
-        $data['designation']         = StaffDesignations::getData();
-        $data['mother_tong']         = MotherTong::getData();
-        $data['gender']              = Gender::getData();
-        $data['nationality']         = Nationality::getData();
-        $data['marital']             = Marital::getData();
-        $data['blood_group']         = BloodGroup::getData();
-        $data['provinces']           = Provinces::getData();
-        $data['districts']           = Districts::getData('null');
-        $data['communes']            = Communes::getData('null');
-        $data['villages']            = Villages::getData('null');
-        $data['staff_certificate']   = StaffCertificate::getData();
-        $data['curr_districts']      = $data['districts'];
-        $data['curr_communes']       = $data['communes'];
-        $data['curr_villages']       = $data['villages'];
-
         $data['view']       = Staff::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Staff');
-
-
         if ($id) {
-            $response           = Staff::getData($id, true);
-            $data['formData']   = $response['data'][0];
-            $data['listData']   = $response['pages']['listData'];
+
+            $response           = Staff::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+                $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-m-Y');
+                $row['staff_institute'] = StaffInstitutes::where('staff_id', $row->id)->first();
+                $row['institute'] = Institute::where('id', $row['staff_institute']->institute_id)->pluck(app()->getLocale())->first();
+                $row['designation'] = StaffDesignations::where('id', $row['staff_institute']->designation_id)->pluck(app()->getLocale())->first();
+
+
+                $row['staff_guardian'] = StaffGuardians::where('staff_id', $row->id)->first();
+                $row['staff_experience']    = StaffExperience::where('staff_id', $row->id)->get();
+                $row['staff_qualification'] = StaffQualifications::where('staff_id', $row->id)->first();
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['account'] = Users::where('email', $row->email)->where('node_id', $row->id)->exists();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
+                    'print' => url(Users::role() . '/' . Staff::$path['url'] . '/print/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                ];
+
+                if ($row['staff_institute']->designation_id == 1) {
+                    $row['suggest_role']       = 1;
+                } elseif (in_array($row['staff_institute']->designation_id, [2, 3])) {
+                    $row['suggest_role']       = 8;
+                }
+
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->name,
+                    'image'  => $row->photo,
+                    'action'  => [
+                        'edit'    => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row->id),
+                    ],
+                ];
+            });
+
+            $data['formData']   = $response;
             $data['formAction'] = '/' . $type . '/' . $id;
-
-            $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-            $data['metaLink']   = url(Users::role() . $data['formAction']);
-            $pob                = $data['formData']['place_of_birth'];
-            $cur                = $data['formData']['current_resident'];
-
-            if ($pob['district']) {
-                $data['communes'] = Communes::getData($pob['district']['id']);
-            }
-            if ($pob['commune']) {
-                $data['villages'] = Villages::getData($pob['commune']['id']);
-            }
-
-            if ($cur['district']) {
-                $data['curr_communes'] = Communes::getData($cur['district']['id']);
-            }
-            if ($cur['commune']) {
-                $data['curr_villages'] = Villages::getData($cur['commune']['id']);
-            }
         }
-
-
-
-
 
 
         return $data;
     }
-
-
-    public function account($data, $id, $type)
+    public function report()
     {
-        $response           = Staff::getData($id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/account/' . $type . '/' . $response['data'][0]['id'];
-        $data['view']       = Staff::$path['view'] . '.includes.account.index';
-        if ($data['formData']['staff_institute']['designation']['id'] == 1) {
-            $data['role']       = Roles::getData(request('roleId', 1));
-            $data['formData']['role']['id']   = 1;
-        } elseif (in_array($data['formData']['staff_institute']['designation']['id'], [2, 3])) {
-            $data['role']       = Roles::getData(request('roleId', 8));
-            $data['formData']['role']['id']   = 8;
-        } else {
-            $data['role']       = Roles::getData(request('roleId', Staff::$path['roleId']));
-            $data['formData']['role']['id']   = Staff::$path['roleId'];
+
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List all Staff'));
+        config()->set('pages.parent', Staff::$path['view']);
+
+        $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+        $data['designationFilter']['data']           = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                return $row;
+            });
+
+
+
+        $table = Staff::join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+        if (request('designationId')) {
+            $table->where('designation_id', request('designationId'));
+        }
+        $response = $table->get()->map(function ($row) {
+            // $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+            $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
+            $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+            $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
+            $row['designation'] = StaffDesignations::where('id', $row->designation_id)->pluck(app()->getLocale())->first();
+            $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
         }
 
-        return $data;
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'genders' => Staff::gender($table),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+
+        $data['designation']  = StaffDesignations::where('id', request('designationId'))
+            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                return $row;
+            })->first();
+
+        config()->set('pages.title', __('List all Staff') . ($data['designation'] ? ' "' . $data['designation']['name'] . '"' : ''));
+
+        return view(Staff::$path['view'] . '.includes.report.index', $data);
+    }
+
+    public function print($id)
+    {
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List all Staff'));
+        config()->set('pages.parent', Staff::$path['view']);
+
+        if ($id) {
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Print Staff');
+            $data['response']['data'] = Staff::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+                $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+                $row['nationality'] = Nationality::where('id', $row->nationality_id)->pluck(app()->getLocale())->first();
+                $row['mother_tong'] = MotherTong::where('id', $row->mother_tong_id)->pluck(app()->getLocale())->first();
+                $row['marital'] = Marital::where('id', $row->marital_id)->pluck(app()->getLocale())->first();
+                $row['blood_group'] = BloodGroup::where('id', $row->blood_group_id)->pluck(app()->getLocale())->first();
+                $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                return $row;
+            });
+            $data['view']  = Staff::$path['view'] . '.includes.print.index';
+        }
+
+        return view(Staff::$path['view'] . '.includes.print.index', $data);
     }
 }

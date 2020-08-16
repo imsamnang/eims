@@ -19,8 +19,8 @@
                 </label>
 
                 <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.student.id",request("studentId"))}}">
+                    data-placeholder="" name="student[]"
+                    data-select-value="{{config("pages.form.data.".$key.".student_id",request("studentId"))}}">
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>

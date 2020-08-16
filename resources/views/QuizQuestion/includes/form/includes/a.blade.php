@@ -7,21 +7,9 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
-                <div class="form-row">
-                    @csrf
-                    @if (request()->segment(3) == "view")
-                    <div class="col-md-6 mb-3">
-                        <label class="form-control-label" for="id">
-                            {{ __("Id") }}
-                        </label>
-                        <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
-                    </div>
-                    @endif
-                </div>
 
                 <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-12 mb-3">
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.quiz")}}" class="form-control-label"
                             for="quiz">
@@ -37,18 +25,15 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-
-
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{ request("quizId", config("pages.form.data.quiz.id"))}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz"
+                            data-select-value="{{ request("quizId", config("pages.form.data.".$key.".quiz_id"))}}"
                             {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                             @foreach($quiz["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.quiz_answer_type")}}"
                             class="form-control-label" for="quiz_answer_type">
@@ -64,19 +49,15 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz_answer_type" title="Simple select"
-
-
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            name="quiz_answer_type"
-                            data-select-value="{{config("pages.form.data.quiz_answer_type.id")}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz_answer_type"
+                            data-select-value="{{config("pages.form.data.".$key.".quiz_answer_type_id")}}"
                             {{config("pages.form.validate.rules.quiz_answer_type") ? "required" : ""}}>
-                            @foreach($quiz_answer_type["data"] as $o)
+                            @foreach($answerType["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-6 mb-3">
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.quiz_type")}}" class="form-control-label"
                             for="quiz_type">
@@ -92,13 +73,10 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="quiz_type" title="Simple select"
-
-
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{config("pages.form.data.quiz_type.id")}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz_type"
+                            data-select-value="{{config("pages.form.data.".$key.".quiz_question_type_id")}}"
                             {{config("pages.form.validate.rules.quiz_type") ? "required" : ""}}>
-                            @foreach($quiz_type["data"] as $o)
+                            @foreach($questionType["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                             @endforeach
                         </select>
@@ -124,17 +102,16 @@
                                 </span>
                                 @endif
                             </label>
-                            <textarea class="form-control" title="{{ __("Question​") }}"
-                                placeholder=""
-                                {{config("pages.form.validate.rules.question") ? "required" : ""}}>{{config("pages.form.data.question")}}</textarea>
+                            <textarea class="form-control" title="{{ __("Question​") }}" placeholder="" name="question"
+                                {{config("pages.form.validate.rules.question") ? "required" : ""}}>{{config("pages.form.data.".$key.".question")}}</textarea>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                                title="{{config("pages.form.validate.marks")}}" class="form-control-label" for="marks">
+                                title="{{config("pages.form.validate.score")}}" class="form-control-label" for="score">
 
                                 {{ __("Score") }}
 
-                                @if(config("pages.form.validate.rules.marks"))
+                                @if(config("pages.form.validate.rules.score"))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
                                     style="background:unset">
                                     <i class="fas fa-asterisk fa-xs"></i>
@@ -142,19 +119,18 @@
                                 @endif
                             </label>
 
-                            <input type="text" class="form-control" name="marks" id="marks"
-                                placeholder=""
-                                value="{{config("pages.form.data.marks")}}"
-                                {{config("pages.form.validate.rules.marks") ? "required" : ""}} />
+                            <input type="text" class="form-control" name="score" id="score" placeholder=""
+                                value="{{config("pages.form.data.".$key.".score")}}"
+                                {{config("pages.form.validate.rules.score") ? "required" : ""}} />
 
                         </div>
                     </div>
                     <div id="taget_quiz_question">
-                        @if (config("pages.form.data.answer"))
-                        @foreach (config("pages.form.data.answer") as $answer)
+                        @if (config("pages.form.data.".$key.".answers"))
+                        @foreach (config("pages.form.data.".$key.".answers") as $answer)
                         <div class="form-row" data-clone="_quiz_question">
 
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="custom-control custom-checkbox">
                                     <input {{$answer["correct_answer"] ? "checked" : ""}} type="checkbox"
                                         data-fixed="{{$answer["id"]}}" id="correct_answer-[{{$answer["id"]}}]" value="1"
@@ -164,9 +140,8 @@
                                         for="correct_answer-[{{$answer["id"]}}]">{{ __("Correct answer​") }}</label>
                                 </div>
                             </div>
-                            <div class="col-md-8 mb-3">
-                                <textarea class="form-control" title="{{ __("answer") }}"
-                                    placeholder=""
+                            <div class="col-md-7 mb-3">
+                                <textarea class="form-control" title="{{ __("answer") }}" placeholder=""
                                     name="answer[id-{{$answer["id"]}}]"
                                     {{config("pages.form.validate.rules.answer") ? "required" : ""}}>{{$answer["answer"]}}</textarea>
                             </div>
@@ -190,9 +165,8 @@
                                 </div>
                             </div>
                             <div class="col-md-8 mb-3">
-                                <textarea class="form-control" title="{{ __("answer") }}"
-                                    placeholder=""
-                                    {{config("pages.form.validate.rules.answer") ? "required" : ""}}></textarea>
+                                <textarea class="form-control" title="{{ __("answer") }}" placeholder="" name="answer[]"
+                                    {{config("pages.form.validate.rules.answer[]") ? "required" : ""}}></textarea>
                             </div>
                             <div class="col-md-2  mb-3">
                                 <a href="#" data-toggle="clone" data-clone-from="_quiz_question"

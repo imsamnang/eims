@@ -21,11 +21,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.quiz.id")}}"
+                    data-text="{{ __("Add new option") }}" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".quiz_id")}}"
                     {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                     @foreach($quiz["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -34,8 +31,15 @@
             </div>
         </div>
         <div class="form-group form-control col" id="add_by">
-            @if (config('pages.parameters.param1') == "view")
-
+            @if (config('pages.parameters.param1') == "edit")
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input checked data-toggle="radio" type="radio" data-hide-collapse="add_by_cid"
+                    data-show-collapse="add_by_scid" id="scid" name="add_by" value="scid" class="custom-control-input">
+                <label class="custom-control-label" for="scid">
+                    <span class="d-none d-sm-block">{{__("Student study course")}}</span>
+                    <span class="d-lg-none">{{__("Students")}}</span>
+                </label>
+            </div>
             @else
             <div class="custom-control custom-radio custom-control-inline col-4">
                 <input checked data-toggle="radio" type="radio" data-hide-collapse="add_by_cid"
@@ -73,11 +77,8 @@
                     </label>
 
                     <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-
-
-                        data-text="{{ __("Add new option") }}"
-                        data-placeholder=""
-                        data-select-value="{{config("pages.form.data.student.id")}}"
+                        data-text="{{ __("Add new option") }}" data-placeholder=""
+                        data-select-value="{{config("pages.form.data.".$key.".student_study_course_id")}}"
                         {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                         @foreach($student["data"] as $o)
                         <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
@@ -91,8 +92,8 @@
             <div class="form-row">
                 <div class="col-md-12 mb-3">
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                        title="{{config("pages.form.validate.questions.study_course_session")}}" class="form-control-label"
-                        for="study_course_session">
+                        title="{{config("pages.form.validate.questions.study_course_session")}}"
+                        class="form-control-label" for="study_course_session">
 
                         {{ __("Study course session") }}
 
@@ -101,11 +102,10 @@
                             <i class="fas fa-asterisk fa-xs"></i>
                         </span>
                     </label>
-                    <select multiple class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-
-                        data-text="{{ __("Add new option") }}"
-                        data-placeholder=""
-                        name="study_course_session[]" data-select-value="{{request('course-sessionId')}}">
+                    <select multiple class="form-control" data-toggle="select" id="study_course_session"
+                        title="Simple select" data-text="{{ __("Add new option") }}" data-placeholder=""
+                        name="study_course_session[]"
+                        data-select-value="{{request('course-sessionId',config("pages.form.data.".$key.".study_course_session_id"))}}">
                         @foreach($study_course_session["data"] as $o)
                         <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                         @endforeach

@@ -125,7 +125,7 @@ class StudyShortCourseSessionController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyShortCourseSession::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Short Course Session');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Short Course Session');
         return $data;
     }
 
@@ -137,7 +137,7 @@ class StudyShortCourseSessionController extends Controller
         $data['villages']            = Villages::getData('null', 'null');
 
         $data['view']       = StudyShortCourseSession::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Short Course Session');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Short Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         if ($id) {

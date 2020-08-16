@@ -186,7 +186,7 @@ class AdministratorController extends Controller
 
         $studyPrograms = StudyPrograms::get();
         if ($studyPrograms) {
-            foreach ($studyPrograms as $row) {                
+            foreach ($studyPrograms as $row) {
                 $data['studyProgram'][] = [
                     'title'   => $row->{app()->getLocale()},
                     'link'    => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list?programId=' . $row->id),
@@ -203,7 +203,7 @@ class AdministratorController extends Controller
                     'color'   => config('app.theme_color.name'),
                 ];
             }
-        }        
+        }
         $data['response'] =  ActivityFeed::getData(null, true);
         $data['users'] = Users::getData(null, null, 10);
         config()->set('app.title', $data['title']);

@@ -48,12 +48,11 @@ class StudyCourseRoutineController extends Controller
         if ($param1 == 'list') {
 
             $data = $this->list($data, $param1);
-
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StudyCourseRoutine::getDataTable();
             } else {
-                $data = $this->list($data,$param1);
+                $data = $this->list($data, $param1);
             }
         } elseif ($param1 == 'add') {
 
@@ -122,14 +121,14 @@ class StudyCourseRoutineController extends Controller
     {
         $data['response'] = StudyCourseRoutine::getData(null, 10);
         $data['view']     = StudyCourseRoutine::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Course Routine');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Course Routine');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyCourseRoutine::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Course Routine');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Course Routine');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -140,7 +139,7 @@ class StudyCourseRoutineController extends Controller
 
         $response = StudyCourseRoutine::getData(Encryption::decode($id)['study_course_session_id']);
         $data['view']       = StudyCourseRoutine::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Edit Study Course Routine');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Edit Study Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -153,7 +152,7 @@ class StudyCourseRoutineController extends Controller
     {
         $response = StudyCourseRoutine::getData(Encryption::decode($id)['study_course_session_id'], true);
         $data['view']       = StudyCourseRoutine::$path['view'] . '.includes.view.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Study Course Routine');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Study Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];

@@ -28,8 +28,16 @@ class CreateStudentsTable extends Migration
             $table->bigInteger('marital_id')->unsigned()->nullable();
             $table->bigInteger('blood_group_id')->unsigned()->nullable();
 
-            $table->text('place_of_birth')->nullable();
-            $table->text('current_resident')->nullable();
+            $table->bigInteger('pob_province_id')->unsigned()->nullable();
+            $table->bigInteger('pob_district_id')->unsigned()->nullable();
+            $table->bigInteger('pob_commune_id')->unsigned()->nullable();
+            $table->bigInteger('pob_village_id')->unsigned()->nullable();
+
+            $table->bigInteger('curr_province_id')->unsigned()->nullable();
+            $table->bigInteger('curr_district_id')->unsigned()->nullable();
+            $table->bigInteger('curr_commune_id')->unsigned()->nullable();
+            $table->bigInteger('curr_village_id')->unsigned()->nullable();
+            
             $table->text('permanent_address')->nullable();
             $table->text('temporaray_address')->nullable();
 

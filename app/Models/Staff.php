@@ -103,9 +103,6 @@ class Staff extends Model
         if ($get) {
             foreach ($get as $key => $row) {
 
-                $place_of_birth     = json_decode($row['place_of_birth'], true);
-                $current_resident   = json_decode($row['current_resident'], true);
-
                 $account = Users::where('email', $row['email'])->where('node_id', $row['id'])->first();
                 $first_name         = array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row['first_name_en'];
                 $last_name          = array_key_exists('last_name_' . app()->getLocale(), $row) ? $row['last_name_' . app()->getLocale()] : $row['last_name_en'];
@@ -132,18 +129,18 @@ class Staff extends Model
 
                         'marital'            => $row['marital_id'] ? (Marital::getData($row['marital_id'])['data'][0]) : null,
                         'blood_group'        => $row['blood_group_id'] ? (BloodGroup::getData($row['blood_group_id'])['data'][0]) : null,
-                        'place_of_birth'     => array(
-                            'province'       => ($place_of_birth['province']) ? (Provinces::getData($place_of_birth['province'])['data'][0]) : null,
-                            'district'       => ($place_of_birth['district']) ? (Districts::getData(null, $place_of_birth['district'])['data'][0]) : null,
-                            'commune'        => ($place_of_birth['commune']) ? (Communes::getData(null, $place_of_birth['commune'])['data'][0]) : null,
-                            'village'        => ($place_of_birth['village']) ? (Villages::getData(null, $place_of_birth['village'])['data'][0]) : null,
-                        ),
-                        'current_resident'   => array(
-                            'province'       => ($current_resident['province']) ? (Provinces::getData($current_resident['province'])['data'][0]) : null,
-                            'district'       => ($current_resident['district']) ? (Districts::getData(null, $current_resident['district'])['data'][0]) : null,
-                            'commune'        => ($current_resident['commune']) ? (Communes::getData(null, $current_resident['commune'])['data'][0]) : null,
-                            'village'        => ($current_resident['village']) ? (Villages::getData(null, $current_resident['village'])['data'][0]) : null,
-                        ),
+
+                        'pob_province'       => Provinces::where('id', $row['pob_province_id'])->pluck(app()->getLocale())->first(),
+                        'pob_district'       => Districts::where('id', $row['pob_district_id'])->pluck(app()->getLocale())->first(),
+                        'pob_commune'        => Communes::where('id', $row['pob_commune_id'])->pluck(app()->getLocale())->first(),
+                        'pob_village'        => Villages::where('id', $row['pob_village_id'])->pluck(app()->getLocale())->first(),
+
+
+                        'curr_province'       => Provinces::where('id', $row['curr_province_id'])->pluck(app()->getLocale())->first(),
+                        'curr_district'       => Districts::where('id', $row['curr_district_id'])->pluck(app()->getLocale())->first(),
+                        'curr_commune'        => Communes::where('id', $row['curr_commune_id'])->pluck(app()->getLocale())->first(),
+                        'curr_village'        => Villages::where('id', $row['curr_village_id'])->pluck(app()->getLocale())->first(),
+
                         'permanent_address'  => $row['permanent_address'],
                         'temporaray_address' => $row['temporaray_address'],
                         'phone'              => $row['phone'],
@@ -244,10 +241,10 @@ class Staff extends Model
 
 
         return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {                
+            ->setTransformer(function ($row) {
                 $account = Users::where('email', $row->email)
-                            ->where('node_id', $row->id)
-                            ->first(['name']);
+                    ->where('node_id', $row->id)
+                    ->first(['name']);
                 return [
                     'id'      => $row->id,
                     'name'    => $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en,
@@ -272,10 +269,12 @@ class Staff extends Model
                 ];
             })
             ->filter(function ($query) {
-                
+
                 if (request('instituteId')) {
-                    $query = $query->where((new StaffInstitutes())->getTable() . '.institute_id', request('instituteId'))
-                        ->whereNotIn((new StaffInstitutes())->getTable() . '.designation_id', [1]);
+                    $query = $query->where((new StaffInstitutes())->getTable() . '.institute_id', request('instituteId'));
+                }
+                if (request('designationId')) {
+                    $query = $query->where((new StaffInstitutes())->getTable() . '.designation_id', request('designationId'));
                 }
 
                 if (request('search.value')) {
@@ -398,7 +397,7 @@ class Staff extends Model
             if ($staffStatus['success']) {
                 foreach ($staffStatus['data'] as  $status) {
                     $data[$status['id']] = [
-                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('staff.' . $status['name']),
+                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('Staff') . $status['name'],
                         'color' => $status['color'],
                         'text' => 0,
                     ];
@@ -455,10 +454,10 @@ class Staff extends Model
         //     ];
         // }else{
         //     $rules += [
-        //         'pob_province_fk'         => 'required',
-        //         'pob_district_fk'         => 'required',
-        //         'pob_commune_fk'          => 'required',
-        //         'pob_village_fk'          => 'required',
+        //         'pob_province'         => 'required',
+        //         'pob_district'         => 'required',
+        //         'pob_commune'          => 'required',
+        //         'pob_village'          => 'required',
         //     ];
         // }
 
@@ -470,10 +469,10 @@ class Staff extends Model
         //     ];
         // }else{
         //     $rules += [
-        //         'curr_province_fk'         => 'required',
-        //         'curr_district_fk'         => 'required',
-        //         'curr_commune_fk'          => 'required',
-        //         'curr_village_fk'          => 'required',
+        //         'curr_province'         => 'required',
+        //         'curr_district'         => 'required',
+        //         'curr_commune'          => 'required',
+        //         'curr_village'          => 'required',
         //     ];
         // }
         // if(request()->hasFile('photo')){
@@ -509,18 +508,18 @@ class Staff extends Model
                     'date_of_birth' => DateHelper::convert(trim(request('date_of_birth'))),
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
-                    'place_of_birth' => json_encode(array(
-                        'province' => request('pob_province_fk'),
-                        'district' => request('pob_district_fk'),
-                        'commune'  => request('pob_commune_fk'),
-                        'village'  => request('pob_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
-                    'current_resident' => json_encode(array(
-                        'province' => request('curr_province_fk'),
-                        'district' => request('curr_district_fk'),
-                        'commune'  => request('curr_commune_fk'),
-                        'village'  => request('curr_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
+
+                    'pob_province_id' => request('pob_province'),
+                    'pob_district_id' => request('pob_district'),
+                    'pob_commune_id'  => request('pob_commune'),
+                    'pob_village_id'  => request('pob_village'),
+
+
+                    'curr_province_id' => request('curr_province'),
+                    'curr_district_id' => request('curr_district'),
+                    'curr_commune_id'  => request('curr_commune'),
+                    'curr_village_id'  => request('curr_village'),
+
 
                     'permanent_address'  => trim(request('permanent_address')),
                     'temporaray_address' => trim(request('temporaray_address')),
@@ -576,14 +575,14 @@ class Staff extends Model
 
         $rules = FormStaff::rulesField();
 
-        unset($rules['pob_province_fk']);
-        unset($rules['pob_district_fk']);
-        unset($rules['pob_commune_fk']);
-        unset($rules['pob_village_fk']);
-        unset($rules['curr_province_fk']);
-        unset($rules['curr_district_fk']);
-        unset($rules['curr_commune_fk']);
-        unset($rules['curr_village_fk']);
+        unset($rules['pob_province']);
+        unset($rules['pob_district']);
+        unset($rules['pob_commune']);
+        unset($rules['pob_village']);
+        unset($rules['curr_province']);
+        unset($rules['curr_district']);
+        unset($rules['curr_commune']);
+        unset($rules['curr_village']);
         unset($rules['father_fullname']);
         unset($rules['father_occupation']);
         unset($rules['father_phone']);
@@ -619,7 +618,7 @@ class Staff extends Model
                 'temporaray_address' => trim(request('temporaray_address')),
                 'phone'              => trim(request('phone')),
                 'email'              => strtolower(trim(request('email'))),
-                'extra_info'         => trim(request('student_extra_info')),
+                'extra_info'         => trim(request('extra_info')),
                 'photo'              => (request('gender') == '1') ? 'male.jpg' : 'female.jpg',
             ];
             $add = Staff::insertGetId($values);
@@ -682,25 +681,24 @@ class Staff extends Model
                     'date_of_birth' => DateHelper::convert(trim(request('date_of_birth'))),
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
-                    'place_of_birth' => json_encode(array(
-                        'province' => request('pob_province_fk'),
-                        'district' => request('pob_district_fk'),
-                        'commune'  => request('pob_commune_fk'),
-                        'village'  => request('pob_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
-                    'current_resident' => json_encode(array(
-                        'province' => request('curr_province_fk'),
-                        'district' => request('curr_district_fk'),
-                        'commune'  => request('curr_commune_fk'),
-                        'village'  => request('curr_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
+
+                    'pob_province_id' => request('pob_province'),
+                    'pob_district_id' => request('pob_district'),
+                    'pob_commune_id'  => request('pob_commune'),
+                    'pob_village_id'  => request('pob_village'),
+
+
+                    'curr_province_id' => request('curr_province'),
+                    'curr_district_id' => request('curr_district'),
+                    'curr_commune_id'  => request('curr_commune'),
+                    'curr_village_id'  => request('curr_village'),
 
                     'permanent_address'  => trim(request('permanent_address')),
                     'temporaray_address' => trim(request('temporaray_address')),
                     'phone'              => trim(request('phone')),
                     'email'              => trim(request('email')),
                     'password'           => trim(request('password')),
-                    'extra_info'         => trim(request('staff_extra_info')),
+                    'extra_info'         => trim(request('extra_info')),
                 ]);
 
                 if (
@@ -857,58 +855,24 @@ class Staff extends Model
 
     public static function createAccountToTable($id)
     {
-        $staff = Staff::where('id', $id)->first()->toArray();
+        $response = [
+            'data'  => []
+        ];
+        $id = (gettext($id) == 'array') ? $id : explode(',', $id);
 
-        if ($staff) {
-            $account = Users::where('email', $staff['email'])->where('node_id', $staff['id'])->first();
-            $staffInstitute = StaffInstitutes::where('staff_id', $staff['id'])->first()->toArray();
+        $staff = Staff::whereIn('id', $id)->get();
+
+        foreach ($staff as $row) {
+            $account = Users::where('email', $row->email)->where('node_id', $row->id)->exists();
             if ($account) {
-                return [
-                    'success' => false,
-                    'data'    => [],
-                    'message'   => array(
-                        'title' => __('account'),
-                        'text'  => __('Already exists'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                ];
-            }
 
-            $folder  = 'public/' . ImageHelper::$path['image'] . '/' . Staff::$path['image'];
-            $filePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
-
-            if (request('password')) {
-                $first_name = array_key_exists('first_name_' . app()->getLocale(), $staff) ? $staff['first_name_' . app()->getLocale()] : $staff['first_name_en'];
-                $last_name  = array_key_exists('last_name_' . app()->getLocale(), $staff) ? $staff['last_name_' . app()->getLocale()] : $staff['last_name_en'];
-                $create = Users::insertGetId([
-                    'name'          => $first_name . ' ' . $last_name,
-                    'email'         => $staff['email'],
-                    'password'      => Hash::make(request('password')),
-                    'phone'         => $staff['phone'],
-                    'address'       => $staff['permanent_address'],
-                    'role_id'       => request('role', Staff::$path['roleId']),
-                    'node_id'       => $staff['id'],
-                    'institute_id'  => $staffInstitute['institute_id'],
-                ]);
-                if ($create) {
-
-                    if ($staff['photo'] && File::exists($filePath . '/original/' . $staff['photo'])) {
-                        $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath  . '/original/' . $staff['photo']);
-                        Users::updateImageToTable($create, $profile);
-                    } else {
-                        $profile = ($staff['gender_id'] == 1) ? 'male.jpg' : 'female.jpg';
-                        Users::updateImageToTable($create, $profile);
-                    }
-
-                    $response = [
-                        'success' => true,
-                        'data'    => Users::getData($create),
+                if ($staff->count() == 1) {
+                    return [
+                        'success' => false,
+                        'data'    => [],
                         'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Create Successfully'),
+                            'title' => __('account'),
+                            'text'  => __('Already exists'),
                             'button'   => array(
                                 'confirm' => __('Ok'),
                                 'cancel'  => __('Cancel'),
@@ -916,23 +880,74 @@ class Staff extends Model
                         ),
                     ];
                 }
+                $response['errors'][$row->id] = __('Already exists');
             } else {
-                $response = [
-                    'success' => false,
-                    'data'    => [],
-                    'message'   => array(
-                        'title' => __('Error'),
-                        'text'  => __('No password'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                ];
+                request()->merge(['email' => $row->email]);
+                $validator  = Validator::make(
+                    request()->all(),
+                    ['password' => 'required', 'role' => 'required', 'email' => 'required|email|unique:users,email'],
+                    [],
+                    ['password' => __('Password'), 'role' => __('Role'), 'email' => __('Email')]
+                );
+
+                if ($validator->fails()) {
+                    $response       = array(
+                        'success'   => false,
+                        'errors'    => $validator->getMessageBag(),
+                    );
+                    if ($staff->count() == 1) {
+                        return $response;
+                    }
+                    //$response['errors'][$row->id] = $response['errors']->getMessages();
+                } else {
+                    try {
+                        $folder  = 'public/' . ImageHelper::$path['image'] . '/' . Staff::$path['image'];
+                        $filePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+
+                        $first_name = array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row->first_name_en;
+                        $last_name  = array_key_exists('last_name_' . app()->getLocale(), $row) ? $row['last_name_' . app()->getLocale()] : $row->last_name_en;
+                        $create = Users::insertGetId([
+                            'name'          => $first_name . ' ' . $last_name,
+                            'email'         => $row->email,
+                            'password'      => Hash::make(request('password')),
+                            'phone'         => $row->phone,
+                            'address'       => $row->permanent_address,
+                            'role_id'       => request('role', Staff::$path['roleId']),
+                            'node_id'       => $row->id,
+                            'institute_id'  => StaffInstitutes::where('staff_id', $row->id)->pluck('institute_id')->first(),
+                        ]);
+
+                        if ($create) {
+
+                            if ($row->photo && File::exists($filePath . '/original/' . $row->photo)) {
+                                $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath  . '/original/' . $row->photo);
+                                Users::updateImageToTable($create, $profile);
+                            } else {
+                                $profile = ($row->gender_id == 1) ? 'male.jpg' : 'female.jpg';
+                                Users::updateImageToTable($create, $profile);
+                            }
+
+                            $response['data'] = Users::getData($create)['data'];
+                        }
+                    } catch (DomainException $e) {
+                        $response['errors'][$row->id] = $e;
+                    }
+                }
             }
         }
 
-        return $response;
+        return [
+            'success'   => @$response['data'] ? true : false,
+            'message'   => array(
+                'title' => @$response['data'] ? __('Success') : __('Error'),
+                'text'  => @$response['data'] ? __('Create Successfully') : __('Create unsuccessful'),
+                'button'   => array(
+                    'confirm' => __('Ok'),
+                    'cancel'  => __('Cancel'),
+                ),
+            ),
+            'errors' => @$response['errors'],
+        ];
     }
     public static function deleteFromTable($id)
     {
@@ -1025,42 +1040,42 @@ class Staff extends Model
      */
     public static function getClassTeaching($teacher_id)
     {
-        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->groupBy(['study_course_session_id','study_class_id'])->get()->toArray();
-        if($course_routine){
-           $data = [];
-           foreach($course_routine as $row){
-            $class = StudyClass::where('id',$row['study_class_id'])->first(['id', app()->getLocale().' as name' ,'image']);
+        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->groupBy(['study_course_session_id', 'study_class_id'])->get()->toArray();
+        if ($course_routine) {
+            $data = [];
+            foreach ($course_routine as $row) {
+                $class = StudyClass::where('id', $row['study_class_id'])->first(['id', app()->getLocale() . ' as name', 'image']);
 
-            $data[] = [
-                'class' => [
+                $data[] = [
+                    'class' => [
                         'id'    => $class->id,
                         'name'    => $class->name,
-                        'image'    => $class->image? ImageHelper::site(StudyClass::$path['image'], $class->image) : ImageHelper::prefix(),
+                        'image'    => $class->image ? ImageHelper::site(StudyClass::$path['image'], $class->image) : ImageHelper::prefix(),
                     ],
-                'subjects' => Staff::getSubjectsTeaching($teacher_id,$row['study_class_id']),
-            ] ;
-           }
-           return [
-               'success'    => true,
-               'data'       => $data
-           ];
+                    'subjects' => Staff::getSubjectsTeaching($teacher_id, $row['study_class_id']),
+                ];
+            }
+            return [
+                'success'    => true,
+                'data'       => $data
+            ];
         }
     }
 
-    public static function getSubjectsTeaching($teacher_id,$study_class_id)
+    public static function getSubjectsTeaching($teacher_id, $study_class_id)
     {
-        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->where('teacher_id', $teacher_id)->groupBy(['study_course_session_id','study_class_id','study_subject_id'])->get()->toArray();
-        if($course_routine){
-           $data = [];
-           foreach($course_routine as $row){
-                $subject = StudySubjects::where('id',$row['study_subject_id'])->first(['id', app()->getLocale().' as name' ,'image']);
+        $course_routine = StudyCourseRoutine::where('teacher_id', $teacher_id)->where('teacher_id', $teacher_id)->groupBy(['study_course_session_id', 'study_class_id', 'study_subject_id'])->get()->toArray();
+        if ($course_routine) {
+            $data = [];
+            foreach ($course_routine as $row) {
+                $subject = StudySubjects::where('id', $row['study_subject_id'])->first(['id', app()->getLocale() . ' as name', 'image']);
                 $data[] =   [
                     'id'    => $subject->id,
                     'name'    => $subject->name,
-                    'image'    => $subject->image? ImageHelper::site(StudySubjects::$path['image'], $subject->image) : ImageHelper::prefix(),
+                    'image'    => $subject->image ? ImageHelper::site(StudySubjects::$path['image'], $subject->image) : ImageHelper::prefix(),
                 ];
-           }
-           return $data;
+            }
+            return $data;
         }
     }
 }

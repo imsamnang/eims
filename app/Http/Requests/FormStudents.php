@@ -41,16 +41,16 @@ class FormStudents extends FormRequest
             'date_of_birth'        => 'required',
             'marital'              => 'required',
 
-            'pob_province_fk'         => 'required',
-            'pob_district_fk'         => 'required',
-            'pob_commune_fk'          => 'required',
-            'pob_village_fk'          => 'required',
+            'pob_province'         => 'required',
+            'pob_district'         => 'required',
+            'pob_commune'          => 'required',
+            'pob_village'          => 'required',
             //'permanent_address'       => 'required',
 
-            'curr_province_fk'     => 'required',
-            'curr_district_fk'     => 'required',
-            'curr_commune_fk'      => 'required',
-            'curr_village_fk'      => 'required',
+            'curr_province'     => 'required',
+            'curr_district'     => 'required',
+            'curr_commune'      => 'required',
+            'curr_village'      => 'required',
             //'temporaray_address'   => 'required',
 
             'father_fullname'      => 'required|only_string',
@@ -73,11 +73,11 @@ class FormStudents extends FormRequest
                     'guardian_phone'       => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
                     // 'guardian_email'       => 'required|email',
                     // 'guardian_extra_info'  => 'required',
-                    ]
-                ]),
+                ]
+            ]),
 
-            'phone'                   => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
-            'email'                   => 'required|email',
+            'phone'                   => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:students,phone',
+            'email'                   => 'required|email|unique:students,email',
             // 'student_extra_info'   => 'required',
             //  'photo'                => 'required|image|mimes:jpeg,jpg,bmp,png|max:1024',
         ];
@@ -87,6 +87,7 @@ class FormStudents extends FormRequest
     {
         return [
 
+            'institute'            => __('Institute'),
             'first_name_km'        => __('First name Khmer'),
             'last_name_km'         => __('Last name Khmer'),
             'first_name_en'        => __('First name Latin'),
@@ -100,16 +101,16 @@ class FormStudents extends FormRequest
             'date_of_birth'        => __('Date of birth'),
             'marital'              => __('Marital'),
 
-            'pob_province_fk'      => __('Province'),
-            'pob_district_fk'      => __('District'),
-            'pob_commune_fk'       => __('Commune'),
-            'pob_village_fk'       => __('Village'),
+            'pob_province'      => __('Province'),
+            'pob_district'      => __('District'),
+            'pob_commune'       => __('Commune'),
+            'pob_village'       => __('Village'),
             'permanent_address'    => __('Permanent address'),
 
-            'curr_province_fk'     => __('Province'),
-            'curr_district_fk'     => __('District'),
-            'curr_commune_fk'      => __('Commune'),
-            'curr_village_fk'      => __('Village'),
+            'curr_province'     => __('Province'),
+            'curr_district'     => __('District'),
+            'curr_commune'      => __('Commune'),
+            'curr_village'      => __('Village'),
             'temporaray_address'   => __('Temporaray address'),
 
             'father_fullname'      => __('Father fullname'),

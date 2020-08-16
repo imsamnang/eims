@@ -24,7 +24,7 @@ function Card(options) {
         },
         settings = $.extend(true, defaults, options);
 
-    self.set = function(opts) {
+    self.set = function (opts) {
         settings = $.extend(true, settings, opts);
     };
     var card = {
@@ -46,10 +46,10 @@ function Card(options) {
     };
     var data = {};
 
-    this.getData = function() {
+    this.getData = function () {
         return data;
     };
-    self.update = function() {
+    self.update = function () {
         card.data = self.getData();
         card.layout = settings.layout;
         card.frameFrontImage.src = settings.frame_front;
@@ -58,9 +58,10 @@ function Card(options) {
         make();
     };
 
-    self.make = function() {
+    self.make = function () {
         make();
     };
+
     function make() {
         if (settings.layout == "horizontal") {
             self.set({
@@ -89,7 +90,7 @@ function Card(options) {
         card.layer.setZIndex(1);
 
         card.frameFrontImage = new Image();
-        card.frameFrontImage.onload = function() {
+        card.frameFrontImage.onload = function () {
             card.frameFront = new Konva.Image({
                 x: 0,
                 y: 0,
@@ -103,7 +104,7 @@ function Card(options) {
         card.frameFrontImage.src = settings.frame_front;
 
         card.frameBackImage = new Image();
-        card.frameBackImage.onload = function() {
+        card.frameBackImage.onload = function () {
             card.frameBack = new Konva.Image({
                 x: settings.layout == "vertical" ? 252 : 352,
                 y: 0,
@@ -130,9 +131,9 @@ function Card(options) {
 
             if (id == "fullname") {
                 (x = settings.layout == "vertical" ? 100 : 180),
-                    (y = settings.layout == "vertical" ? 205 : 80),
-                    (fontFamily = "KhmerOSMoul"),
-                    (fontStyle = "bold");
+                (y = settings.layout == "vertical" ? 205 : 80),
+                (fontFamily = "KhmerOSMoul"),
+                (fontStyle = "bold");
                 visible = true;
             } else if (id == "_fullname") {
                 x = settings.layout == "vertical" ? 100 : 180;
@@ -151,7 +152,7 @@ function Card(options) {
                 y = settings.layout == "vertical" ? 290 : 162;
                 visible = true;
             } else if (id == "photo") {
-                x = settings.layout == "vertical" ? 87  : 20;
+                x = settings.layout == "vertical" ? 87 : 20;
                 y = settings.layout == "vertical" ? 105 : 76;
                 visible = true;
             } else if (id == "qrcode") {
@@ -161,7 +162,7 @@ function Card(options) {
             }
 
             if (id == "photo" || id == "qrcode") {
-                card[id].onload = function() {
+                card[id].onload = function () {
                     obj = new Konva.Image({
                         x: x,
                         y: y,
@@ -172,15 +173,15 @@ function Card(options) {
                         id: id,
                         visible: visible,
                         draggable: draggable,
-                        zoom: true ,
+                        zoom: true,
                         zoomScale: 1.01
-                    }).on("transform", function() {
+                    }).on("transform", function () {
                         card.attributes[id] = JSON.parse(this.toJSON());
                     });
                     card.layer.add(obj);
                     card.layer.batchDraw();
                 };
-                if(t){
+                if (t) {
                     card[id].src = t;
                 }
 
@@ -199,7 +200,7 @@ function Card(options) {
                     id: id,
                     visible: visible,
                     draggable: true
-                }).on("transform", function() {
+                }).on("transform", function () {
                     card.attributes[id] = JSON.parse(this.toJSON());
                 });
                 card.layer.add(obj);
@@ -217,14 +218,14 @@ function Card(options) {
                     .find("#" + e.target.getId())[0]
                     .x(
                         card.stage.find("#" + e.target.getId())[0].x() -
-                            card.delta
+                        card.delta
                     );
             } else {
                 card.stage
                     .find("#" + e.target.getId())[0]
                     .x(
                         card.stage.find("#" + e.target.getId())[0].x() +
-                            card.delta
+                        card.delta
                     );
             }
         } else if (y) {
@@ -233,14 +234,14 @@ function Card(options) {
                     .find("#" + e.target.getId())[0]
                     .y(
                         card.stage.find("#" + e.target.getId())[0].y() -
-                            card.delta
+                        card.delta
                     );
             } else {
                 card.stage
                     .find("#" + e.target.getId())[0]
                     .y(
                         card.stage.find("#" + e.target.getId())[0].y() +
-                            card.delta
+                        card.delta
                     );
             }
         }
@@ -252,7 +253,7 @@ function Card(options) {
         settings.form
             .find('.card-value-check')
             .unbind("change")
-            .on("change", function(e) {
+            .on("change", function (e) {
                 e.preventDefault();
                 var val = $(this).val();
                 ch = $(this).is(":checked");
@@ -273,7 +274,7 @@ function Card(options) {
         settings.form
             .find('input[type="file"]')
             .unbind("input")
-            .on("input", function(e) {
+            .on("input", function (e) {
                 var files = !!this.files ? this.files : [];
                 var getid = $(this).attr("id");
                 if (!files.length || !window.FileReader) return;
@@ -305,6 +306,19 @@ function Card(options) {
             formData.append("card", JSON.stringify(c));
             ajax(url, formData);
         });
+
+        settings.form.find("#submit-one").click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-one"));
+            settings.form.submit();
+        });
+
+        settings.form.find("#submit-all").click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-all"));
+            settings.form.submit();
+        });
+
 
         $(document)
             .unbind("keydown")
@@ -342,10 +356,10 @@ function Card(options) {
                 self.update();
             });
 
-        card.stage.find(".ob").on("mouseenter", function() {
+        card.stage.find(".ob").on("mouseenter", function () {
             document.body.style.cursor = "move";
         });
-        card.stage.find(".ob").on("mouseleave", function() {
+        card.stage.find(".ob").on("mouseleave", function () {
             document.body.style.cursor = "default";
         });
 
@@ -381,7 +395,7 @@ function Card(options) {
                 keepRatio: true,
                 //borderStroke: "#09a3ff",
                 //borderDash: [3, 3],
-                boundBoxFunc: function(oldBoundBox, newBoundBox) {
+                boundBoxFunc: function (oldBoundBox, newBoundBox) {
                     if (Math.abs(newBoundBox.width) > settings.max_width) {
                         return oldBoundBox;
                     }
@@ -394,7 +408,7 @@ function Card(options) {
             card.layer.draw();
         });
 
-        card.layer.on("dragmove", function(e) {
+        card.layer.on("dragmove", function (e) {
             // clear all previous lines on the screen
             card.layer.find(".guid-line").destroy();
 
@@ -459,14 +473,15 @@ function Card(options) {
             });
         });
 
-        card.layer.on("dragend", function(e) {
+        card.layer.on("dragend", function (e) {
             // clear all previous lines on the screen
             card.layer.find(".guid-line").destroy();
             card.layer.batchDraw();
         });
     }
+
     function detection(e) {
-        card.layer.children.each(function(t) {
+        card.layer.children.each(function (t) {
             if (t === e.target) {
                 return;
             }
@@ -481,6 +496,7 @@ function Card(options) {
             }
         });
     }
+
     function haveIntersection(r1, r2) {
         return !(
             r2.x > r1.x + r1.width ||
@@ -522,8 +538,7 @@ function Card(options) {
     function getObjectSnappingEdges(node) {
         var box = node.getClientRect();
         return {
-            vertical: [
-                {
+            vertical: [{
                     guide: Math.round(box.x),
                     offset: Math.round(node.x() - box.x),
                     snap: "start"
@@ -539,8 +554,7 @@ function Card(options) {
                     snap: "end"
                 }
             ],
-            horizontal: [
-                {
+            horizontal: [{
                     guide: Math.round(box.y),
                     offset: Math.round(node.y() - box.y),
                     snap: "start"
@@ -643,14 +657,14 @@ function Card(options) {
         });
     }
 
-    self.getAttributes = function($key = null) {
+    self.getAttributes = function ($key = null) {
         if ($key) {
             return card.attributes[$key];
         }
         return card.attributes;
     };
 
-    self.getJson = function(frame = true) {
+    self.getJson = function (frame = true) {
         if (frame) {
             return JSON.parse(card.stage.toJSON());
         } else {
@@ -658,7 +672,9 @@ function Card(options) {
         }
     };
 
-    self.getBase64 = function(frame = true, size = { pixelRatio: 3 }) {
+    self.getBase64 = function (frame = true, size = {
+        pixelRatio: 3
+    }) {
         // {width : 1000 ,height : 1000}
         if (frame) {
             return card.stage.toDataURL(size);
@@ -667,7 +683,9 @@ function Card(options) {
         }
     };
 
-    self.getImage = function(frame = true, size = { pixelRatio: 3 }) {
+    self.getImage = function (frame = true, size = {
+        pixelRatio: 3
+    }) {
         // {width : 1000 ,height : 1000}
         if (frame) {
             return downloadURI(card.stage.toDataURL(size), "image.png");

@@ -16,7 +16,7 @@
     @foreach ($row['scores'] as $key => $scores)
 
     <td class="{{$scores["pass_or_fail"] == "fail" ? "bg-gray text-white" : "" }}">
-        <span>{{$scores["marks"]}}</span>
+        <span>{{$scores["score"]}}</span>
     </td>
 
 

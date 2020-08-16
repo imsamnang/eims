@@ -106,14 +106,14 @@ class RolesController extends Controller
     {
         $data['response'] =  Roles::getData(null, null, 10);
         $data['view']     = Roles::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Roles');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Roles');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Roles::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Roles');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Roles');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
 
@@ -124,7 +124,7 @@ class RolesController extends Controller
     {
         $response = Roles::getData($id, true);
         $data['view']       = Roles::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Roles');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Roles');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['formData']   = $response['data'][0];
         $data['listData']   = $response['pages']['listData'];

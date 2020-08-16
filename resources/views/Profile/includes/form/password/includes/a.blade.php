@@ -5,8 +5,7 @@
                 <div href="#" class="list-group-item">
                     <div class="row">
                         <div class="avatar avatar-xl rounded">
-                            <img data-src="{{config("pages.form.data.profile")}}" alt=""
-                                id="crop-image">
+                            <img data-src="{{config("pages.form.data.profile")}}" alt="" id="crop-image">
                         </div>
                         <div class="col ml--2">
                             <div class="d-flex justify-content-between align-items-center">
@@ -27,7 +26,7 @@
                             </p>
                             @if(config("pages.form.data.account"))
                             <p class="text-sm mb-0 text-green">
-                                {{__("has_account")}}
+                                {{__("Has account")}}
                                 <i class="fas fa-check-circle"></i>
                             </p>
                             @endif
@@ -43,8 +42,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                     </div>
-                    <input class="form-control " placeholder=""
-                        value="" name="old_password" required="" autocomplete="old-password">
+                    <input class="form-control " placeholder="" value="" name="old_password" required=""
+                        autocomplete="old-password">
                 </div>
             </div>
             <div class="form-group mb-3">
@@ -52,8 +51,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                     </div>
-                    <input class="form-control " placeholder=""
-                        value="" name="password" required="" autocomplete="new-password">
+                    <input class="form-control " placeholder="" value="" name="password" required=""
+                        autocomplete="new-password">
                 </div>
             </div>
             <div class="form-group mb-3">
@@ -61,8 +60,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input class="form-control " placeholder=""
-                        type="password" value="" name="password_confirmation" required="" autocomplete="new-password">
+                    <input class="form-control " placeholder="" type="password" value="" name="password_confirmation"
+                        required="" autocomplete="new-password">
                 </div>
             </div>
 

@@ -114,7 +114,7 @@ class ThemeBackgroundController extends Controller
     {
         $data['response'] = ThemeBackground::getData(null, null, 10);
         $data['view']     = ThemeBackground::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Theme Background');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Theme Background');
         return $data;
     }
 
@@ -122,14 +122,14 @@ class ThemeBackgroundController extends Controller
     {
         $data['response'] = ThemeBackground::getData();
         $data['view']     = ThemeBackground::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Gallery');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Gallery');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = ThemeBackground::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Theme Background');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Theme Background');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
         return $data;
@@ -139,7 +139,7 @@ class ThemeBackgroundController extends Controller
     {
         $response           = ThemeBackground::getData($id, true);
         $data['view']       = ThemeBackground::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Theme Background');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Theme Background');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

@@ -120,7 +120,7 @@ class StudyShortCourseScheduleController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyShortCourseSchedule::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Short Course Schedule');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Short Course Schedule');
         return $data;
     }
 
@@ -136,7 +136,7 @@ class StudyShortCourseScheduleController extends Controller
 
 
         $data['view']       = StudyShortCourseSchedule::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Short Course Schedule');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Short Course Schedule');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
 

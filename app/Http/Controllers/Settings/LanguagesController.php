@@ -122,14 +122,14 @@ class LanguagesController extends Controller
     {
         $data['response'] = Languages::getData(null, null, 10);
         $data['view']     = Languages::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Languages');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Languages');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Languages');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Languages');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -139,7 +139,7 @@ class LanguagesController extends Controller
     {
         $response = Languages::getData($id, true);
         $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Edit Languages');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Languages');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -152,7 +152,7 @@ class LanguagesController extends Controller
     {
         $response = Languages::getData($id, true);
         $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('View Languages');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Languages');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -181,7 +181,7 @@ class LanguagesController extends Controller
             } else {
                 $this->response =  array(
                     'success' => false,
-                    'errors'  => __('language not in list.',['locale'=>$locale]),
+                    'errors'  => __('language not in list.', ['locale' => $locale]),
                 );
             }
         }

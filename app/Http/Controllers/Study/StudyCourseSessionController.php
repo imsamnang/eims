@@ -121,14 +121,14 @@ class StudyCourseSessionController extends Controller
     public function list($data, $param1)
     {
         $data['view']     = StudyCourseSession::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Course Session');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Course Session');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = StudyCourseSession::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Course Session');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Course Session');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -138,7 +138,7 @@ class StudyCourseSessionController extends Controller
     {
         $response = StudyCourseSession::getData($id, true);
         $data['view']       = StudyCourseSession::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Course Session');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

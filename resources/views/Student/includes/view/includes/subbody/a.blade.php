@@ -1,153 +1,130 @@
-<div class="tab-pane fade show active" id="a" role="tabpanel" aria-labelledby="a-tab">
-    <div class="row">
-        <div class="col-10">
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">{{__("First name Khmer")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.first_name_km")}}">
-                </div>
+<fieldset class="p-2 border text-sm">
+    <legend class="w-auto">(A) {{__('Biography')}}</legend>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('First name Khmer')}}</span>
+                                </td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['first_name_km']}}</strong>
+                                </td>
+                                <td style="width: 400px">
+                                    <span>{{__('Last name Khmer')}}</span>
+                                </td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['last_name_km']}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('First name Latin')}}</span>
+                                </td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['first_name_en']}}</strong>
+                                </td>
+                                <td style="width: 400px">
+                                    <span>{{__('Last name Latin')}}</span>
+                                </td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['last_name_en']}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('Gender')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['gender'])
+                                    <strong>{{$row['gender']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 col-form-label">{{__("Last name Khmer")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.last_name_km")}}">
-                </div>
+                                </td>
+                                <td style="width: 400px"><span>{{__('Date of birth')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 col-form-label">{{__("First name Latin")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.first_name_en")}}">
-                </div>
+                                    @if ($row['date_of_birth'])
+                                    <strong>{{$row['date_of_birth']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('National Id')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 col-form-label">{{__("Last name Latin")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.last_name_en")}}">
-                </div>
+                                    @if ($row['national_id'])
+                                    <strong>{{$row['national_id']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('Marital')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['marital'])
+                                    <strong>{{$row['marital']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 col-form-label">{{__("Gender")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.gender.name")}}">
-                </div>
+                                </td>
+                            </tr>
 
-                <label class="col-sm-3 col-form-label">{{__("Date of birth")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.date_of_birth")}}">
-                </div>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('Permanent address')}}</span></td>
+                                <td colspan="3" style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
+                                    @if ($row['permanent_address'])
+                                    <strong>{{$row['permanent_address']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('Temporaray address')}}</span></td>
+                                <td colspan="3" style="width: 400px" class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['temporaray_address'])
+                                    <strong>{{$row['temporaray_address']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 col-form-label">{{__("Nationality ")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.nationality.name")}}">
-                </div>
+                                </td>
+                            </tr>
 
-                <label class="col-sm-3 col-form-label">{{__("National Id")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.national_id")}}">
-                </div>
+                            <tr>
+                                <td style="width: 400px"><span>{{__('Phone')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 col-form-label">{{__("Mother tong")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.mother_tong.name")}}">
-                </div>
+                                    @if ($row['phone'])
+                                    <strong>{{$row['phone']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                                <td style="width: 400px"><span>{{__('Email')}}</span></td>
+                                <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 col-form-label">{{__("Blood group")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.blood_group.name")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Blood group")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.blood_group.name")}}">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">{{__("Permanent address")}}</label>
-                <div class="col-sm-9">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.permanent_address")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Temporaray address")}}</label>
-                <div class="col-sm-9">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.temporaray_address")}}">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">{{__("Phone")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.phone")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Email")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.email")}}">
-                </div>
-            </div>
-            <hr>
-            <div class="form-group row">
-                <label class="col-sm-3 col-form-label">{{__("Father fullname")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.father.name")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Occupation")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.father.occupation")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Father phone")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.father.phone")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Father email")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.father.email")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Mother fullname")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.mother.name")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Occupation")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.mother.occupation")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Mother phone")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.mother.phone")}}">
-                </div>
-
-                <label class="col-sm-3 col-form-label">{{__("Mother phone")}}</label>
-                <div class="col-sm-3">
-                    <input type="text" readonly class="font-weight-bold form-control-plaintext"
-                        value="{{config("pages.form.data.student_guardian.mother.email")}}">
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-            <img class="img-thumbnail" data-src="{{config("pages.form.data.photo")}}" alt="" />
-        </div>
-    </div>
-</div>
+                                    @if ($row['email'])
+                                    <strong>{{$row['email']}}</strong>
+                                    @else
+                                    <strong class="text-red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td style="vertical-align: top; text-align: center;">
+                    <img data-src="{{$row['photo']}}" style="width: 100px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

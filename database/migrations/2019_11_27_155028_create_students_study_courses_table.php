@@ -23,6 +23,7 @@ class CreateStudentsStudyCoursesTable extends Migration
             $table->text('photo')->nullable();
             $table->text('qrcode')->nullable();
             $table->text('card')->nullable();
+            $table->text('certificate')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\QrCode;
+
 use App\Models\App;
 use App\Models\Users;
 use App\Models\Students;
@@ -31,13 +32,13 @@ class QrCodeController extends Controller
         $data['formData'] = array(
             'photo' => asset('/assets/img/user/male.jpg'),
         );
-        $data['formName']     = Students::$path['url'] .'/'.StudentsStudyCourse::$path['url'].'/'. QRHelper::$path['url'];
+        $data['formName']     = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . QRHelper::$path['url'];
         $data['formAction']   = '/qrcode';
         $data['listData']     = array();
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         if ($param1 == null || $param1 == 'make') {
-           $data =  $this->make($data, $param3);
+            $data =  $this->make($data, $param3);
         } else {
             abort(404);
         }
@@ -68,23 +69,22 @@ class QrCodeController extends Controller
             'view'       => $data['view'],
         );
 
-         $pages['form']['validate'] = [];
+        $pages['form']['validate'] = [];
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-        return view(QRHelper::$path['view'].'.index', $data);
+        return view(QRHelper::$path['view'] . '.index', $data);
     }
 
 
-    public function make($data, $user)
+    public function make($data, $ts)
     {
         $data['view']       = QRHelper::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Qrcode');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Qrcode');
         $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $user['data'][0]['id']);
-        $data['formData']   = $user['data'][0];
-        $data['listData']   = $user['pages']['listData'];
-        $data['formAction'] = '/make/'. request('id');
+        $data['formData']   = $ts;
+        $data['listData']   = $ts;
+        $data['formAction'] = '/make/' . request('id');
         return $data;
     }
 }

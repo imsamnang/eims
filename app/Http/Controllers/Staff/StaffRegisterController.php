@@ -65,7 +65,7 @@ class StaffRegisterController extends Controller
         $data['staff_certificate']   = StaffCertificate::getData();
         $data['formAction']          = 'add';
         $data['formName']            = '';
-        $data['title']               = Users::role(app()->getLocale()).'|'.__('Staff Register');
+        $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Staff Register');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
 
@@ -156,14 +156,14 @@ class StaffRegisterController extends Controller
 
         $rules = FormStaff::rulesField();
 
-        unset($rules['pob_province_fk']);
-        unset($rules['pob_district_fk']);
-        unset($rules['pob_commune_fk']);
-        unset($rules['pob_village_fk']);
-        unset($rules['curr_province_fk']);
-        unset($rules['curr_district_fk']);
-        unset($rules['curr_commune_fk']);
-        unset($rules['curr_village_fk']);
+        unset($rules['pob_province']);
+        unset($rules['pob_district']);
+        unset($rules['pob_commune']);
+        unset($rules['pob_village']);
+        unset($rules['curr_province']);
+        unset($rules['curr_district']);
+        unset($rules['curr_commune']);
+        unset($rules['curr_village']);
         unset($rules['father_fullname']);
         unset($rules['father_occupation']);
         unset($rules['father_phone']);
@@ -194,7 +194,7 @@ class StaffRegisterController extends Controller
     public function add($data)
     {
         $data['view']  = 'StaffRegister.includes.form.index';
-        $data['title']               = Users::role(app()->getLocale()).'|'.__('Staff Register');
+        $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Staff Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -215,7 +215,7 @@ class StaffRegisterController extends Controller
         $data['marital'] = Marital::pluck('km')->toArray();
 
         $data['view']  = 'StaffRegister.includes.excel.index';
-        $data['title']               = Users::role(app()->getLocale()).'|'.__('Staff Register');
+        $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Staff Register');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;

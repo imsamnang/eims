@@ -14,13 +14,15 @@ class StaffDesignationsTableSeeder extends Seeder
     {
         StaffDesignations::insert([
             [
+                'id'            => 1,
                 'institute_id'  => 1,
                 'name'        => 'principal',
                 'en'          => 'Principal',
-                'km'          => 'នាយក',
+                'km'          => 'នាយក/នាយិកា',
 
             ],
             [
+                'id'            => 2,
                 'institute_id'  => 1,
                 'name'        => 'teacher',
                 'en'          => 'Teacher',
@@ -28,6 +30,7 @@ class StaffDesignationsTableSeeder extends Seeder
 
             ],
             [
+                'id'            => 3,
                 'institute_id'  => 1,
                 'name'        => 'teacher_learning_support',
                 'en'          => 'Teacher Learning Support',
@@ -35,25 +38,49 @@ class StaffDesignationsTableSeeder extends Seeder
 
             ],
             [
+                'id'            => 4,
                 'institute_id'  => 1,
-                'name'        => 'security_guard',
+                'name'        => 'Security Guard',
                 'en'          => 'Security Guard',
                 'km'          => 'អ្នកយាម',
 
             ],
             [
+                'id'            => 5,
                 'institute_id'  => 1,
-                'name'        => 'accountant',
-                'en'          => 'Accountant',
-                'km'          => 'គណនេយ្យករ',
+                'name'        => 'deputy director',
+                'en'          => 'Deputy Director',
+                'km'          => 'នាយករង/នាយិការង',
 
             ],
             [
+                'id'            => 6,
                 'institute_id'  => 1,
-                'name'        => 'driver',
-                'en'          => 'Driver',
-                'km'          => 'អ្នកបើកបរ',
+                'name'        => 'Head Office',
+                'en'          => 'Head Office',
+                'km'          => 'ប្រធានការិយាល័យ',
 
+            ],
+            [
+                'id'            => 7,
+                'institute_id'  => 1,
+                'name'        => 'Head Department',
+                'en'          => 'Head Department',
+                'km'          => 'ប្រធានដេប៉ាតឺម៉ង់',
+            ],
+            [
+                'id'            => 8,
+                'institute_id'  => 1,
+                'name'        => 'Deputy Head Office',
+                'en'          => 'Deputy Head Office',
+                'km'          => 'អនុ-ការិយាល័យ',
+            ],
+            [
+                'id'            => 9,
+                'institute_id'  => 1,
+                'name'        => 'Deputy Head Department',
+                'en'          => 'Deputy Head Department',
+                'km'          => 'អនុ-ដេប៉ាតឺម៉ង់',
             ],
         ]);
     }

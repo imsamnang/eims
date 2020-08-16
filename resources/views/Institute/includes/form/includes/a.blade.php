@@ -15,7 +15,7 @@
                             {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
+                            value="{{config("pages.form.data.".$key.".id")}}">{{config("pages.form.data.".$key.".id")}}</span>
                     </div>
                     @endif
                 </div>
@@ -38,9 +38,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fas fa-school"></i> </span>
                                 </div>
-                                <input type="text" class="form-control" name="name" id="name"
-                                    placeholder=""
-                                    value="{{config("pages.form.data.name")}}"
+                                <input type="text" class="form-control" name="name" id="name" placeholder=""
+                                    value="{{config("pages.form.data.".$key.".name")}}"
                                     {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
                             </div>
@@ -62,9 +61,8 @@
 
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
-                            id="{{$lang["code_name"]}}"
-                            placeholder=""
-                            value="{{config("pages.form.data.".$lang["code_name"])}}"
+                            id="{{$lang["code_name"]}}" placeholder=""
+                            value="{{config("pages.form.data.".$key.".".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
                     @endforeach
@@ -88,9 +86,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"> <i class="fas fa-school"></i> </span>
                                 </div>
-                                <input type="text" class="form-control" name="short_name" id="short_name"
-                                    placeholder=""
-                                    value="{{config("pages.form.data.short_name")}}"
+                                <input type="text" class="form-control" name="short_name" id="short_name" placeholder=""
+                                    value="{{config("pages.form.data.".$key.".short_name")}}"
                                     {{(array_key_exists("short_name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
                             </div>
@@ -116,10 +113,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-globe"></i></span>
                                 </div>
-                                <input type="url" class="form-control" id="website"
-                                    placeholder=""
+                                <input type="url" class="form-control" id="website" placeholder=""
                                     {{(array_key_exists("website", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="website" />
+                                    name="website" value="{{config("pages.form.data.".$key.".website")}}"/>
                             </div>
                         </div>
 
@@ -140,8 +136,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input type="url" class="form-control" id="phone"
-                                    placeholder=""
+                                <input type="url" class="form-control" id="phone" placeholder="" value="{{config("pages.form.data.".$key.".phone")}}"
                                     {{(array_key_exists("phone", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="phone" />
                             </div>
@@ -164,10 +159,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-map"></i></span>
                                 </div>
-                                <textarea class="form-control" id="address"
-                                    placeholder=""
+                                <textarea class="form-control" id="address" placeholder=""
                                     {{(array_key_exists("address", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="address">{{config("pages.form.data.address")}}</textarea>
+                                    name="address">{{config("pages.form.data.".$key.".address")}}</textarea>
 
                             </div>
                         </div>
@@ -186,12 +180,12 @@
                         <div class="form-group">
                             <div class="input-group input-group-merge">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text map-marker" data-target="#location"><i class="fas fa-map-marker-alt"></i></span>
+                                    <span class="input-group-text map-marker" data-target="#location"><i
+                                            class="fas fa-map-marker-alt"></i></span>
                                 </div>
-                                <input class="form-control" id="location" data-target="#iflocation"
-                                    placeholder=""
+                                <input class="form-control" id="location" data-target="#iflocation" placeholder="" value="{{config("pages.form.data.".$key.".location")}}"
                                     {{(array_key_exists("location", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="location"/>
+                                    name="location" />
 
                             </div>
                         </div>
@@ -200,7 +194,8 @@
 
                     @if (Internet::conneted())
                     <div class="col-md-12 mb-3">
-                        <iframe id="iflocation" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d20000!2d103.921494!3d13.3272993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1486486434098"
+                        <iframe id="iflocation"
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d20000!2d103.921494!3d13.3272993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1486486434098"
                             width="100%" height="250" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
                     </div>
                     @endif
@@ -220,10 +215,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-info"></i></span>
                                 </div>
-                                <textarea class="form-control" id="description"
-                                    placeholder=""
+                                <textarea class="form-control" id="description" placeholder=""
                                     {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="description">{{config("pages.form.data.description")}}</textarea>
+                                    name="description">{{config("pages.form.data.".$key.".description")}}</textarea>
 
                             </div>
                         </div>
@@ -245,11 +239,11 @@
                             @endif
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".logo")}}?type=original">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder=""
-                                        class="custom-file-input" id="dropzoneBasicUpload" name="image"
+                                    <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                        name="image"
                                         {{(array_key_exists("image", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
@@ -260,7 +254,7 @@
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
                                     <img class="dz-preview-img"
-                                        data-src="{{config("pages.form.data.image")}}?type=original" alt
+                                        data-src="{{config("pages.form.data.".$key.".logo")}}?type=original" alt
                                         data-dz-thumbnail>
                                 </div>
                             </div>
@@ -269,7 +263,7 @@
 
 
                 </div>
-                @if (!config("pages.form.data"))
+                @if (!config("pages.form.data.".$key.""))
                 <div class="form-row">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox mb-3">

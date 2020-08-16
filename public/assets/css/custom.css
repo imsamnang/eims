@@ -1,3 +1,12 @@
+@font-face {
+    font-family: KhmerOSMoul;
+    src: url("../fonts/KhmerOSMoul.ttf");
+}
+
+@font-face {
+    font-family: NiDAKhmerEmpire;
+    src: url("../fonts/NiDAKhmerEmpire.ttf");
+}
 .navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link.active {
     margin-right: 0.5rem;
     margin-left: 0.5rem;

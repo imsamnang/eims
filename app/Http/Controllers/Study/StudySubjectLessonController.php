@@ -62,7 +62,6 @@ class StudySubjectLessonController extends Controller
             }
 
             $data = $this->add($data);
-
         } elseif ($param1 == 'edit') {
 
             $id = request('id', $param2);
@@ -121,14 +120,14 @@ class StudySubjectLessonController extends Controller
     public function list($data)
     {
         $data['view']     = StudySubjectLesson::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Study Lesson');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Lesson');
         return $data;
     }
     public function grid($data)
     {
         $data['response'] =  StudySubjectLesson::getData(null, null, 10);
         $data['view']     = StudySubjectLesson::$path['view'] . '.includes.grid.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Grid Study Lesson');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Grid Study Lesson');
         return $data;
     }
 
@@ -136,7 +135,7 @@ class StudySubjectLessonController extends Controller
     public function add($data)
     {
         $data['view']      = StudySubjectLesson::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Study Lesson');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Lesson');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -148,7 +147,7 @@ class StudySubjectLessonController extends Controller
     {
         $response = StudySubjectLesson::getData($id, true);
         $data['view']       = StudySubjectLesson::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Study Lesson');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Lesson');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

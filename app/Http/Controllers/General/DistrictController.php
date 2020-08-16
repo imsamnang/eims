@@ -8,8 +8,8 @@ use App\Models\Districts;
 use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
-use App\Helpers\MetaHelper;
-;
+use App\Helpers\MetaHelper;;
+
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormDistrict;
 use App\Http\Controllers\Controller;
@@ -18,7 +18,7 @@ class DistrictController extends Controller
 {
     public function __construct()
     {
-       $this->middleware('auth');
+        $this->middleware('auth');
         App::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
@@ -32,8 +32,8 @@ class DistrictController extends Controller
         );
 
         $data['formAction']      = '/add';
-        $data['formName']        = 'general/'.Districts::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()).'|'.__('List Districts');
+        $data['formName']        = 'general/' . Districts::$path['url'];
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('List Districts');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -44,9 +44,9 @@ class DistrictController extends Controller
 
 
         if ($param1 == 'list' || $param1 == null) {
-            if(strtolower(request()->server('CONTENT_TYPE')) == 'application/json'){
-                return  Districts::getData(request('provinceId'),request('id'),null,10,request('search'));
-            }else{
+            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
+                return  Districts::getData(request('provinceId'), request('id'), null, 10, request('search'));
+            } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
@@ -59,17 +59,17 @@ class DistrictController extends Controller
             if (request()->method() === 'POST') {
                 return Districts::addToTable();
             }
-            $data = $this->add($data );
+            $data = $this->add($data);
         } elseif ($param1 == 'edit') {
             if (request()->method() === 'POST') {
                 return Districts::updateToTable($param2);
             }
-            $data = $this->edit($data,$param2 );
+            $data = $this->edit($data, $param2);
         } elseif ($param1 == 'view') {
-            $data = $this->view($data,$param2 );
+            $data = $this->view($data, $param2);
         } elseif ($param1 == 'delete') {
             return Districts::deleteFromTable($param2);
-        }else{
+        } else {
             abort(404);
         }
 
@@ -111,14 +111,14 @@ class DistrictController extends Controller
     public function list($data)
     {
         $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Districts');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Districts');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = 'Cambodia.includes.form.district.index';
-        $data['title']     = Users::role(app()->getLocale()).'|'.__('Add Districts');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Districts');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -126,9 +126,9 @@ class DistrictController extends Controller
 
     public function edit($data, $id)
     {
-        $response           = Districts::getData(request('provinceId'),$id, true);
+        $response           = Districts::getData(request('provinceId'), $id, true);
         $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Districts');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Districts');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
         $data['formData']   = $response['data'][0];
@@ -139,9 +139,9 @@ class DistrictController extends Controller
 
     public function view($data, $id)
     {
-        $response           = Districts::getData(request('provinceId'),$id, true);
+        $response           = Districts::getData(request('provinceId'), $id, true);
         $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Districts');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Districts');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);
         $data['formData']   = $response['data'][0];
@@ -149,6 +149,4 @@ class DistrictController extends Controller
         $data['formAction'] = '/view/' . $response['data'][0]['id'];
         return $data;
     }
-
-
 }

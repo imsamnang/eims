@@ -12,16 +12,15 @@
                 <label class="form-control-label" for="name">
                     {{ __("Name") }}
 
-                    @if(array_key_exists("name",config("pages.form.validate.rules"))) <span
+                    @if(config("pages.form.validate.rules.name")) <span
                         class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
                     @endif
 
                 </label>
-                <input type="text" class="form-control" name="name" id="name"
-                    placeholder=""
-                    value="{{config("pages.form.data.name")}}"
-                    {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
+                <input type="text" class="form-control" name="name" id="name" placeholder=""
+                    value="{{config("pages.form.data.".$key.".name")}}"
+                    {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
             </div>
         </div>
@@ -33,16 +32,15 @@
                 <label class="form-control-label" for="{{$lang["code_name"]}}">
                     {{ __($lang["translate_name"]) }}
 
-                    @if(array_key_exists($lang["code_name"],config("pages.form.validate.rules")))
+                    @if(config("pages.form.validate.rules.".$lang["code_name"]))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
                     @endif
 
                 </label>
                 <input type="text" class="form-control" name="{{$lang["code_name"]}}" id="{{$lang["code_name"]}}"
-                    placeholder=""
-                    value="{{config("pages.form.data.".$lang["code_name"])}}"
-                    {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
+                    placeholder="" value="{{config("pages.form.data.".$key.".".$lang["code_name"])}}"
+                    {{config("pages.form.validate.rules.".$lang["code_name"]) ? "required" : ""}} />
             </div>
             @endforeach
             @endif

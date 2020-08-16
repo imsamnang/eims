@@ -15,6 +15,7 @@ class CreateStudyOverallFundsTable extends Migration
     {
         Schema::create('study_overall_funds', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('institute_id')->unsigned();
             $table->text('name');
             $table->text('en')->nullable();
             $table->text('km')->nullable();

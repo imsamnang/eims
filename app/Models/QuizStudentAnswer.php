@@ -270,7 +270,7 @@ class QuizStudentAnswer extends Model
 
             try {
                 $quiz_student = QuizStudentAnswer::where('id', $id)->first();
-                if (!is_null($quiz_student->marks)) {
+                if (!is_null($quiz_student->score)) {
                     $response       = array(
                         'success'   => false,
                         'type'      => 'update',

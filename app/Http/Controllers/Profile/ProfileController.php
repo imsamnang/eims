@@ -198,7 +198,7 @@ class ProfileController extends Controller
     {
         $response           = Users::getUsers(Auth::user()->id);
         $data['view']       = 'Profile.includes.form.general.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('General');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('General');
         $data['metaImage']  = asset('assets/img/icons/profile.png');
         $data['metaLink']   = url(Users::role() . '/profile/');
         $data['formData']   = $response['data'][0];
@@ -210,7 +210,7 @@ class ProfileController extends Controller
     {
         $response           = Users::getUsers(Auth::user()->id);
         $data['view']       = 'Profile.includes.form.password.index';
-        $data['title']      = Users::role(app()->getLocale()) .'|'.__('Password');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Password');
         $data['metaImage']  = asset('assets/img/icons/profile.png');
         $data['metaLink']   = url(Users::role() . '/password/');
         $data['formData']   = $response['data'][0];

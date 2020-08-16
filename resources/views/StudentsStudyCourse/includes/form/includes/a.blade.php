@@ -18,12 +18,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    name="study_course_session"
-                    data-select-value="{{config("pages.form.data.study_course_session.id")}}">
+                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_course_session"
+                    data-select-value="{{config("pages.form.data.".$key.".study_course_session_id")}}">
                     @foreach($study_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
@@ -40,12 +36,10 @@
 
                 </label>
 
-                <select {{config("pages.form.role") == "add" ? "multiple" : ""}}  class="form-control" data-toggle="select" id="student" title="Simple select"
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.request_id",request("studRequestId"))}}"
-
+                <select {{config("pages.form.role") == "add" ? "multiple" : ""}} class="form-control"
+                    data-toggle="select" id="student" title="Simple select" data-text="{{ __("Add new option") }}"
+                    data-placeholder="" name="student[]"
+                    data-select-value="{{config("pages.form.data.".$key.".student_request_id",request("studRequestId"))}}"
                     {{(array_key_exists("student[]",config("pages.form.validate.rules"))) ? "required" : ""}}>
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
@@ -67,11 +61,8 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
-
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.study_status.id")}}">
+                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_status"
+                    data-select-value="{{config("pages.form.data.".$key.".study_status_id")}}">
                     @foreach($study_status["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
@@ -89,7 +80,6 @@
                                 style="background:unset">
                                 <i class="fas fa-asterisk fa-xs"></i></span> <span>
                                 {{ __("Field required") }}</span> </label>
-
 
                     </div>
                 </div>

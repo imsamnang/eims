@@ -121,7 +121,7 @@ class SponsoredController extends Controller
     {
         $data['response'] = Sponsored::getData(null, 10);
         $data['view']     = Sponsored::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Sponsored');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Sponsored');
         return $data;
     }
 
@@ -129,14 +129,14 @@ class SponsoredController extends Controller
     {
         $data['response'] = Sponsored::getData();
         $data['view']     = Sponsored::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Gallery');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Gallery');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Sponsored::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Sponsored');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Sponsored');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -146,7 +146,7 @@ class SponsoredController extends Controller
     {
         $response           = Sponsored::getData($id);
         $data['view']       = Sponsored::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Sponsored');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Sponsored');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

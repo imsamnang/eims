@@ -1,153 +1,130 @@
-<div class="tab-pane fade show active" id="a" role="tabpanel" aria-labelledby="a-tab">
-    <div class="row">
-        <div class="col-10">
-            <div class="form-group row">
-                <label class="col-sm-3 px-0 col-form-label">{{__("First name Khmer")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["first_name_km"]}}</div>
-                </div>
+<fieldset class="p-2 border text-sm" style="font-size: 0.871em;border: 1px solid slateblue;color: slateblue;">
+    <legend class="w-auto" style="font-size: 16px;font-weight: bold;">(A) {{__('Biography')}}</legend>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <table  style="width: 100%">
+                        <tbody>
+                            <tr>
+                                <td><span>{{__('First name Khmer')}}</span>
+                                </td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['first_name_km']}}</strong>
+                                </td>
+                                <td>
+                                    <span>{{__('Last name Khmer')}}</span>
+                                </td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['last_name_km']}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>{{__('First name Latin')}}</span>
+                                </td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['first_name_en']}}</strong>
+                                </td>
+                                <td>
+                                    <span>{{__('Last name Latin')}}</span>
+                                </td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    <strong>{{$row['last_name_en']}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>{{__('Gender')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['gender'])
+                                    <strong>{{$row['gender']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Last name Khmer")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["last_name_km"]}}</div>
-                </div>
+                                </td>
+                                <td><span>{{__('Date of birth')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("First name Latin")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["first_name_en"]}}</div>
-                </div>
+                                    @if ($row['date_of_birth'])
+                                    <strong>{{$row['date_of_birth']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>{{__('National Id')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Last name Latin")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["last_name_en"]}}</div>
-                </div>
+                                    @if ($row['national_id'])
+                                    <strong>{{$row['national_id']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>{{__('Marital')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['marital'])
+                                    <strong>{{$row['marital']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Gender")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["gender"]["name"]}}</div>
-                </div>
+                                </td>
+                            </tr>
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Date of birth")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["date_of_birth"]}}</div>
-                </div>
+                            <tr>
+                                <td><span>{{__('Permanent address')}}</span></td>
+                                <td colspan="3" class="text-{{config('app.theme_color.name')}}">
 
+                                    @if ($row['permanent_address'])
+                                    <strong>{{$row['permanent_address']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>{{__('Temporaray address')}}</span></td>
+                                <td colspan="3" class="text-{{config('app.theme_color.name')}}">
+                                    @if ($row['temporaray_address'])
+                                    <strong>{{$row['temporaray_address']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Nationality ")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["nationality"]["name"]}}</div>
-                </div>
+                                </td>
+                            </tr>
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("National Id")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["national_id"]}}</div>
-                </div>
+                            <tr>
+                                <td><span>{{__('Phone')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Mother tong")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["mother_tong"]["name"]}}</div>
-                </div>
+                                    @if ($row['phone'])
+                                    <strong>{{$row['phone']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                                <td><span>{{__('Email')}}</span></td>
+                                <td class="text-{{config('app.theme_color.name')}}">
 
-                <label class="col-sm-3 px-0 col-form-label">{{__("Blood group")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["blood_group"]["name"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Blood group")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["blood_group"]["name"]}}</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-3 px-0 col-form-label">{{__("Permanent address")}}</label>
-                <div class="col-sm-9 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["permanent_address"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Temporaray address")}}</label>
-                <div class="col-sm-9 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["temporaray_address"]}}</div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-3 px-0 col-form-label">{{__("Phone")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">{{$row["phone"]}}
-                    </div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Email")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">{{$row["email"]}}
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="form-group row">
-                <label class="col-sm-3 px-0 col-form-label">{{__("Father fullname")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["father"]["name"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Occupation")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["father"]["occupation"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Father phone")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["father"]["phone"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Father email")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["father"]["email"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Mother fullname")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["mother"]["name"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Occupation")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["mother"]["occupation"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Mother phone")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["mother"]["phone"]}}</div>
-                </div>
-
-                <label class="col-sm-3 px-0 col-form-label">{{__("Mother phone")}}</label>
-                <div class="col-sm-3 px-0">
-                    <div class="font-weight-bold form-control-plaintext">
-                        {{$row["staff_guardian"]["mother"]["email"]}}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-            <img class="img-thumbnail" data-src="{{$row["photo"]}}" alt="" />
-        </div>
-    </div>
-</div>
+                                    @if ($row['email'])
+                                    <strong>{{$row['email']}}</strong>
+                                    @else
+                                    <strong style="color: red">{{__('N/A')}}</strong>
+                                    @endif
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td style="vertical-align: top; text-align: center;width:2%">
+                    <img src="{{$row['photo']}}" style="width: 100px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>

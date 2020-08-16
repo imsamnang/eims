@@ -1,31 +1,17 @@
-@extends("layouts.master-v1")
-@section("meta")
-@foreach(config("app.meta") as $keys)
-@for($i = 0 ; $i< count($keys);$i++) @php $meta=array();$content=array();@endphp @foreach ($keys[$i] as $name=> $item)
-    @php $meta[] = $name ;@endphp
-    @endforeach
-    @if(count($meta) == 1)
-    <meta {{$meta[0]}}="{{ $keys[$i][$meta[0]] }}" />
-    @else
-    <meta {{$meta[0]}}="{{ $keys[$i][$meta[0]] }}" {{$meta[1]}}="{{ $keys[$i][$meta[1]] }}" />
-    @endif
-    @endfor
-    @endforeach
-    @endsection
+<!DOCTYPE html>
+<html lang="{{app()->getLocale()}}">
 
-    @section("style")
+<head>
+    <meta charset="UTF-8">
+    <title>{{config('app.title')}}</title>
+
     <link rel="stylesheet" href="{{asset("/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css")}}"
         type="text/css">
     <link rel="stylesheet" href="{{ asset("/assets/css/paper.css") }}" />
     <link rel="stylesheet" href="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.css")}}">
     <style>
         [id^="stage"] {
-            margin: auto 2mm;
-            @if ($cards["settings"] && $cards["settings"]["layout"]=="vertical") display: inline-block;
             margin: auto 0.3mm 0.1mm;
-            height: 350px;
-            width: 504px;
-            @endif
         }
 
         header {
@@ -34,49 +20,101 @@
             background: var(--app-color, blueviolet);
         }
     </style>
-    @endsection
-    @section("content")
-    <div class="paper A4 {{($cards["settings"]  && $cards["settings"]["layout"] =="vertical")? "landscape": ""}}">
-        <header class="sticky">
-            <h1 class="d-print-none">{{$cards["frame"]["institute"]["name"]}}</h1>
 
-            <div class="{{$cards["success"] == false ? "d-none":""}}">
-                <button class="btn-save btn d-print-none">
-                    <i class="fas fa-save"></i> {{__("Save")}}
+</head>
+
+<body>
+
+    <div class="side-menu open pinned d-print-none">
+        <div style="display: inline-block;height: 100%;width:100%;overflow-y: auto;padding: 20px;">
+
+            <div style="margin-top: 10px">
+                <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
+                    enctype="multipart/form-data">
+
+                    <div style="margin: 10px 0">
+                        <b> {{__('Sheet')}}</b>
+                    </div>
+                    <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;width:100%">
+                        <div>
+                            <label style="display: inline-block;width:100%" for="size">{{__('Size')}}</label>
+                            <select style="display: inline-block" class="form-control" data-toggle="select" id="size"
+                                title="Simple select" data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                data-placeholder="" data-select-value="{{request('size')}}" name="size">
+                                <option {{request('size') == 'A3'?'selected':''}} value="A3">
+                                    {{__('A3')}}
+                                </option>
+                                <option {{request('size') == 'A4'?'selected':''}} value="A4">
+                                    {{__('A4')}}
+                                </option>
+                                <option {{request('size') == 'A5'?'selected':''}} value="A5">
+                                    {{__('A5')}}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: inline-block;width:100%" for="layout">{{__('Layout')}}</label>
+                            <select style="display: inline-block" class="form-control" data-toggle="select" id="layout"
+                                title="Simple select" data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                data-placeholder="" data-select-value="{{request('layout')}}" name="layout">
+                                <option {{request('layout') == 'portrait'?'selected':''}} value="portrait">
+                                    {{__('Portrait')}}
+                                </option>
+                                <option {{request('layout') == 'landscape'?'selected':''}} value="landscape">
+                                    {{__('Landscape')}}
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary float-right">
+                                {{ __("Set") }}
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div style="display: inline-flex;width: 100%;margin-top: 20px;">
+                <button style="width: 50%" data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name=""
+                    class="btn btn-primary btn-save {{$response == false ? "d-none":""}}">
+                    <i class="fas fa-save"></i>
+                    {{__("Save")}}
                 </button>
-
-                <button class="btn-print btn btn-primary d-print-none">
+                <button style="width: 50%" onclick="print();"
+                    class="btn btn-primary {{$response == false ? "d-none":""}}">
                     <i class="fas fa-print"></i>
-                    {{__("Print")}} | (A4)
-                    {{$cards["settings"]  && $cards["settings"]["layout"] =="vertical"? __("Landscape") : __("Portrait")}}
+                    {{__("Print")}} | (A4) {{__(request('layout'))}}
                 </button>
             </div>
-        </header>
-
-        @if ($cards["success"] == false)
-        <section class="sheet nodata">
-            <div class="nodata-text">{{__("No Data")}}</div>
-        </section>
-
-        @endif
-
-    </div>
-
-    <footer>
-        <div class="copyright d-print-none">
-            &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
-                target="_blank">{{config('app.name')}}</a>
         </div>
-    </footer>
+    </div>
+    <div class="content">
+        <div class="content-main">
+            <div class="paper {{request('size','A4')}} {{request('layout')}}">
+                @if ($response['data'])
 
+                @else
+                <section class="sheet nodata d-print-none">
+                    <div class="nodata-text">{{__('No Data')}}</div>
+                </section>
+                @endif
 
-    @endsection
-    @section("script")
-    <script src="{{ asset("/assets/vendor/konva/konva.min.js")}}"></script>
-    <script src="{{asset("/assets/vendor/jquery/dist/jquery.min.js")}}"></script>
-    <script src="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.js")}}"></script>
-    <script>
-       function b64toFile(dataURI) {
+            </div>
+            <footer class="d-print-none">
+                <div class="copyright">
+                    &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
+                        target="_blank">{{config('app.name')}}</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+@section("script")
+<script src="{{ asset("/assets/vendor/konva/konva.min.js")}}"></script>
+<script src="{{asset("/assets/vendor/jquery/dist/jquery.min.js")}}"></script>
+<script src="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.js")}}"></script>
+<script>
+    function b64toFile(dataURI) {
         const byteString = atob(dataURI.split(',')[1]);
         const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
         const ab = new ArrayBuffer(byteString.length);
@@ -100,10 +138,10 @@
         return blob;
     }
     var cardId = [];
-    var cards = {!!json_encode($cards["data"]) !!};
+    var response = {!!json_encode($response["data"]) !!};
     var j = 1;
-    for (var i in cards) {
-        var id = cards[i].id;
+    for (var i in response) {
+        var id = response[i].id;
         var sheet = $("<section></section>");
         sheet.attr({
             id: id,
@@ -121,8 +159,8 @@
             j = 0;
         }
         $(".paper").find("section:last").append(container);
-        cards[i] = Konva.Node.create(cards[i], "stage-" + id);
-        cards[i].find("Image").forEach(imageNode => {
+        response[i] = Konva.Node.create(response[i], "stage-" + id);
+        response[i].find("Image").forEach(imageNode => {
             var nativeImage = new Image();
             nativeImage.onload = () => {
                 imageNode.image(nativeImage);
@@ -140,10 +178,10 @@
     $(".btn-save").on("click", () => {
         var a = null;
         var formData = new FormData();
-        formData.append("_token", $("meta[name='csrf-token']").attr('content'));
-        for (var i in cards) {
+        formData.append("_token", "{{csrf_token()}}");
+        for (var i in response) {
             formData.append("cards[" + i + "][id]", cardId[i]);
-            formData.append("cards[" + i + "][image]", b64toFile(cards[i].toDataURL({
+            formData.append("cards[" + i + "][image]", b64toFile(response[i].toDataURL({
                 pixelRatio: 3
             })));
         }
@@ -187,5 +225,6 @@
 
     });
 
-    </script>
-    @endsection
+</script>
+
+</html>

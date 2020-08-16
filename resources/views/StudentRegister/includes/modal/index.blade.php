@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" class="h3 mr-2">
+                    <h6 class="modal-title mr-3" class="h3 mr-2">
                         {{ __(config("pages.form.role")) }}
                     </h6>
 
@@ -15,16 +15,15 @@
                 </div>
                 <div class="modal-body">
                     {{-- <form action="{{config("pages.form.action.detect")}}/excel" enctype="multipart/form-data"
-                        method="POST">
-                        @csrf
+                    method="POST">
+                    @csrf
 
-                        <div class="">
-                            <label class="form-control-label" for="xfile">File Excel</label>
-                            <input type="file" class="form-control" id="xfile" name="xfile" accept=".xls,.xlsx">
-                        </div>
+                    <div class="">
+                        <label class="form-control-label" for="xfile">File Excel</label>
+                        <input type="file" class="form-control" id="xfile" name="xfile" accept=".xls,.xlsx">
+                    </div>
 
-                        <button class="btn btn-primary float-right mt-3"
-                            type="submit">{{__("Run")}}</button>
+                    <button class="btn btn-primary float-right mt-3" type="submit">{{__("Run")}}</button>
                     </form> --}}
                 </div>
 

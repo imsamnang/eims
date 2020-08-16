@@ -33,8 +33,7 @@ class StudentsStudyCourseScoreController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
 
-        $data['study_course_session'] = StudyCourseSession::getData();
-        $data['student']    = StudentsStudyCourse::getData();
+
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
@@ -120,15 +119,16 @@ class StudentsStudyCourseScoreController extends Controller
             'messages'    =>  FormStudentsStudyCourseScore::customMessages(),
             'questions'   =>  FormStudentsStudyCourseScore::questionField(),
         ];
-
+        $data[''] = StudyCourseSession::getData();
+        $data['student']    = StudentsStudyCourse::getData();
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
     }
     public function add($data)
     {
-        $data['view']  = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';        
-        $data['title']  = Users::role(app()->getLocale()).'|'.__('Add Students study course score');
+        $data['view']  = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';
+        $data['title']  = Users::role(app()->getLocale()) . ' | ' . __('Add Students study course score');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -136,16 +136,16 @@ class StudentsStudyCourseScoreController extends Controller
 
     public function list($data)
     {
-        $data['response'] = StudentsStudyCourseScore::getData(null, null, null,null,true);
+        $data['response'] = StudentsStudyCourseScore::getData(null, null, null, null, true);
         $data['view']     = StudentsStudyCourseScore::$path['view'] . '.includes.list.index';
-        $data['title']  = Users::role(app()->getLocale()).'|'.__('List Students study course score');
+        $data['title']  = Users::role(app()->getLocale()) . ' | ' . __('List Students study course score');
         return $data;
     }
     public function show($data, $id, $type)
     {
         $response           = StudentsStudyCourseScore::getData($id, true);
         $data['view']       = StudentsStudyCourseScore::$path['view'] . '.includes.form.index';
-        $data['title']  = Users::role(app()->getLocale()).'|'.__('Students study course score');
+        $data['title']  = Users::role(app()->getLocale()) . ' | ' . __('Students study course score');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];
@@ -161,7 +161,7 @@ class StudentsStudyCourseScoreController extends Controller
     {
         $data['response']  = StudentsStudyCourseScore::getData();
         $data['view']      = StudentsStudyCourseScore::$path['view'] . '.includes.report.index';
-        $data['title']  = Users::role(app()->getLocale()).'|'.__('Students study course score report');
+        $data['title']  = Users::role(app()->getLocale()) . ' | ' . __('Students study course score report');
         return $data;
     }
 }

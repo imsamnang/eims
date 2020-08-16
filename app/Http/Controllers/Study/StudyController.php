@@ -163,7 +163,7 @@ class StudyController extends Controller
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
-                       [
+                        [
                             'name'  => __('List Study course session'),
                             'link'  => url(Users::role() . '/study/' . StudyCourseSession::$path['url'] . '/list'),
                             'icon'  => 'fas fa-table',
@@ -188,7 +188,7 @@ class StudyController extends Controller
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
-                       [
+                        [
                             'name'  => __('List Short course session'),
                             'link'  => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/list'),
                             'icon'  => 'fas fa-table',
@@ -289,7 +289,7 @@ class StudyController extends Controller
 
 
             $data['view']  = 'Study.includes.dashboard.index';
-            $data['title'] = Users::role(app()->getLocale()).'|'.__('Study');
+            $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study');
         } elseif (strtolower($param1) == StudyPrograms::$path['url']) {
             $view = new StudyProgramController();
             return $view->index($param2, $param3);
@@ -356,11 +356,9 @@ class StudyController extends Controller
         } elseif (strtolower($param1) == StudyGrade::$path['url']) {
             $view = new StudyGradeController();
             return $view->index($param2, $param3);
-
         } elseif (strtolower($param1) == StudyShortCourseSchedule::$path['url']) {
             $view = new StudyShortCourseScheduleController;
             return $view->index($param2, $param3);
-
         } elseif (strtolower($param1) == StudyShortCourseSession::$path['url']) {
             $view = new StudyShortCourseSessionController;
             return $view->index($param2, $param3);

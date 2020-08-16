@@ -29,7 +29,7 @@
             </h4>
 
             @else
-            <h4 class="header">                
+            <h4 class="header">
                 {{ __("List Attendance for month",['month'=>DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->shortMonthName]) ." ".request("year") }}
             </h4>
             @endif
@@ -62,7 +62,7 @@
             @endif
 
             <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
-                {{ __(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"]) }}
+                {{ __(mb_substr(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"], 0, 3,'utf-8')) }}
             </th>
             @endfor
             <th colspan="3">​</th>

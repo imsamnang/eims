@@ -116,7 +116,7 @@ class HolidayController extends Controller
     public function list($data)
     {
         $data['view']     = Holidays::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) .'|'.__('List Holiday');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Holiday');
         return $data;
     }
 
@@ -124,14 +124,14 @@ class HolidayController extends Controller
     {
         $data['response'] = Holidays::getData(null, null, 10);
         $data['view']     = Holidays::$path['view'] . '.includes.calendar.index';
-        $data['title']    = Users::role(app()->getLocale()) .'|'.__('Calendar Holiday');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Calendar Holiday');
         return $data;
     }
 
     public function add($data)
     {
         $data['view']      = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()) .'|'.__('Add Holiday');
+        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Holiday');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -141,7 +141,7 @@ class HolidayController extends Controller
     {
         $response = Holidays::getData($id, true);
         $data['view']       = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()) .'|'.__('Holiday');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Holiday');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

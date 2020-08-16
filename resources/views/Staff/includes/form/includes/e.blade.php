@@ -23,9 +23,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="father_fullname"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.father.name")}}"
+                        <input type="text" class="form-control" id="father_fullname" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.father_fullname")}}"
                             {{config("pages.form.validate.rules.father_fullname") ? "required" : ""}}
                             name="father_fullname" />
 
@@ -49,9 +48,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="father_occupation"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.father.occupation")}}"
+                        <input type="text" class="form-control" id="father_occupation" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.father_occupation")}}"
                             {{config("pages.form.validate.rules.father_occupation") ? "required" : ""}}
                             name="father_occupation" />
 
@@ -78,9 +76,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="father_phone"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.father.phone")}}"
+                        <input type="text" class="form-control" id="father_phone" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.father_phone")}}"
                             {{config("pages.form.validate.rules.father_phone") ? "required" : ""}}
                             name="father_phone" />
 
@@ -108,9 +105,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="father_email"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.father.email")}}"
+                        <input type="text" class="form-control" id="father_email" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.father_email")}}"
                             {{config("pages.form.validate.rules.father_email") ? "required" : ""}}
                             name="father_email" />
 
@@ -141,7 +137,7 @@
                         </div>
                         <textarea type="text" class="form-control" name="father_extra_info" id="father_extra_info"
                             placeholder=""
-                            {{config("pages.form.validate.rules.father_extra_info") ? "required" : ""}}>{{config("pages.form.data.staff_guardian.father.extra_info")}}</textarea>
+                            {{config("pages.form.validate.rules.father_extra_info") ? "required" : ""}}>{{config("pages.form.data.".$key.".staff_guardian.father_extra_info")}}</textarea>
                     </div>
                 </div>
             </div>
@@ -174,9 +170,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="mother_fullname"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.mother.name")}}"
+                        <input type="text" class="form-control" id="mother_fullname" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.mother_fullname")}}"
                             {{config("pages.form.validate.rules.mother_fullname") ? "required" : ""}}
                             name="mother_fullname" />
 
@@ -200,9 +195,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="mother_occupation"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.mother.occupation")}}"
+                        <input type="text" class="form-control" id="mother_occupation" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.mother_occupation")}}"
                             {{config("pages.form.validate.rules.mother_occupation") ? "required" : ""}}
                             name="mother_occupation" />
 
@@ -229,9 +223,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="mother_phone"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.mother.phone")}}"
+                        <input type="text" class="form-control" id="mother_phone" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.mother_phone")}}"
                             {{config("pages.form.validate.rules.mother_phone") ? "required" : ""}}
                             name="mother_phone" />
 
@@ -259,9 +252,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="mother_email"
-                            placeholder=""
-                            value="{{config("pages.form.data.staff_guardian.mother.email")}}"
+                        <input type="text" class="form-control" id="mother_email" placeholder=""
+                            value="{{config("pages.form.data.".$key.".staff_guardian.mother_email")}}"
                             {{config("pages.form.validate.rules.mother_email") ? "required" : ""}}
                             name="mother_email" />
 
@@ -292,7 +284,7 @@
                         </div>
                         <textarea type="text" class="form-control" name="mother_extra_info" id="mother_extra_info"
                             placeholder=""
-                            {{config("pages.form.validate.rules.mother_extra_info") ? "required" : ""}}>{{config("pages.form.data.staff_guardian.mother.extra_info")}}</textarea>
+                            {{config("pages.form.validate.rules.mother_extra_info") ? "required" : ""}}>{{config("pages.form.data.".$key.".staff_guardian.mother_extra_info")}}</textarea>
                     </div>
                 </div>
             </div>
@@ -314,62 +306,71 @@
     <div class="card-header p-2 px-4">
         <div class="form-group form-control col" id="guardian">
             @if (config('pages.parameters.param1') == "view")
-                @if(config("pages.form.data.staff_guardian.guardian_is") == "father")
-                    <div class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.staff_guardian.guardian_is") == "father" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian"
-                            name="guardian" value="father" class="custom-control-input">
-                        <label class="custom-control-label" for="father_is_guardian">
-                            <span class="d-none d-sm-block">{{__("Father is guardian")}}</span>
-                            <span class="d-lg-none">{{__("Father")}}</span>
-                        </label>
-                    </div>
-                @elseif(config("pages.form.data.staff_guardian.guardian_is") == "mother")
-                    <div class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.staff_guardian.guardian_is") == "mother" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian"
-                            name="guardian" value="mother" class="custom-control-input">
-                        <label class="custom-control-label" for="mother_is_guardian">
-                            <span class="d-none d-sm-block">{{__("Mother is guardian")}}</span>
-                            <span class="d-lg-none">{{__("Mother")}}</span>
-                        </label>
-                    </div>
-                @else
-                    <div  class="custom-control custom-radio custom-control-inline col-4">
-                        <input {{config("pages.form.data.staff_guardian.guardian_is") !== "father" && config("pages.form.data.staff_guardian.guardian_is") !== "mother"  ? "checked" : ""}} data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian"
-                            name="guardian" value="other" class="custom-control-input">
-                        <label class="custom-control-label" for="other_guardian"><span>{{__("Other")}}</span>
-                        </label>
-                    </div>
-                @endif
+            @if(config("pages.form.data.".$key.".staff_guardian.guardian_is") == "father")
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input {{config("pages.form.data.".$key.".staff_guardian.guardian_is") == "father" ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian-{{$key}}"
+                    name="guardian" value="father" class="custom-control-input">
+                <label class="custom-control-label" for="father_is_guardian-{{$key}}">
+                    <span class="d-none d-sm-block">{{__("Father is guardian")}}</span>
+                    <span class="d-lg-none">{{__("Father")}}</span>
+                </label>
+            </div>
+            @elseif(config("pages.form.data.".$key.".staff_guardian.guardian_is") == "mother")
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input {{config("pages.form.data.".$key.".staff_guardian.guardian_is") == "mother" ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian-{{$key}}"
+                    name="guardian" value="mother" class="custom-control-input">
+                <label class="custom-control-label" for="mother_is_guardian-{{$key}}">
+                    <span class="d-none d-sm-block">{{__("Mother is guardian")}}</span>
+                    <span class="d-lg-none">{{__("Mother")}}</span>
+                </label>
+            </div>
             @else
-                <div class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.staff_guardian.guardian_is") == "father" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian"
-                        name="guardian" value="father" class="custom-control-input">
-                    <label class="custom-control-label" for="father_is_guardian">
-                        <span class="d-none d-sm-block">{{__("Father is guardian")}}</span>
-                        <span class="d-lg-none">{{__("Father")}}</span>
-                    </label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.staff_guardian.guardian_is") == "mother" ? "checked" : ""}} data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian"
-                        name="guardian" value="mother" class="custom-control-input">
-                    <label class="custom-control-label" for="mother_is_guardian">
-                        <span class="d-none d-sm-block">{{__("Mother is guardian")}}</span>
-                        <span class="d-lg-none">{{__("Mother")}}</span>
-                    </label>
-                </div>
-                <div  class="custom-control custom-radio custom-control-inline col-4">
-                    <input {{config("pages.form.data.staff_guardian.guardian_is") !== "father" && config("pages.form.data.staff_guardian.guardian_is") !== "mother"  ? "checked" : ""}} data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian"
-                        name="guardian" value="other_guardian" class="custom-control-input">
-                    <label class="custom-control-label" for="other_guardian"><span>{{__("Other")}}</span>
-                    </label>
-                </div>
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input
+                    {{config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "father" && config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "mother"  ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian-{{$key}}" name="guardian"
+                    value="other" class="custom-control-input">
+                <label class="custom-control-label" for="other_guardian-{{$key}}"><span>{{__("Other")}}</span>
+                </label>
+            </div>
+            @endif
+            @else
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input {{config("pages.form.data.".$key.".staff_guardian.guardian_is") == "father" ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="father_is_guardian-{{$key}}"
+                    name="guardian" value="father" class="custom-control-input">
+                <label class="custom-control-label" for="father_is_guardian-{{$key}}">
+                    <span class="d-none d-sm-block">{{__("Father is guardian")}}</span>
+                    <span class="d-lg-none">{{__("Father")}}</span>
+                </label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input {{config("pages.form.data.".$key.".staff_guardian.guardian_is") == "mother" ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-hide-collapse="xguardian" id="mother_is_guardian-{{$key}}"
+                    name="guardian" value="mother" class="custom-control-input">
+                <label class="custom-control-label" for="mother_is_guardian-{{$key}}">
+                    <span class="d-none d-sm-block">{{__("Mother is guardian")}}</span>
+                    <span class="d-lg-none">{{__("Mother")}}</span>
+                </label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline col-4">
+                <input
+                    {{config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "father" && config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "mother"  ? "checked" : ""}}
+                    data-toggle="radio" type="radio" data-show-collapse="xguardian" id="other_guardian-{{$key}}" name="guardian"
+                    value="other_guardian" class="custom-control-input">
+                <label class="custom-control-label" for="other_guardian-{{$key}}"><span>{{__("Other")}}</span>
+                </label>
+            </div>
 
             @endif
 
         </div>
     </div>
     <div class="card-body">
-        <div class="collapse {{config("pages.form.data.staff_guardian.guardian_is") !== "father" && config("pages.form.data.staff_guardian.guardian_is") !== "mother"  ? "show" : ""}}" id="xguardian">
+        <div class="collapse {{config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "father" && config("pages.form.data.".$key.".staff_guardian.guardian_is") !== "mother"  ? "show" : ""}}"
+            id="xguardian">
             <div class="form-row">
                 <div class="col-md-6 mb-3">
                     <label data-toggle="tooltip" rel="tooltip" data-placement="top"
@@ -388,9 +389,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user-md"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="guardian_fullname"
-                                placeholder=""
-                                value="{{config("pages.form.data.staff_guardian.guardian.name")}}"
+                            <input type="text" class="form-control" id="guardian_fullname" placeholder=""
+                                value="{{config("pages.form.data.".$key.".staff_guardian.guardian_fullname")}}"
                                 {{config("pages.form.validate.rules.guardian_fullname") ? "required" : ""}}
                                 name="guardian_fullname" />
 
@@ -414,9 +414,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user-md"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="guardian_occupation"
-                                placeholder=""
-                                value="{{config("pages.form.data.staff_guardian.guardian.occupation")}}"
+                            <input type="text" class="form-control" id="guardian_occupation" placeholder=""
+                                value="{{config("pages.form.data.".$key.".staff_guardian.guardian_occupation")}}"
                                 {{config("pages.form.validate.rules.guardian_occupation") ? "required" : ""}}
                                 name="guardian_occupation" />
 
@@ -443,9 +442,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="guardian_phone"
-                                placeholder=""
-                                value="{{config("pages.form.data.staff_guardian.guardian.phone")}}"
+                            <input type="text" class="form-control" id="guardian_phone" placeholder=""
+                                value="{{config("pages.form.data.".$key.".staff_guardian.guardian_phone")}}"
                                 {{config("pages.form.validate.rules.guardian_phone") ? "required" : ""}}
                                 name="guardian_phone" />
 
@@ -471,9 +469,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="guardian_email"
-                                placeholder=""
-                                value="{{config("pages.form.data.staff_guardian.guardian.email")}}"
+                            <input type="text" class="form-control" id="guardian_email" placeholder=""
+                                value="{{config("pages.form.data.".$key.".staff_guardian.guardian_email")}}"
                                 {{config("pages.form.validate.rules.guardian_email") ? "required" : ""}}
                                 name="guardian_email" />
 
@@ -504,7 +501,7 @@
                             </div>
                             <textarea type="text" class="form-control" name="guardian_extra_info"
                                 id="guardian_extra_info" placeholder=""
-                                {{config("pages.form.validate.rules.guardian_extra_info") ? "required" : ""}}>{{config("pages.form.data.staff_guardian.guardian.extra_info")}}</textarea>
+                                {{config("pages.form.validate.rules.guardian_extra_info") ? "required" : ""}}>{{config("pages.form.data.".$key.".staff_guardian.guardian_extra_info")}}</textarea>
                         </div>
                     </div>
                 </div>

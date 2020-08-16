@@ -30,7 +30,7 @@ class PhotoController extends Controller
         $data['formData'] = array(
             'photo' => asset('/assets/img/user/male.jpg'),
         );
-        $data['formName']     = Students::$path['url'] .'/'.StudentsStudyCourse::$path['url'];
+        $data['formName']     = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
         $data['formAction']   = '/photo';
         $data['listData']     = array();
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
@@ -71,15 +71,14 @@ class PhotoController extends Controller
         return view('Photo.index', $data);
     }
 
-    public function make($data, $user)
+    public function make($data, $ts)
     {
         $data['view']       = 'Photo.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'. __('Photo');
+        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Photo');
         $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $user['data'][0]['id']);
-        $data['formData']   = $user['data'][0];
-        $data['listData']   = $user['pages']['listData'];
-        $data['formAction'] = '/photo/make/' . $user['data'][0]['id'];
+        $data['formData']   = $ts;
+        $data['listData']   = $ts;
+
         return $data;
     }
 }

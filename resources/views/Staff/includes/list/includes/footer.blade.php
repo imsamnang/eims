@@ -15,8 +15,8 @@
             <tbody>
                 <tr>
                     @foreach ($response["staffStatus"] as $key => $status)
-                    <td class="text-left p-2 {{$status['color']}}">{{ $status['title'] }}</td>
-                    <td class="text-right p-2 {{$status['color']}}">{{ $status['text'] }}</td>
+                    <td class="text-left p-1 {{$status['color']}}">{{ $status['title'] }}</td>
+                    <td class="text-right p-1 {{$status['color']}}">{{ $status['text'] }}</td>
                     @endforeach
                 </tr>
             </tbody>

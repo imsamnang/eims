@@ -70,7 +70,6 @@ class QuizStudentAnswerController extends Controller
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
             $data = $this->list($data);
-
         } elseif ($param1 == 'add') {
             if (request()->ajax() && request()->method() === 'POST') {
                 return QuizStudentAnswer::addToTable();
@@ -148,7 +147,7 @@ class QuizStudentAnswerController extends Controller
         $data['response'] = QuizStudentAnswer::getData1($student_study_course_id);
 
         $data['view']     = QuizStudentAnswer::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student answer');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student answer');
         return $data;
     }
 
@@ -167,7 +166,7 @@ class QuizStudentAnswerController extends Controller
         $data['class']                = StudentsStudyCourse::studyClass(null, true);
 
         $data['view']      = QuizStudentAnswer::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Add Quiz Student answer');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Quiz Student answer');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
         return $data;
@@ -189,7 +188,7 @@ class QuizStudentAnswerController extends Controller
 
         $response = QuizStudentAnswer::getData($id, 10);
         $data['view']       = QuizStudentAnswer::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('Quiz Student answer');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student answer');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
         $data['formData']   = $response['data'][0];

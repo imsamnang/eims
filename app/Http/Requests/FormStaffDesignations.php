@@ -25,6 +25,7 @@ class FormStaffDesignations extends FormRequest
 
     public static function rulesField()
     {
+        $rules['institute']   = 'required';
         $rules['name']   = 'required';
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
@@ -38,6 +39,7 @@ class FormStaffDesignations extends FormRequest
 
     public static function attributeField()
     {
+        $attributes['institute']    = __('Institute');
         $attributes['name']    = __('Name');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {

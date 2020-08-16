@@ -20,7 +20,7 @@
                     @endif
                 </label>
                 <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder=""
+                    data-placeholder="" name="student[]"
                     data-select-value="{{config("pages.form.data.student.id",request("sessionId"))}}">
                     @foreach($student["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

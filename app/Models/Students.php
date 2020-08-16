@@ -70,10 +70,10 @@ class Students extends Model
 
         if ($id) {
             $get = $get->whereIn((new Students())->getTable() . '.id', $id);
-        }else{
+        } else {
 
-            if(request('instituteId')){
-                $get = $get->where('institute_id',request('instituteId'));
+            if (request('instituteId')) {
+                $get = $get->where('institute_id', request('instituteId'));
             }
         }
 
@@ -99,8 +99,7 @@ class Students extends Model
 
         if ($get) {
             foreach ($get as $key => $row) {
-                $place_of_birth         = json_decode($row['place_of_birth'], true);
-                $current_resident       = json_decode($row['current_resident'], true);
+
                 $student_request        = StudentsRequest::where('student_id', $row['id'])->where('status', 1)->latest('id')->first();
                 $account = Users::where('email', $row['email'])->where('node_id', $row['id'])->first();
                 $socail_auth = SocialAuth::getData(null, $row['id']);
@@ -138,18 +137,7 @@ class Students extends Model
 
                         'marital'            => $row['marital_id'] ? (Marital::getData($row['marital_id'])['data'][0]) : null,
                         'blood_group'        => $row['blood_group_id'] ? (BloodGroup::getData($row['blood_group_id'])['data'][0]) : null,
-                        'place_of_birth'     => array(
-                            'province'       => ($place_of_birth['province']) ? (Provinces::getData($place_of_birth['province'])['data'][0]) : null,
-                            'district'       => ($place_of_birth['district']) ? (Districts::getData(null, $place_of_birth['district'])['data'][0]) : null,
-                            'commune'        => ($place_of_birth['commune']) ? (Communes::getData(null, $place_of_birth['commune'])['data'][0]) : null,
-                            'village'        => ($place_of_birth['village']) ? (Villages::getData(null, $place_of_birth['village'])['data'][0]) : null,
-                        ),
-                        'current_resident'   => array(
-                            'province'       => ($current_resident['province']) ? (Provinces::getData($current_resident['province'])['data'][0]) : null,
-                            'district'       => ($current_resident['district']) ? (Districts::getData(null, $current_resident['district'])['data'][0]) : null,
-                            'commune'        => ($current_resident['commune']) ? (Communes::getData(null, $current_resident['commune'])['data'][0]) : null,
-                            'village'        => ($current_resident['village']) ? (Villages::getData(null, $current_resident['village'])['data'][0]) : null,
-                        ),
+
                         'permanent_address'  => $row['permanent_address'],
                         'temporaray_address' => $row['temporaray_address'],
                         'phone'              => $row['phone'],
@@ -228,7 +216,7 @@ class Students extends Model
                 return [
                     'id'      => $row['id'],
                     'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'gender'             =>  Gender::where('id',$row['gender_id'])->pluck(app()->getLocale())->first(),
+                    'gender'             =>  Gender::where('id', $row['gender_id'])->pluck(app()->getLocale())->first(),
                     'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
                     'account'            => $account ? Users::getData($account->id)['data'][0] : null,
                     'photo'             =>  $photo,
@@ -244,8 +232,8 @@ class Students extends Model
                 ];
             })
             ->filter(function ($query) {
-                if(request('instituteId')){
-                    $query = $query->where('institute_id',request('instituteId'));
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
                 foreach (request('columns') as $i => $value) {
                     if ($value['searchable']) {
@@ -359,10 +347,10 @@ class Students extends Model
         //     ];
         // }else{
         //     $rules += [
-        //         'pob_province_fk'         => 'required',
-        //         'pob_district_fk'         => 'required',
-        //         'pob_commune_fk'          => 'required',
-        //         'pob_village_fk'          => 'required',
+        //         'pob_province'         => 'required',
+        //         'pob_district'         => 'required',
+        //         'pob_commune'          => 'required',
+        //         'pob_village'          => 'required',
         //     ];
         // }
 
@@ -374,10 +362,10 @@ class Students extends Model
         //     ];
         // }else{
         //     $rules += [
-        //         'curr_province_fk'         => 'required',
-        //         'curr_district_fk'         => 'required',
-        //         'curr_commune_fk'          => 'required',
-        //         'curr_village_fk'          => 'required',
+        //         'curr_province'         => 'required',
+        //         'curr_district'         => 'required',
+        //         'curr_commune'          => 'required',
+        //         'curr_village'          => 'required',
         //     ];
         // }
         // if(request()->hasFile('photo')){
@@ -412,20 +400,16 @@ class Students extends Model
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
 
-                    'place_of_birth' => json_encode(array(
-                        'province' => request('pob_province_fk'),
-                        'district' => request('pob_district_fk'),
-                        'commune'  => request('pob_commune_fk'),
-                        'village'  => request('pob_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
+                    'pob_province_id' => request('pob_province'),
+                    'pob_district_id' => request('pob_district'),
+                    'pob_commune_id'  => request('pob_commune'),
+                    'pob_village_id'  => request('pob_village'),
 
-                    'current_resident' => json_encode(array(
-                        'province' => request('curr_province_fk'),
-                        'district' => request('curr_district_fk'),
-                        'commune'  => request('curr_commune_fk'),
-                        'village'  => request('curr_village_fk'),
-                    ), JSON_UNESCAPED_UNICODE),
 
+                    'curr_province_id' => request('curr_province'),
+                    'curr_district_id' => request('curr_district'),
+                    'curr_commune_id'  => request('curr_commune'),
+                    'curr_village_id'  => request('curr_village'),
                     'permanent_address'  => trim(request('permanent_address')),
                     'temporaray_address' => trim(request('temporaray_address')),
                     'phone'              => trim(request('phone')),
@@ -469,14 +453,14 @@ class Students extends Model
 
         $rules = FormStudents::rulesField();
 
-        unset($rules['pob_province_fk']);
-        unset($rules['pob_district_fk']);
-        unset($rules['pob_commune_fk']);
-        unset($rules['pob_village_fk']);
-        unset($rules['curr_province_fk']);
-        unset($rules['curr_district_fk']);
-        unset($rules['curr_commune_fk']);
-        unset($rules['curr_village_fk']);
+        unset($rules['pob_province']);
+        unset($rules['pob_district']);
+        unset($rules['pob_commune']);
+        unset($rules['pob_village']);
+        unset($rules['curr_province']);
+        unset($rules['curr_district']);
+        unset($rules['curr_commune']);
+        unset($rules['curr_village']);
         unset($rules['father_fullname']);
         unset($rules['father_occupation']);
         unset($rules['father_phone']);
@@ -571,19 +555,16 @@ class Students extends Model
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
 
-                    'place_of_birth' => json_encode(array(
-                        'province' => is_numeric(request('pob_province_fk')) ? request('pob_province_fk') : null,
-                        'district' => is_numeric(request('pob_district_fk')) ? request('pob_district_fk') : null,
-                        'commune'  => is_numeric(request('pob_commune_fk')) ? request('pob_commune_fk') : null,
-                        'village'  => is_numeric(request('pob_village_fk')) ? request('pob_village_fk') : null,
-                    ), JSON_UNESCAPED_UNICODE),
+                    'pob_province_id' => request('pob_province'),
+                    'pob_district_id' => request('pob_district'),
+                    'pob_commune_id'  => request('pob_commune'),
+                    'pob_village_id'  => request('pob_village'),
 
-                    'current_resident' => json_encode(array(
-                        'province' => is_numeric(request('curr_province_fk')) ? request('curr_province_fk') : null,
-                        'district' => is_numeric(request('curr_district_fk')) ? request('curr_district_fk') : null,
-                        'commune'  => is_numeric(request('curr_commune_fk')) ? request('curr_commune_fk') : null,
-                        'village'  => is_numeric(request('curr_village_fk')) ? request('curr_village_fk') : null,
-                    ), JSON_UNESCAPED_UNICODE),
+
+                    'curr_province_id' => request('curr_province'),
+                    'curr_district_id' => request('curr_district'),
+                    'curr_commune_id'  => request('curr_commune'),
+                    'curr_village_id'  => request('curr_village'),
 
                     'permanent_address'  => trim(request('permanent_address')),
                     'temporaray_address' => trim(request('temporaray_address')),

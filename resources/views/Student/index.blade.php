@@ -23,55 +23,6 @@
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/datatables.net-select-bs4/css/select.bootstrap4.min.css")}}">
-
-<style>
-    .card .card-body {
-        flex: inherit;
-    }
-
-    .table-xs td,
-    .table-xs th {
-        border: 1px solid #ccc;
-        padding: .3rem .3rem !important;
-        font-size: .8rem !important;
-        text-align: center;
-    }
-
-    .table-xs td,
-    .table-xs th {
-        vertical-align: middle;
-
-    }
-
-    [data-toggle="attendance"] {
-        cursor: pointer;
-    }
-
-    .custom-control {
-        min-width: 1.5rem;
-        padding-left: 0rem;
-    }
-
-    .custom-control-label::before {
-        top: .25rem;
-        left: 0.25rem;
-    }
-
-    .custom-control-label::after {
-        top: .25rem;
-        left: 0.25rem;
-    }
-
-    table th .custom-control {
-        min-height: unset
-    }
-
-    /* table th label.custom-control-label {
-            display: unset !important;
-            vertical-align: super;
-        } */
-</style>
-
 @endsection
 
 

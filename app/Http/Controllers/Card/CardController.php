@@ -13,6 +13,7 @@ use App\Helpers\CardHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCard;
 use App\Models\StudentsStudyCourse;
@@ -33,14 +34,16 @@ class CardController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['institutes']      = Institute::getData();
+
         $data['formData'] = array(
-            'front' => asset('/assets/img/card/front.png'),
-            'background' => asset('/assets/img/card/background.png'),
+            [
+                'front' => asset('/assets/img/card/front.png'),
+                'background' => asset('/assets/img/card/background.png'),
+            ]
         );
         $data['formAction']      = '/add';
         $data['formName']        = Students::$path['url'] . '/' . CardFrames::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()) .'|'.  __('Card');
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' .  __('Card');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -56,10 +59,11 @@ class CardController extends Controller
             if (request()->method() == 'POST') {
                 return CardFrames::addToTable();
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'view') {
+            $id = request('id', $param2);
             if ($param2) {
-                $data = $this->view($data, $param2);
+                $data = $this->show($data, $id, $param1);
             } else {
                 $data = $this->list($data);
             }
@@ -69,7 +73,7 @@ class CardController extends Controller
                 if (request()->method() == "POST") {
                     return CardFrames::updateToTable($id);
                 }
-                $data = $this->edit($data, $param2);
+                $data = $this->show($data, $id, $param1);
             } else {
                 $data = $this->list($data);
             }
@@ -109,7 +113,7 @@ class CardController extends Controller
         } elseif ($param1 == 'set') {
             return $this->set($param2);
         } elseif ($param1 == 'result') {
-            $d['title'] = Users::role(app()->getLocale()) .'|'.__('Card');
+            $d['title'] = Users::role(app()->getLocale()) . ' | ' . __('Card');
             MetaHelper::setConfig(
                 [
                     'title'       => $d['title'],
@@ -121,9 +125,17 @@ class CardController extends Controller
                 ]
             );
             config()->set('app.title', $d['title']);
-            $d['cards'] = CardHelper::make($param3);
+            request()->merge([
+                'size'  => request('size', 'A4'),
+                'layout'  => request('layout', 'landscape'),
+            ]);
+
+
+            $d['response'] = CardHelper::make($param3);
 
             return view('Card.includes.result.index', $d);
+        } elseif ($param1 == 'save') {
+            return StudentsStudyCourse::makeCardToTable();
         } else {
             abort(404);
         }
@@ -158,6 +170,19 @@ class CardController extends Controller
             'questions'   =>  FormCard::questionField(),
         ];
 
+
+        //Select Option
+
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data'] = Institute::whereIn('id', CardFrames::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view('Card.index', $data);
@@ -165,66 +190,96 @@ class CardController extends Controller
 
     public function list($data)
     {
+        $table = CardFrames::orderBy('id', 'DESC');
+
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+        $response = $table->get()->map(function ($row) {
+            $row['front'] = ImageHelper::site(CardFrames::$path['image'], $row->front, 'original');
+            $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'original');
+            $row['layout'] = __($row->layout);
+            $row['action']  = [
+                'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/set/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = CardFrames::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()).'|'.__('List Card');
-        $data['response'] =  CardFrames::getData(null, null, 10);
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Card');
         return $data;
     }
 
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']  = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Add Card');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-
-        return $data;
-    }
-
-    public function view($data, $id)
-    {
-        $response = CardFrames::getData($id, true);
-        $data['view']       = CardFrames::$path['view'] . '.includes.view.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('View Card');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
-        return $data;
-    }
-
-    public function edit($data, $id)
-    {
-        $response = CardFrames::getData($id, true);
         $data['view']       = CardFrames::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()).'|'.__('Edit Card');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
+        if ($id) {
+
+            $response           = CardFrames::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['front'] = ImageHelper::site(CardFrames::$path['image'], $row->front, 'original');
+                $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'original');
+
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . CardFrames::$path['url'] . '/' . CardFrames::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . CardFrames::$path['url'] . '/' . CardFrames::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . CardFrames::$path['url'] . '/' . CardFrames::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->name,
+                    'image'  => $row->front,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . CardFrames::$path['url'] . '/' . CardFrames::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
-    public function make($data, $user)
+
+
+
+    public function make($data, $ts)
     {
 
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Card');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Card');
         $data['view']  = CardFrames::$path['view'] . '.includes.make.index';
-        $data['cards']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];
-        $data['cards']['frame']['front'] = $data['cards']['frame']['front_o'];
-        $data['cards']['frame']['background'] = $data['cards']['frame']['background_o'];
+        $data['response']['frame']  = CardFrames::getData(CardFrames::where('status', 1)->first()->id, 10)['data'][0];
+        $data['response']['frame']['front'] = $data['response']['frame']['front_o'];
+        $data['response']['frame']['background'] = $data['response']['frame']['background_o'];
 
         $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');
 
-        $data['cards']['all'] = CardFrames::frameData('all');
-        $data['cards']['selected'] = CardFrames::frameData('selected');
-        if ($user['success']) {
-            $data['cards']['user'] = $user['data'][0];
+        $data['response']['all'] = CardFrames::frameData('all');
+        $data['response']['selected'] = CardFrames::frameData('selected');
+        if ($ts['success']) {
+            $data['response']['data'] = $ts['data'];
         } else {
-            $data['cards']['user'] =  [];
+            $data['response']['data'] =  [];
         }
+
+        $data['cards']['data'] = CardFrames::get()->map(function ($row) {
+            $row['front'] = ImageHelper::site(CardFrames::$path['image'], $row->front, 'original');
+            $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'original');
+            $row['layout'] = __($row->layout);
+            $row['action']  = [
+                'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/set/' . $row['id']),
+            ];
+
+            return $row;
+        });
 
         return $data;
     }

@@ -10,14 +10,13 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.attendance_marks")}}" class="form-control-label"
                     for="attendance_marks">
-                    {{__("Attendance marks")}}
+                    {{__("Attendance score")}}
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                 </label>
-                <input type="number" class="form-control" name="attendance_marks"
-                    id="attendance_marks" placeholder=""
-                    value="{{config("pages.form.data.scores.attendance_marks.marks")}}"
+                <input type="number" class="form-control" name="attendance_marks" id="attendance_marks" placeholder=""
+                    value="{{config("pages.form.data.scores.attendance_marks.score")}}"
                     {{config("pages.form.validate.rules.attendance_marks") ? "required" : ""}} />
             </div>
 
@@ -25,14 +24,13 @@
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.other_marks")}}" class="form-control-label"
                     for="other_marks">
-                    {{__("Other marks")}}
+                    {{__("Other score")}}
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                 </label>
-                <input type="number" class="form-control" name="other_marks"
-                    id="other_marks" placeholder=""
-                    value="{{config("pages.form.data.scores.other_marks.marks")}}"
+                <input type="number" class="form-control" name="other_marks" id="other_marks" placeholder=""
+                    value="{{config("pages.form.data.scores.other_marks.score")}}"
                     {{config("pages.form.validate.rules.other_marks") ? "required" : ""}} />
             </div>
         </div>

@@ -24,7 +24,7 @@
 
 
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                    data-placeholder="" name="institute"
                     data-select-value="{{config("pages.form.data.institute.id")}}"
                     {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                     @foreach($institute["data"] as $o)
@@ -55,7 +55,7 @@
 
 
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                    data-placeholder="" name="study_generation"
                     data-select-value="{{config("pages.form.data.study_generation.id")}}">
                     @foreach($study_generation["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -77,7 +77,7 @@
 
 
                     data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                    data-placeholder="" name="study_subject"
                     data-select-value="{{config("pages.form.data.study_subject.id")}}">
                     @foreach($study_subject["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

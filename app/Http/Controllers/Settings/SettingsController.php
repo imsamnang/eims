@@ -123,7 +123,7 @@ class SettingsController extends Controller
             ];
 
             $data['view']  = App::$path['view'] . '.includes.dashboard.index';
-            $data['title'] = Users::role(app()->getLocale()).'|'.__('Settings');
+            $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  App::getData(null, null, 10);
@@ -237,7 +237,7 @@ class SettingsController extends Controller
     {
         $data['response'] =  App::getData(null, null, 10);
         $data['view']     =  App::$path['view'] . '.includes.list.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('List Settings');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Settings');
         return $data;
     }
 
@@ -246,7 +246,7 @@ class SettingsController extends Controller
     {
         $response           = App::getData($id, true);
         $data['view']       = App::$path['view'] . '.includes.general.index';
-        $data['title'] = Users::role(app()->getLocale()).'|'.__('Settings');
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');
         $data['formAction'] = '/general/add';
@@ -261,7 +261,7 @@ class SettingsController extends Controller
     {
         $data['response']   = ThemesColor::getData();
         $data['view']       = App::$path['view'] . '.includes.color.index';
-        $data['title']      = $data['title'] = Users::role(app()->getLocale()).'|'.__('Set color');
+        $data['title']      = $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Set color');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');
         return $data;

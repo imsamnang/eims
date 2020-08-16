@@ -3,11 +3,11 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable {{count($listData) > 1 ? "modal-xl" : "modal-lg"}}"
             role="document">
             <form role="{{config("pages.form.role")}}" class="needs-validation" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-lesson"
-                enctype="multipart/form-data" data-validation="{{json_encode(config('pages.form.validate'))}}">
+                action="{{config("pages.form.action.detect")}}" id="form-lesson" enctype="multipart/form-data"
+                data-validation="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" class="h3 mr-2">
+                        <h6 class="modal-title mr-3" class="h3 mr-2">
                             {{ __(config("pages.form.role")) }}
                         </h6>
                         <a href="{{config("pages.form.action.detect")}}" target="_blank" class="full-link"><i

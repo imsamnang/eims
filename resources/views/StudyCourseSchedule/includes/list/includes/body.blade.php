@@ -15,7 +15,7 @@
                     </th>
                     <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
                         {{__("Id")}}​</th>
-                    <th data-type="text" data-key="institute.short_name">{{__("Institute"}}​
+                    <th data-type="text" data-key="institute.short_name">{{__("Institute")}}​
                     </th>
                     <th data-type="text" data-key="study_program.name">{{__("Study Program")}}​
                     </th>

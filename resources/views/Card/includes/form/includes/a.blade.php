@@ -15,7 +15,7 @@
                             {{ __("Id") }}
                         </label>
                         <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
+                            value="{{config("pages.form.data.".$key.".id")}}">{{config("pages.form.data.".$key.".id")}}</span>
                     </div>
                     @endif
                 </div>
@@ -36,14 +36,13 @@
                                     <span class="input-group-text"><i class="fas fa-school"></i></span>
                                 </div>
                                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                                    data-minimum-results-for-search="Infinity"
-                                    data-placeholder=""
-                                    data-select-value="{{config("pages.form.data.institute.id")}}"
+                                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                                    data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                                     {{(array_key_exists("institute", config("pages.form.validate.rules"))) ? "required" : ""}}>
 
-                                    @foreach($institutes["data"] as $o)
+                                    @foreach($institute["data"] as $o)
                                     <option value="{{$o["id"]}}">{{ $o["name"]}}
-                                    @endforeach
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
@@ -67,9 +66,8 @@
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
                                 <select class="form-control" data-toggle="select" id="type" title="Simple select"
-                                    data-minimum-results-for-search="Infinity"
-                                    data-placeholder=""
-                                    data-select-value="{{config("pages.form.data.type")}}">
+                                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                                    data-select-value="{{config("pages.form.data.".$key.".type")}}">
                                     <option value="student">
                                         {{ __("Student")}}
                                     </option>
@@ -103,9 +101,8 @@
                                 </div>
                                 <select class="form-control" data-change-text="frame_front,frame_background"
                                     data-toggle="select" id="layout" title="Simple select"
-                                    data-minimum-results-for-search="Infinity"
-                                    data-placeholder=""
-                                    data-select-value="{{config("pages.form.data.layout")}}">
+                                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                                    data-select-value="{{config("pages.form.data.".$key.".layout")}}">
                                     <option data-text="(250x350 pixels)" value="vertical">
                                         {{ __("Vertical")}}
                                     </option>
@@ -134,8 +131,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fad fa-address-card"></i></span>
                                 </div>
-                                <input class="form-control" id="name" placeholder=""
-                                    name="name" value="{{config("pages.form.data.name")}}">
+                                <input class="form-control" id="name" placeholder="" name="name"
+                                    value="{{config("pages.form.data.".$key.".name")}}">
                             </div>
                         </div>
                     </div>
@@ -153,11 +150,11 @@
 
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.front")}}">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".front")}}">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder=""
-                                        class="custom-file-input" id="dropzoneBasicUpload" name="front"
+                                    <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                        name="front"
                                         {{(array_key_exists("front", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
@@ -167,7 +164,7 @@
 
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" data-src="{{config("pages.form.data.front")}}"
+                                    <img class="dz-preview-img" data-src="{{config("pages.form.data.".$key.".front")}}"
                                         alt data-dz-thumbnail>
                                 </div>
                             </div>
@@ -186,11 +183,11 @@
                         </label>
 
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.background")}}">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".background")}}">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder=""
-                                        class="custom-file-input" id="dropzoneBasicUpload" name="background"
+                                    <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                        name="background"
                                         {{(array_key_exists("background", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
@@ -201,7 +198,7 @@
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
                                     <img class="dz-preview-img"
-                                        data-src="{{config("pages.form.data.background")}}" alt
+                                        data-src="{{config("pages.form.data.".$key.".background")}}" alt
                                         data-dz-thumbnail>
                                 </div>
                             </div>
@@ -229,7 +226,7 @@
                                 </div>
                                 <textarea type="text" class="form-control" name="description" id="description"
                                     placeholder=""
-                                    {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}>{{config("pages.form.data.description")}}</textarea>
+                                    {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}>{{config("pages.form.data.".$key.".description")}}</textarea>
                             </div>
                         </div>
                     </div>

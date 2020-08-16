@@ -25,6 +25,7 @@ class FormStaffTeachSubject extends FormRequest
 
     public static function rulesField()
     {
+        $rules['institute']          = 'required';
         $rules['staff']          = 'required';
         $rules['study_subject']   = 'required';
         $rules['year']   = 'required';
@@ -33,6 +34,7 @@ class FormStaffTeachSubject extends FormRequest
 
     public static function attributeField()
     {
+        $attributes['institute']          = __('Institute');
         $attributes['staff']          = __('Staff');
         $attributes['study_subject']   = __('Study subjects');
         $attributes['year']   = __('Years');
