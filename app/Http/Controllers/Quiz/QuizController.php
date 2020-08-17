@@ -205,7 +205,7 @@ class QuizController extends Controller
 
     public function list($data)
     {
-        $table = new Quiz;
+        $table =  Quiz::orderBy('id', 'asc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

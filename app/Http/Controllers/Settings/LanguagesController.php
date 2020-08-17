@@ -5,21 +5,17 @@ namespace App\Http\Controllers\Settings;
 use App\Models\App;
 use App\Models\Users;
 use App\Models\Languages;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormLanguages;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Session;
 
 
 class LanguagesController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -31,13 +27,13 @@ class LanguagesController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = App::$path['url'] . '/' . Languages::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return Languages::getData(null, null, 10);
@@ -46,41 +42,31 @@ class LanguagesController extends Controller
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Languages::getDataTable();
+                return  Languages::getDataTable();
             } else {
-                $data = $this->list($data, $param1);
+                $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
                     return Languages::addToTable();
                 }
             }
-
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Language');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return Languages::updateToTable($id);
-                }
+            if (request()->method() === 'POST') {
+                return Languages::updateToTable($id);
             }
-
-            $data = $this->edit($data, $id);
-        } elseif ($param1 == 'set') {
-            if ($param2) {
-                $locale = $param2;
-            } else if (request('locale')) {
-                $locale = request('locale');
-            }
-            return $this->setLocale($locale);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Language');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
-
-            $data = $this->view($data, $id);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Language');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
+            return Languages::deleteFromTable($id);
+       
+        } else {
             abort(404);
         }
 
@@ -120,71 +106,53 @@ class LanguagesController extends Controller
 
     public function list($data)
     {
-        $data['response'] = Languages::getData(null, null, 10);
+        $table = Languages::orderBy('id', 'DESC');
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(Languages::$path['image'], $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = Languages::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Languages');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Language');
         return $data;
     }
 
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']      = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Languages');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
-
-    public function edit($data, $id)
-    {
-        $response = Languages::getData($id, true);
         $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Languages');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
-        return $data;
-    }
+        if ($id) {
+            $response           = Languages::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(Languages::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
 
-    public function view($data, $id)
-    {
-        $response = Languages::getData($id, true);
-        $data['view']       = Languages::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Languages');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
-        return $data;
-    }
-    public function setLocale($locale = null)
-    {
-
-        $locale = strtolower($locale);
-        if ($locale) {
-            if (Schema::hasColumn('languages', $locale)) {
-                Session::put('locale', $locale);
-                Cookie::queue('locale', $locale, 1000);
-                Cookie::queue('forms', request()->all('forms')['forms'], 1000);
-                if (request()->method() == 'POST') {
-                    $this->response = array(
-                        'success' => true,
-                        'forms'  => json_decode(request()->all('forms')['forms']),
-                        'redirect'  => request()->header('referer')
-                    );
-                } else {
-                    $this->response = redirect()->back();
-                }
-            } else {
-                $this->response =  array(
-                    'success' => false,
-                    'errors'  => __('language not in list.', ['locale' => $locale]),
-                );
-            }
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
         }
-        return $this->response;
+        return $data;
     }
 }

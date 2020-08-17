@@ -5,17 +5,6 @@
         </label>
     </div>
     <div class="card-body">
-        <div class="form-row">
-            @if (request()->segment(3) == "view")
-            <div class="col-md-6 mb-3">
-                <label class="form-control-label" for="id">
-                    {{ __("Id") }}
-                </label>
-                <span class="form-control" id="id" name="id"
-                    value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
-            </div>
-            @endif
-        </div>
 
 
         <div class="form-row">
@@ -29,9 +18,8 @@
                     @endif
 
                 </label>
-                <input type="text" class="form-control" name="name" id="name"
-                    placeholder=""
-                    value="{{config("pages.form.data.name")}}"
+                <input type="text" class="form-control" name="name" id="name" placeholder=""
+                    value="{{config("pages.form.data.".$key.".name")}}"
                     {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
             </div>
@@ -50,10 +38,9 @@
                     @endif
                 </label>
 
-                <select  class="form-control" data-toggle="select"
-                    id="course_type" title="Simple select"
+                <select class="form-control" data-toggle="select" id="course_type" title="Simple select"
                     data-placeholder=""
-                    data-select-value="{{config("pages.form.data.course_type.id",request("courseId"))}}">
+                    data-select-value="{{config("pages.form.data.".$key.".course_type_id",request("courseId"))}}">
                     @foreach($course_type["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
@@ -75,8 +62,7 @@
 
                 </label>
                 <input type="text" class="form-control" name="{{$lang["code_name"]}}" id="{{$lang["code_name"]}}"
-                    placeholder=""
-                    value="{{config("pages.form.data.".$lang["code_name"])}}"
+                    placeholder="" value="{{config("pages.form.data.".$key.".".$lang["code_name"])}}"
                     {{config("pages.form.validate.rules.".$lang["code_name"]) ? "required" : ""}} />
             </div>
             @endforeach

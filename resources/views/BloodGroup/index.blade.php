@@ -31,7 +31,7 @@
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
     @include(Auth::user()->role('view_path').".includes.navTop")
-
+  
     <div class="page-content container-fluid {{Agent::isDesktop() ?: "p-1"}}">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))
@@ -57,15 +57,11 @@
 <script src="{{asset("/assets/vendor/dropzone/dist/min/dropzone.min.js")}}"></script>
 
 <script src="{{asset("/assets/vendor/list.js/dist/list.min.js")}}"></script>
-<script src="{{asset("/assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/validator.js")}}"></script>
 @if (app()->getLocale() !== "en")
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
-<script
-    src="{{asset("/assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.".app()->getLocale().".min.js")}}">
-</script>
 @endif
 <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
 <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>

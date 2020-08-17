@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Settings;
 
 use App\Models\App;
 use App\Models\Users;
-use App\Models\Institute;
 use App\Models\Languages;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\ThemeBackground;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormThemeBackground;
+
 
 class ThemeBackgroundController extends Controller
 {
@@ -23,15 +24,17 @@ class ThemeBackgroundController extends Controller
         SocailsMedia::setConfig();
         Languages::setConfig();
     }
+
+
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['institute'] = Institute::getData();
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = App::$path['url'] . '/' . ThemeBackground::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return ThemeBackground::getData(null, null, 10);
@@ -40,38 +43,30 @@ class ThemeBackgroundController extends Controller
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return ThemeBackground::getDataTable();
+                return  ThemeBackground::getDataTable();
             } else {
-                $data = $this->list($data, $param1);
-            }
-        } elseif ($param1 == 'gallery') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return ThemeBackground::getData(null, null, 10);
-            } else {
-                $data = $this->gallery($data);
+                $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if (request()->method() === 'POST') {
-                return ThemeBackground::addToTable();
+            if (request()->ajax()) {
+                if (request()->method() === 'POST') {
+                    return ThemeBackground::addToTable();
+                }
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Theme Background');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
             if (request()->method() === 'POST') {
                 return ThemeBackground::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-        } elseif ($param1 == 'set') {
-            return ThemeBackground::setToTable($param2);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Theme Background');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
-
             $data = $this->show($data, $id, $param1);
-        } elseif ($param1 == 'set') {
-            return $this->set($param2);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Theme Background');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
             return ThemeBackground::deleteFromTable($id);
+        
         } else {
             abort(404);
         }
@@ -112,40 +107,53 @@ class ThemeBackgroundController extends Controller
 
     public function list($data)
     {
-        $data['response'] = ThemeBackground::getData(null, null, 10);
+        $table = ThemeBackground::orderBy('id', 'DESC');
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(ThemeBackground::$path['image'], $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = ThemeBackground::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Theme Background');
         return $data;
     }
 
-    public function gallery($data)
-    {
-        $data['response'] = ThemeBackground::getData();
-        $data['view']     = ThemeBackground::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Gallery');
-        return $data;
-    }
-
-    public function add($data)
-    {
-        $data['view']      = ThemeBackground::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Theme Background');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
-        return $data;
-    }
-
     public function show($data, $id, $type)
     {
-        $response           = ThemeBackground::getData($id, true);
         $data['view']       = ThemeBackground::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Theme Background');
-        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $id;
-        $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
+        if ($id) {
+            $response           = ThemeBackground::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(ThemeBackground::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 }

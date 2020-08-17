@@ -7,19 +7,6 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-8">
-                <div class="form-row">
-                    @csrf
-                    @if (request()->segment(3) == "view")
-                    <div class="col-md-6 mb-3">
-                        <label class="form-control-label" for="id">
-                            {{ __("Id") }}
-                        </label>
-                        <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
-                    </div>
-                    @endif
-                </div>
-
                 @if (Auth::user()->role_id == 1)
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
@@ -38,10 +25,8 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{config("pages.form.data.institute.id")}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                            data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                             {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                             @foreach($institute["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -66,8 +51,7 @@
 
                         </label>
                         <input type="text" class="form-control" name="name" id="name" autocomplete="false"
-                            placeholder=""
-                            value="{{config("pages.form.data.name")}}"
+                            placeholder="" value="{{config("pages.form.data.".$key.".name")}}"
                             {{config("pages.form.validate.rules.name") ? "required" : ""}} />
 
                     </div>
@@ -89,9 +73,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input type="phone" class="form-control"
-                                    placeholder=""
-                                    value="{{config("pages.form.data.phone")}}"
+                                <input type="phone" class="form-control" placeholder=""
+                                    value="{{config("pages.form.data.".$key.".phone")}}"
                                     {{(array_key_exists("phone", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     id="phone" name="phone" />
 
@@ -116,9 +99,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                 </div>
-                                <input type="email" class="form-control" id="email" autocomplete="email"
-                                    placeholder=""
-                                    value="{{config("pages.form.data.email")}}"
+                                <input type="email" class="form-control" id="email" autocomplete="email" placeholder=""
+                                    value="{{config("pages.form.data.".$key.".email")}}"
                                     {{(array_key_exists("email", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="email" />
                             </div>
@@ -144,7 +126,7 @@
                                 </div>
                                 <input type="password" class="form-control" id="password" autocomplete="none"
                                     aria-autocomplete="none" placeholder=""
-                                    value="{{config("pages.form.data.password")}}"
+                                    value="{{config("pages.form.data.".$key.".password")}}"
                                     {{(array_key_exists("password", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="password" />
 
@@ -167,10 +149,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-map"></i></span>
                                 </div>
-                                <textarea class="form-control" id="address"
-                                    placeholder=""
+                                <textarea class="form-control" id="address" placeholder=""
                                     {{(array_key_exists("address", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="address">{{config("pages.form.data.address")}}</textarea>
+                                    name="address">{{config("pages.form.data.".$key.".address")}}</textarea>
 
                             </div>
                         </div>
@@ -192,9 +173,8 @@
                                     <span class="input-group-text map-marker" data-target="#location"><i
                                             class="fas fa-map-marker-alt"></i></span>
                                 </div>
-                                <input class="form-control" id="location"
-                                    placeholder=""
-                                    value="{{config("pages.form.data.location")}}"
+                                <input class="form-control" id="location" placeholder=""
+                                    value="{{config("pages.form.data.".$key.".location")}}"
                                     {{(array_key_exists("location", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="location" />
 
@@ -207,7 +187,7 @@
                             title="{{config("pages.form.validate.questions.role")}}" class="form-control-label"
                             for="role">
 
-                            {{ __("role") }}
+                            {{ __("Role") }}
 
                             @if(config("pages.form.validate.rules.role"))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
@@ -218,9 +198,8 @@
                         </label>
 
                         <select class="form-control check-reference" data-toggle="select" id="role"
-                            title="Simple select" data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{config("pages.form.data.role.id",9)}}"
+                            title="Simple select" data-text="{{ __("Add new option") }}" data-placeholder=""
+                            data-select-value="{{config("pages.form.data.".$key.".role_id",9)}}"
                             {{config("pages.form.validate.rules.role") ? "required" : ""}}>
                             @foreach($role["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -243,9 +222,8 @@
                         </label>
 
                         <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{config("pages.form.data.student.id")}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                            data-select-value="{{config("pages.form.data.".$key.".student_id")}}"
                             {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                             @foreach($student["data"] as $o)
                             <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -267,9 +245,8 @@
                         </label>
 
                         <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
-                            data-select-value="{{config("pages.form.data.staff.id")}}"
+                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                            data-select-value="{{config("pages.form.data.".$key.".staff_id")}}"
                             {{config("pages.form.validate.rules.staff") ? "required" : ""}}>
                             @foreach($staff["data"] as $o)
                             <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -291,11 +268,11 @@
                             @endif
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.profile")}}">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".profile")}}">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder=""
-                                        class="custom-file-input" id="dropzoneBasicUpload" name="profile"
+                                    <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                        name="profile"
                                         {{config("pages.form.validate.rules.profile") ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
@@ -305,8 +282,8 @@
 
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" data-src="{{config("pages.form.data.profile")}}" alt
-                                        data-dz-thumbnail>
+                                    <img class="dz-preview-img"
+                                        data-src="{{config("pages.form.data.".$key.".profile")}}" alt data-dz-thumbnail>
                                 </div>
                             </div>
                         </div>

@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormDistrict;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class Districts extends Model
@@ -16,174 +13,13 @@ class Districts extends Model
     public static $path = [
         'image'  => 'district',
         'url'    => 'district',
-        'view'   => 'district'
+        'view'   => 'Cambodia'
     ];
 
-    public static function getData($province_id = null, $id = null, $edit = null, $paginate = null, $search = null)
+
+    public function province()
     {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Districts::$path['url'] . '/add/'),
-            ),
-        );
-        $orderBy = 'DESC';
-        $data = array();
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-
-        $get = Districts::select('districts.*')
-            ->join('provinces', 'provinces.id', '=', 'districts.province_id')
-            ->orderBy('districts.id', $orderBy);
-
-
-        if ($id) {
-            $get = $get->whereIn('districts.id', $id);
-        }
-
-        if ($province_id) {
-            $get = $get->where('province_id', $province_id);
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'province'      => Provinces::getData($row['province_id'])['data'][0],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Districts::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit'      => url(Users::role() . '/general/' . Districts::$path['url'] . '/edit/' . $row['id']),
-                        'view'      => url(Users::role() . '/general/' . Districts::$path['url'] . '/view/' . $row['id']),
-                        'delete'    => url(Users::role() . '/general/' . Districts::$path['url'] . '/delete/' . $row['id']),
-                    ]
-                );
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-                if ($edit) {
-                    $data[$key]['name'] =  $row['name'];
-                    if (config('app.languages')) {
-                        foreach (config('app.languages') as $lang) {
-                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                        }
-                    }
-                }
-            }
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-    public static function getDataTable()
-    {
-        $model = Districts::select((new Districts())->getTable() . '.*')
-            ->join((new Provinces())->getTable(), (new Provinces())->getTable() . '.id', (new Districts())->getTable() . '.province_id');
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'province'      => Provinces::getData($row['province_id'])['data'][0],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Communes::$path['url'] . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (request('provinceId')) {
-                    $query =  $query->where('province_id', request('provinceId'));
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where((new Districts())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere((new Districts())->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere((new Districts())->getTable() . '.description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
+        return $this->hasMany(Provinces::class,  'id', 'province_id');
     }
 
     public static function addToTable()

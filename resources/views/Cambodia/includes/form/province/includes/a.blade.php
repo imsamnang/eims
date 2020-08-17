@@ -7,20 +7,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-8">
-                <div class="form-row">
-                    @csrf
-                    @if (request()->segment(3) == "view")
-                    <div class="col-md-6 mb-3">
-                        <label class="form-control-label" for="id">
-                            {{ __("Id") }}
-                        </label>
-                        <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
-                    </div>
-                    @endif
-                </div>
-
-
+                
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label class="form-control-label" for="name">
@@ -34,7 +21,7 @@
                         </label>
                         <input type="text" class="form-control" name="name" id="name"
                             placeholder=""
-                            value="{{config("pages.form.data.name")}}"
+                            value="{{config("pages.form.data.".$key.".name")}}"
                             {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
                     </div>
@@ -56,7 +43,7 @@
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
                             id="{{$lang["code_name"]}}"
                             placeholder=""
-                            value="{{config("pages.form.data.".$lang["code_name"])}}"
+                            value="{{config("pages.form.data.".$key.".".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
                     @endforeach
@@ -87,7 +74,7 @@
                                 <textarea class="form-control" id="description"
                                     placeholder=""
                                     {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="description">{{config("pages.form.data.description")}}</textarea>
+                                    name="description">{{config("pages.form.data.".$key.".description")}}</textarea>
 
                             </div>
                         </div>
@@ -109,7 +96,7 @@
                             @endif
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".image")}}?type=original">
                             <div class="fallback">
                                 <div class="custom-file">
                                     <input type="file" placeholder=""
@@ -124,7 +111,7 @@
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
                                     <img class="dz-preview-img"
-                                        data-src="{{config("pages.form.data.image")}}?type=original" alt
+                                        data-src="{{config("pages.form.data.".$key.".image")}}?type=original" alt
                                         data-dz-thumbnail>
                                 </div>
                             </div>
@@ -133,7 +120,7 @@
 
 
                 </div>
-                @if (!config("pages.form.data"))
+                @if (!config("pages.form.data.".$key.""))
                 <div class="form-row">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox mb-3">

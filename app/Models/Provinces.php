@@ -16,7 +16,7 @@ class Provinces extends Model
     public static $path = [
         'image'         => 'province',
         'url'           => 'province',
-        'view'          => 'province'
+        'view'          => 'Cambodia'
     ];
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)

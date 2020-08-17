@@ -23,9 +23,9 @@
 
             <div class="col-md-12 mb-3">
                 <div id="read-pdf">
-                    @if(config("pages.form.data.file"))
-                    <iframe src="{{config("pages.form.data.file")}}" frameborder="0" scrolling="no" class="w-100"
-                        height="300"></iframe>
+                    @if(config("pages.form.data.".$key.".file"))
+                    <iframe src="{{config("pages.form.data.".$key.".file")}}" frameborder="0" scrolling="no"
+                        class="w-100" height="300"></iframe>
                     @endif
                 </div>
 
@@ -48,10 +48,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-info"></i></span>
                         </div>
-                        <textarea class="form-control" id="description"
-                            placeholder=""
+                        <textarea class="form-control" id="description" placeholder=""
                             {{config("pages.form.validate.rules.description") ? "required" : ""}}
-                            name="description">{{config("pages.form.data.description")}}</textarea>
+                            name="description">{{config("pages.form.data.".$key.".description")}}</textarea>
 
                     </div>
                 </div>
@@ -66,21 +65,20 @@
                     @endif
                 </label>
                 <div class="dropzone dropzone-single" data-toggle="dropzone"
-                    data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
+                    data-dropzone-url="{{config("pages.form.data.".$key.".image")}}?type=original">
                     <div class="fallback">
                         <div class="custom-file">
-                            <input type="file" placeholder=""
-                                class="custom-file-input" id="dropzoneBasicUpload" name="image"
-                                {{config("pages.form.validate.rules.image") ? "required" : ""}} />
+                            <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                name="image" {{config("pages.form.validate.rules.image") ? "required" : ""}} />
                             <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
-                                class="custom-file-label"
-                                for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
+                                class="custom-file-label" for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
                         </div>
                     </div>
 
                     <div class="dz-preview dz-preview-single">
                         <div class="dz-preview-cover">
-                            <img class="dz-preview-img" data-src="{{config("pages.form.data.image")}}?type=original" alt
+                            <img class="dz-preview-img"
+                                data-src="{{config("pages.form.data.".$key.".image")}}?type=original" alt
                                 data-dz-thumbnail>
                         </div>
                     </div>

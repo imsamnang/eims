@@ -8,18 +8,6 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-row">
-                    @csrf
-                    @if (request()->segment(3) == "view")
-                    <div class="col-md-6 mb-3">
-                        <label class="form-control-label" for="id">
-                            {{ __("Id") }}
-                        </label>
-                        <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.id")}}">{{config("pages.form.data.id")}}</span>
-                    </div>
-                    @endif
-                </div>
-                <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                             title="{{config("pages.form.validate.questions.province")}}" class="form-control-label"
@@ -36,13 +24,9 @@
                         </label>
 
                         <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                            data-url="{{ $provinces["pages"]["form"]["action"]["add"]}}"
-                            data-text="{{ __("Add new option") }}"
-
-                            data-allow-clear="true" data-placeholder=""
-                            name="province" data-select-value="{{config("pages.form.data.province.id")}}"
-                            data-append-to="#district"
-                            data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
+                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            name="province" data-select-value="{{config("pages.form.data.".$key.".province_id")}}"
+                            data-append-to="#district" data-append-url="{{$districts["action"]["list"]}}?provinceId="
                             {{config("pages.form.validate.rules.province") ? "required" : ""}}>
                             @foreach($provinces["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
@@ -68,15 +52,11 @@
                             @endif
                         </label>
 
-                        <select disabled {{config("pages.form.data.district.id")? "" :"disabled"}} class="form-control"
-                            data-toggle="select" id="district" title="Simple select"
-
-                            data-text="{{ __("Add new option") }}"
-
-                            data-allow-clear="true" data-placeholder=""
-                            name="district" data-select-value="{{config("pages.form.data.district.id")}}"
-                            data-append-to="#commune"
-                            data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
+                        <select disabled {{config("pages.form.data.".$key.".district.id")? "" :"disabled"}}
+                            class="form-control" data-toggle="select" id="district" title="Simple select"
+                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            name="district" data-select-value="{{config("pages.form.data.".$key.".district_id")}}"
+                            data-append-to="#commune" data-append-url="{{$communes["action"]["list"]}}?districtId="
                             {{config("pages.form.validate.rules.district") ? "required" : ""}}>
                             @foreach($districts["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
@@ -99,13 +79,10 @@
                             @endif
                         </label>
 
-                        <select disabled {{config("pages.form.data.commune.id")? "" :"disabled"}} class="form-control"
-                            data-toggle="select" id="commune" title="Simple select"
-
-                            data-text="{{ __("Add new option") }}"
-
-                            data-allow-clear="true" data-placeholder=""
-                            name="commune" data-select-value="{{config("pages.form.data.commune.id")}}"
+                        <select disabled {{config("pages.form.data.".$key.".commune.id")? "" :"disabled"}}
+                            class="form-control" data-toggle="select" id="commune" title="Simple select"
+                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            name="commune" data-select-value="{{config("pages.form.data.".$key.".commune.id")}}"
                             {{config("pages.form.validate.rules.commune") ? "required" : ""}}>
                             @foreach($communes["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
@@ -126,9 +103,8 @@
                             @endif
 
                         </label>
-                        <input type="text" class="form-control" name="name" id="name"
-                            placeholder=""
-                            value="{{config("pages.form.data.name")}}"
+                        <input type="text" class="form-control" name="name" id="name" placeholder=""
+                            value="{{config("pages.form.data.".$key.".name")}}"
                             {{(array_key_exists("name", config("pages.form.validate.rules"))) ? "required" : ""}} />
 
                     </div>
@@ -148,9 +124,8 @@
 
                         </label>
                         <input type="text" class="form-control" name="{{$lang["code_name"]}}"
-                            id="{{$lang["code_name"]}}"
-                            placeholder=""
-                            value="{{config("pages.form.data.".$lang["code_name"])}}"
+                            id="{{$lang["code_name"]}}" placeholder=""
+                            value="{{config("pages.form.data.".$key.".".$lang["code_name"])}}"
                             {{(array_key_exists($lang["code_name"], config("pages.form.validate.rules"))) ? "required" : ""}} />
                     </div>
                     @endforeach
@@ -178,10 +153,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-info"></i></span>
                                 </div>
-                                <textarea class="form-control" id="description"
-                                    placeholder=""
+                                <textarea class="form-control" id="description" placeholder=""
                                     {{(array_key_exists("description", config("pages.form.validate.rules"))) ? "required" : ""}}
-                                    name="description">{{config("pages.form.data.description")}}</textarea>
+                                    name="description">{{config("pages.form.data.".$key.".description")}}</textarea>
 
                             </div>
                         </div>
@@ -203,11 +177,11 @@
                             @endif
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.image")}}?type=original">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".image")}}?type=original">
                             <div class="fallback">
                                 <div class="custom-file">
-                                    <input type="file" placeholder=""
-                                        class="custom-file-input" id="dropzoneBasicUpload" name="image"
+                                    <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
+                                        name="image"
                                         {{(array_key_exists("image", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
@@ -218,7 +192,7 @@
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
                                     <img class="dz-preview-img"
-                                        data-src="{{config("pages.form.data.image")}}?type=original" alt
+                                        data-src="{{config("pages.form.data.".$key.".image")}}?type=original" alt
                                         data-dz-thumbnail>
                                 </div>
                             </div>
@@ -227,7 +201,7 @@
 
 
                 </div>
-                @if (!config("pages.form.data"))
+                @if (!config("pages.form.data.".$key.""))
                 <div class="form-row">
                     <div class="form-group">
                         <div class="custom-control custom-checkbox mb-3">

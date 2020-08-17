@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormVillage;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class Villages extends Model
@@ -16,197 +13,12 @@ class Villages extends Model
     public static $path = [
         'image'  => 'village',
         'url'    => 'village',
-        'view'   => 'village'
+        'view'   => 'Cambodia'
     ];
 
-    public static function getData($commune_id, $id = null, $edit = null, $paginate = null, $search = null)
+    public function commune()
     {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/general/'  . Villages::$path['url'] . '/add/'),
-            ),
-        );
-
-
-
-        $orderBy = 'DESC';
-        $data = array();
-        if ($id) {
-            $id  = explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-            $get = Villages::orderBy('id', $orderBy);
-        }
-
-        $get = Villages::select('villages.*')
-            ->join('communes', 'communes.id', '=', 'villages.commune_id')
-            ->orderBy('villages.id', $orderBy);
-
-
-        if ($id) {
-            $get = $get->whereIn('villages.id', $id);
-        }
-
-        if ($commune_id) {
-            $get = $get->where('commune_id', $commune_id);
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-                $district_id  = Communes::where('id', $row['commune_id'])->first()->district_id;
-                $province_id = Districts::where('id', $district_id)->first()->province_id;
-
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'province'      => ['id' => $province_id],
-                    'district'      => ['id'  => $district_id],
-                    'commune'       => ['id'  => $row['commune_id']],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Villages::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit'      => url(Users::role() . '/general/' . Villages::$path['url'] . '/edit/' . $row['id']),
-                        'view'      => url(Users::role() . '/general/' . Villages::$path['url'] . '/view/' . $row['id']),
-                        'delete'    => url(Users::role() . '/general/' . Villages::$path['url'] . '/delete/' . $row['id']),
-                    ]
-                );
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-                if ($edit) {
-                    $data[$key]['name'] =  $row['name'];
-                    if (config('app.languages')) {
-                        foreach (config('app.languages') as $lang) {
-                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                        }
-                    }
-                }
-            }
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-    public static function getDataTable()
-    {
-        $model = Villages::select((new Villages())->getTable() . '.*')
-            ->join((new Communes())->getTable(), (new Communes())->getTable() . '.id', (new Villages())->getTable() . '.commune_id')
-            ->join((new Districts())->getTable(), (new Districts())->getTable() . '.id', (new Communes())->getTable() . '.district_id')
-            ->join((new Provinces())->getTable(), (new Provinces())->getTable() . '.id', (new Districts())->getTable() . '.province_id');
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $commune = Communes::getData(null, $row['commune_id'])['data'][0];
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'province'      => $commune['province'],
-                    'district'      => $commune['district'],
-                    'commune'       => $commune,
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Communes::$path['url'] . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('provinceId')) {
-                    $query =  $query->where('province_id', request('provinceId'));
-                }
-
-                if (request('districtId')) {
-                    $query =  $query->where('district_id', request('districtId'));
-                }
-                if (request('communeId')) {
-                    $query =  $query->where('commune_id', request('communeId'));
-                }
-
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where((new Villages())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
-
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere((new Villages())->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere((new Villages())->getTable() . '.description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
+        return $this->hasMany(Communes::class,  'id', 'commune_id');
     }
 
     public static function addToTable()

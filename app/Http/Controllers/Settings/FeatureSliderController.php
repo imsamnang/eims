@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Settings;
 
 use App\Models\App;
 use App\Models\Users;
-use App\Models\Institute;
 use App\Models\Languages;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormFeatureSlider;
+
 
 class FeatureSliderController extends Controller
 {
@@ -23,16 +24,17 @@ class FeatureSliderController extends Controller
         SocailsMedia::setConfig();
         Languages::setConfig();
     }
+
+
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
-        $data['institute'] = Institute::getData();
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = App::$path['url'] . '/' . FeatureSlider::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return FeatureSlider::getData(null, null, 10);
@@ -41,46 +43,31 @@ class FeatureSliderController extends Controller
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return FeatureSlider::getDataTable();
+                return  FeatureSlider::getDataTable();
             } else {
-                $data = $this->list($data, $param1);
-            }
-        } elseif ($param1 == 'gallery') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return FeatureSlider::getData(null, null, 10);
-            } else {
-                $data = $this->gallery($data);
+                $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
-
-            if (request()->method() === 'POST') {
-                return FeatureSlider::addToTable();
+            if (request()->ajax()) {
+                if (request()->method() === 'POST') {
+                    return FeatureSlider::addToTable();
+                }
             }
-
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Feature Slide');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
-
             if (request()->method() === 'POST') {
                 return FeatureSlider::updateToTable($id);
             }
-
-
             $data = $this->show($data, $id, $param1);
-        } elseif ($param1 == 'set') {
-            if ($param2) {
-                $locale = $param2;
-            } else if (request('locale')) {
-                $locale = request('locale');
-            }
-            return $this->setLocale($locale);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Feature Slide');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
-
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Feature Slide');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
+            return FeatureSlider::deleteFromTable($id);
+       
+        } else {
             abort(404);
         }
 
@@ -120,39 +107,54 @@ class FeatureSliderController extends Controller
 
     public function list($data)
     {
-        $data['response'] = FeatureSlider::getData(null, 10);
+        $table = FeatureSlider::orderBy('id', 'DESC');
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->title;
+            $row['image'] = ImageHelper::site(FeatureSlider::$path['image'], $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = FeatureSlider::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature');
-        return $data;
-    }
-
-    public function gallery($data)
-    {
-        $data['response'] = FeatureSlider::getData();
-        $data['view']     = FeatureSlider::$path['view'] . '.includes.gallery.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Qallery');
-        return $data;
-    }
-
-    public function add($data)
-    {
-        $data['view']      = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature Slide');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $response           = FeatureSlider::getData($id);
         $data['view']       = FeatureSlider::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Feature');
-        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        if ($id) {
+            $response           = FeatureSlider::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['name']  = $row->title;
+                $row['image'] = $row['image'] ? ImageHelper::site(FeatureSlider::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->name,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 }

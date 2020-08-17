@@ -1,7 +1,7 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal-ajax"
-            data-target="#modal" data-backdrop="static" data-keyboard="false">
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+            data-target="#modal-add" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Add")}}
@@ -28,7 +28,12 @@
                 {{__("Delete")}}
             </span>
         </a>
+        <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
+            <i class="fas fa-file-export m-0"></i>
+            <span class="d-none d-sm-inline">
+                {{__("Report")}}
+            </span>
+        </a>
     </div>
-
 
 </div>

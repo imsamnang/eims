@@ -18,9 +18,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="full_mark_theory" title="Simple select"
-                    data-minimum-results-for-search="Infinity"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.full_mark_theory")}}"
+                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".full_mark_theory")}}"
                     {{config("pages.form.validate.rules.full_mark_theory") ? "required" : ""}}>
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
                         {{$i.".00 ". __("Points") }}</option>
@@ -44,12 +43,11 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="pass_mark_theory" title="Simple select"
-                    data-minimum-results-for-search="Infinity"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.pass_mark_theory")}}"
+                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".pass_mark_theory")}}"
                     {{config("pages.form.validate.rules.pass_mark_theory") ? "required" : ""}}>
-                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". __("Points") }}</option>
+                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{number_format($i,2)}}">
+                        {{number_format($i,2) ." ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -69,12 +67,11 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="full_mark_practical" title="Simple select"
-                    data-minimum-results-for-search="Infinity"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.full_mark_practical")}}"
+                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".full_mark_practical")}}"
                     {{config("pages.form.validate.rules.full_mark_practical") ? "required" : ""}}>
-                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". __("Points") }}</option>
+                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{number_format($i,2)}}">
+                        {{number_format($i,2)." ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -95,13 +92,12 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="pass_mark_practical" title="Simple select"
-                    data-minimum-results-for-search="Infinity"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.pass_mark_practical")}}"
+                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".pass_mark_practical")}}"
                     {{config("pages.form.validate.rules.pass_mark_practical") ? "required" : ""}}>
 
-                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}.00">
-                        {{$i.".00 ". __("Points") }}</option>
+                    @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{number_format($i,2)}}">
+                        {{number_format($i,2)." ". __("Points") }}</option>
                         @endif
 
                         @endfor
@@ -121,9 +117,8 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="credit_hour" title="Simple select"
-                    data-minimum-results-for-search="Infinity"
-                    data-placeholder=""
-                    data-select-value="{{config("pages.form.data.credit_hour")}}"
+                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                    data-select-value="{{config("pages.form.data.".$key.".credit_hour")}}"
                     {{config("pages.form.validate.rules.credit_hour") ? "required" : ""}}>
 
                     @for($i = 10; $i<= 100 ; $i ++) @if (($i % 10)==0 ) <option value="{{$i}}">

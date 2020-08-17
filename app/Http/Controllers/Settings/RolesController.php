@@ -3,21 +3,20 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Models\App;
-use App\Models\Roles;
 use App\Models\Users;
 use App\Models\Languages;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormRoles;
+use App\Models\Roles;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FormRoles;
 
 
 class RolesController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -30,11 +29,12 @@ class RolesController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = App::$path['url'] . '/' . Roles::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return Roles::getData(null, null, 10);
@@ -43,26 +43,28 @@ class RolesController extends Controller
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Roles::getDataTable();
+                return  Roles::getDataTable();
             } else {
-                $data = $this->list($data, $param1);
+                $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if (request()->method() === 'POST') {
-                return Roles::addToTable();
+            if (request()->ajax()) {
+                if (request()->method() === 'POST') {
+                    return Roles::addToTable();
+                }
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Roles');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
             if (request()->method() === 'POST') {
                 return Roles::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Roles');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Roles');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
             return Roles::deleteFromTable($id);
         } else {
             abort(404);
@@ -104,32 +106,54 @@ class RolesController extends Controller
 
     public function list($data)
     {
-        $data['response'] =  Roles::getData(null, null, 10);
+        $table = Roles::orderBy('id', 'DESC');
+
+        $response = $table->get()->map(function ($row) {
+            $row['name'] = $row->km;
+            $row['image'] = ImageHelper::site(Roles::$path['image'], $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = Roles::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Roles');
         return $data;
     }
 
-    public function add($data)
-    {
-        $data['view']      = Roles::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Roles');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
-
-        return $data;
-    }
-
     public function show($data, $id, $type)
     {
-        $response = Roles::getData($id, true);
         $data['view']       = Roles::$path['view'] . '.includes.form.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Roles');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $id;
-        $data['metaLink']  = url(Users::role() . '/' . $data['formName'] . $data['formAction']);
+        if ($id) {
+            $response           = Roles::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+
+                $row['image'] = $row['image'] ? ImageHelper::site(Roles::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->{app()->getLocale()},
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 }

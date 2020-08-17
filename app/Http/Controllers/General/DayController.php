@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers\General;
 
+use Carbon\Carbon;
 use App\Models\App;
-use App\Models\Days;
 use App\Models\Users;
+use App\Models\Institute;
 use App\Models\Languages;
+use App\Helpers\DateHelper;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormDay;
+use App\Models\Days;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FormDay;
 
 
 class DayController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,49 +32,47 @@ class DayController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = 'general/' . Days::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Days::getData(null, null, 10, request('search'));
+                return Days::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Days::getDataTable();
+                return  Days::getDataTable();
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
                     return Days::addToTable();
                 }
             }
-
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Day');
         } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return Days::updateToTable($id);
-                }
+            if (request()->method() === 'POST') {
+                return Days::updateToTable($id);
             }
-
-            $data = $this->edit($data, $id);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Day');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
-
-            $data = $this->view($data, $id);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Day');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
+            return Days::deleteFromTable($id);
+        } elseif ($param1 == 'report') {
+            return $this->report();
+        } else {
             abort(404);
         }
 
@@ -111,44 +112,112 @@ class DayController extends Controller
 
     public function list($data)
     {
+        $table = Days::orderBy('id', 'DESC');
 
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(Days::$path, $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = Days::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Day');
         return $data;
     }
 
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']      = Days::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Day');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
+        $data['view']       = Days::$path['view'] . '.includes.form.index';
+        if ($id) {
+            $response           = Days::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(Days::$path, $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 
-    public function edit($data, $id)
+    public function report()
     {
-        $response = Days::getData($id, true);
-        $data['view']       = Days::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Day');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
-        return $data;
-    }
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
 
-    public function view($data, $id)
-    {
-        $response = Days::getData($id, true);
-        $data['view']       = Days::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Day');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
-        return $data;
+        config()->set('app.title', __('List Days'));
+        config()->set('pages.parent', Days::$path['view']);
+
+
+        $table = new Days;
+
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = $row['image'] ? ImageHelper::site(Days::$path['image'], $row['image']) : ImageHelper::prefix();
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
+        }
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+        config()->set('pages.title', __('List Day'));
+        return view(Days::$path['view'] . '.includes.report.index', $data);
     }
 }

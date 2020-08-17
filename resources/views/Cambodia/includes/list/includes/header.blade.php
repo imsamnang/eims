@@ -1,7 +1,7 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal-ajax"
-            data-backdrop="static" data-keyboard="false" data-target="#modal">
+        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+            data-backdrop="static" data-keyboard="false" data-target="#modal-add">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Add")}}
@@ -28,14 +28,14 @@
                 {{__("Delete")}}
             </span>
         </a>
-        @isset($provinces)
+        @if(isset($provinces) ||isset($districts) || isset($communes) )
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Filter")}}
             </span>
         </a>
-        @endisset
+        @endif
 
 
     </div>
@@ -43,55 +43,55 @@
 
 </div>
 <div class="card-header border-0 pb-0 collapse" id="filter">
-    <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter"
+    <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse mb-3 p-0">
-            @isset($provinces)
-            <div class="col-md-3 mb-3">
-                <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                    data-add-url="{{$provinces["pages"]["form"]["action"]["add"]}}" data-allow-clear="true"
-                    data-add-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{request('provinceId')}}"
-                    {{isset($districts) ? " data-append-to=#district data-append-url=". str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"]) : ""}}>
-                    @foreach($provinces["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
-                        {{ $o["name"]}}
-                        @endforeach
-                </select>
-            </div>
-            @endisset
+            <div class="col-md-9">
+                <div class="form-row">
+                    @isset($provinces)
+                    <div class="col-md-4 mb-3">
+                        <select class="form-control" data-toggle="select" id="province" title="Simple select"
+                            data-allow-clear="true" data-add-text="{{ __("Add new option") }}" name="provinceId"
+                            data-placeholder="{{__('Province')}}" data-select-value="{{request('provinceId')}}"
+                            {{isset($districts) ? " data-append-to=#district data-append-url=".$districts["action"]["list"]."?provinceId=" :""}}>
+                            @foreach($provinces["data"] as $o)
+                            <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                                {{ $o["name"]}}
+                                @endforeach
+                        </select>
+                    </div>
+                    @endisset
 
-            @isset($districts)
-            <div class="col-md-3 mb-3">
-                <select disabled {{request('districtId') ? "" : "disabled"}} class="form-control" data-toggle="select"
-                    id="district" title="Simple select" data-add-url="{{$districts["pages"]["form"]["action"]["add"]}}"
-                    data-allow-clear="true" data-add-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{request('districtId')}}"
-                    {{isset($communes) ? " data-append-to=#commune data-append-url=". str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"]) : ""}}>
-                    @foreach($districts["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
-                        {{ $o["name"]}}
-                        @endforeach
-                </select>
-            </div>
-            @endisset
+                    @isset($districts)
+                    <div class="col-md-4 mb-3">
+                        <select disabled {{request('districtId') ? "" : "disabled"}} class="form-control"
+                            data-toggle="select" id="district" title="Simple select" data-allow-clear="true"
+                            data-add-text="{{ __("Add new option") }}" data-placeholder="{{__('District')}}"
+                            name="districtId" data-select-value="{{request('districtId')}}"
+                            {{isset($communes) ? " data-append-to=#commune data-append-url=".$communes["action"]["list"]."?districtId=":""}}>
+                            @foreach($districts["data"] as $o)
+                            <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                                {{ $o["name"]}}
+                                @endforeach
+                        </select>
+                    </div>
+                    @endisset
 
-            @isset($communes)
-            <div class="col-md-3 mb-3">
-                <select disabled {{request('communeId') ? "" : "disabled"}} class="form-control" data-toggle="select"
-                    id="commune" title="Simple select" data-add-url="{{$communes["pages"]["form"]["action"]["add"]}}"
-                    data-allow-clear="true" data-add-text="{{ __("Add new option") }}"
-                    data-placeholder=""
-                    data-select-value="{{request('communeId')}}">
-                    @foreach($communes["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
-                        {{ $o["name"]}}
-                        @endforeach
-                </select>
+                    @isset($communes)
+                    <div class="col-md-4 mb-3">
+                        <select disabled {{request('communeId') ? "" : "disabled"}} class="form-control"
+                            data-toggle="select" id="commune" title="Simple select" data-allow-clear="true"
+                            data-add-text="{{ __("Add new option") }}" data-placeholder="{{__('Commune')}}"
+                            data-select-value="{{request('communeId')}}" ​ name="communeId">
+                            @foreach($communes["data"] as $o)
+                            <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                                {{ $o["name"]}}
+                                @endforeach
+                        </select>
+                    </div>
+                    @endisset
+                </div>
             </div>
-            @endisset
 
             <div class="col-md-3">
                 <button type="submit" class="btn btn-primary float-right">

@@ -4,19 +4,12 @@ namespace App\Models;
 
 use DateTime;
 use DomainException;
-use App\Models\Communes;
-use App\Models\Villages;
 use App\Helpers\QRHelper;
-use App\Models\Districts;
-use App\Models\Provinces;
-
 use App\Helpers\DateHelper;
-
 use App\Helpers\ImageHelper;
 use App\Models\StudentsGuardians;
 use App\Http\Requests\FormStudents;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class Students extends Model
@@ -29,232 +22,12 @@ class Students extends Model
         'roleId'  => 6,
     ];
 
-
-    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
+    public function institute()
     {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/add?ref=' . request('ref')),
-            ),
-        );
-
-
-
-        $response = array(
-            'success'   => false,
-            'data'      => [],
-            'pages'     => $pages,
-            'gender'    => Students::gender('null'),
-            'type'      => Students::$path['role'],
-            'message'   => __('No Data'),
-        );
-
-
-
-        $data = array();
-        $orderBy = 'ASC';
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-
-        $get = Students::select((new Students())->getTable() . '.*')
-            ->orderBy((new Students())->getTable() . '.id', $orderBy);
-
-
-        if ($id) {
-            $get = $get->whereIn((new Students())->getTable() . '.id', $id);
-        } else {
-
-            if (request('instituteId')) {
-                $get = $get->where('institute_id', request('instituteId'));
-            }
-        }
-
-        $gender = Students::gender($get);
-
-        if ($search) {
-            $get = Students::searchName($get, $search);
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-            foreach ($get as $key => $row) {
-
-                $student_request        = StudentsRequest::where('student_id', $row['id'])->where('status', 1)->latest('id')->first();
-                $account = Users::where('email', $row['email'])->where('node_id', $row['id'])->first();
-                $socail_auth = SocialAuth::getData(null, $row['id']);
-
-
-                $photo = null;
-                if ($row['photo']) {
-                    $photo = ImageHelper::site(Students::$path['image'], $row['photo']);
-                } elseif ($account) {
-                    if ($account->profile) {
-                        $photo = ImageHelper::site('profile', $account->profile);
-                    } elseif ($socail_auth) {
-                        $photo = $socail_auth['_avatar'];
-                    }
-                }
-
-
-                if (request('ref') == Users::$path['url']) {
-                    $data[$key]              = [
-                        'id'                 => $row['id'],
-                        'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                        'photo'     => $photo,
-                    ];
-                } else {
-                    $data[$key]              = array(
-                        'id'                 => $row['id'],
-                        'first_name'         => array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row['first_name_en'],
-                        'last_name'          => array_key_exists('last_name_' . app()->getLocale(), $row) ? $row['last_name_' . app()->getLocale()] : $row['last_name_en'],
-                        '_fullname'          => $row['first_name_en'] . ' ' . $row['last_name_en'],
-                        'nationality'        => $row['nationality_id'] ? (Nationality::getData($row['nationality_id'])['data'][0]) : null,
-                        'mother_tong'        => $row['mother_tong_id'] ? (MotherTong::getData($row['mother_tong_id'])['data'][0]) : null,
-                        'national_id'        => $row['national_id'],
-                        'gender'             => $row['gender_id'] ? (Gender::getData($row['gender_id'])['data'][0]) : null,
-                        'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
-
-                        'marital'            => $row['marital_id'] ? (Marital::getData($row['marital_id'])['data'][0]) : null,
-                        'blood_group'        => $row['blood_group_id'] ? (BloodGroup::getData($row['blood_group_id'])['data'][0]) : null,
-
-                        'permanent_address'  => $row['permanent_address'],
-                        'temporaray_address' => $row['temporaray_address'],
-                        'phone'              => $row['phone'],
-                        'email'              => $row['email'],
-                        'extra_info'         => $row['extra_info'],
-                        'photo'              => $photo,
-                        'student_guardian'   => StudentsGuardians::getData($row['id'])['data'][0],
-                        'account'            => $account,
-                        'register_date'      => DateHelper::convert($row['created_at'], 'd-F-Y'),
-                        'action'             => [
-                            'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/edit/' . $row['id']),
-                            'view'           => url(Users::role() . '/' . Students::$path['url'] . '/view/' . $row['id']),
-                            'delete'         => url(Users::role() . '/' . Students::$path['url'] . '/delete/' . $row['id']),
-                        ],
-                    );
-
-                    if ($edit) {
-                        $data[$key]['first_name_km'] = $row['first_name_km'];
-                        $data[$key]['last_name_km']  = $row['last_name_km'];
-                        $data[$key]['first_name_en'] = $row['first_name_en'];
-                        $data[$key]['last_name_en']  = $row['last_name_en'];
-                    }
-
-                    $pages['listData'][] = array(
-                        'id'     => $data[$key]['id'],
-                        'name'   => $data[$key]['first_name'] . ' ' . $data[$key]['last_name'],
-                        'image'  => $data[$key]['photo'],
-                        'action' => $data[$key]['action'],
-                    );
-                }
-            }
-
-            $response = array(
-                'success'   => true,
-                'type'      => Students::$path['role'],
-                'pages'     => $pages,
-                'data'      => $data,
-                'gender'    => $gender,
-            );
-        }
-        return $response;
+        return $this->hasMany(Institute::class,  'id', 'institute_id');
     }
-    public static function getDataTable()
-    {
-
-        $model = Students::select([
-            'id',
-            'first_name_km',
-            'last_name_km',
-            'first_name_en',
-            'last_name_en',
-            'gender_id',
-            'date_of_birth',
-            'email',
-            'phone',
-            'photo',
-        ]);
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $account = Users::where('email', $row['email'])->where('node_id', $row['id'])->first();
-                $socail_auth = SocialAuth::getData(null, $row['id']);
-
-                $photo = null;
-                if ($row['photo']) {
-                    $photo = ImageHelper::site(Students::$path['image'], $row['photo']);
-                } elseif ($account) {
-                    if ($account->profile) {
-                        $photo = ImageHelper::site('profile', $account->profile);
-                    } elseif ($socail_auth) {
-                        $photo = $socail_auth['_avatar'];
-                    }
-                }
 
 
-                return [
-                    'id'      => $row['id'],
-                    'name'    => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - ' . $row['first_name_en'] . ' ' . $row['last_name_en'],
-                    'gender'             =>  Gender::where('id', $row['gender_id'])->pluck(app()->getLocale())->first(),
-                    'date_of_birth'      => DateHelper::convert($row['date_of_birth'], 'd-m-Y'),
-                    'account'            => $account ? Users::getData($account->id)['data'][0] : null,
-                    'photo'             =>  $photo,
-                    'email'      => $row['email'],
-                    'phone'      => $row['phone'],
-                    'action'                   => [
-                        'edit'                 => url(Users::role() . '/' . Students::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view'                 => url(Users::role() . '/' . Students::$path['url'] . '/view/' . $row['id']), //?id
-                        'account'              => url(Users::role() . '/' . Students::$path['url'] . '/account/create/' . $row['id']), //?id
-                        'delete'               => url(Users::role() . '/' . Students::$path['url'] . '/delete/' . $row['id']), //?id
-                    ],
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-                foreach (request('columns') as $i => $value) {
-                    if ($value['searchable']) {
-                        if ($value['data'] == 'name') {
-                            $query  = Students::searchName($query, request('search.value'));
-                        }
-                    }
-                }
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
     public static function searchName($query, $search)
     {
         return $query->where(function ($q) use ($search) {

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\General;
 
+use Carbon\Carbon;
 use App\Models\App;
 use App\Models\Users;
-use App\Models\Districts;
+use App\Models\Institute;
 use App\Models\Languages;
-use App\Models\Provinces;
-use App\Helpers\FormHelper;
-use App\Helpers\MetaHelper;;
+use App\Helpers\DateHelper;
 
+use App\Helpers\FormHelper;
+use App\Helpers\MetaHelper;
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormDistrict;
+use App\Models\Districts;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FormDistrict;
+use App\Models\Provinces;
 
 class DistrictController extends Controller
 {
@@ -24,51 +29,48 @@ class DistrictController extends Controller
         Languages::setConfig();
     }
 
-    public function index($param1 = null, $param2 = null, $param3 = null)
+
+    public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        $data['provinces']   = Provinces::getData();
+
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-
-        $data['formAction']      = '/add';
-        $data['formName']        = 'general/' . Districts::$path['url'];
-        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('List Districts');
-        $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
-        $data['metaLink']        = url(Users::role() . '/' . $param1);
+        $data['formName'] = 'general/' . Districts::$path['url'];
+        $data['formAction'] = '/add';
         $data['listData']       = array();
-
-        request()->merge([
-            'id' => $param2 ? $param2 : request('id'),
-        ]);
-
-
-        if ($param1 == 'list' || $param1 == null) {
+        $id = request('id', $param2);
+        if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  Districts::getData(request('provinceId'), request('id'), null, 10, request('search'));
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Districts::getDataTable();
+                return [
+                    'success' => true,
+                    'data' => Districts::whereHas('province', function ($query) {
+                        $query->where('id', request('provinceId'));
+                    })->orderBy('id', 'DESC')->get(['id', app()->getLocale() . ' as name', 'image'])
+                ];
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
+
             if (request()->method() === 'POST') {
                 return Districts::addToTable();
             }
-            $data = $this->add($data);
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add District');
         } elseif ($param1 == 'edit') {
             if (request()->method() === 'POST') {
-                return Districts::updateToTable($param2);
+                return Districts::updateToTable($id);
             }
-            $data = $this->edit($data, $param2);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit District');
         } elseif ($param1 == 'view') {
-            $data = $this->view($data, $param2);
+            $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View District');
         } elseif ($param1 == 'delete') {
-            return Districts::deleteFromTable($param2);
+            return Districts::deleteFromTable($id);
+        } elseif ($param1 == 'report') {
+            return $this->report();
         } else {
             abort(404);
         }
@@ -92,61 +94,141 @@ class DistrictController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => 'Cambodia',
+            'parent'     => Districts::$path['view'],
             'view'       => $data['view'],
         );
-
         $pages['form']['validate'] = [
             'rules'       =>  FormDistrict::rulesField(),
             'attributes'  =>  FormDistrict::attributeField(),
             'messages'    =>  FormDistrict::customMessages(),
             'questions'   =>  FormDistrict::questionField(),
         ];
+        //Select Options
+
+        $data['provinces'] = [
+            'data'  => Provinces::get(['id', app()->getLocale() . ' as name']),
+            'action' => [
+                'list'  => url(Users::role() . '/general/' . Provinces::$path['url'] . '/list/'),
+            ]
+        ];
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-        return view('Cambodia.index', $data);
+        return view($pages['parent'] . '.index', $data);
     }
 
     public function list($data)
     {
-        $data['view']     = 'Cambodia.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Districts');
+        $table = Districts::whereHas('province', function ($query) {
+            $query->where('id', request('provinceId'));
+        })->orderBy('id', 'DESC');
+        if (request('provinceId')) {
+            $table->where('province_id', request('provinceId'));
+        }
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = ImageHelper::site(Districts::$path, $row['image']);
+            $row['province'] = Provinces::where('id', $row->province_id)->pluck(app()->getLocale())->first();
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
+        $data['view']     = Districts::$path['view'] . '.includes.list.index';
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List District');
         return $data;
     }
 
-    public function add($data)
+    public function show($data, $id, $type)
     {
-        $data['view']      = 'Cambodia.includes.form.district.index';
-        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Districts');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
+        $data['view']       = Districts::$path['view'] . '.includes.form.district.index';
+        if ($id) {
+
+            $response           = Districts::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(Districts::$path, $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->km . '-' . $row->en,
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
     }
 
-    public function edit($data, $id)
+    public function report()
     {
-        $response           = Districts::getData(request('provinceId'), $id, true);
-        $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Edit Districts');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/edit/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/edit/' . $response['data'][0]['id'];
-        return $data;
-    }
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
 
-    public function view($data, $id)
-    {
-        $response           = Districts::getData(request('provinceId'), $id, true);
-        $data['view']       = 'Cambodia.includes.form.district.index';
-        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('View Districts');
-        $data['metaImage']  = asset('assets/img/icons/register.png');
-        $data['metaLink']   = url(Users::role() . '/view/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/view/' . $response['data'][0]['id'];
-        return $data;
+        config()->set('app.title', __('List District'));
+        config()->set('pages.parent', Districts::$path['view']);
+
+        $table = new Districts;
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->km . ' - ' . $row->en;
+            $row['image'] = $row['image'] ? ImageHelper::site(Districts::$path['image'], $row['image']) : ImageHelper::prefix();
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
+        }
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+        config()->set('pages.title', __('List District'));
+        return view(Districts::$path['view'] . '.includes.report.index', $data);
     }
 }

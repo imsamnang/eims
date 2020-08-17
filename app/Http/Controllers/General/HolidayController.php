@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\General;
 
+use Carbon\Carbon;
 use App\Models\App;
 use App\Models\Users;
-use App\Models\Holidays;
+use App\Models\Institute;
 use App\Models\Languages;
+use App\Helpers\DateHelper;
+
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormHoliday;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\FormHoliday;
+use App\Models\Holidays;
 
 class HolidayController extends Controller
 {
-
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,13 +31,13 @@ class HolidayController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/image.jpg'),
+            ['image' => asset('/assets/img/icons/image.jpg'),]
         );
         $data['formName'] = 'general/' . Holidays::$path['url'];
         $data['formAction'] = '/add';
         $data['listData']       = array();
+        $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return Holidays::getData(null, null, 10);
@@ -44,38 +46,32 @@ class HolidayController extends Controller
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Holidays::getDataTable();
+                return  Holidays::getDataTable();
             } else {
                 $data = $this->list($data);
             }
-        } elseif ($param1 == 'calendar') {
-
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Holidays::getData(null, 'calendar');
-            } else {
-                $data = $this->calendar($data);
-            }
         } elseif ($param1 == 'add') {
-            if (request()->method() === 'POST') {
-                return Holidays::addToTable();
-            }
-
-            $data = $this->add($data);
-        } elseif ($param1 == 'edit') {
-            $id = request('id', $param2);
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
-                    return Holidays::updateToTable($id);
+                    return Holidays::addToTable();
                 }
             }
-
+            $data = $this->show($data, null, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Holiday');
+        } elseif ($param1 == 'edit') {
+            if (request()->method() === 'POST') {
+                return Holidays::updateToTable($id);
+            }
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Holiday');
         } elseif ($param1 == 'view') {
-            $id = request('id', $param2);
-
             $data = $this->show($data, $id, $param1);
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Holiday');
         } elseif ($param1 == 'delete') {
-            $id = request('id', $param2);
+            return Holidays::deleteFromTable($id);
+        } elseif ($param1 == 'report') {
+            return $this->report();
+        } else {
             abort(404);
         }
 
@@ -108,6 +104,18 @@ class HolidayController extends Controller
             'questions'   =>  FormHoliday::questionField(),
         ];
 
+        //Select Option
+
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data'] = Institute::whereIn('id', Holidays::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
@@ -115,38 +123,120 @@ class HolidayController extends Controller
 
     public function list($data)
     {
+        $table = Holidays::orderBy('id', 'DESC');
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->{app()->getLocale()};
+            $row['image'] = ImageHelper::site(Holidays::$path, $row['image']);
+            $row['action']  = [
+                'edit'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/delete/' . $row['id']),
+            ];
+
+            return $row;
+        });
+        $data['response']['data'] = $response;
         $data['view']     = Holidays::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Holiday');
         return $data;
     }
 
-    public function calendar($data)
-    {
-        $data['response'] = Holidays::getData(null, null, 10);
-        $data['view']     = Holidays::$path['view'] . '.includes.calendar.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Calendar Holiday');
-        return $data;
-    }
-
-    public function add($data)
-    {
-        $data['view']      = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']     = Users::role(app()->getLocale()) . ' | ' . __('Add Holiday');
-        $data['metaImage'] = asset('assets/img/icons/register.png');
-        $data['metaLink']  = url(Users::role() . '/add/');
-        return $data;
-    }
-
     public function show($data, $id, $type)
     {
-        $response = Holidays::getData($id, true);
         $data['view']       = Holidays::$path['view'] . '.includes.form.index';
-        $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Holiday');
-        $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
-        $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);
-        $data['formData']   = $response['data'][0];
-        $data['listData']   = $response['pages']['listData'];
-        $data['formAction'] = '/' . $type . '/' . $response['data'][0]['id'];
+        if ($id) {
+            $response           = Holidays::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(Holidays::$path, $row['image']) : ImageHelper::prefix();
+                $row['action']  = [
+                    'edit'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/delete/' . $row['id']),
+                ];
+                return $row;
+            });
+            $data['listData'] =  $response->map(function ($row) {
+                return [
+                    'id'  => $row->id,
+                    'name'  => $row->{app()->getLocale()},
+                    'image'  => $row->image,
+                    'action'  => [
+                        'edit'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
+                    ],
+                ];
+            });
+
+            $data['response']['data']   = $response;
+            $data['formData']   = $response;
+            $data['formAction'] = '/' . $type . '/' . $id;
+        }
         return $data;
+    }
+
+    public function report()
+    {
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List Holiday'));
+        config()->set('pages.parent', Holidays::$path['view']);
+
+        $data['instituteFilter']['data'] = Institute::whereIn('id', Holidays::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+
+        $table =  Holidays::orderBy('id', 'asc');
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+
+
+        $response = $table->get()->map(function ($row) {
+            $row['name']  = $row->{app()->getLocale()};
+            $row['image'] = $row['image'] ? ImageHelper::site(Holidays::$path['image'], $row['image']) : ImageHelper::prefix();
+            return $row;
+        })->toArray();
+
+        $date = Carbon::now();
+        $newData = [];
+        $items = Collection::make($response);
+        $perPage = request('layout') == 'portrait' ? 25 : 15;
+        $perPageNoTop = $perPage + 5;
+        $offset = ceil($items->count() / $perPage);
+
+        for ($i = 1; $i <= $offset; $i++) {
+            if ($i != 1) {
+                $perPage = $perPageNoTop;
+            }
+
+            $item = $items->forPage($i, $perPage);
+            if ($item->count()) {
+                array_push($newData, $item);
+            }
+        }
+        $data['response'] = [
+            'data'   => $newData,
+            'total'  => $items->count(),
+            'date'      => [
+                'day'   => $date->day,
+                '_day'  => $date->getTranslatedDayName(),
+                'month' => $date->getTranslatedMonthName(),
+                'year'  => $date->year,
+                'def'   => DateHelper::convert($date, 'd-M-Y'),
+            ]
+        ];
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+        config()->set('pages.title', __('List Holiday'));
+        return view(Holidays::$path['view'] . '.includes.report.index', $data);
     }
 }
