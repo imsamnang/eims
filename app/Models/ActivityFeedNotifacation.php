@@ -72,7 +72,7 @@ class ActivityFeedNotifacation extends Model
                         ];
 
                         return $row;
-                    })->frist(),
+                    })->first(),
                     'react'       => $react,
                     'media'       => ActivityFeedMedia::getData($slug)['data'],
                     'url'         => url(ActivityFeed::$path['url'] . '/post/' . $activityFeed->id),

@@ -40,7 +40,7 @@ class ActivityFeedReaction extends Model
                     ];
 
                     return $row;
-                })->frist();
+                })->first();
                 if (Auth::user()) {
                     if ($row['user_id'] == Auth::user()->id) {
                         $you_react = $row['type'];

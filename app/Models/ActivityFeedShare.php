@@ -40,7 +40,7 @@ class ActivityFeedShare extends Model
                             ];
 
                             return $row;
-                        })->frist(),
+                        })->first(),
                         'type'          => $node['type'],
                         'who_see'       => $node['who_see'],
                         'post_message'  => $node['post_message'],
