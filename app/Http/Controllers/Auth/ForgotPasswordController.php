@@ -31,8 +31,8 @@ class ForgotPasswordController extends Controller
     public function __construct()
     {
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
         $this->middleware('guest');
     }
 }

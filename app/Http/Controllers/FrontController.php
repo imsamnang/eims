@@ -29,8 +29,8 @@ class FrontController extends Controller
     public function __construct()
     {
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
     public function index($param1 = null, $param2 = null, $param3 = null)
     {

@@ -26,13 +26,29 @@ class StaffStatusController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Staff & Teacher'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+            ],
+            [
+                'title' => __('List Staff status'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/list'),
+            ]
+        ];
+
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -41,6 +57,7 @@ class StaffStatusController extends Controller
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StaffStatus::getData(null, null, 10);
             } else {
@@ -53,22 +70,37 @@ class StaffStatusController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return StaffStatus::addToTable();
-                }
+            $breadcrumb[]  = [
+                'title' => __('Add Staff status'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/add'),
+            ];
+
+            if (request()->method() === 'POST') {
+                return StaffStatus::addToTable();
             }
+
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff status');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[]  = [
+                'title' => __('Edit Staff status'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $id),
+            ];
             if (request()->method() === 'POST') {
                 return StaffStatus::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff status');
         } elseif ($param1 == 'view') {
+            $breadcrumb[]  = [
+                'title' => __('View Staff status'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/view/' . $id),
+            ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff status');
         } elseif ($param1 == 'delete') {
             return StaffStatus::deleteFromTable($id);
         } elseif ($param1 == 'report') {
@@ -76,6 +108,7 @@ class StaffStatusController extends Controller
         } else {
             abort(404);
         }
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],

@@ -22,7 +22,7 @@
             </span>
         </a>
 
-        <a data-loadscript='["{{ asset('/assets/vendor/croppie/croppie.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
+        {{-- <a data-loadscript='["{{ asset('/assets/vendor/croppie/croppie.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
             data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]' href="#"
             data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
             class="btn btn-primary mb-3 disabled" data-checked-show="photo" data-target="#modal" data-backdrop="static"
@@ -60,7 +60,7 @@
             <span class="d-none d-sm-inline">
                 {{__("Certificate")}}
             </span>
-        </a>
+        </a> --}}
         <a href="#" data-href="{{config("pages.form.action.delete")}}" class="btn btn-danger mb-3 disabled"
             data-toggle="sweet-alert" data-sweet-alert="confirm" sweet-alert-controls-id="" data-checked-show="delete">
             <i class="fa fa-trash m-0"></i>

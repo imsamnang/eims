@@ -26,13 +26,29 @@ class StaffDesignationController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+
+        $breadcrumb  = [
+            [
+                'title' => __('Staff & Teacher'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+            ],
+            [
+                'title' => __('List Staff Designations'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/list'),
+            ]
+        ];
+
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -41,6 +57,7 @@ class StaffDesignationController extends Controller
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StaffDesignations::getData(null, null, 10);
             } else {
@@ -53,20 +70,35 @@ class StaffDesignationController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return StaffDesignations::addToTable();
-                }
+            $breadcrumb[]  = [
+                'title' => __('Add Staff Designations'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/add'),
+            ];
+
+            if (request()->method() === 'POST') {
+                return StaffDesignations::addToTable();
             }
+
             $data = $this->show($data, null, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Designations');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[]  = [
+                'title' => __('Edit Staff Designations'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/edit/' . $id),
+            ];
             if (request()->method() === 'POST') {
                 return StaffDesignations::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Designations');
         } elseif ($param1 == 'view') {
+            $breadcrumb[]  = [
+                'title' => __('View Staff Designations'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/view/' . $id),
+            ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Designations');
         } elseif ($param1 == 'delete') {
@@ -76,6 +108,7 @@ class StaffDesignationController extends Controller
         } else {
             abort(404);
         }
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],

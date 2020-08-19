@@ -28,17 +28,31 @@ class CertificateController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Students'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url']),
+            ],
+            [
+                'title' => __('List Certificate'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/list'),
+            ]
+        ];
+
 
         $data['formData'] = array(
             [
                 'front' => asset('/assets/img/certificate/front.png'),
-                'background' => asset('/assets/img/certificate/background.png'),
+
             ]
         );
         $data['formAction']      = '/add';
@@ -48,6 +62,7 @@ class CertificateController extends Controller
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
+            $breadcrumb[1]['status']  = 'active';
             $data = $this->list($data);
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -56,19 +71,36 @@ class CertificateController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
+            $breadcrumb[]  = [
+                'title' => __('Add Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
+            ];
             if (request()->method() == 'POST') {
                 return CertificateFrames::addToTable();
             }
             $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
+
+            $breadcrumb[]  = [
+                'title' => __('View Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/view/' . $id),
+            ];
             if ($param2) {
                 $data = $this->show($data, $id, $param1);
+                $data['view']       = CertificateFrames::$path['view'] . '.includes.view.index';
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('Edit Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/edit/' . $id),
+            ];
             if ($id) {
                 if (request()->method() == "POST") {
                     return CertificateFrames::updateToTable($id);
@@ -80,27 +112,37 @@ class CertificateController extends Controller
         } elseif ($param1 == 'delete') {
             return CertificateFrames::deleteFromTable($param2);
         } elseif ($param1 == 'make') {
+            $breadcrumb[1]  =  [
+                'title' => __('Student study course'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+            ];
+            $breadcrumb[]  = [
+                'title' => __('Make Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $param2),
+            ];
             if (request()->method() == 'POST') {
                 if (request()->all()) {
-                    Session::put('certificate', json_decode(request()->post("certificate"), true));
-                    if (request()->hasFile('front_certificate')) {
-                        $file = request()->front_certificate;
+                    Session::put('Certificate', json_decode(request()->post("Certificate"), true));
+                    if (request()->hasFile('front_Certificate')) {
+                        $file = request()->front_Certificate;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $certificate_front = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('certificate_front',  $certificate_front);
+                        $Certificate_front = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('Certificate_front',  $Certificate_front);
                     }
 
-                    if (request()->hasFile('back_certificate')) {
-                        $file = request()->back_certificate;
+                    if (request()->hasFile('back_Certificate')) {
+                        $file = request()->back_Certificate;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $certificate_back = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('certificate_back',  $certificate_back);
+                        $Certificate_back = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('Certificate_back',  $Certificate_back);
                     }
 
                     return array(
@@ -135,12 +177,11 @@ class CertificateController extends Controller
 
             return view('Certificate.includes.result.index', $d);
         } elseif ($param1 == 'save') {
-
             return StudentsStudyCourse::makeCertificateToTable();
         } else {
             abort(404);
         }
-
+        view()->share('breadcrumb', $breadcrumb);
         MetaHelper::setConfig([
             'title'       => $data['title'],
             'author'      => config('app.name'),
@@ -198,7 +239,7 @@ class CertificateController extends Controller
         }
         $response = $table->get()->map(function ($row) {
             $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
-            $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+            
             $row['layout'] = __($row->layout);
             $row['action']  = [
                 'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/set/' . $row['id']),
@@ -222,7 +263,7 @@ class CertificateController extends Controller
 
             $response           = CertificateFrames::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                 $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
-                $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+
 
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/edit/' . $row['id']),
@@ -258,6 +299,7 @@ class CertificateController extends Controller
         $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
         $data['response']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
         $data['response']['frame']['front'] = $data['response']['frame']['front_o'];
+
 
         $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');

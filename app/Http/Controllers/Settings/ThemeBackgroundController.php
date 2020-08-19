@@ -21,8 +21,8 @@ class ThemeBackgroundController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -66,7 +66,6 @@ class ThemeBackgroundController extends Controller
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Theme Background');
         } elseif ($param1 == 'delete') {
             return ThemeBackground::deleteFromTable($id);
-        
         } else {
             abort(404);
         }

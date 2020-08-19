@@ -21,8 +21,8 @@ class SponsoredController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -66,7 +66,6 @@ class SponsoredController extends Controller
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Sponsored');
         } elseif ($param1 == 'delete') {
             return Sponsored::deleteFromTable($id);
-        
         } else {
             abort(404);
         }
@@ -156,6 +155,4 @@ class SponsoredController extends Controller
         }
         return $data;
     }
-
-
 }

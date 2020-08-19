@@ -37,8 +37,8 @@ class ManagerController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
         if (Auth::user()) {
             request()->merge([
                 'instituteId' => Auth::user()->institute_id,
@@ -142,7 +142,7 @@ class ManagerController extends Controller
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
-                'gender'      => Students::gender(Students::where('institute_id',Auth::user()->institute_id)),
+                'gender'      => Students::gender(Students::where('institute_id', Auth::user()->institute_id)),
                 'status'      => [],
                 'color'       => 'green',
             ],
@@ -179,7 +179,7 @@ class ManagerController extends Controller
                             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
                             ->whereNotIn('study_status_id', [7])
-                            ->where((new StudyCourseSchedule())->getTable().'.study_program_id', $row['id'])
+                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row['id'])
                             ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
                     ),
                     'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),

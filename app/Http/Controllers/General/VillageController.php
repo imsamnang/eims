@@ -27,8 +27,10 @@ class VillageController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -45,7 +47,7 @@ class VillageController extends Controller
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return [
                     'success' => true,
-                    'data' => Villages::whereHas('village', function ($query) {
+                    'data' => Villages::whereHas('commune', function ($query) {
                         $query->where('id', request('communeId'));
                     })->orderBy('id', 'DESC')->get(['id', app()->getLocale() . ' as name', 'image'])
                 ];

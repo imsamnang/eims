@@ -26,7 +26,8 @@ class StudyStatusController extends Controller
         $this->middleware('auth');
         App::setConfig();
         SocailsMedia::setConfig();
-        Languages::setConfig();
+        App::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 

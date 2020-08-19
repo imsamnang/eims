@@ -56,7 +56,7 @@
                     data-placeholder="" name="designation">
 
                     @foreach($designation["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -78,7 +78,7 @@
                     data-select-value="{{config("pages.form.data.".$key.".staff_status_id")}}"
                     data-placeholder="" name="status">
                     @foreach($status["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option  value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>

@@ -23,8 +23,8 @@ class StudentsScore extends Model
                     $data[$row['subject']['id']] = array(
                         'id'            => $score[0]['id'],
                         'study_subject' => $row['subject'],
-                        'score'         => $score[0]['subject_marks'],
-                        'pass_or_fail'  => ($score[0]['subject_marks'] >= $row['subject']['pass_mark_theory']) ? 'pass' : 'fail',
+                        'score'         => $score[0]['subject_score'],
+                        'pass_or_fail'  => ($score[0]['subject_score'] >= $row['subject']['pass_mark_theory']) ? 'pass' : 'fail',
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/subject/edit/' . $score[0]['id']),
                     );
                 } else {
@@ -40,23 +40,22 @@ class StudentsScore extends Model
         }
 
         return $data;
-
     }
 
-    public static function addToTable($student_study_course_score_id, $study_subject_id, $subject_marks)
+    public static function addToTable($student_study_course_score_id, $study_subject_id, $subject_score)
     {
         $response = [
             'sucess'    => false,
             'error'     => []
         ];
-        if ($student_study_course_score_id &&  $study_subject_id && $subject_marks) {
+        if ($student_study_course_score_id &&  $study_subject_id && $subject_score) {
             if (StudentsScore::existsToTable($student_study_course_score_id, $study_subject_id)) {
-                $response = StudentsScore::updateToTable($student_study_course_score_id, $study_subject_id, $subject_marks);
+                $response = StudentsScore::updateToTable($student_study_course_score_id, $study_subject_id, $subject_score);
             } else {
                 $add =  StudentsScore::insertGetId([
                     'student_study_course_score_id' => $student_study_course_score_id,
                     'study_subject_id'              => $study_subject_id,
-                    'subject_marks'                  => $subject_marks,
+                    'subject_score'                  => $subject_score,
                 ]);
                 if ($add) {
 
@@ -80,18 +79,18 @@ class StudentsScore extends Model
         return $response;
     }
 
-    public static function updateToTable($student_study_course_score_id, $study_subject_id, $subject_marks)
+    public static function updateToTable($student_study_course_score_id, $study_subject_id, $subject_score)
     {
         $response = [
             'sucess'    => false,
             'error'     => []
         ];
-        if ($student_study_course_score_id &&  $study_subject_id && $subject_marks) {
+        if ($student_study_course_score_id &&  $study_subject_id && $subject_score) {
             if (StudentsScore::existsToTable($student_study_course_score_id, $study_subject_id)) {
                 $update =  StudentsScore::where('student_study_course_score_id', $student_study_course_score_id)
                     ->where('study_subject_id', $study_subject_id)
                     ->update([
-                        'subject_marks'=> $subject_marks,
+                        'subject_score' => $subject_score,
                     ]);
 
                 if ($update) {

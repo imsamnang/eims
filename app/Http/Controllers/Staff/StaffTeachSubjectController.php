@@ -32,13 +32,28 @@ class StaffTeachSubjectController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Staff & Teacher'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+            ],
+            [
+                'title' => __('List Staff teach subject'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/list'),
+            ]
+        ];
+
         $data['formData'] = array(
             ['year' => Years::now(),]
         );
@@ -46,6 +61,7 @@ class StaffTeachSubjectController extends Controller
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 request()->merge([
                     'ref'   => StudySubjectLesson::$path['url']
@@ -64,6 +80,11 @@ class StaffTeachSubjectController extends Controller
         } elseif ($param1 == 'grid') {
             $data = $this->grid($data);
         } elseif ($param1 == 'add') {
+            $breadcrumb[]  = [
+                'title' => __('Add Staff teach subject'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/add'),
+            ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::addToTable();
             }
@@ -71,6 +92,11 @@ class StaffTeachSubjectController extends Controller
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff teach subject');
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('Edit Staff teach subject'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $id),
+            ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::updateToTable($id);
             }
@@ -78,6 +104,11 @@ class StaffTeachSubjectController extends Controller
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff teach subject');
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('View Staff teach subject'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $id),
+            ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff teach subject');
         } elseif ($param1 == 'delete') {
@@ -88,6 +119,7 @@ class StaffTeachSubjectController extends Controller
         } else {
             abort(404);
         }
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],
@@ -163,7 +195,7 @@ class StaffTeachSubjectController extends Controller
     {
         $table = StaffTeachSubject::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new StaffTeachSubject)->getTable() . '.staff_id')
             ->join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id')
-            ->orderBy((new StaffTeachSubject)->getTable().'.id','DESC');
+            ->orderBy((new StaffTeachSubject)->getTable() . '.id', 'DESC');
 
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
@@ -177,17 +209,17 @@ class StaffTeachSubjectController extends Controller
 
 
         $response = $table->get([
-            (new StaffTeachSubject)->getTable().'.id',
-            (new Staff)->getTable().'.first_name_' . app()->getLocale(),
-            (new Staff)->getTable().'.last_name_' . app()->getLocale(),
-            (new Staff)->getTable().'.gender_id',
-            (new Staff)->getTable().'.phone',
-            (new Staff)->getTable().'.email',
-            (new Staff)->getTable().'.photo',
-            (new StaffTeachSubject)->getTable().'.study_subject_id',
-            (new StaffTeachSubject)->getTable().'.year',
-            (new StaffTeachSubject)->getTable().'.created_at',
-            (new StaffTeachSubject)->getTable().'.updated_at',
+            (new StaffTeachSubject)->getTable() . '.id',
+            (new Staff)->getTable() . '.first_name_' . app()->getLocale(),
+            (new Staff)->getTable() . '.last_name_' . app()->getLocale(),
+            (new Staff)->getTable() . '.gender_id',
+            (new Staff)->getTable() . '.phone',
+            (new Staff)->getTable() . '.email',
+            (new Staff)->getTable() . '.photo',
+            (new StaffTeachSubject)->getTable() . '.study_subject_id',
+            (new StaffTeachSubject)->getTable() . '.year',
+            (new StaffTeachSubject)->getTable() . '.created_at',
+            (new StaffTeachSubject)->getTable() . '.updated_at',
         ])->map(function ($row) {
 
             $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
@@ -237,7 +269,7 @@ class StaffTeachSubjectController extends Controller
             $data['listData'] =  $response->map(function ($row) {
                 return [
                     'id'  => $row->id,
-                    'name'  => $row->name .' - '.$row->subjects.' ('.$row->year.')',
+                    'name'  => $row->name . ' - ' . $row->subjects . ' (' . $row->year . ')',
                     'image'  => $row->photo,
                     'action'  => [
                         'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),

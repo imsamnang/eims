@@ -33,10 +33,10 @@
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
                     name="pob_province" data-select-value="{{config("pages.form.data.".$key.".pob_province_id")}}"
                     data-append-to="#pob_district_{{$key}}"
-                    data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
+                    data-append-url="{{$districts["action"]["list"]}}?provinceId="
                     {{config("pages.form.validate.rules.pob_province") ? "required" : ""}}>
                     @foreach($provinces["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -59,11 +59,10 @@
                     class="form-control" data-toggle="select" id="pob_district_{{$key}}" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
                     name="pob_district" data-select-value="{{config("pages.form.data.".$key.".pob_district_id")}}"
-                    data-append-to="#pob_commune_{{$key}}"
-                    data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
+                    data-append-to="#pob_commune_{{$key}}" data-append-url="{{$communes["action"]["list"]}}?districtId="
                     {{config("pages.form.validate.rules.pob_district") ? "required" : ""}}>
                     @foreach($districts["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -86,11 +85,10 @@
                     class="form-control" data-toggle="select" id="pob_commune_{{$key}}" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
                     name="pob_commune" data-select-value="{{config("pages.form.data.".$key.".pob_commune_id")}}"
-                    data-append-to="#pob_village_{{$key}}"
-                    data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
+                    data-append-to="#pob_village_{{$key}}" data-append-url="{{$villages["action"]["list"]}}?communeId="
                     {{config("pages.form.validate.rules.pob_commune") ? "required" : ""}}>
                     @foreach($communes["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -116,7 +114,7 @@
                     name="pob_village" data-select-value="{{config("pages.form.data.".$key.".pob_village_id")}}"
                     {{config("pages.form.validate.rules.pob_village") ? "required" : ""}}>
                     @foreach($villages["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -193,13 +191,12 @@
 
                 <select class="form-control" data-toggle="select" id="curr_province" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
-                    name="curr_province"
-                    data-select-value="{{config("pages.form.data.".$key.".curr_province_id")}}"
+                    name="curr_province" data-select-value="{{config("pages.form.data.".$key.".curr_province_id")}}"
                     data-append-to="#curr_district_{{$key}}"
-                    data-append-url="{{str_replace("add","?provinceId=",$districts["pages"]["form"]["action"]["add"])}}"
+                    data-append-url="{{$curr_districts["action"]["list"]}}?provinceId="
                     {{config("pages.form.validate.rules.curr_province") ? "required" : ""}}>
                     @foreach($provinces["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -222,13 +219,12 @@
                 <select disabled {{config("pages.form.data.".$key.".curr_district.id")? "" :"disabled"}}
                     class="form-control" data-toggle="select" id="curr_district_{{$key}}" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
-                    name="curr_district"
-                    data-select-value="{{config("pages.form.data.".$key.".curr_district_id")}}"
+                    name="curr_district" data-select-value="{{config("pages.form.data.".$key.".curr_district_id")}}"
                     data-append-to="#curr_commune_{{$key}}"
-                    data-append-url="{{str_replace("add","?districtId=",$communes["pages"]["form"]["action"]["add"])}}"
+                    data-append-url="{{$curr_communes["action"]["list"]}}?districtId="
                     {{config("pages.form.validate.rules.curr_district") ? "required" : ""}}>
                     @foreach($curr_districts["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -250,13 +246,12 @@
                 <select disabled {{config("pages.form.data.".$key.".curr_commune.id")? "" :"disabled"}}
                     class="form-control" data-toggle="select" id="curr_commune_{{$key}}" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
-                    name="curr_commune"
-                    data-select-value="{{config("pages.form.data.".$key.".curr_commune_id")}}"
+                    name="curr_commune" data-select-value="{{config("pages.form.data.".$key.".curr_commune_id")}}"
                     data-append-to="#curr_village_{{$key}}"
-                    data-append-url="{{str_replace("add","?communeId=",$villages["pages"]["form"]["action"]["add"])}}"
+                    data-append-url="{{$curr_villages["action"]["list"]}}?communeId="
                     {{config("pages.form.validate.rules.curr_commune") ? "required" : ""}}>
                     @foreach($curr_communes["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -279,11 +274,10 @@
                 <select disabled {{config("pages.form.data.".$key.".curr_village_id")? "" :"disabled"}}
                     class="form-control" data-toggle="select" id="curr_village_{{$key}}" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
-                    name="curr_village"
-                    data-select-value="{{config("pages.form.data.".$key.".curr_village_id")}}"
+                    name="curr_village" data-select-value="{{config("pages.form.data.".$key.".curr_village_id")}}"
                     {{config("pages.form.validate.rules.curr_village") ? "required" : ""}}>
                     @foreach($curr_villages["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>

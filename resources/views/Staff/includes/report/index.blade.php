@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{{config('app.title')}}</title>
     <link rel="stylesheet" href="{{ asset("/assets/css/paper.css") }}" />
+
 </head>
 
 <body>
@@ -95,11 +96,11 @@
                 </form>
             </div>
             <div style="display: inline-flex;width: 100%;margin-top: 20px;">
-                <button style="width: 50%" data-toggle="table-to-excel" data-table-id="t1,t2,t3" data-name=""
+                <a href="{{request()->url()}}/excel?{{request()->getQueryString()}}" style="width: 50%"
                     class="btn btn-primary{{$response == false ? "d-none":""}}">
                     <i class="fas fa-file-excel"></i>
                     {{__("Excel")}}
-                </button>
+                </a>
                 <button style="width: 50%" onclick="print();"
                     class="btn btn-primary {{$response == false ? "d-none":""}}">
                     <i class="fas fa-print"></i>

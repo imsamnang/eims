@@ -23,7 +23,7 @@
                     data-select-value="{{config("pages.form.data.".$key.".staff_qualification.certificate_id")}}"
                     {{config("pages.form.validate.rules.staff_certificate") ? "required" : ""}}>
                     @foreach($staff_certificate["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    <option  value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
 

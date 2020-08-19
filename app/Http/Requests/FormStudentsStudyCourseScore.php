@@ -27,9 +27,9 @@ class FormStudentsStudyCourseScore extends FormRequest
     {
         $rules = [
             'student'            => 'required',
-            'study_subject'.$flag      => 'required',
-            'attendance_marks'   => 'required',
-            'other_marks'        => 'required',
+            'study_subject' . $flag      => 'required',
+            'attendance_score'   => 'required',
+            'other_score'        => 'required',
 
         ];
 
@@ -40,11 +40,10 @@ class FormStudentsStudyCourseScore extends FormRequest
     {
         return [
             'student'        => __('Student'),
-            'study_subject'.$flag        => __('Study subjects'),
-            'attendance_marks'     => __('Attendance Score'),
-            'other_marks'          => __('Other score'),
+            'study_subject' . $flag        => __('Study subjects'),
+            'attendance_score'     => __('Attendance Score'),
+            'other_score'          => __('Other score'),
         ];
-
     }
 
     public static function questionField()

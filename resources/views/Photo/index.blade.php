@@ -29,8 +29,8 @@
 
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
-    @include(Auth::user()->role('view_path').".includes.navTop")
-   
+    @include(Auth::user()->role('view_path').".includes.navTop") @include("Layouts.navHeader")
+
     <div class="page-content container-fluid">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))

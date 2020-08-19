@@ -30,8 +30,8 @@ class MailboxController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -69,7 +69,7 @@ class MailboxController extends Controller
                 if ($image) {
                     return [
                         'success' => true,
-                        'data'  => [ImageHelper::site(Mailbox::$path['image'], $image,'original')]
+                        'data'  => [ImageHelper::site(Mailbox::$path['image'], $image, 'original')]
                     ];
                 }
             }

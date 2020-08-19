@@ -1294,7 +1294,7 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'ព័ត៌មាន​ផ្សេងទៀត'
             ],
             [
-                'phrase' => 'other_marks',
+                'phrase' => 'other_score',
                 'en' => 'Other score',
                 'km' => 'ពិន្ទុផ្សេងទៀត'
             ],

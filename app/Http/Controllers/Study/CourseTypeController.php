@@ -25,8 +25,8 @@ class CourseTypeController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -71,7 +71,6 @@ class CourseTypeController extends Controller
             return CourseTypes::deleteFromTable($id);
         } elseif ($param1 == 'report') {
             return $this->report();
-
         } else {
             abort(404);
         }

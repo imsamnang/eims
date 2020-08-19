@@ -22,7 +22,7 @@
                 </span>
                 <br>
                 <span>
-                    {{ __("List Attendance for month",['month',DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->monthName])  " ".request("year") }}
+                    {{ __("List Attendance for month",['month'=>DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->monthName])  " ".request("year") }}
                 </span>
 
             </h4>

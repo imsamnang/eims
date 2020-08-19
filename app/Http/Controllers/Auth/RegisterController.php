@@ -43,8 +43,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
         $this->middleware('guest');
     }
 
@@ -78,10 +78,10 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function authenticated($request,$user)
+    protected function authenticated($request, $user)
     {
-        if( $user){
-          return redirect(Users::role());
+        if ($user) {
+            return redirect(Users::role());
         }
     }
 }

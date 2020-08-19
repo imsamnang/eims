@@ -28,12 +28,26 @@ class CardController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Students'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url']),
+            ],
+            [
+                'title' => __('List Card'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . CardFrames::$path['url'] . '/list'),
+            ]
+        ];
+
 
         $data['formData'] = array(
             [
@@ -48,6 +62,7 @@ class CardController extends Controller
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
+            $breadcrumb[1]['status']  = 'active';
             $data = $this->list($data);
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -56,19 +71,36 @@ class CardController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
+            $breadcrumb[]  = [
+                'title' => __('Add Card'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
+            ];
             if (request()->method() == 'POST') {
                 return CardFrames::addToTable();
             }
             $data = $this->show($data, null, $param1);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
+
+            $breadcrumb[]  = [
+                'title' => __('View Card'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/view/' . $id),
+            ];
             if ($param2) {
                 $data = $this->show($data, $id, $param1);
+                $data['view']       = CardFrames::$path['view'] . '.includes.view.index';
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('Edit Card'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/edit/' . $id),
+            ];
             if ($id) {
                 if (request()->method() == "POST") {
                     return CardFrames::updateToTable($id);
@@ -80,6 +112,16 @@ class CardController extends Controller
         } elseif ($param1 == 'delete') {
             return CardFrames::deleteFromTable($param2);
         } elseif ($param1 == 'make') {
+            $breadcrumb[1]  =  [
+                'title' => __('Student study course'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+            ];
+            $breadcrumb[]  = [
+                'title' => __('Make Card'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'] . '/make/' . $param2),
+            ];
             if (request()->method() == 'POST') {
                 if (request()->all()) {
                     Session::put('card', json_decode(request()->post("card"), true));
@@ -139,7 +181,7 @@ class CardController extends Controller
         } else {
             abort(404);
         }
-
+        view()->share('breadcrumb', $breadcrumb);
         MetaHelper::setConfig([
             'title'       => $data['title'],
             'author'      => config('app.name'),

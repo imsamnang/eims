@@ -53,13 +53,26 @@ class StudentsStudyCourseController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
+        $breadcrumb  = [
+            [
+                'title' => __('Students'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url']),
+            ],
+            [
+                'title' => __('List Student study course'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+            ]
+        ];
         request()->merge(['ref' => request('ref', StudentsStudyCourse::$path['url'])]);
 
         $data['study_course_session'] = StudyCourseSession::getData();
@@ -77,6 +90,7 @@ class StudentsStudyCourseController extends Controller
         $id = $param2 ? $param2 : request('id');
 
         if ($param1 == null || $param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             request()->merge(['id' => $id]);
             $data  = $this->list($data);
 
@@ -92,6 +106,11 @@ class StudentsStudyCourseController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
+            $breadcrumb[]  = [
+                'title' => __('Add Student study course'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/add'),
+            ];
 
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::addToTable();
@@ -100,6 +119,13 @@ class StudentsStudyCourseController extends Controller
         } elseif ($param1 == 'edit') {
 
             request()->merge(['id' => $id]);
+
+            $breadcrumb[]  = [
+                'title' => __('Edit Student study course'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/edit/' . $id),
+            ];
+
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::updateToTable($id);
             }
@@ -110,6 +136,11 @@ class StudentsStudyCourseController extends Controller
             });
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('View Student study course'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/view/' . $id),
+            ];
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff');
             $data['response']['data'] = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                 ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
@@ -176,6 +207,7 @@ class StudentsStudyCourseController extends Controller
             $data['view']  = StudentsStudyCourse::$path['view'] . '.includes.view.index';
         } elseif ($param1 == 'photo') {
             $id =  request('id', $param3);
+
             request()->merge(['id' => $id]);
             request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-photo']);
             $view = new PhotoController();
@@ -210,7 +242,7 @@ class StudentsStudyCourseController extends Controller
                     $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
                     $row['photo_crop'] = ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $row->photo_crop);
 
-                    $row['study_program'] = StudyCourse::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
+                    $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
                     $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
                     $row['study_generation'] = StudyGeneration::where('id', $row->study_generation_id)->pluck(app()->getLocale())->first();
                     $row['study_academic_year'] = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
@@ -262,7 +294,7 @@ class StudentsStudyCourseController extends Controller
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                     $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
 
-                    $row['study_program'] = StudyCourse::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
+                    $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
                     $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
                     $row['study_generation'] = StudyGeneration::where('id', $row->study_generation_id)->pluck(app()->getLocale())->first();
                     $row['study_academic_year'] = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
@@ -334,6 +366,8 @@ class StudentsStudyCourseController extends Controller
         } else {
             abort(404);
         }
+
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig(
             [
@@ -705,7 +739,7 @@ class StudentsStudyCourseController extends Controller
 
 
             $row['account'] = Users::where('email', $row->email)->where('node_id', $row->student_id)->exists();
-            $row['study_program'] = StudyCourse::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
+            $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
             $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
             $row['study_generation'] = StudyGeneration::where('id', $row->study_generation_id)->pluck(app()->getLocale())->first();
             $row['study_academic_year'] = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();

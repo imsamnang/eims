@@ -30,8 +30,8 @@ class StudentsAttendanceController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
@@ -42,7 +42,7 @@ class StudentsAttendanceController extends Controller
         $data['listData']             = array();
         $data['formAction']           = '/scan';
         $data['formName']             = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'];
-        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Attendance');
+        $data['title']                = Users::role(app()->getLocale()) . ' | ' . __('Student Attendance');
         $data['metaImage']            = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']             = url(Users::role() . '/' . $param1);
 
@@ -54,7 +54,7 @@ class StudentsAttendanceController extends Controller
                 return $this->edit();
             }
         } elseif ($param1 == 'scan') {
-            if(request()->method() == 'POST'){
+            if (request()->method() == 'POST') {
                 return $this->qrcode();
             }
             $data = $this->scan($data);
@@ -110,7 +110,7 @@ class StudentsAttendanceController extends Controller
         $data['holiday']   = Holidays::getHoliday(request('year'), request('month'))['data'];
         $data['response']  = StudentsAttendances::getData(request('year'), request('month'), null, request('id'), 10);
         $data['view']      = StudentsAttendances::$path['view'] . '.includes.list.index';
-        $data['title']                = Users::role(app()->getLocale()) .' | '.__('List Student Attendance');
+        $data['title']                = Users::role(app()->getLocale()) . ' | ' . __('List Student Attendance');
 
         return $data;
     }
@@ -203,7 +203,7 @@ class StudentsAttendanceController extends Controller
         $data['holiday']   = Holidays::getHoliday(request('year'), request('month'))['data'];
         $data['response']  = StudentsAttendances::getData(request('year'), request('month'), null, request('id'));
         $data['view']      = StudentsAttendances::$path['view'] . '.includes.report.index';
-        $data['title']                = Users::role(app()->getLocale()) .' | '.__('Student Attendance Report');
+        $data['title']                = Users::role(app()->getLocale()) . ' | ' . __('Student Attendance Report');
         return $data;
     }
 }

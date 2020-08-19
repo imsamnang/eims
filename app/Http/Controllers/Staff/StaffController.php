@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use Carbon\Carbon;
 use App\Models\App;
 use App\Models\Roles;
 use App\Models\Staff;
@@ -30,13 +31,14 @@ use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
 use App\Models\StaffTeachSubject;
+use Illuminate\Support\Collection;
 use App\Models\StaffQualifications;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\StaffsReportTemplateExport;
 use App\Http\Controllers\Staff\StaffCertificateController;
 use App\Http\Controllers\Staff\StaffDesignationController;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
-
+use Mpdf\Mpdf;
 
 class StaffController extends Controller
 {
@@ -48,10 +50,23 @@ class StaffController extends Controller
         App::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Staff & Teacher'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+            ],
+            [
+                'title' => __('List Staff'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Staff::$path['url']) . '/list',
+            ]
+        ];
 
         $data['formAction']          = '/add';
         $data['formName']            = Staff::$path['url'];
@@ -65,6 +80,7 @@ class StaffController extends Controller
         $data['listData']            = array();
 
         if ($param1 == null) {
+            unset($breadcrumb[1]);
             $data['shortcut'] = [
                 [
                     'name'  => __('Add Staff'),
@@ -115,6 +131,8 @@ class StaffController extends Controller
             $data['view']  = Staff::$path['view'] . '.includes.dashboard.index';
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff & Teacher');
         } elseif ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
+
             if ((request()->server('CONTENT_TYPE')) == 'application/json') {
                 return  Staff::getData(null, null, 10, request('search'));
             } else {
@@ -128,6 +146,12 @@ class StaffController extends Controller
             }
         } elseif ($param1 == 'add') {
 
+            $breadcrumb[]  = [
+                'title' => __('Add Staff'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/add'),
+            ];
+
             if (request()->method() === 'POST') {
                 return Staff::addToTable();
             }
@@ -135,6 +159,13 @@ class StaffController extends Controller
             $data = $this->show($data, null, $param1);
         } elseif (($param1) == 'view') {
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('View Staff'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $id),
+            ];
+
+
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff');
             $data['response']['data'] = Staff::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                 $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
@@ -160,8 +191,13 @@ class StaffController extends Controller
             $id = request('id', $param2);
             return $this->print($id);
         } elseif (($param1) == 'edit') {
-
             $id = request('id', $param2);
+            $breadcrumb[]  = [
+                'title' => __('Edit Staff'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $id),
+            ];
+
             if (request()->method() === 'POST') {
                 return Staff::updateToTable($id);
             }
@@ -171,12 +207,17 @@ class StaffController extends Controller
             $id = request('id', $param2);
             return Staff::deleteFromTable($id);
         } elseif (($param1) == 'report') {
-            return $this->report();
+            return $this->report($param2);
         } elseif (($param1) == 'account') {
 
             $id = request('id', $param3);
+            $breadcrumb[]  = [
+                'title' => __('Create account'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $id),
+            ];
             if ($param2 == 'create') {
-                if (request()->method() == "POST") {
+                if (request()->method() == 'POST') {
                     return Staff::createAccountToTable($id);
                 }
 
@@ -204,6 +245,8 @@ class StaffController extends Controller
         } else {
             abort(404);
         }
+
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig(
             [
@@ -286,9 +329,24 @@ class StaffController extends Controller
             $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
             return $row;
         });
-        $data['districts']           = Districts::getData('null');
-        $data['communes']            = Communes::getData('null');
-        $data['villages']            = Villages::getData('null');
+        $data['districts']           =  [
+            'data'  => [],
+            'action' => [
+                'list'  =>  url(Users::role() . '/general/' . Districts::$path['url'] . '/list'),
+            ]
+        ];
+        $data['communes']            = [
+            'data'  => [],
+            'action' => [
+                'list'  =>  url(Users::role() . '/general/' . Communes::$path['url'] . '/list'),
+            ]
+        ];
+        $data['villages']            = [
+            'data'  => [],
+            'action' => [
+                'list'  =>  url(Users::role() . '/general/' . Villages::$path['url'] . '/list'),
+            ]
+        ];
         $data['staff_certificate']['data']   = StaffCertificate::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
             $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
             return $row;
@@ -306,13 +364,15 @@ class StaffController extends Controller
 
     public function list($data)
     {
-        $table = Staff::join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
-        if (request('instituteId')) {
-            $table->where('institute_id', request('instituteId'));
-        }
-        if (request('designationId')) {
-            $table->where('designation_id', request('designationId'));
-        }
+
+
+        $table = Staff::whereHas('institute', function ($query) {
+            $query->where('institute_id', request('instituteId'));
+
+            if (request('designationId')) {
+                $query->where('designation_id', request('designationId'));
+            }
+        })->join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
 
         $response = $table->orderBy((new Staff)->getTable() . '.id', 'DESC')
             ->get()->map(function ($row) {
@@ -398,27 +458,8 @@ class StaffController extends Controller
 
         return $data;
     }
-    public function report()
+    public function report($excel = null)
     {
-
-        request()->merge([
-            'size'  => request('size', 'A4'),
-            'layout'  => request('layout', 'portrait'),
-        ]);
-
-        config()->set('app.title', __('List all Staff'));
-        config()->set('pages.parent', Staff::$path['view']);
-
-        $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
-            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
-                return $row;
-            });
-        $data['designationFilter']['data']           = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
-            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
-                return $row;
-            });
 
 
 
@@ -439,6 +480,44 @@ class StaffController extends Controller
 
             return $row;
         })->toArray();
+
+        $data['institute'] = Institute::where('id', request('instituteId'))
+            ->get(['logo', app()->getLocale() . ' as name'])
+            ->map(function ($row) {
+                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                return $row;
+            })->first();
+
+        $data['designation']  = StaffDesignations::where('id', request('designationId'))
+            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                return $row;
+            })->first();
+
+        config()->set('pages.title', __('List all Staff') . ($data['designation'] ? ' (' . $data['designation']['name'] . ')' : ''));
+
+        if ($excel) {
+            return Excel::download(new StaffsReportTemplateExport($response),  str_replace('/', '-', $data['institute']['name'] . ' - ' . config('pages.title')) . '.xlsx');
+        }
+
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List all Staff'));
+        config()->set('pages.parent', Staff::$path['view']);
+
+        $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
+        $data['designationFilter']['data']           = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                return $row;
+            });
 
         $date = Carbon::now();
         $newData = [];
@@ -471,20 +550,34 @@ class StaffController extends Controller
             ]
         ];
 
-        $data['institute'] = Institute::where('id', request('instituteId'))
-            ->get(['logo', app()->getLocale() . ' as name'])
-            ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
-                return $row;
-            })->first();
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
 
-        $data['designation']  = StaffDesignations::where('id', request('designationId'))
-            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
-                return $row;
-            })->first();
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
 
-        config()->set('pages.title', __('List all Staff') . ($data['designation'] ? ' "' . $data['designation']['name'] . '"' : ''));
+        $mpdf = new \Mpdf\Mpdf([
+            'fontDir' => array_merge($fontDirs, [
+                public_path('/assets/fonts/'),
+            ]),
+            'fontdata' => $fontData + [
+                'khmerosmoul' => [
+                    'R' => 'KhmerOSMoul.ttf',
+                    'useOTL' => 0xFF,
+                ],
+                'khmerosbattambang' => [
+                    'R' => 'KhmerOS_battambang.ttf',
+                    'useOTL' => 0xFF,
+                ]
+            ],
+            'default_font' => 'khmerosbattambang'
+        ]);
+
+        $mpdf->WriteHTML(view(Staff::$path['view'] . '.includes.report.index', $data)->render());
+        return $mpdf->Output();
+
+
+
 
         return view(Staff::$path['view'] . '.includes.report.index', $data);
     }

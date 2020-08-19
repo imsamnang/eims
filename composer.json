@@ -26,6 +26,7 @@
         "laravel/tinker": "^1.0",
         "laravolt/avatar": "^3.2",
         "maatwebsite/excel": "^3.1",
+        "mpdf/mpdf": "^8.0",
         "nesbot/carbon": "^2.25",
         "paquettg/php-html-parser": "^2.2",
         "phpdocumentor/graphviz": "^1.0",
@@ -38,8 +39,8 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
-        "filp/whoops": "^2.0",        
-        "fzaninotto/faker": "^1.4",        
+        "filp/whoops": "^2.0",
+        "fzaninotto/faker": "^1.4",
         "laravel/ui": "^1.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
@@ -59,7 +60,7 @@
             "database/seeds",
             "database/factories"
         ],
-        "files": [            
+        "files": [
             "app/Helpers/DateHelper.php",
             "app/Helpers/Internet.php"
         ]

@@ -28,7 +28,7 @@
 
 @section("content")
 <div class="main-content" id="card">
-    @include(Auth::user()->role('view_path').".includes.navTop")
+    @include(Auth::user()->role('view_path').".includes.navTop") @include("Layouts.navHeader")
     <div class="container-fluid">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))

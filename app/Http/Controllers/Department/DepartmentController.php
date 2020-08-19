@@ -49,8 +49,8 @@ class DepartmentController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null)
     {

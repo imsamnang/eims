@@ -17,8 +17,8 @@ class CreateStudentsScoresTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('student_study_course_score_id')->unsigned()->nullable();
             $table->bigInteger('study_subject_id')->unsigned()->nullable();
-            $table->float('subject_marks')->nullable();
-             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->float('subject_score')->nullable();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

@@ -46,8 +46,8 @@ class StudentsStudyShortCourseController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
@@ -158,7 +158,7 @@ class StudentsStudyShortCourseController extends Controller
                 });
             $data['formAction']          = '/view/' . $id;
             $data['view']  = StudentsStudyShortCourse::$path['view'] . '.includes.view.index';
-       } elseif ($param1 == 'report') {
+        } elseif ($param1 == 'report') {
             return $this->report();
         } elseif ($param1 == 'delete') {
             $id = $param2 ? $param2 : request('id');
@@ -228,6 +228,7 @@ class StudentsStudyShortCourseController extends Controller
                 $row['name']   = $row['study'] . ' - ' . $row['location'];
                 return $row;
             });
+            
 
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
@@ -450,7 +451,7 @@ class StudentsStudyShortCourseController extends Controller
                 return $row;
             });
 
-        $data['subjectFilter']['data']           = StudySemesters::whereIn('id', StudentsStudyShortCourse::join((new StudyShortCourseSession)->getTable(), (new StudyShortCourseSession)->getTable() . '.id', (new StudentsStudyShortCourse)->getTable() . '.stu_sh_c_session_id')
+        $data['subjectFilter']['data']           = StudySubjects::whereIn('id', StudentsStudyShortCourse::join((new StudyShortCourseSession)->getTable(), (new StudyShortCourseSession)->getTable() . '.id', (new StudentsStudyShortCourse)->getTable() . '.stu_sh_c_session_id')
             ->join((new StudyShortCourseSchedule)->getTable(), (new StudyShortCourseSchedule)->getTable() . '.id', (new StudyShortCourseSession)->getTable() . '.stu_sh_c_schedule_id')
             ->groupBy('study_subject_id')->pluck('study_subject_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {

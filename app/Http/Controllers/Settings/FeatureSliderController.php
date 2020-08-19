@@ -21,8 +21,8 @@ class FeatureSliderController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -66,7 +66,6 @@ class FeatureSliderController extends Controller
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Feature Slide');
         } elseif ($param1 == 'delete') {
             return FeatureSlider::deleteFromTable($id);
-       
         } else {
             abort(404);
         }

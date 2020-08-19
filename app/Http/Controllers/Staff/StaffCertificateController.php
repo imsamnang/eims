@@ -26,13 +26,27 @@ class StaffCertificateController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Staff & Teacher'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+            ],
+            [
+                'title' => __('List Staff Certificate'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/list'),
+            ]
+        ];
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -41,6 +55,7 @@ class StaffCertificateController extends Controller
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StaffCertificate::getData(null, null, 10);
             } else {
@@ -53,22 +68,37 @@ class StaffCertificateController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return StaffCertificate::addToTable();
-                }
+            $breadcrumb[]  = [
+                'title' => __('Add Staff Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/add'),
+            ];
+
+            if (request()->method() === 'POST') {
+                return StaffCertificate::addToTable();
             }
+
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Certificate');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[]  = [
+                'title' => __('Edit Staff Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/'.$id),
+            ];
             if (request()->method() === 'POST') {
                 return StaffCertificate::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Certificate');
         } elseif ($param1 == 'view') {
+            $breadcrumb[]  = [
+                'title' => __('View Staff Certificate'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/'.$id),
+            ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Status');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Certificate');
         } elseif ($param1 == 'delete') {
             return StaffCertificate::deleteFromTable($id);
         } elseif ($param1 == 'report') {
@@ -77,6 +107,7 @@ class StaffCertificateController extends Controller
             abort(404);
         }
 
+        view()->share('breadcrumb', $breadcrumb);
         MetaHelper::setConfig([
             'title'       => $data['title'],
             'author'      => config('app.name'),

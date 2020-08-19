@@ -76,12 +76,26 @@ class StudentController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
         Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Students'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url']),
+            ],
+            [
+                'title' => __('List Students'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/list'),
+            ]
+        ];
+
         $data['formAction']          = '/add';
         $data['formName']            = Students::$path['url'];
         $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Students');
@@ -122,6 +136,7 @@ class StudentController extends Controller
         } else {
 
             if ($param1  == null) {
+                unset($breadcrumb[1]);
                 $data['shortcuts'] = [
                     [
                         'title' => null,
@@ -176,19 +191,20 @@ class StudentController extends Controller
                                 'icon'  => 'fas fa-users-medical',
                                 'image' => null,
                                 'color' => 'bg-' . config('app.theme_color.name'),
-                            ], [
-                                'name'  => __('List Student attendance'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
-                                'icon'  => 'fas fa-calendar-edit',
-                                'image' => null,
-                                'color' => 'bg-' . config('app.theme_color.name'),
-                            ], [
-                                'name'  => __('List Student score'),
-                                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
-                                'icon'  => 'fas fa-trophy-alt',
-                                'image' => null,
-                                'color' => 'bg-' . config('app.theme_color.name'),
                             ],
+                            // [
+                            //     'name'  => __('List Student attendance'),
+                            //     'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/list'),
+                            //     'icon'  => 'fas fa-calendar-edit',
+                            //     'image' => null,
+                            //     'color' => 'bg-' . config('app.theme_color.name'),
+                            // ], [
+                            //     'name'  => __('List Student score'),
+                            //     'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/list'),
+                            //     'icon'  => 'fas fa-trophy-alt',
+                            //     'image' => null,
+                            //     'color' => 'bg-' . config('app.theme_color.name'),
+                            // ],
                         ]
                     ],
                     [
@@ -215,6 +231,7 @@ class StudentController extends Controller
                 $data['view']  = Students::$path['view'] . '.includes.dashboardAdmin.index';
                 $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('Students');
             } elseif ($param1  == 'list') {
+                $breadcrumb[1]['status']  = 'active';
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
 
                     return  Students::getData(null, null, 10, request('search'));
@@ -228,12 +245,22 @@ class StudentController extends Controller
                     $data = $this->list($data);
                 }
             } elseif ($param1  == 'add') {
+                $breadcrumb[]  = [
+                    'title' => __('Add Student'),
+                    'status' => 'active',
+                    'link'  => url(Users::role() . '/' . Students::$path['url'] . '/add'),
+                ];
                 if (request()->method() === 'POST') {
                     return Students::addToTable();
                 }
-                $data = $this->add($data);
+                $data = $this->show($data, null, $param1);
             } elseif ($param1  == 'view') {
                 $id = request('id', $param2);
+                $breadcrumb[]  = [
+                    'title' => __('View Student'),
+                    'status' => 'active',
+                    'link'  => url(Users::role() . '/' . Students::$path['url'] . '/view/' . $id),
+                ];
                 $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Students');
                 $data['response']['data'] = Students::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
@@ -256,27 +283,33 @@ class StudentController extends Controller
                 $data['formAction']          = '/view/' . $id;
                 $data['view']  = Students::$path['view'] . '.includes.view.index';
             } elseif ($param1  == 'print') {
-                if ($param2) {
-                    $data['response'] = Students::getData($param2, true);
-                    $data['view']  = Students::$path['view'] . '.includes.print.index';
-                } else {
-                    $data = $this->list($data);
-                }
+                $id = request('id', $param2);
+                return $this->print($id);
             } elseif ($param1  == 'edit') {
-                if ($param2) {
-                    if (request()->method() === 'POST') {
-                        return Students::updateToTable($param2);
-                    }
-                    $data = $this->show($data, $param2, $param1);
-                } else {
-                    $data = $this->list($data);
+
+                $id = request('id', $param2);
+                $breadcrumb[]  = [
+                    'title' => __('Edit Student'),
+                    'status' => 'active',
+                    'link'  => url(Users::role() . '/' . Students::$path['url'] . '/edit/' . $id),
+                ];
+
+                if (request()->method() === 'POST') {
+                    return Students::updateToTable($id);
                 }
+                $data = $this->show($data, $id, $param1);
             } elseif ($param1  == 'delete') {
                 $id = request('id', $param2);
                 return Students::deleteFromTable($id);
             } elseif (($param1) == 'account') {
 
                 $id = request('id', $param3);
+
+                $breadcrumb[]  = [
+                    'title' => __('Create account'),
+                    'status' => 'active',
+                    'link'  => url(Users::role() . '/' . Students::$path['url'] . '/account/create/' . $id),
+                ];
                 if ($param2 == 'create') {
                     if (request()->method() == "POST") {
                         return Students::createAccountToTable($id);
@@ -315,6 +348,7 @@ class StudentController extends Controller
                 abort(404);
             }
         }
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig(
             [
@@ -390,9 +424,24 @@ class StudentController extends Controller
                 $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
                 return $row;
             });
-            $data['districts']           = Districts::getData('null');
-            $data['communes']            = Communes::getData('null');
-            $data['villages']            = Villages::getData('null');
+            $data['districts']           =  [
+                'data'  => [],
+                'action' => [
+                    'list'  =>  url(Users::role() . '/general/' . Districts::$path['url'] . '/list'),
+                ]
+            ];
+            $data['communes']            = [
+                'data'  => [],
+                'action' => [
+                    'list'  =>  url(Users::role() . '/general/' . Communes::$path['url'] . '/list'),
+                ]
+            ];
+            $data['villages']            = [
+                'data'  => [],
+                'action' => [
+                    'list'  =>  url(Users::role() . '/general/' . Villages::$path['url'] . '/list'),
+                ]
+            ];
 
             $data['curr_districts']      = $data['districts'];
             $data['curr_communes']       = $data['communes'];
@@ -407,10 +456,9 @@ class StudentController extends Controller
 
     public function list($data)
     {
-        $table = new Students;
-        if (request('instituteId')) {
-            $table->where('institute_id', request('instituteId'));
-        }
+        $table = Students::whereHas('institute', function ($query) {
+            $query->where('institute_id', request('instituteId'));
+        });
 
         $response = $table->orderBy('id', 'DESC')
             ->get()->map(function ($row) {
@@ -496,6 +544,34 @@ class StudentController extends Controller
         return $data;
     }
 
+    public function print($id)
+    {
+
+        request()->merge([
+            'size'  => request('size', 'A4'),
+            'layout'  => request('layout', 'portrait'),
+        ]);
+
+        config()->set('app.title', __('List all Students'));
+        config()->set('pages.parent', Students::$path['view']);
+
+        $data['response']['data'] = Students::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+            $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
+            $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+            $row['nationality'] = Nationality::where('id', $row->nationality_id)->pluck(app()->getLocale())->first();
+            $row['mother_tong'] = MotherTong::where('id', $row->mother_tong_id)->pluck(app()->getLocale())->first();
+            $row['marital'] = Marital::where('id', $row->marital_id)->pluck(app()->getLocale())->first();
+            $row['blood_group'] = BloodGroup::where('id', $row->blood_group_id)->pluck(app()->getLocale())->first();
+            $row['student_guardian'] = StudentsGuardians::getData($row->id)['data'][0];
+            $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+            return $row;
+        });
+
+        config()->set('pages.title', __('List all Students'));
+
+        return view(Students::$path['view'] . '.includes.print.index', $data);
+    }
+
     public function report()
     {
 
@@ -512,9 +588,6 @@ class StudentController extends Controller
                 $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
                 return $row;
             });
-
-
-
 
         $table = new Students;
         if (request('instituteId')) {

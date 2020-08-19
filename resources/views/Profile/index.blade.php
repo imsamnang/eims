@@ -26,8 +26,8 @@
 @section("content")
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
-    @include(Auth::user()->role('view_path').".includes.navTop")
-    
+    @include(Auth::user()->role('view_path').".includes.navTop") @include("Layouts.navHeader")
+
     <div class="page-content container-fluid {{Agent::isDesktop() ?: "p-1"}}">
         @include(config("pages.view"))
         @include(Auth::user()->role('view_path').".includes.navFooter")

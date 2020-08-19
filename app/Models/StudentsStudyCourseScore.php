@@ -131,26 +131,26 @@ class StudentsStudyCourseScore extends Model
                 $grade = __('Fail');
 
                 $scores = $scores + [
-                    'attendance_marks' => [
+                    'attendance_score' => [
                         'id'    => $row['id'],
                         'study_subject' => [
                             'name'  => __('Attendance score'),
                         ],
-                        'score' => $row['attendance_marks'],
+                        'score' => $row['attendance_score'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
                     ],
-                    'other_marks' => [
+                    'other_score' => [
                         'id'    => $row['id'],
                         'study_subject' => [
                             'name'  => __('Other score'),
                         ],
-                        'score' => $row['other_marks'],
+                        'score' => $row['other_score'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
                     ]
                 ];
-                $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_marks') + $row['attendance_marks'] + $row['other_marks'];
+                $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_score') + $row['attendance_score'] + $row['other_score'];
 
 
                 $average = $total_marks > 0 ? $total_marks / count($study_subject) : 0;
@@ -298,26 +298,26 @@ class StudentsStudyCourseScore extends Model
                 $grade = __('Fail');
 
                 $scores = $scores + [
-                    'attendance_marks' => [
+                    'attendance_score' => [
                         'id'    => $row['id'],
                         'study_subject' => [
                             'name'  => __('Attendance score'),
                         ],
-                        'score' => $row['attendance_marks'],
+                        'score' => $row['attendance_score'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
                     ],
-                    'other_marks' => [
+                    'other_score' => [
                         'id'    => $row['id'],
                         'study_subject' => [
                             'name'  => __('Other score'),
                         ],
-                        'score' => $row['other_marks'],
+                        'score' => $row['other_score'],
                         'pass_or_fail' => null,
                         'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
                     ]
                 ];
-                $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_marks') + $row['attendance_marks'] + $row['other_marks'];
+                $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_score') + $row['attendance_score'] + $row['other_score'];
 
 
                 $average = $total_marks > 0 ? $total_marks / count($study_subject) : 0;
@@ -448,8 +448,8 @@ class StudentsStudyCourseScore extends Model
 
                 $update = StudentsStudyCourseScore::where('id', $id)->update([
                     'student_study_course_id'  => request('student'),
-                    'attendance_marks'         => request('attendance_marks'),
-                    'other_marks'              => request('other_marks'),
+                    'attendance_score'         => request('attendance_score'),
+                    'other_score'              => request('other_score'),
                 ]);
 
                 if ($update) {

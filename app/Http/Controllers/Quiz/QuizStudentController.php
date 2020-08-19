@@ -44,8 +44,8 @@ class QuizStudentController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-        SocailsMedia::setConfig();
-        Languages::setConfig();
+       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
     }
 
 
@@ -562,7 +562,7 @@ class QuizStudentController extends Controller
 
             return $row;
         })->toArray();
-     
+
         $date = Carbon::now();
         $newData = [];
         $items = Collection::make($response);

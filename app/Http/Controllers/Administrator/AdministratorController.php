@@ -39,9 +39,10 @@ class AdministratorController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        Languages::setConfig();
         App::setConfig();
         SocailsMedia::setConfig();
-        Languages::setConfig();
+        view()->share('breadcrumb', []);
     }
 
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null, $param6 = null)
@@ -85,6 +86,15 @@ class AdministratorController extends Controller
 
     public function dashboard()
     {
+
+        view()->share('breadcrumb', [
+            [
+                'title' => __("Dashboard"),
+                'status' => 'active',
+                'icon'  => 'fas fa-home'
+            ]
+        ]);
+
         $data['title'] = __("Dashboard");
         $data['formData'] = null;
         $data['formName'] = null;
@@ -120,8 +130,8 @@ class AdministratorController extends Controller
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
-                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', '=', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])),
-                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', '=', (new StaffInstitutes())->getTable().'.staff_id')),
+                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])),
+                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', (new StaffInstitutes())->getTable().'.staff_id')),
                 'color'   => 'blue',
             ],
         );
@@ -134,8 +144,8 @@ class AdministratorController extends Controller
                     'text'    => __('Staff & Teacher'),
                     'icon'    => 'fas fa-chalkboard-teacher',
                     'image'   => ImageHelper::site(Institute::$path['url'], $row->image),
-                    'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', '=', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('institute_id', $row->id)),
-                    'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', '=', (new StaffInstitutes())->getTable().'.staff_id')->where('institute_id',$row['id'])),
+                    'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('institute_id', $row->id)),
+                    'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', (new StaffInstitutes())->getTable().'.staff_id')->where('institute_id',$row['id'])),
                     'color'   => 'blue',
                 ];
             }
@@ -156,9 +166,9 @@ class AdministratorController extends Controller
                 'link'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
-                'gender'      => Students::gender(StudentsStudyCourse::join( (new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                                    ->join( (new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')->whereNotIn('study_status_id', [7])),
-                'status'      => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id', '=', (new StudentsStudyCourse())->getTable().'.student_id')),
+                'gender'      => Students::gender(StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                    ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')->whereNotIn('study_status_id', [7])),
+                'status'      => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id', (new StudentsStudyCourse())->getTable().'.student_id')),
                 'color'       => 'green',
             ],
         );
@@ -172,13 +182,14 @@ class AdministratorController extends Controller
                     'icon'    => 'fas fa-user-graduate',
                     'image'   => $row->image ? ImageHelper::site(Institute::$path['url'], $row->image) : ImageHelper::prefix(),
                     'gender'  => Students::gender(
-                        StudentsStudyCourse::join( (new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                        ->join( (new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                        ->join( (new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                        ->join( (new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-                        ->whereNotIn('study_status_id', [7])
-                        ->where((new StudyCourseSchedule())->getTable().'.institute_id', $row->id)),
-                    'status'  => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id', '=', (new StudentsStudyCourse())->getTable().'.student_id')->where('institute_id',$row['id'])),
+                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                            ->whereNotIn('study_status_id', [7])
+                            ->where((new StudyCourseSchedule())->getTable() . '.institute_id', $row->id)
+                    ),
+                    'status'  => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id', (new StudentsStudyCourse())->getTable().'.student_id')->where('institute_id',$row['id'])),
                     'color'   => 'green',
                 ];
             }
@@ -193,19 +204,19 @@ class AdministratorController extends Controller
                     'icon'    => null,
                     'image'   => $row->image ? ImageHelper::site(StudyPrograms::$path['url'], $row->image) : ImageHelper::prefix(),
                     'gender'  => Students::gender(
-                        StudentsStudyCourse::join( (new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                        ->join( (new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                        ->join( (new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                        ->join( (new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-                        ->whereNotIn('study_status_id', [7])
-                        ->where((new StudyCourseSchedule())->getTable().'.study_program_id', $row->id)),
-                    'status'  => [],//StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_id')->where('study_program_id', $row['id'])),
+                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                            ->whereNotIn('study_status_id', [7])
+                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row->id),
+                    ),
+                    'status'  => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_id')->where('study_program_id', $row['id'])),
                     'color'   => config('app.theme_color.name'),
                 ];
             }
         }
-        $data['response'] =  ActivityFeed::getData(null, true);
-        $data['users'] = Users::getData(null, null, 10);
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
