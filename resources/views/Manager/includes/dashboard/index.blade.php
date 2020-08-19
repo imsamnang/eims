@@ -80,7 +80,7 @@
                 <div data-toggle="widget-calendar" data-event-url="{{URL::to("/holiday/calendar")}}"></div>
             </div>
         </div>
-        @include(Auth::user()->role('view_path').".includes.dashboard.includes.user.index")
+        
     </div>
 
 </div>

@@ -188,8 +188,6 @@ class ManagerController extends Controller
             }
         }
 
-
-        $data['users'] = Users::getData(null, null, 10);
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
