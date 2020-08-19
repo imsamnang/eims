@@ -29,7 +29,7 @@
 @section("content")
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
-    @include(Auth::user()->role('view_path').".includes.navTop") @include("Layouts.navHeader")
+    @include(Auth::user()->role('view_path').".includes.navTop") @include("layouts.navHeader")
     @if (Auth::user()->role_id == 9)
     <div class="header bg-{{config("app.theme_color.name")}} pb-6"
         data-theme-bg-color="{{config("app.theme_color.name")}}">

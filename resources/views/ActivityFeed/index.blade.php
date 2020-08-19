@@ -36,7 +36,7 @@
 @section("content")
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
-    @include(Auth::user()->role('view_path').".includes.navTop") @include("Layouts.navHeader")
+    @include(Auth::user()->role('view_path').".includes.navTop") @include("layouts.navHeader")
     <div class="container-fluid">
         @include(config("pages.view"))
         @include("ActivityFeed.includes.model.index")
