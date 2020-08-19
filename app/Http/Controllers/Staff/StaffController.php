@@ -550,35 +550,6 @@ class StaffController extends Controller
             ]
         ];
 
-        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                public_path('/assets/fonts/'),
-            ]),
-            'fontdata' => $fontData + [
-                'khmerosmoul' => [
-                    'R' => 'KhmerOSMoul.ttf',
-                    'useOTL' => 0xFF,
-                ],
-                'khmerosbattambang' => [
-                    'R' => 'KhmerOS_battambang.ttf',
-                    'useOTL' => 0xFF,
-                ]
-            ],
-            'default_font' => 'khmerosbattambang'
-        ]);
-
-        $mpdf->WriteHTML(view(Staff::$path['view'] . '.includes.report.index', $data)->render());
-        return $mpdf->Output();
-
-
-
-
         return view(Staff::$path['view'] . '.includes.report.index', $data);
     }
 
