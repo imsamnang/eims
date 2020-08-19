@@ -25,7 +25,9 @@ class CourseTypeController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -125,7 +127,7 @@ class CourseTypeController extends Controller
         $table = CourseTypes::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(CourseTypes::$path, $row['image']);
+            $row['image'] = ImageHelper::site(CourseTypes::$path['image'], $row['image']);
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
                 'view'   => url(Users::role() . '/' . 'study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),
@@ -146,7 +148,7 @@ class CourseTypeController extends Controller
         if ($id) {
 
             $response           = CourseTypes::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(CourseTypes::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(CourseTypes::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),

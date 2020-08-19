@@ -24,7 +24,9 @@ class HolidayController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -127,7 +129,7 @@ class HolidayController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->{app()->getLocale()};
-            $row['image'] = ImageHelper::site(Holidays::$path, $row['image']);
+            $row['image'] = ImageHelper::site(Holidays::$path['image'], $row['image']);
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
                 'view'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/view/' . $row['id']),
@@ -147,7 +149,7 @@ class HolidayController extends Controller
         $data['view']       = Holidays::$path['view'] . '.includes.form.index';
         if ($id) {
             $response           = Holidays::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Holidays::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Holidays::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'general/' . Holidays::$path['url'] . '/view/' . $row['id']),

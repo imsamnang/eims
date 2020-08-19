@@ -25,7 +25,9 @@ class BloodGroupController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -116,7 +118,7 @@ class BloodGroupController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->{app()->getLocale()};
-            $row['image'] = ImageHelper::site(BloodGroup::$path, $row['image']);
+            $row['image'] = ImageHelper::site(BloodGroup::$path['image'], $row['image']);
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/edit/' . $row['id']),
                 'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/view/' . $row['id']),
@@ -136,7 +138,7 @@ class BloodGroupController extends Controller
         $data['view']       = BloodGroup::$path['view'] . '.includes.form.index';
         if ($id) {
             $response           = BloodGroup::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/view/' . $row['id']),

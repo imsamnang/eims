@@ -84,7 +84,7 @@ class StaffCertificateController extends Controller
             $breadcrumb[]  = [
                 'title' => __('Edit Staff Certificate'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/'.$id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffCertificate::updateToTable($id);
@@ -95,7 +95,7 @@ class StaffCertificateController extends Controller
             $breadcrumb[]  = [
                 'title' => __('View Staff Certificate'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/'.$id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Certificate');
@@ -160,7 +160,7 @@ class StaffCertificateController extends Controller
         }
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(StaffCertificate::$path, $row['image']);
+            $row['image'] = ImageHelper::site(StaffCertificate::$path['image'], $row['image']);
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $row['id']),
                 'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $row['id']),
@@ -181,7 +181,7 @@ class StaffCertificateController extends Controller
         if ($id) {
 
             $response           = StaffCertificate::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StaffCertificate::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StaffCertificate::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $row['id']),

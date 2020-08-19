@@ -25,7 +25,9 @@ class DistrictController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -127,7 +129,7 @@ class DistrictController extends Controller
         }
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Districts::$path, $row['image']);
+            $row['image'] = ImageHelper::site(Districts::$path['image'], $row['image']);
             $row['province'] = Provinces::where('id', $row->province_id)->pluck(app()->getLocale())->first();
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/edit/' . $row['id']),
@@ -149,7 +151,7 @@ class DistrictController extends Controller
         if ($id) {
 
             $response           = Districts::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Districts::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Districts::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'general/' . Districts::$path['url'] . '/view/' . $row['id']),

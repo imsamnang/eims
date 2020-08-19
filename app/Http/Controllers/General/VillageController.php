@@ -143,7 +143,7 @@ class VillageController extends Controller
         $response = $table->get()->map(function ($row) {
 
             $row['name']  = $row->km . ' - ' . $row->name;
-            $row['image'] = ImageHelper::site(Villages::$path, $row['image']);
+            $row['image'] = ImageHelper::site(Villages::$path['image'], $row['image']);
             $commune = Communes::where('id', $row->commune_id)->get()->first();
             $row['commune'] = $commune->{app()->getLocale()};
 
@@ -172,7 +172,7 @@ class VillageController extends Controller
         if ($id) {
 
             $response           = Villages::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Villages::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Villages::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'general/' . Villages::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'general/' . Villages::$path['url'] . '/view/' . $row['id']),

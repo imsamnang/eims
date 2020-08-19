@@ -143,7 +143,7 @@ class StudySubjectController extends Controller
         }
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->{app()->getLocale()};
-            $row['image'] = ImageHelper::site(StudySubjects::$path, $row['image']);
+            $row['image'] = ImageHelper::site(StudySubjects::$path['image'], $row['image']);
             $row['course_type'] = CourseTypes::where('id', $row->course_type_id)->pluck(app()->getLocale())->first();
             $row['credit_hour'] = $row->credit_hour . ' ' . __('Hour');
 
@@ -167,7 +167,7 @@ class StudySubjectController extends Controller
         if ($id) {
 
             $response           = StudySubjects::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StudySubjects::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StudySubjects::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['course_type'] = CourseTypes::where('id', $row->course_type_id)->pluck(app()->getLocale())->first();
                 $row['full_mark_theory'] = number_format($row->full_mark_theory, 2);
                 $row['pass_mark_theory'] = number_format($row->pass_mark_theory, 2);

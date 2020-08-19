@@ -25,7 +25,9 @@ class StudyCourseController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -142,7 +144,7 @@ class StudyCourseController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(StudyCourse::$path, $row['image']);
+            $row['image'] = ImageHelper::site(StudyCourse::$path['image'], $row['image']);
             $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']),
@@ -164,7 +166,7 @@ class StudyCourseController extends Controller
         if ($id) {
 
             $response           = StudyCourse::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StudyCourse::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StudyCourse::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']),

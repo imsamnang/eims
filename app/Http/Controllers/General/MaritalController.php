@@ -24,7 +24,9 @@ class MaritalController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -115,7 +117,7 @@ class MaritalController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Marital::$path, $row['image']);
+            $row['image'] = ImageHelper::site(Marital::$path['image'], $row['image']);
             $row['action']  = [
                 'edit'   => url(Users::role() . '/' . 'general/' . Marital::$path['url'] . '/edit/' . $row['id']),
                 'view'   => url(Users::role() . '/' . 'general/' . Marital::$path['url'] . '/view/' . $row['id']),
@@ -135,7 +137,7 @@ class MaritalController extends Controller
         $data['view']       = Marital::$path['view'] . '.includes.form.index';
         if ($id) {
             $response           = Marital::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Marital::$path, $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Marital::$path['image'], $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'general/' . Marital::$path['url'] . '/edit/' . $row['id']),
                     'view'   => url(Users::role() . '/' . 'general/' . Marital::$path['url'] . '/view/' . $row['id']),
