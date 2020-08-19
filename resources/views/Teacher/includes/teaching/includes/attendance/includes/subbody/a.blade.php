@@ -1,7 +1,6 @@
-
 <thead class="thead-gray">
     <tr data-height="150">
-        <th class="text-center" colspan="{{ DateHelper::daysOfMonth(request("year"),request("month")) + 6 }}">
+        <th>
             @if ($response["success"])
             <h4 class="header lh-170">
                 <span>
@@ -31,7 +30,7 @@
             @else
             <h4 class="header">
                 {{ __("List Attendance for month",['month'=> DateHelper::getDate(request("year")."-".request("month")."-".date("d"))->monthName]) . " ".request("year") }}
-                
+
 
             </h4>
             @endif
@@ -39,7 +38,7 @@
     </tr>
 
     <tr>
-        <th colspan="3">​</th>
+        <th>​</th>
         @for ($i = 1; $i <= DateHelper::daysOfMonth(request("year"),request("month")); $i++) @php
             $setClass=DateHelper::getDate(request("year")."-".request("month")."-".$i)->isToday() ? "bg-blue text-white"
             : "" ;
@@ -62,17 +61,17 @@
             @endif
             @endif
 
-            <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
+            <th>
                 {{ __(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"]) }}
             </th>
             @endfor
-            <th colspan="3">​</th>
+            <th>​</th>
     </tr>
 
     <tr>
-        <th class="font-weight-bold1">{{  __("Id") }}​</th>
-        <th class="font-weight-bold1">{{  __("Name") }}​</th>
-        <th class="font-weight-bold1">{{  __("Gender") }}​</th>
+        <th>{{  __("Id") }}​</th>
+        <th>{{  __("Name") }}​</th>
+        <th>{{  __("Gender") }}​</th>
 
         @for ($i = 1; $i <= DateHelper::daysOfMonth(request("year"),request("month")); $i++) @php
             $setClass=DateHelper::getDate(request("year")."-".request("month")."-".$i)->isToday() ?"bg-blue text-white"
@@ -96,15 +95,15 @@
             @endif
             @endif
 
-            <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
+            <th>
                 {{$i}}</th>
             @endfor
 
-            <th class="font-weight-bold1">{{ (app()->getLocale() == "km" ? " ច្បាប់" : " P") }}​
+            <th>{{ (app()->getLocale() == "km" ? " ច្បាប់" : " P") }}​
             </th>
-            <th class="font-weight-bold1">{{ (app()->getLocale() == "km" ? " ឥ.ច្បាប់" : " A") }}
+            <th>{{ (app()->getLocale() == "km" ? " ឥ.ច្បាប់" : " A") }}
             </th>
-            <th class="font-weight-bold1">{{ __("Total") }}</th>
+            <th>{{ __("Total") }}</th>
 
     </tr>
 </thead>

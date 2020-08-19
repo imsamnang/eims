@@ -3,9 +3,9 @@
         <table id="quiz-table" class="table table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
-                    <th width="1" class="sort" data-sort="quiz">{{__("Quiz")}}​</th>
-                    <th class="sort">
+                    <th>{{__("Id")}}​</th>
+                    <th>{{__("Quiz")}}​</th>
+                    <th>
                         @if (request()->segment(3) !== "quiz")
                         <a href="{{str_replace("answer/add","list",config("pages.form.action.detect"))}}"
                             target="_blank" class="float-right full-link">
@@ -22,7 +22,8 @@
                 <tr data-id="{{$row["id"]}}">
                     <td class="id">{{$row["id"]}}</td>
                     <td class="quiz">
-                        <button class="btn btn-sm collapsed" data-toggle="collapse" data-target="#collapse-{{$row["id"]}}">
+                        <button class="btn btn-sm collapsed" data-toggle="collapse"
+                            data-target="#collapse-{{$row["id"]}}">
                             <i class="fas fa-plus-minus"></i>
                         </button>
                         <img data-src="{{ $row['image']}}" alt="" width="50px" height="50px">
@@ -33,10 +34,10 @@
                             <table class="table border">
                                 <thead>
                                     <tr>
-                                        <th width="1">{{__("Id")}}​</th>
-                                        <th width="1">{{__("Quiz type​")}}​</th>
+                                        <th>{{__("Id")}}​</th>
+                                        <th>{{__("Quiz type​")}}​</th>
                                         <th>{{__("Question & Answered")}}​</th>
-                                        <th width="1">{{__('Score​')}}​</th>
+                                        <th>{{__('Score​')}}​</th>
                                     </tr>
                                 </thead>
                                 <tbody class="collapse" id="collapse-{{$row["id"]}}">
@@ -54,8 +55,7 @@
                                                 @if ($q['answered'])
                                                 @if (!is_null($q['answered']['score']))
                                                 <div class="d-flex mb-3">
-                                                    <span
-                                                        class="text-yellow">{{__("Answer")}} :​</span>
+                                                    <span class="text-yellow">{{__("Answer")}} :​</span>
                                                     <span class="ml-2 w-100">
                                                         @if ($q["quiz_answer_type"]["id"] == 1)
 
@@ -96,8 +96,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="d-flex mb-3">
-                                                    <span
-                                                        class="text-green">{{__("Answered")}} :​</span>
+                                                    <span class="text-green">{{__("Answered")}} :​</span>
                                                     @if ($q["quiz_answer_type"]["id"] == 1)
                                                     @foreach ($q["answer"] as $answer)
                                                     <div class="custom-control custom-radio mx-2">
@@ -144,8 +143,7 @@
                                                     id="form-quiz-answer" enctype="multipart/form-data"
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">
-                                                        <span
-                                                            class="text-green">{{__("Answered")}} :​</span>
+                                                        <span class="text-green">{{__("Answered")}} :​</span>
                                                         <span class="ml-2 w-100">
                                                             @csrf
                                                             <input type="hidden" name="id"
@@ -221,8 +219,7 @@
                                                     id="form-quiz-answer" enctype="multipart/form-data"
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">
-                                                        <span data-update-text="{{__("Answered")}} :"
-                                                            id="answer-label"
+                                                        <span data-update-text="{{__("Answered")}} :" id="answer-label"
                                                             class="text-green">{{__("Answer")}}​ :</span>
                                                         <span class="ml-2 w-100">
                                                             @csrf
@@ -248,7 +245,7 @@
                                                             <div data-toggle="checkbox-limit"
                                                                 data-limit="{{$q["answer_limit"]}}">
                                                                 <div>
-                                                                    
+
                                                                     {{__("This question can answers",['answer'=>$q["answer_limit"]." ".__('answer')])}}
                                                                 </div>
                                                                 @foreach ($q["answer"] as $answer)

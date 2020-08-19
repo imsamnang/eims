@@ -4,7 +4,7 @@
 
             <thead class="thead-light">
                 <tr class="{{$group == 0 ?'':'invisible' }} ">
-                    <th width=1>{{__('Id')}}</th>
+                    <th>{{__('Id')}}</th>
                     <th>{{__('Name')}}</th>
                     @if (!request('programId'))
                     <th>{{__('Study Program')}}</th>

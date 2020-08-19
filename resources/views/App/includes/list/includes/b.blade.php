@@ -3,7 +3,7 @@
         <table id="list-table" class="table border">
             <thead class="thead-light">
                 <tr>
-                    <th width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -11,12 +11,12 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
-                    <th class="sort" data-sort="name">
+                    <th>{{__("Id")}}​</th>
+                    <th>
                         {{__('Name')}}​</th>
                     <th>{{__("Description")}}​</th>
-                    <th width="1">{{__("Image")}}​</th>
-                    <th width="1" class="d-none"></th>
+                    <th>{{__("Image")}}​</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody class="list">

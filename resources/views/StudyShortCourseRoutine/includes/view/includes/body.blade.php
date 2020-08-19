@@ -11,12 +11,12 @@
     <div class="table-responsive">
         <table class="table table-bordered table-xs" data-toggle="course-routine">
             <thead>
-                <th width=1 class="font-weight-bold">
+                <th>
                     {{__("time")}}
                 </th>
 
                 @foreach ($days["data"] as $day)
-                <th width=170 class="font-weight-bold">
+                <th>
                     {{$day["name"]}}
                 </th>
                 @endforeach
@@ -34,8 +34,7 @@
                     </td>
                     @foreach ($routine["days"] as $d)
                     @if ($d["teacher"])
-                    <td class="text-center"
-                        data-merge="{{$d["teacher"]["id"]}}-{{$d["study_class"]["id"]}}">
+                    <td class="text-center" data-merge="{{$d["teacher"]["id"]}}-{{$d["study_class"]["id"]}}">
                         <span>
                             {{$d["teacher"]["name"]}}
                             <br>

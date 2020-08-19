@@ -1,7 +1,7 @@
 <table class="table table-xs table-bordered">
     <tbody>
         <tr>
-            <th colspan="3">{{ __("Guardian") }}</th>
+            <th>{{ __("Guardian") }}</th>
 
         </tr>
         <tr>
@@ -84,9 +84,9 @@
                         <tr>
 
                             @if ($row["student_guardian"]["guardian_is"] == "father")
-                                <td> {{ __("Father is guardian") }} </td>
+                            <td> {{ __("Father is guardian") }} </td>
                             @elseif ($row["student_guardian"]["guardian_is"] == "mother")
-                                <td> {{ __("Mother is guardian") }} </td>
+                            <td> {{ __("Mother is guardian") }} </td>
                             @else
                             <td>
                                 <table class="table table-bordered">

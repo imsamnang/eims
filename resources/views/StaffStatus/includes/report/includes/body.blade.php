@@ -1,11 +1,10 @@
-
 <div class="card-body p-0">
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-xs" style="width: 100%;">
 
             <thead class="thead-light">
                 <tr class="{{$group == 0 ?'':'invisible' }} ">
-                    <th width=1>{{__('Id')}}</th>
+                    <th>{{__('Id')}}</th>
                     <th>{{__('Name')}}</th>
                     <th>{{__('Other')}}</th>
                 </tr>

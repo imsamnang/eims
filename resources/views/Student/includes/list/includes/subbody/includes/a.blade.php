@@ -1,7 +1,7 @@
 <table class="table table-xs table-bordered">
     <tbody>
         <tr>
-            <th colspan="2">{{ __("Address") }}</th>
+            <th>{{ __("Address") }}</th>
         </tr>
         <tr>
             <td>

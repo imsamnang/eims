@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table id="datatable-basic"
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush">
+        <table id="datatable-basic" class="table table-flush">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -13,17 +11,17 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
-                    <th data-type="text" data-key="quiz.name" width="1" class="sort" data-sort="quiz">
+                    <th>
                         {{__("Quiz")}}​</th>
 
-                    <th data-type="modal" data-key="question" data-url="action.view" class="sort" data-sort="name">
+                    <th>
                         {{__("Questions")}}​</th>
-                    <th data-type="text" data-key="question_type" width="1">{{__('Quiz Question type')}}​</th>
-                    <th data-type="text" data-key="answer_type" width="1">{{__('Quiz answer type')}}​</th>
-                    <th data-type="text" data-key="score" width="1">{{__("Score")}}​</th>
-                    <th width=1 data-type="option" data-key="view,edit,delete"></th>
+                    <th>{{__('Quiz Question type')}}​</th>
+                    <th>{{__('Quiz answer type')}}​</th>
+                    <th>{{__("Score")}}​</th>
+                    <th></th>
 
                 </tr>
             </thead>

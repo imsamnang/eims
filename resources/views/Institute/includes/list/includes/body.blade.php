@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table id="datatable-basic"
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush">
+        <table id="datatable-basic" class="table table-flush">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -13,15 +11,15 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
-                    <th data-type="text" data-key="name">{{__("Institute")}}​</th>
-                    <th data-type="text" data-key="short_name">{{__("Short name")}}​</th>
-                    <th data-type="text" data-key="website">{{__("Website")}}​</th>
-                    <th data-type="text" data-key="address">{{__("Address")}}​</th>
-                    <th data-type="text" data-key="phone">{{__("Phone")}}​</th>
+                    <th>{{__("Institute")}}​</th>
+                    <th>{{__("Short name")}}​</th>
+                    <th>{{__("Website")}}​</th>
+                    <th>{{__("Address")}}​</th>
+                    <th>{{__("Phone")}}​</th>
 
-                    <th width=1 data-type="option" data-key="view,edit,delete"></th>
+                    <th></th>
 
                 </tr>
             </thead>

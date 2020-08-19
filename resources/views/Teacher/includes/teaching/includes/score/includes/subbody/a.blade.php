@@ -1,7 +1,6 @@
 <thead class="thead-gray">
     <tr data-height="100">
-        <th class="text-center" rowspan="1"
-            colspan="{{count($response['study_subject']) + ((config("pages.parameters.param1") != "report") ? 9 : 8)}}">
+        <th>
             <h4 class="header">
                 @if($response["data"])
                 <span>
@@ -31,7 +30,7 @@
     </tr>
 
     <tr>
-        <th width="1">
+        <th>
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                     data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
@@ -39,11 +38,11 @@
                 <label class="pl-4 custom-control-label" for="table-check-all"></label>
             </div>
         </th>
-        <th class="font-weight-bold">{{  __("Id") }}​</th>
-        <th class="font-weight-bold">{{  __("Name") }}​</th>
-        <th class="font-weight-bold">{{  __("Gender") }}​</th>
+        <th>{{  __("Id") }}​</th>
+        <th>{{  __("Name") }}​</th>
+        <th>{{  __("Gender") }}​</th>
         @foreach ($response['study_subject'] as $row)
-        <th class="font-weight-bold mw"> {{$row['subject']['name'] }}</th>
+        <th> {{$row['subject']['name'] }}</th>
         @endforeach
     </tr>
 </thead>

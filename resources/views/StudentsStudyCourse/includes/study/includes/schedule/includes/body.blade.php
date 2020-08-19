@@ -3,7 +3,7 @@
         <table class="table table-xs table-bordered" data-toggle="course-routine">
             <thead>
                 <tr>
-                    <th class="text-center" rowspan="1" colspan="8" scope="rowgroup">
+                    <th>
                         <h4 class="header lh-170">
                             <span>
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_program"]["name"]}}
@@ -23,11 +23,11 @@
                     </th>
                 </tr>
                 <tr>
-                    <th width=1 class="font-weight-bold">
+                    <th>
                         {{__("Time")}}
                     </th>
                     @foreach ($days["data"] as $day)
-                    <th width=170 class="{{date("N") == $day["id"] ? "text-white bg-blue" : "" }} font-weight-bold">
+                    <th>
                         {{$day["name"]}}</th>
                     @endforeach
                 </tr>

@@ -4,7 +4,7 @@
         <table id="request-table" class="table" data-toggle="ajax-table-data">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="checkbox" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -14,32 +14,32 @@
                         </div>
 
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">{{__("Id")}}​</th>
-                    <th data-type="text" data-key="study_program.name" width="1" class="sort" data-sort="study_program">
+                    <th>{{__("Id")}}​</th>
+                    <th>
                         {{__("Study Program")}}
                     </th>
-                    <th data-type="text" data-key="study_course.name" width="1" class="sort" data-sort="study_course">
+                    <th>
                         {{__("Study Course")}}
                     </th>
-                    <th data-type="text" data-key="study_generation.name" width="1" class="sort" data-sort="study_generation">
+                    <th>
                         {{__("Study Generation")}}
                     </th>
-                    <th data-type="text" data-key="study_academic_year.name" width="1" class="sort" data-sort="study_academic_year">
+                    <th>
                         {{__("Study Academic year")}}
                     </th>
-                    <th data-type="text" data-key="study_semester.name" width="1" class="sort" data-sort="study_semester">
+                    <th>
                         {{__("Study Semester")}}
                     </th>
-                    <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
+                    <th>
                         {{__("Study Session")}}
                     </th>
-                    <th data-type="text" data-key="description">
+                    <th>
                         {{__("Description")}}
                     </th>
-                    <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
+                    <th>
                         {{__("Status")}}
                     </th>
-                    <th data-type="image" data-key="photo">
+                    <th>
                         {{__("Photo")}}
                     </th>
                 </tr>

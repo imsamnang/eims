@@ -1,7 +1,6 @@
 <thead class="thead-gray">
     <tr data-height="150">
-        <th class="text-center" rowspan="1"
-            colspan="{{ DateHelper::daysOfMonth(request("year"),request("month")) + 6 }}" scope="rowgroup">
+        <th>
             <h4 class="header lh-170">
                 <span>
                     {{$response["data"][0]["node"]["study_course_session"]["study_course_schedule"]["study_program"]["name"]}}
@@ -29,16 +28,16 @@
     </tr>
 
     <tr>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Id") }}​</th>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Name") }}​</th>
-        <th class="{{isset($no_name) ? "d-none" : ""}} font-weight-bold1">{{  __("Gender") }}​</th>
+        <th>{{  __("Id") }}​</th>
+        <th>{{  __("Name") }}​</th>
+        <th>{{  __("Gender") }}​</th>
         @foreach ($response['study_subject'] as $row)
         <th> {{$row['subject']['name'] }}</th>
         @endforeach
-        <th class="font-weight-bold1">{{  __("Attendance score") }}​</th>
-        <th class="font-weight-bold1">{{  __("Other score") }}</th>
-        <th class="font-weight-bold1">{{  __("Total") }}</th>
-        <th class="font-weight-bold1">{{  __("Average") }}</th>
-        <th class="font-weight-bold1">{{  __("Grade") }}</th>
+        <th>{{  __("Attendance score") }}​</th>
+        <th>{{  __("Other score") }}</th>
+        <th>{{  __("Total") }}</th>
+        <th>{{  __("Average") }}</th>
+        <th>{{  __("Grade") }}</th>
     </tr>
 </thead>

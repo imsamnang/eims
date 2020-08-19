@@ -19,7 +19,7 @@
                         <div class="inbox-body">
                             <div class="mail-option">
                                 <div class="chk-all">
-                                    <div data-type="checkbox" data-key="null" width="1">
+                                    <div width="1">
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" id="table-check-all"
                                                 data-toggle="table-checked" data-checked-controls="table-checked"

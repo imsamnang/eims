@@ -49,7 +49,7 @@
                         Swal.showLoading();
                     },
                     onClose: () => {
-                        if(ajax && ajax.abort){
+                        if (ajax && ajax.abort) {
                             ajax.abort();
                         }
 
@@ -67,21 +67,14 @@
                     //     $(this).find("select").select2("val", 0);
                     // }
 
-                    if ($('[data-toggle="ajax-table-data"]').length) {
-                        $('[data-toggle="ajax-table-data"]').each(function () {
+                    if ($('table#datatable-basic').length) {
+                        $('table#datatable-basic').each(function () {
                             var ajaxTableData = new AjaxTableData($(this));
                             ajaxTableData.build(response.data);
                         });
-                        $.getScript(location.origin + "/assets/js/argon.min.js").done((response, type, xhr) => {
-                            if (type == "success") {}
-                        });
+                        $.getScript(location.origin + "/assets/js/argon.min.js");
                     }
-                    if($('[data-toggle="datatable-ajax"]').length){
-                        $('[data-toggle="datatable-ajax"]').each(function () {
-                            var t = $(this).DataTable();
-                                t.ajax.reload();
-                        });
-                    }
+                   
                     swal({
                         showCloseButton: false,
                         title: response.message.title,
@@ -92,7 +85,7 @@
                         confirmButtonClass: "btn btn-success",
                         confirmButtonText: response.message.button.confirm,
                         onClose: () => {
-                            if(response.reload){
+                            if (response.reload) {
                                 location.reload();
                             }
 

@@ -4,14 +4,14 @@
 
             <thead class="thead-light">
                 <tr class="{{$group == 0 ?'':'invisible' }} ">
-                    <th width=1>{{__('Id')}}</th>
+                    <th>{{__('Id')}}</th>
                     <th>{{__('Name')}}</th>
-                    <th width=1>{{__('Gender')}}</th>
+                    <th>{{__('Gender')}}</th>
                     @if (!request('quizId'))
                     <th>{{__('Quiz')}}</th>
                     @endif
                     @foreach ($questions as $i => $que)
-                    <th width=1>{{__('Question')}} {{$i + 1}}</th>
+                    <th>{{__('Question')}} {{$i + 1}}</th>
                     @endforeach
                     <th>{{__('Total')}}</th>
                     <th>{{__('Other')}}</th>

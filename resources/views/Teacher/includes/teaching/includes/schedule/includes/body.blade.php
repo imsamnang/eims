@@ -1,31 +1,33 @@
-
 <div class="card-body p-0">
     <div class="table-responsive">
         <table class="table table-xs table-bordered" data-toggle="course-routine">
             <thead>
                 <tr>
-                    <th class="text-center" rowspan="1" colspan="8" scope="rowgroup">
+                    <th>
                         <h4 class="header lh-170">
                             <span>
-                                {{$schedule["study_course_session"]["study_course_schedule"]["study_program"]["name"]}} -
+                                {{$schedule["study_course_session"]["study_course_schedule"]["study_program"]["name"]}}
+                                -
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_course"]["name"]}}
                             </span>
                             <br>
                             <span>
                                 {{__("Schedule")}}
-                                {{$schedule["study_course_session"]["study_course_schedule"]["study_generation"]["name"]}} -
-                                {{$schedule["study_course_session"]["study_course_schedule"]["study_academic_year"]["name"]}} -
+                                {{$schedule["study_course_session"]["study_course_schedule"]["study_generation"]["name"]}}
+                                -
+                                {{$schedule["study_course_session"]["study_course_schedule"]["study_academic_year"]["name"]}}
+                                -
                                 {{$schedule["study_course_session"]["study_course_schedule"]["study_semester"]["name"]}}
                             </span>
                         </h4>
                     </th>
                 </tr>
                 <tr>
-                    <th width=1 class="font-weight-bold">
+                    <th>
                         {{__("Time")}}
                     </th>
                     @foreach ($days["data"] as $day)
-                    <th width=170 class="text-center font-weight-bold">
+                    <th>
                         {{$day["name"]}}</th>
                     @endforeach
                 </tr>

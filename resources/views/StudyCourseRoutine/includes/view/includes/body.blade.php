@@ -11,12 +11,12 @@
     <div class="table-responsive">
         <table class="table table-bordered table-xs" data-toggle="course-routine">
             <thead>
-                <th width=1 class="font-weight-bold">
+                <th>
                     {{__("time")}}
                 </th>
 
                 @foreach ($days["data"] as $day)
-                <th width=170 class="font-weight-bold">
+                <th>
                     {{$day["name"]}}
                 </th>
                 @endforeach

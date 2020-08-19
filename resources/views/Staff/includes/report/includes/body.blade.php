@@ -4,9 +4,9 @@
 
             <thead class="thead-light">
                 <tr class="{{$group == 0 ?'':'invisible' }} ">
-                    <th width=1>{{__('Id')}}</th>
+                    <th>{{__('Id')}}</th>
                     <th>{{__('Name')}}</th>
-                    <th width=1>{{__('Gender')}}</th>
+                    <th>{{__('Gender')}}</th>
                     <th>{{__('Date of birth')}}</th>
                     <th>{{__('Phone')}}</th>
                     {{-- <th>{{__('Email')}}</th> --}}

@@ -194,7 +194,6 @@ class SettingsController extends Controller
             Artisan::call('view:clear');
             dd('cache config route view are clear.');
         } elseif ($param1 == 'delete') {
-
             $id = request('id', $param2);
             return App::deleteFromTable($id);
         } else {

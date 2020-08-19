@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush" data-toggle="datatable-ajax">
+        <table class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
@@ -13,19 +11,19 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
                     @if(Auth::user()->role_id == 1)
-                    <th data-type="text" data-key="institute.short_name">{{__("Institute")}}​
+                    <th>{{__("Institute")}}​
                         @endif
                     </th>
 
-                    <th data-type="text" data-key="study_generation.name">
+                    <th>
                         {{__("Study Generation")}}​</th>
-                    <th data-type="text-image" data-key="study_subject.name" data-url="study_subject.image">
+                    <th>
                         {{__("Study Subjects")}}​</th>
 
-                    <th width=1 data-type="option" data-key="view,edit,delete"></th>
+                    <th></th>
 
                 </tr>
             </thead>

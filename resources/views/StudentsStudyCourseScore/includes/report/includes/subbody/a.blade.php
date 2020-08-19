@@ -1,8 +1,6 @@
 <thead class="thead-gray">
     <tr data-height="100">
-        <th class="text-center" rowspan="1"
-            colspan="{{count($response['study_subject']) + ((config("pages.parameters.param1") != "report") ? 9 : 8)}}"
-            >
+        <th>
             <h4 class="header">
                 @if($response["data"])
                 <span>
@@ -33,7 +31,7 @@
 
     <tr>
         @if (config("pages.parameters.param1") != "report")
-        <th width="1">
+        <th>
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                     data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
@@ -43,16 +41,16 @@
         </th>
         @endif
 
-        <th class="font-weight-bold">{{  __("Id") }}​</th>
-        <th class="font-weight-bold">{{  __("Name") }}​</th>
-        <th class="font-weight-bold">{{  __("Gender") }}​</th>
+        <th>{{  __("Id") }}​</th>
+        <th>{{  __("Name") }}​</th>
+        <th>{{  __("Gender") }}​</th>
         @foreach ($response['study_subject'] as $row)
-        <th class="font-weight-bold mw"> {{$row['subject']['name'] }}</th>
+        <th> {{$row['subject']['name'] }}</th>
         @endforeach
-        <th class="font-weight-bold mw">{{  __("Attendance score") }}​</th>
-        <th class="font-weight-bold mw">{{  __("Other score") }}</th>
-        <th class="font-weight-bold mw">{{  __("Total") }}</th>
-        <th class="font-weight-bold mw">{{  __("Average") }}</th>
-        <th class="font-weight-bold mw">{{  __("Grade") }}</th>
+        <th>{{  __("Attendance score") }}​</th>
+        <th>{{  __("Other score") }}</th>
+        <th>{{  __("Total") }}</th>
+        <th>{{  __("Average") }}</th>
+        <th>{{  __("Grade") }}</th>
     </tr>
 </thead>

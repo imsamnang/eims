@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush" data-toggle="datatable-ajax">
+        <table class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
@@ -13,33 +11,32 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
 
-                    <th width=1 data-type="text" data-key="id">
+                    <th>
                         {{__("Id Request study")}}​
                     </th>
 
 
-                    <th data-type="text" data-key="institute.short_name" width="1" class="sort" data-sort="institute">
+                    <th>
                         {{__("Institute")}}​</th>
 
-                    <th data-type="text-image" data-key="study_subject.name" data-url="study_subject.image" width="1"
-                        class="sort" data-sort="study_subject">
+                    <th>
                         {{__("Study subjects")}}
                     </th>
 
-                    <th data-type="text" data-key="study_session.name" width="1" class="sort" data-sort="study_session">
+                    <th>
                         {{__("Study Session")}}
                     </th>
 
-                    <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
+                    <th>
                         {{__("Status")}}
                     </th>
 
-                    <th width=1 data-type="image" data-key="photo">{{__("Photo")}}​</th>
+                    <th>{{__("Photo")}}​</th>
 
-                    <th width=1 data-type="option" data-key="edit,delete">
+                    <th>
                     </th>
 
                 </tr>

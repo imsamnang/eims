@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush" data-toggle="datatable-ajax">
+        <table class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -15,31 +13,31 @@
                     </th>
 
 
-                    <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
 
-                    <th width=1 data-type="text" data-key="name">
+                    <th>
                         {{__("Name")}}​
                     </th>
 
                     @foreach ($response['study_subject'] as $key => $row)
-                    <th data-type="text" data-key="scores.{{$row["subject"]["id"]}}.score">
+                    <th>
                         {{$row['subject']['name'] }}</th>
                     @endforeach
 
-                    <th data-type="text" data-key="scores.attendance_marks.score">
+                    <th>
                         {{  __("Attendance score") }}​</th>
-                    <th data-type="text" data-key="scores.other_marks.score">
+                    <th>
                         {{  __("Other score") }}</th>
-                    <th data-type="text" data-key="total_marks">
+                    <th>
                         {{  __("Total") }}</th>
-                    <th data-type="text" data-key="average">
+                    <th>
                         {{  __("Average") }}</th>
-                    <th data-type="text" data-key="grade">
+                    <th>
                         {{  __("Grade") }}</th>
 
 
-                    <th width=1 data-type="option" data-key="view,edit,delete">
+                    <th>
                     </th>
 
                 </tr>

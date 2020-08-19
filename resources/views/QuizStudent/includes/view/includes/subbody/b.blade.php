@@ -3,9 +3,9 @@
         <table class="table border">
             <thead>
                 <tr>
-                    <th width="1">{{__("Id")}}​</th>
+                    <th>{{__("Id")}}​</th>
                     <th>{{__("Questions & Answered")}}​</th>
-                    <th width="1">{{__('Score')}}​</th>
+                    <th>{{__('Score')}}​</th>
                 </tr>
             </thead>
             <tbody>

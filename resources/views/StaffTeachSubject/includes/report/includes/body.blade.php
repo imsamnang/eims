@@ -4,15 +4,15 @@
 
             <thead class="thead-light">
                 <tr class="{{$group == 0 ?'':'invisible' }} ">
-                    <th width=1>{{__('Id')}}</th>
+                    <th>{{__('Id')}}</th>
                     <th>{{__('Name')}}</th>
-                    <th width=1>{{__('Gender')}}</th>
+                    <th>{{__('Gender')}}</th>
                     <th>{{__('Phone')}}</th>
                     @if (!request('subjectsId'))
                     <th>{{__('Subjects')}}</th>
                     @endif
                     @if (!request('year'))
-                    <th width=1>{{__('Year')}}</th>
+                    <th>{{__('Year')}}</th>
                     @endif
                     <th>{{__('Other')}}</th>
                 </tr>

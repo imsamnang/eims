@@ -2,9 +2,9 @@
     <legend class="w-auto">(B) {{__('Answer')}}</legend>
     <div class="table-responsive py-3">
         <table class="table">
-            <th width=1>{{__('Id')}}</th>
+            <th>{{__('Id')}}</th>
             <th>{{__('Answer')}}</th>
-            <th width=1>{{__('Correct answer​')}}</th>
+            <th>{{__('Correct answer​')}}</th>
             <tbody>
                 @foreach ($row['answers'] as $key => $ans)
                 <tr>

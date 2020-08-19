@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table id="datatable-basic"
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush">
+        <table id="datatable-basic" class="table table-flush">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -13,42 +11,40 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th width=1 data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
 
-                    <th width=1 data-type="text" data-key="name">
+                    <th>
                         {{__("Name")}}​
                     </th>
-                    <th width=1 data-type="text" data-key="gender">
+                    <th>
                         {{__("Gender")}}​
                     </th>
 
 
-                    <th data-type="text" data-key="study_program" width="1" class="sort" data-sort="study_program">
+                    <th>
                         {{__("Study Program")}}
                     </th>
-                    <th data-type="text" data-key="study_course" width="1" class="sort" data-sort="study_course">
+                    <th>
                         {{__("Study Course")}}
                     </th>
-                    <th data-type="text" data-key="study_generation" width="1" class="sort"
-                        data-sort="study_generation">
+                    <th>
                         {{__("Study Generation")}}
                     </th>
-                    <th data-type="text" data-key="study_academic_year" width="1" class="sort"
-                        data-sort="study_academic_year">
+                    <th>
                         {{__("Study Academic year")}}
                     </th>
-                    <th data-type="text" data-key="study_semester" width="1" class="sort" data-sort="study_semester">
+                    <th>
                         {{__("Study Semester")}}
                     </th>
-                    <th data-type="text" data-key="study_session" width="1" class="sort" data-sort="study_session">
+                    <th>
                         {{__("Study Session")}}
                     </th>
-                    <th data-type="text" data-key="status" width="1" class="sort" data-sort="status">
+                    <th>
                         {{__("Status")}}
                     </th>
 
-                    <th width=1 data-type="option" data-key="view,edit,approve">
+                    <th>
                     </th>
 
                 </tr>

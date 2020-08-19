@@ -1,11 +1,9 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table
-            data-url="{{str_replace("add","list-datatable",config("pages.form.action.add"))}}{{config("pages.search")}}"
-            class="table table-flush" data-toggle="datatable-ajax">
+        <table class="table table-flush" data-toggle="datatable-ajax">
             <thead class="thead-light">
                 <tr>
-                    <th data-type="checkbox" data-key="null" width="1">
+                    <th>
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
                                 data-checked-controls="table-checked"
@@ -13,16 +11,16 @@
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
                     </th>
-                    <th data-type="text" data-key="id" width="1" class="sort" data-sort="id">
+                    <th>
                         {{__("Id")}}​</th>
-                    <th data-type="text" data-key="phrase" class="sort" data-sort="phrase">
+                    <th>
                         {{__("Phrase")}}​</th>
                     @if (config('app.languages'))
                     @foreach (config('app.languages') as $lang)
-                    <th data-type="text" data-key="{{$lang["code_name"]}}"> {{$lang['translate_name']}}​</th>
+                    <th> {{$lang['translate_name']}}​</th>
                     @endforeach
                     @endif
-                    <th width=1 data-type="option" data-key="view,edit,delete"></th>
+                    <th></th>
 
                 </tr>
             </thead>

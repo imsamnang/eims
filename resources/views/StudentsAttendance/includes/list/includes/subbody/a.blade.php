@@ -1,7 +1,6 @@
 <thead class="thead-gray">
     <tr data-height="150">
-        <th class="text-center"
-            colspan="{{ DateHelper::daysOfMonth(request("year"),request("month")) + ((config("pages.parameters.param1") != "report")? 7 : 6) }}">
+        <th>
             @if ($response["success"])
             <h4 class="header lh-170">
                 <span>
@@ -38,7 +37,7 @@
 
     <tr>
 
-        <th colspan="{{(config("pages.parameters.param1") != "report")? 4 : 3}}">​</th>
+        <th>​</th>
         @for ($i = 1; $i <= DateHelper::daysOfMonth(request("year"),request("month")); $i++) @php
             $setClass=DateHelper::getDate(request("year")."-".request("month")."-".$i)->isToday() ? "bg-blue text-white"
             : "" ;
@@ -61,27 +60,26 @@
             @endif
             @endif
 
-            <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
+            <th>
                 {{ __(mb_substr(DateHelper::dayOfWeek(request("year")."-".request("month")."-".$i)["day"], 0, 3,'utf-8')) }}
             </th>
             @endfor
-            <th colspan="3">​</th>
+            <th>​</th>
     </tr>
 
     <tr>
         @if (config("pages.parameters.param1") != "report")
-        <th width="1">
+        <th>
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
-                    data-checked-controls="table-checked" data-checked-show-controls='[]'
-                    type="checkbox">
+                    data-checked-controls="table-checked" data-checked-show-controls='[]' type="checkbox">
                 <label class="pl-4 custom-control-label" for="table-check-all"></label>
             </div>
         </th>
         @endif
-        <th class="font-weight-bold1">{{  __("Id") }}​</th>
-        <th class="font-weight-bold1">{{  __("Name") }}​</th>
-        <th class="font-weight-bold1">{{  __("Gender") }}​</th>
+        <th>{{  __("Id") }}​</th>
+        <th>{{  __("Name") }}​</th>
+        <th>{{  __("Gender") }}​</th>
 
         @for ($i = 1; $i <= DateHelper::daysOfMonth(request("year"),request("month")); $i++) @php
             $setClass=DateHelper::getDate(request("year")."-".request("month")."-".$i)->isToday() ?"bg-blue text-white"
@@ -105,15 +103,15 @@
             @endif
             @endif
 
-            <th data-toggle="tooltip" rel="tooltip" data-placement="left" title="{{$setTitle}}" class="{{ $setClass }}">
+            <th>
                 {{$i}}</th>
             @endfor
 
-            <th class="font-weight-bold1">{{ (app()->getLocale() == "km" ? " ច្បាប់" : " P") }}​
+            <th>{{ (app()->getLocale() == "km" ? " ច្បាប់" : " P") }}​
             </th>
-            <th class="font-weight-bold1">{{ (app()->getLocale() == "km" ? " ឥ.ច្បាប់" : " A") }}
+            <th>{{ (app()->getLocale() == "km" ? " ឥ.ច្បាប់" : " A") }}
             </th>
-            <th class="font-weight-bold1">{{ __("Total") }}</th>
+            <th>{{ __("Total") }}</th>
 
     </tr>
 </thead>
