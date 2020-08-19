@@ -80,7 +80,6 @@
                 <div data-toggle="widget-calendar" data-event-url="{{URL::to("/holiday/calendar")}}"></div>
             </div>
         </div>
-        
     </div>
 
 </div>
