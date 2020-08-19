@@ -48,7 +48,7 @@
             <li>
               <a class="dropdown-item" href="{{$lang["action"]["set"]}}">
                 <span><img width="26" src="{{ $lang["image"]}}" /></span>
-                <span>{{ __($lang["code_name"],"en")}}</span>
+                <span>{{ __($lang["code_name"])}}</span>
               </a>
             </li>
             @endforeach
