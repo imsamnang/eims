@@ -1,4 +1,4 @@
-<div class="row bg-{{config("app.theme_color.name")}} rounded" data-theme-bg-color="{{config("app.theme_color.name")}}">
+<div class="row rounded" data-theme-bg-color="{{config("app.theme_color.name")}}">
     <div class="col-xl-8">
         <div class="row">
             <div class="col-xl-6">
@@ -80,7 +80,7 @@
                 <div data-toggle="widget-calendar" data-event-url="{{URL::to("/holiday/calendar")}}"></div>
             </div>
         </div>
-        
+
     </div>
 
 </div>
