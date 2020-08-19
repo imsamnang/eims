@@ -8,7 +8,7 @@
                     <th data-type="checkbox" data-key="null" width="1">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="table-check-all" data-toggle="table-checked"
-                                data-checked-controls="table-checked" data-checked-show-controls='["edit","delete"]'
+                                data-checked-controls="table-checked" data-checked-show-controls='["view","edit","delete"]'
                                 type="checkbox">
                             <label class="custom-control-label" for="table-check-all"></label>
                         </div>
@@ -36,7 +36,7 @@
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" data-toggle="table-checked"
                                 id="table-check-{{$row["id"]}}"
-                                data-checked-show-controls='["view","edit","account","delete"]' type="checkbox"
+                                data-checked-show-controls='["view","edit","delete"]' type="checkbox"
                                 data-checked="table-checked" value="{{$row["id"]}}">
                             <label class="custom-control-label" for="table-check-{{$row["id"]}}"></label>
                         </div>

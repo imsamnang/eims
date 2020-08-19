@@ -20,7 +20,7 @@
 
                     <th data-type="modal" data-key="question" data-url="action.view" class="sort" data-sort="name">
                         {{__("Questions")}}​</th>
-                    <th data-type="text" data-key="question_type" width="1">{{__('Name')}}​</th>
+                    <th data-type="text" data-key="question_type" width="1">{{__('Quiz Question type')}}​</th>
                     <th data-type="text" data-key="answer_type" width="1">{{__('Quiz answer type')}}​</th>
                     <th data-type="text" data-key="score" width="1">{{__("Score")}}​</th>
                     <th width=1 data-type="option" data-key="view,edit,delete"></th>
