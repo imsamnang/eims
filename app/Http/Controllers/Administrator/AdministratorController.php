@@ -209,7 +209,7 @@ class AdministratorController extends Controller
                             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                             ->whereNotIn('study_status_id', [7])
-                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row->id),
+                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row->id)
                     ),
                     'status'  => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_id')->where('study_program_id', $row['id'])),
                     'color'   => config('app.theme_color.name'),
