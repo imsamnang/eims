@@ -34,6 +34,7 @@ class StaffsReportTemplateExport implements FromCollection, ShouldAutoSize, With
             $new_data[] = [
                 'id'    => $row['id'],
                 'name'    => $row['name'],
+                'gender'    => $row['gender'],
                 'dob'    => $row['date_of_birth'],
                 'phone'    => $row['phone'],
                 'designation'    => $row['designation'],
