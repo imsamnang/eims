@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Users;
 use App\Events\NewsFeed;
-use App\Helpers\MentionHelper;
 
+use App\Helpers\MentionHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,7 +39,17 @@ class ActivityFeedCommentsReply extends Model
                 $data[$key]         = array(
                     'comment_id'    => $row['activity_feed_comment_id'],
                     'id'            => $row['id'],
-                    'user'          => Users::getData($row['user_id'])['data'][0],
+                    'user'          => Users::where('id', $row['user_id'])->get()->map(function ($row) {
+                        $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                        $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
+                        $row['action']  = [
+                            'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
+                            'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
+                            'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                        ];
+
+                        return $row;
+                    })->first(),
                     'comment'       => $row['comment'],
                     'type'          => $row['type'],
                     'mention'       => MentionHelper::mention($row['comment']),

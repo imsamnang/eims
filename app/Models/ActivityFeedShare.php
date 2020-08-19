@@ -25,12 +25,22 @@ class ActivityFeedShare extends Model
         $get = $get->get()->toArray();
         if ($get) {
             foreach ($get as $key => $row) {
-                $node = ActivityFeed::where('id',$row['node_id'])->first()->toArray();
+                $node = ActivityFeed::where('id', $row['node_id'])->first()->toArray();
                 $data  = array(
                     'feed_id' => $row['node_id'],
                     'node'    => [
                         'id'            => $node['id'],
-                        'user'          => Users::getData($node['user_id'])['data'][0],
+                        'user'          => Users::where('id', $row['user_id'])->get()->map(function ($row) {
+                            $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                            $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
+                            $row['action']  = [
+                                'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
+                                'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
+                                'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                            ];
+
+                            return $row;
+                        })->frist(),
                         'type'          => $node['type'],
                         'who_see'       => $node['who_see'],
                         'post_message'  => $node['post_message'],
@@ -42,7 +52,6 @@ class ActivityFeedShare extends Model
                         'updated_at'    => $node['updated_at'],
                     ]
                 );
-
             }
 
             $response       = array(
@@ -61,7 +70,7 @@ class ActivityFeedShare extends Model
     }
 
 
-    public static function addToTable($activity_feed_id,$node_id)
+    public static function addToTable($activity_feed_id, $node_id)
     {
         $response = [
             'success'   => false,
@@ -72,7 +81,7 @@ class ActivityFeedShare extends Model
                 'activity_feed_id'  => $activity_feed_id,
                 'node_id'  => $node_id,
             ]);
-            if($add){
+            if ($add) {
                 $response = array(
                     'success'   => true,
                     'data'      => ActivityFeedShare::getData($activity_feed_id)['data'],

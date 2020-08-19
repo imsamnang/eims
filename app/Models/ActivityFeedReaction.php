@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Events\NewsFeed;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class ActivityFeedReaction extends Model
 {
@@ -29,7 +30,17 @@ class ActivityFeedReaction extends Model
         if ($get) {
             foreach ($get as $key => $row) {
                 $reaction[] = $row['type'];
-                $user = Users::getData($row['user_id'])['data'][0];
+                $user = Users::where('id', $row['user_id'])->get()->map(function ($row) {
+                    $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                    $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
+                    $row['action']  = [
+                        'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                    ];
+
+                    return $row;
+                })->frist();
                 if (Auth::user()) {
                     if ($row['user_id'] == Auth::user()->id) {
                         $you_react = $row['type'];
@@ -43,9 +54,9 @@ class ActivityFeedReaction extends Model
                     $data[] = [
                         'feed_id'     =>  $row['activity_feed_id'],
                         'you_react'   =>  $you_react,
-                        'other_react_name' => rtrim($other_react ,','),
+                        'other_react_name' => rtrim($other_react, ','),
                         'reaction'    =>  array_unique($reaction),
-                        'like'  => ActivityFeedReaction::where('id', $row['activity_feed_id'])->where('type','like')->count()
+                        'like'  => ActivityFeedReaction::where('id', $row['activity_feed_id'])->where('type', 'like')->count()
                     ];
                 }
             }
