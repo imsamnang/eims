@@ -32,7 +32,9 @@ class SettingsController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -104,6 +106,13 @@ class SettingsController extends Controller
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
+                $data['shortcut'][] = [
+                    'name'  => __('Role'),
+                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/list'),
+                    'icon'  => 'fas fa-user-shield',
+                    'image' => null,
+                    'color' => 'bg-' . config('app.theme_color.name'),
+                ];
             }
 
             $data['shortcut'][] = [
@@ -114,13 +123,7 @@ class SettingsController extends Controller
                 'color' => 'bg-' . config('app.theme_color.name'),
             ];
 
-            $data['shortcut'][] = [
-                'name'  => __('Role'),
-                'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/list'),
-                'icon'  => 'fas fa-user-shield',
-                'image' => null,
-                'color' => 'bg-' . config('app.theme_color.name'),
-            ];
+
 
             $data['view']  = App::$path['view'] . '.includes.dashboard.index';
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');

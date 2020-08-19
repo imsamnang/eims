@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Settings;
 
 use App\Models\App;
 use App\Models\Users;
-use App\Models\Languages;
+use App\Models\Institute;
 
+use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
@@ -21,7 +22,9 @@ class FeatureSliderController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -98,7 +101,17 @@ class FeatureSliderController extends Controller
             'messages'    =>  FormFeatureSlider::customMessages(),
             'questions'   =>  FormFeatureSlider::questionField(),
         ];
+        //Select Option
 
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            return $row;
+        });
+        $data['instituteFilter']['data'] = Institute::whereIn('id', FeatureSlider::groupBy('institute_id')->pluck('institute_id'))
+            ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                return $row;
+            });
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
@@ -107,6 +120,10 @@ class FeatureSliderController extends Controller
     public function list($data)
     {
         $table = FeatureSlider::orderBy('id', 'DESC');
+
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->title;
