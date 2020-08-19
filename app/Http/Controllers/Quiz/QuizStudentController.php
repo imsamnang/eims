@@ -44,7 +44,9 @@ class QuizStudentController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -302,7 +304,9 @@ class QuizStudentController extends Controller
             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id');
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            ->orderBy((new QuizStudent())->getTable() . '.id', 'DESC');
+
 
         if (request('instituteId')) {
             $table->where((new Quiz())->getTable() . '.institute_id', request('instituteId'));
