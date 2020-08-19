@@ -28,6 +28,7 @@
                 {{__("Delete")}}
             </span>
         </a>
+        @if (Auth::user()->role_id == 1)
 
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
@@ -35,6 +36,7 @@
                 {{__("Filter")}}
             </span>
         </a>
+        @endif
         <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
             <i class="fas fa-file-export m-0"></i>
             <span class="d-none d-sm-inline">
@@ -44,6 +46,7 @@
     </div>
 
 </div>
+@if (Auth::user()->role_id == 1)
 <div class="card-header border-0 pb-0">
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
@@ -95,3 +98,4 @@
         </div>
     </form>
 </div>
+@endif

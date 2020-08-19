@@ -23,14 +23,14 @@
         </a>
 
         {{-- <a data-loadscript='["{{ asset('/assets/vendor/croppie/croppie.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
-            data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]' href="#"
-            data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
-            class="btn btn-primary mb-3 disabled" data-checked-show="photo" data-target="#modal" data-backdrop="static"
-            data-keyboard="false">
-            <i class="fas fa-portrait m-0"></i>
-            <span class="d-none d-sm-inline">
-                {{__("Photo")}}
-            </span>
+        data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]' href="#"
+        data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
+        class="btn btn-primary mb-3 disabled" data-checked-show="photo" data-target="#modal" data-backdrop="static"
+        data-keyboard="false">
+        <i class="fas fa-portrait m-0"></i>
+        <span class="d-none d-sm-inline">
+            {{__("Photo")}}
+        </span>
         </a>
         <a data-loadscript='["{{ asset('/assets/vendor/jquery-qrcode/jquery.qrcode.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
             href="#" data-href="{{str_replace('edit','qrcode/make',config("pages.form.action.edit"))}}"
@@ -93,6 +93,7 @@
                 <div class="form-row">
                     <div class="col-md-9">
                         <div class="form-row">
+                            @if (Auth::user()->role_id == 1)
                             <div class="col-md-5 mb-3">
                                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                                     data-allow-clear="true" data-text="{{ __("Add new option") }}"
@@ -103,6 +104,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
 
                             <div class="col-md-3 mb-3">
                                 <select class="form-control" data-toggle="select" id="generation" title="Simple select"

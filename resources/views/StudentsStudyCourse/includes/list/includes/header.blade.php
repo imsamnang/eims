@@ -93,6 +93,7 @@
                 <div class="form-row">
                     <div class="col-md-9">
                         <div class="form-row">
+                            @if (Auth::user()->role_id == 1)
                             <div class="col-md-5 mb-3">
                                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                                     data-allow-clear="true" data-text="{{ __("Add new option") }}"
@@ -103,6 +104,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
                             <div class="col-md-3 mb-3">
                                 <select class="form-control" data-toggle="select" id="program" title="Simple select"
                                     data-allow-clear="true" data-text="{{ __("Add new option") }}"

@@ -7,18 +7,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col">
-                <div class="form-row">
-                    @csrf
-                    @if (request()->segment(3) == "view")
-                    <div class="col-md-6 mb-3">
-                        <label class="form-control-label" for="id">
-                            {{ __("Id") }}
-                        </label>
-                        <span class="form-control" id="id" name="id"
-                            value="{{config("pages.form.data.".$key.".id")}}">{{config("pages.form.data.".$key.".id")}}</span>
-                    </div>
-                    @endif
-                </div>
+                @if (Auth::user()->role_id == 1)
 
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
@@ -48,6 +37,10 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <input type="hidden" name="institute" value="{{Auth::user()->institute_id}}">
+                @endif
+
 
                 <div class="form-row">
                     <div class="col-md-6 mb-3">

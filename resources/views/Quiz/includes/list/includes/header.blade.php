@@ -51,6 +51,7 @@
             <div class="col-12 collapse mb-3 {{request("instituteId") || request("designationId") ? "show" : ""}}"
                 id="filter">
                 <div class="form-row">
+                    @if (Auth::user()->role_id == 1)
                     <div class="col-md-6">
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                             data-allow-clear="true" data-text="{{ __("Add new option") }}"
@@ -61,6 +62,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
                     <div class="col-md-3">
                         <select class="form-control" data-toggle="select" id="staff" title="Simple select"
                             data-allow-clear="true" data-text="{{ __("Add new option") }}"

@@ -28,6 +28,7 @@
                 {{__("Delete")}}
             </span>
         </a>
+        @if (Auth::user()->role_id == 1)
 
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
@@ -35,9 +36,11 @@
                 {{__("Filter")}}
             </span>
         </a>
+        @endif
     </div>
 
 </div>
+@if (Auth::user()->role_id == 1)
 <div class="card-header border-0 pb-0">
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
@@ -89,3 +92,4 @@
         </div>
     </form>
 </div>
+@endif

@@ -15,10 +15,12 @@
             <div style="margin-top: 10px">
                 <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
                     enctype="multipart/form-data">
+
                     <div style="margin: 10px 0">
                         <b> {{__('Filter')}}</b>
                     </div>
                     <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;">
+                        @if (Auth::user()->role_id == 1)
                         <div>
                             <label style="display: inline-block;width:100%" for="institute">{{__('Institute')}}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
@@ -32,6 +34,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <div>
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{__('Study Program')}}</label>
@@ -120,6 +123,7 @@
                                 {{ __("Search filter") }}</button>
                         </div>
                     </div>
+
                     <div style="margin: 10px 0">
                         <b> {{__('Sheet')}}</b>
                     </div>

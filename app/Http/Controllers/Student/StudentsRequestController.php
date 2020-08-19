@@ -25,9 +25,7 @@ use App\Models\StudyGeneration;
 use App\Models\StudyAcademicYears;
 use Illuminate\Support\Collection;
 use App\Models\StudentsStudyCourse;
-use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\FormStudentsRequest;
 
 class StudentsRequestController extends Controller
@@ -37,7 +35,9 @@ class StudentsRequestController extends Controller
     public function __construct()
     {
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -210,7 +210,7 @@ class StudentsRequestController extends Controller
     {
         $table = StudentsRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsRequest)->getTable() . '.student_id');
         if (request('instituteId')) {
-            $table->where('institute_id', request('instituteId'));
+            $table->where((new StudentsRequest)->getTable() . '.institute_id', request('instituteId'));
         }
 
         $response = $table->orderBy((new StudentsRequest)->getTable() . '.id', 'DESC')
@@ -299,7 +299,7 @@ class StudentsRequestController extends Controller
         ]);
 
         config()->set('app.title', __('List Student study course'));
-        config()->set('pages.parent', StudentsStudyCourse::$path['view']);
+        config()->set('pages.parent', StudentsRequest::$path['view']);
 
 
 
@@ -412,6 +412,6 @@ class StudentsRequestController extends Controller
 
         config()->set('pages.title', __('Students required'));
 
-        return view(StudentsStudyCourse::$path['view'] . '.includes.report.index', $data);
+        return view(StudentsRequest::$path['view'] . '.includes.report.index', $data);
     }
 }

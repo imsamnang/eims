@@ -19,6 +19,7 @@
                         <b> {{__('Filter')}}</b>
                     </div>
                     <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;">
+                        @if (Auth::user()->role_id == 1)
                         <div>
                             <label style="display: inline-block;width:100%" for="institute">{{__('Institute')}}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
@@ -32,8 +33,7 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        
+                        @endif
 
                         <div>
                             <label style="display: inline-block;width:100%"

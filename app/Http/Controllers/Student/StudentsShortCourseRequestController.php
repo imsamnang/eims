@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStudentsShortCourseRequest;
-use App\Models\StudentsStudyShortCourse;
+
 
 class StudentsShortCourseRequestController extends Controller
 {
@@ -188,7 +188,7 @@ class StudentsShortCourseRequestController extends Controller
     {
         $table = StudentsShortCourseRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsShortCourseRequest)->getTable() . '.student_id');
         if (request('instituteId')) {
-            $table->where('institute_id', request('instituteId'));
+            $table->where((new StudentsShortCourseRequest)->getTable().'.institute_id', request('instituteId'));
         }
 
         $response = $table->orderBy((new StudentsShortCourseRequest)->getTable() . '.id', 'DESC')
@@ -300,6 +300,7 @@ class StudentsShortCourseRequestController extends Controller
         if (request('instituteId')) {
             $table->where((new StudentsShortCourseRequest)->getTable() . '.institute_id', request('instituteId'));
         }
+        
 
         $response = $table->get([
             (new Students)->getTable() . '.first_name_km',

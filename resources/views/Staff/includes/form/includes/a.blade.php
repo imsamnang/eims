@@ -7,9 +7,7 @@
     <div class="card-body">
         <div class="form-row">
 
-            @if (Auth::user()->institute_id)
-            <input type="hidden" name="institute" value="{{Auth::user()->institute_id}}">
-            @else
+            @if (Auth::user()->role_id == 1)
             <div class="col-md-12 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
@@ -24,8 +22,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""  name="institute"
+                    data-text="{{ __("Add new option") }}" data-placeholder="" name="institute"
                     data-select-value="{{config("pages.form.data.".$key.".staff_institute.institute_id")}}"
                     {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                     @foreach($institute["data"] as $o)
@@ -33,6 +30,8 @@
                     @endforeach
                 </select>
             </div>
+            @else
+            <input type="hidden" name="institute" value="{{Auth::user()->institute_id}}">
             @endif
 
             <div class="col-md-6 mb-3">
@@ -50,7 +49,6 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="designation" title="Simple select"
-
                     data-text="{{ __("Add new option") }}" data-allow-clear="true"
                     data-select-value="{{config("pages.form.data.".$key.".staff_institute.designation_id")}}"
                     data-placeholder="" name="designation">
@@ -63,8 +61,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.status")}}" class="form-control-label"
-                    for="status">
+                    title="{{config("pages.form.validate.questions.status")}}" class="form-control-label" for="status">
                     {{ __("Status") }}
                     @if(config("pages.form.validate.rules.status"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
@@ -75,10 +72,10 @@
 
                 <select class="form-control" data-toggle="select" id="status" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-allow-clear="true"
-                    data-select-value="{{config("pages.form.data.".$key.".staff_status_id")}}"
-                    data-placeholder="" name="status">
+                    data-select-value="{{config("pages.form.data.".$key.".staff_status_id")}}" data-placeholder=""
+                    name="status">
                     @foreach($status["data"] as $o)
-                    <option  value="{{$o["id"]}}">
+                    <option value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach
                 </select>
@@ -102,8 +99,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-info"></i></span>
                         </div>
-                        <textarea type="text" class="form-control" id="institute_extra_info"
-                            placeholder=""
+                        <textarea type="text" class="form-control" id="institute_extra_info" placeholder=""
                             {{config("pages.form.validate.rules.institute_extra_info") ? "required" : ""}}
                             name="institute_extra_info">{{config("pages.form.data.".$key.".staff_institute.extra_info")}}</textarea>
 

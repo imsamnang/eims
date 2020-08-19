@@ -1,3 +1,4 @@
+@if (Auth::user()->role_id == 1)
 <div class="card">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
@@ -7,9 +8,7 @@
     <div class="card-body">
         <div class="form-row">
 
-            @if (Auth::user()->institute_id)
-            <input type="hidden" name="institute" value="{{Auth::user()->institute_id}}">
-            @else
+
             <div class="col-md-12 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                     title="{{config("pages.form.validate.questions.institute")}}" class="form-control-label"
@@ -33,7 +32,10 @@
                     @endforeach
                 </select>
             </div>
-            @endif
+
         </div>
     </div>
 </div>
+@else
+<input type="hidden" name="institute" value="{{Auth::user()->institute_id}}">
+@endif

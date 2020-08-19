@@ -16,9 +16,11 @@
 
                 <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
                     enctype="multipart/form-data">
+                    @if (Auth::user()->role_id == 1)
                     <div style="margin: 10px 0">
                         <b> {{__('Filter')}}</b>
                     </div>
+
                     <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;">
                         <div>
                             <label style="display: inline-block;width:100%" for="institute">{{__('Institute')}}</label>
@@ -40,6 +42,7 @@
                                 {{ __("Search filter") }}</button>
                         </div>
                     </div>
+                    @endif
 
                     <div style="margin: 10px 0">
                         <b> {{__('Sheet')}}</b>

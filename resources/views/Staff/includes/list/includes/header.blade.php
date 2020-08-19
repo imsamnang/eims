@@ -21,8 +21,9 @@
                 {{__("Edit")}}
             </span>
         </a>
-        <a href="#" data-href="{{str_replace('add','account/create',config("pages.form.action.add"))}}" class="btn btn-primary disabled"
-            data-checked-show="account" data-target="#modal" data-backdrop="static" data-keyboard="false">
+        <a href="#" data-href="{{str_replace('add','account/create',config("pages.form.action.add"))}}"
+            class="btn btn-primary disabled" data-checked-show="account" data-target="#modal" data-backdrop="static"
+            data-keyboard="false">
             <i class="fa fa-user m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Create account")}}
@@ -55,8 +56,10 @@
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 {{request("instituteId") || request("designationId") ? "show" : ""}}" id="filter">
+            <div class="col-12 collapse mb-3 {{request("instituteId") || request("designationId") ? "show" : ""}}"
+                id="filter">
                 <div class="form-row">
+                    @if (Auth::user()->role_id == 1)
                     <div class="col-md-5">
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                             data-allow-clear="true" data-text="{{ __("Add new option") }}"
@@ -67,6 +70,8 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
+
                     <div class="col-md-3">
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                             data-allow-clear="true" data-text="{{ __("Add new option") }}"
