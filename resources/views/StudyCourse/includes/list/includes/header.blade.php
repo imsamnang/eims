@@ -48,8 +48,7 @@
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 {{request("instituteId") || request("designationId") ? "show" : ""}}"
-                id="filter">
+            <div class="col-12 collapse mb-3 " id="filter">
                 <div class="form-row">
                     <div class="col-md-6">
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"

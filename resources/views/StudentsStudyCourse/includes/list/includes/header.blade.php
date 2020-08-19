@@ -88,8 +88,7 @@
     <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter1"
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
-            <div class="col-12 collapse mb-3 {{array_intersect(array_keys(request()->all()),['instituteId','programId','courseId','generationId','yearId','semesterId'] ) ? "show" : ""}}"
-                id="filter">
+            <div class="col-12 collapse mb-3 " id="filter">
                 <div class="form-row">
                     <div class="col-md-9">
                         <div class="form-row">
