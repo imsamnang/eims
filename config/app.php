@@ -174,7 +174,6 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\FractalServiceProvider::class,
         Laravolt\Avatar\ServiceProvider::class,
-        Barryvdh\TranslationManager\ManagerServiceProvider::class,
         /*
          * Package Service Providers...
          */
