@@ -147,19 +147,12 @@ class SocailsMedia extends Model
                         $response       = array(
                             'success'   => true,
                             'type'      => 'update',
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   =>  __('Update Successfully'),
                         );
                     }
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;

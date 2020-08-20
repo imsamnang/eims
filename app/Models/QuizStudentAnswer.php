@@ -242,7 +242,7 @@ class QuizStudentAnswer extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -305,19 +305,12 @@ class QuizStudentAnswer extends Model
                                 'id'          => $id,
                                 'answered'    => request('answer'),
                             ],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   =>  __('Update Successfully'),
                         );
                     }
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -387,18 +380,11 @@ class QuizStudentAnswer extends Model
                                 'id'       => $id,
                                 'score'       => trim(request('score')),
                             ],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   =>  __('Update Successfully'),
                         );
                     }
                 } catch (DomainException $e) {
-                    $response       = $e;
+                    return $e;
                 }
             }
         } else {

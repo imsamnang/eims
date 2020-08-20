@@ -61,7 +61,7 @@
                     <a href="" name="scrollTo"></a>
 
 
-                    @if (config('pages.parameters.param1') == 'add')
+                    @if (!request()->ajax())
 
                     @if (!request()->ajax())
                     <div class="card-footer">

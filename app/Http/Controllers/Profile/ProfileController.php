@@ -26,7 +26,9 @@ class ProfileController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -67,14 +69,7 @@ class ProfileController extends Controller
                             'success'   => true,
                             'type'      => 'update',
                             'data'      => Users::getData(Auth::user()->id),
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   =>  __('Update Successfully'),
                         );
                     }
                 }

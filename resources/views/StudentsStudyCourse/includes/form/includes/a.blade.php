@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mb-0">
     <div class="card-header p-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
             (A)
@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
         <div class="form-row">
-            <div class="col-md-12 mb-3">
+            <div class="col-md-9 mb-3">
                 <label class="form-control-label" for="study_course_session">
                     {{ __("Study course session") }}
 
@@ -25,7 +25,27 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-8 mb-3">
+            <div class="col-md-3 mb-3">
+                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
+                    title="{{config("pages.form.validate.questions.study_status")}}" class="form-control-label"
+                    for="study_status">
+                    {{ __("Study status") }}
+
+                    @if(config("pages.form.validate.rules.study_status"))
+                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
+                        <i class="fas fa-asterisk fa-xs"></i>
+                    </span>
+                    @endif
+                </label>
+                <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
+                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_status"
+                    data-select-value="{{config("pages.form.data.".$key.".study_status_id")}}">
+                    @foreach($study_status["data"] as $o)
+                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-12 mb-3">
                 <label class="form-control-label" for="student">
                     {{ __("Students request study") }}
 
@@ -48,26 +68,7 @@
 
                 </select>
             </div>
-            <div class="col-md-4 mb-3">
-                <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.study_status")}}" class="form-control-label"
-                    for="study_status">
-                    {{ __("Study status") }}
 
-                    @if(config("pages.form.validate.rules.study_status"))
-                    <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
-                        <i class="fas fa-asterisk fa-xs"></i>
-                    </span>
-                    @endif
-                </label>
-                <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_status"
-                    data-select-value="{{config("pages.form.data.".$key.".study_status_id")}}">
-                    @foreach($study_status["data"] as $o)
-                    <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <div class="col-md-12 mb-3">
                 <div class="form-group">

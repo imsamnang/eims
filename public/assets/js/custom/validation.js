@@ -39,11 +39,11 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                 url: $(this).attr("action"),
                 method: "POST",
                 containerScroll: $(this).parents('.modal').length ? $(this).parents('.modal').find('.modal-body') : null,
-                onBeforeSend: function (xhr, loading) {},
-                onSuccess: function (response) {},
-                onError: function (xhr, type, error) {},
-                onSubmit: function (event, validation) {},
-                onValidate: function (validation) {},
+                onBeforeSend: function (xhr, load) {},
+                onSuccess: function (response, load) {},
+                onError: function (xhr, type, error, load) {},
+                onSubmit: function (event, validation, load) {},
+                onValidate: function (validation, load) {},
                 request_field: {},
                 lang: $("html[lang]").attr("lang")
             },
@@ -52,6 +52,7 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
             a = settings.request_field.attributes,
             r = settings.request_field.rules,
             m = settings.request_field.messages,
+            load = $('<span class="loading ml-2"><img src="' + location.origin + '/assets/img/icons/LOOn0JtHNzb.gif"></span>'),
             ajax = () => {
                 $.ajax({
                     url: settings.url,
@@ -60,17 +61,22 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                     processData: false,
                     contentType: false,
                     beforeSend: xhr => {
-                        options.hasOwnProperty("onBeforeSend") && "function" == typeof options.onBeforeSend ? settings.onBeforeSend(xhr, loading) : onBeforeSend(xhr);
+                        options.hasOwnProperty("onBeforeSend") && "function" == typeof options.onBeforeSend ? settings.onBeforeSend(xhr, load) : onBeforeSend(xhr, load);
                     },
                     success: response => {
-                        options.hasOwnProperty("onSuccess") && "function" == typeof options.onSuccess ? settings.onSuccess(response) : onSuccess(response);
+                        options.hasOwnProperty("onSuccess") && "function" == typeof options.onSuccess ? settings.onSuccess(response, load) : onSuccess(response, load);
                     },
                     error: (xhr, type, error) => {
-                        options.hasOwnProperty("onError") && "function" == typeof options.onError ? settings.onError(xhr, type, error) : onError(xhr, type, error);
+                        options.hasOwnProperty("onError") && "function" == typeof options.onError ? settings.onError(xhr, type, error) : onError(xhr, type, error,load);
                     }
                 });
             },
-            onBeforeSend = xhr => {
+            onBeforeSend = (xhr, load) => {
+                if ($(this).parents(".modal").length) {
+                    $(this).parents(".modal").find("button#btn-submit").append(load);
+                }else{
+                    $(this).find('[type="submit"]').append(load);
+                }
                 Swal({
                     title: $(this).attr('role') == 'add' ? i18n['Saving data'] : i18n['Updating data'],
                     showCloseButton: true,
@@ -86,11 +92,14 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                     }
                 });
             },
-            onSuccess = response => {
-                $(this).parent().find(".loading").remove();
+            onSuccess = (response, load) => {
+                load.remove();
                 if (response.success) {
                     var rowNode = [];
                     if (response.type == "add" && response.html) {
+                        if ($(this).parents(".modal").length) {
+                            $(this).parents(".modal").modal("hide");
+                        }
                         if ($('table#datatable-basic').length) {
                             var table = $('table#datatable-basic').dataTable() //not DataTable() function
 
@@ -159,9 +168,6 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                             if (response.reload) {
                                 location.reload();
                             }
-                            if (response.type == "add" && $(this).parents(".modal").length) {
-                                $(this).parents(".modal").modal("hide");
-                            }
 
                             if (rowNode) {
                                 $.each(rowNode, (i, tr) => {
@@ -191,8 +197,8 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                     });
                 }
             },
-            onError = (xhr, type, error) => {
-                $(this).parent().find(".loading").remove();
+            onError = (xhr, type, error,load) => {
+                load.remove();
                 swal({
                     type: "error",
                     title: type,

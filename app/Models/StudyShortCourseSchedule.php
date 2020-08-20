@@ -227,7 +227,7 @@ class StudyShortCourseSchedule extends Model
                     }
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -269,7 +269,7 @@ class StudyShortCourseSchedule extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -292,52 +292,28 @@ class StudyShortCourseSchedule extends Model
                     try {
                         $delete    = StudyShortCourseSchedule::whereIn('id', $id)->delete();
                         if ($delete) {
-                            $response       =  array(
+                           return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
-                            );
+                            ];
                         }
                     } catch (\Exception $e) {
-                        $response       = $e;
+                        return $e;
                     }
-                } else {
-                    $response = response(
-                        array(
-                            'success'   => true,
-                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
-                                'ID : (' . implode(',', $id) . ')',
-                        )
-                    );
                 }
             } else {
-                $response = response(
-                    array(
-                        'success'   => false,
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('No Data'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-                    )
-                );
+                return [
+                    'success'   => false,
+                    'message'   =>   __('No Data'),
+
+            ];
             }
         } else {
-            $response = response(
-                array(
-                    'success'   => false,
-                    'message'   => array(
-                        'title' => __('Error'),
-                        'text'  => __('Please select data!'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                )
-            );
+            return [
+                'success'   => false,
+                'message'   =>  __('Please select data!'),
+
+            ];
         }
         return $response;
     }

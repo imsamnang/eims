@@ -21,7 +21,7 @@ class StudentsAttendances extends Model
 
 
     public static function getData($year = null, $month = null, $date = null, $student_study_course_id = null, $paginate = null)
-    {        
+    {
 
         $pages['form'] = array(
             'action'  => array(
@@ -42,12 +42,12 @@ class StudentsAttendances extends Model
         $data = array();
 
         $get = StudentsAttendances::select((new StudentsAttendances())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', '=', (new StudentsAttendances())->getTable() . '.student_study_course_id')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', '=', (new StudyCourseSchedule())->getTable() . '.institute_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsAttendances())->getTable() . '.student_study_course_id')
+            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', (new StudyCourseSchedule())->getTable() . '.institute_id')
             ->whereNotIn('study_status_id', [7])
             ->groupBy('student_study_course_id')
             ->orderBy('nid', 'ASC');
@@ -60,7 +60,6 @@ class StudentsAttendances extends Model
         }
         if ($student_study_course_id) {
             $get = $get->where('student_study_course_id', $student_study_course_id);
-
         } else {
             if (request('course-sessionId')) {
                 $get = $get->where('study_course_session_id', request('course-sessionId'));
@@ -78,7 +77,7 @@ class StudentsAttendances extends Model
 
         if ($student_study_course_id == null) {
             if (request('course-sessionId')) {
-                $node = StudentsStudyCourse::where('study_course_session_id',request('course-sessionId'))->whereNotIn('study_status_id', [7]);
+                $node = StudentsStudyCourse::where('study_course_session_id', request('course-sessionId'))->whereNotIn('study_status_id', [7]);
             }
         }
 
@@ -200,7 +199,7 @@ class StudentsAttendances extends Model
                                 } else {
                                     $study_session = StudySession::getData(request('sessionId'))['data'][0];
                                     $response['message'] = __('No Data') . PHP_EOL .
-                                        PHP_EOL . __('No study course schedule for ',['study_session'=>$study_session['name']]);
+                                        PHP_EOL . __('No study course schedule for ', ['study_session' => $study_session['name']]);
                                 }
                             }
                         }
@@ -208,14 +207,14 @@ class StudentsAttendances extends Model
                         $study_start = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_start->day . '-' . $study_start->monthName . '-' . $study_start->year);
                         $study_end = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_end->day . '-' . $study_end->monthName . '-' . $study_end->year);
 
-                        $response['message'] = __('No Data for month ',['month'=>DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
+                        $response['message'] = __('No Data for month ', ['month' => DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
                             __('Study start') . ' ' . $study_start . ' - ' . $study_end;
                     }
                 } else {
                     $study_start = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_start->day . '-' . $study_start->monthName . '-' . $study_start->year);
                     $study_end = (app()->getLocale() == 'km' ? ' ថ្ងៃទី ' : '') . ($study_end->day . '-' . $study_end->monthName . '-' . $study_end->year);
 
-                    $response['message'] = __('No Data for month.' ,['month'=>DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
+                    $response['message'] = __('No Data for month.', ['month' => DateHelper::getDate($modify)->monthName]) . ' ' . request('year') . PHP_EOL .
                         __('Study start') . ' ' . $study_start . ' ' . __('To') . ' ' . $study_end;
                 }
             } else {
@@ -413,7 +412,7 @@ class StudentsAttendances extends Model
                         );
                     }
                 } catch (\Exception $e) {
-                    $response       = $e;
+                    return $e;
                 }
             }
         }

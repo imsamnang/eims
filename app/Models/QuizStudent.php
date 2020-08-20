@@ -276,18 +276,11 @@ class QuizStudent extends Model
                     $response       = array(
                         'success'   => false,
                         'errors'    => [],
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -321,7 +314,7 @@ class QuizStudent extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -350,52 +343,28 @@ class QuizStudent extends Model
                     try {
                         $delete    = QuizStudent::whereIn('id', $id)->delete();
                         if ($delete) {
-                            $response       =  array(
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
-                            );
+                            ];
                         }
                     } catch (\Exception $e) {
-                        $response       = $e;
+                        return $e;
                     }
-                } else {
-                    $response = response(
-                        array(
-                            'success'   => true,
-                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
-                                'ID : (' . implode(',', $id) . ')',
-                        )
-                    );
                 }
             } else {
-                $response = response(
-                    array(
-                        'success'   => false,
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('No Data'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-                    )
-                );
+                return [
+                    'success'   => false,
+                    'message'   =>   __('No Data'),
+
+                ];
             }
         } else {
-            $response = response(
-                array(
-                    'success'   => false,
-                    'message'   => array(
-                        'title' => __('Error'),
-                        'text'  => __('Please select data!'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                )
-            );
+            return [
+                'success'   => false,
+                'message'   =>  __('Please select data!'),
+
+            ];
         }
         return $response;
     }

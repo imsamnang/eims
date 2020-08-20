@@ -108,7 +108,7 @@ class StaffGuardians extends Model
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }
@@ -133,7 +133,7 @@ class StaffGuardians extends Model
             ];
 
             if (request('guardian') == 'other_guardian') {
-                $values+= [
+                $values += [
                     'guardian_fullname'   => trim(request('guardian_fullname')),
                     'guardian_occupation' => trim(request('guardian_occupation')),
                     'guardian_phone'      => trim(request('guardian_phone')),
@@ -141,7 +141,6 @@ class StaffGuardians extends Model
                     'guardian_extra_info' => trim(request('guardian_extra_info')),
                     'guardian_is'         => null
                 ];
-
             } else {
                 $values['guardian_is']   =  request('guardian');
             }
@@ -150,18 +149,11 @@ class StaffGuardians extends Model
             if ($update) {
                 $response       = array(
                     'success'   => true,
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }

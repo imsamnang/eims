@@ -26,7 +26,7 @@ class StaffQualifications extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
 
@@ -59,7 +59,7 @@ class StaffQualifications extends Model
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }
@@ -67,25 +67,18 @@ class StaffQualifications extends Model
     {
         $response = array();
         try {
-            $add = StaffQualifications::where('staff_id',$staff_id)->update([
+            $add = StaffQualifications::where('staff_id', $staff_id)->update([
                 'certificate_id' => request('staff_certificate'),
                 'extra_info' => request('staff_certificate_info'),
             ]);
             if ($add) {
                 $response       = array(
                     'success'   => true,
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }

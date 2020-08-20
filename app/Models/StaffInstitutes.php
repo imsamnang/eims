@@ -65,7 +65,7 @@ class StaffInstitutes extends Model
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }
@@ -73,7 +73,7 @@ class StaffInstitutes extends Model
     {
         $response = array();
         try {
-            $update = StaffInstitutes::where('staff_id',$staff_id)->update([
+            $update = StaffInstitutes::where('staff_id', $staff_id)->update([
                 'institute_id' => trim(request('institute')),
                 'designation_id' => trim(request('designation')),
                 'extra_info' => trim(request('institute_extra_info')),
@@ -81,18 +81,11 @@ class StaffInstitutes extends Model
             if ($update) {
                 $response       = array(
                     'success'   => true,
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }

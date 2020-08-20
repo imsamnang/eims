@@ -40,6 +40,10 @@ class FormHelper
             $formRoles = 'view';
         } elseif (preg_match('/delete/i', $string)) {
             $formRoles = 'delete';
+        } elseif (preg_match('/make/i', $string)) {
+            $formRoles = 'make';
+        } elseif (preg_match('/crop/i', $string)) {
+            $formRoles = 'crop';
         } else {
             $formRoles = 'add';
         }

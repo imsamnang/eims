@@ -37,7 +37,9 @@ class ManagerController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
         if (Auth::user()) {
             request()->merge([
@@ -121,8 +123,8 @@ class ManagerController extends Controller
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
-                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', '=', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->whereNotIn('designation_id', [1])->where('institute_id', Auth::user()->institute_id)),
-                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', '=', (new StaffInstitutes())->getTable().'.staff_id')),
+                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->whereNotIn('designation_id', [1])->where('institute_id', Auth::user()->institute_id)),
+                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id',  (new StaffInstitutes())->getTable().'.staff_id')),
                 'color'   => 'blue',
             ],
             [
@@ -130,8 +132,8 @@ class ManagerController extends Controller
                 'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
-                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', '=', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('designation_id', 2)->where('institute_id', Auth::user()->institute_id)),
-                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', '=', (new StaffInstitutes())->getTable().'.staff_id')),
+                'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('designation_id', 2)->where('institute_id', Auth::user()->institute_id)),
+                'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id',  (new StaffInstitutes())->getTable().'.staff_id')),
                 'color'   => 'blue',
             ],
         );
@@ -152,14 +154,14 @@ class ManagerController extends Controller
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
                 'gender'  => Students::gender(
-                    StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                        ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                        ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+                    StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                        ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                        ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                         ->whereNotIn('study_status_id', [7])
                         ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
                 ),
-                'status'      => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id', '=', (new StudentsStudyCourse())->getTable().'.student_id')),
+                'status'      => [], //StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable().'.id',  (new StudentsStudyCourse())->getTable().'.student_id')),
                 'color'       => 'green',
             ],
         );
@@ -174,15 +176,15 @@ class ManagerController extends Controller
                     'icon'    => null,
                     'image'   => $row['image'],
                     'gender'  => Students::gender(
-                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                             ->whereNotIn('study_status_id', [7])
                             ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row['id'])
                             ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
                     ),
-                    'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
+                    'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
                     'color'   => config('app.theme_color.name'),
                 ];
             }

@@ -3,7 +3,7 @@
         <div class="card-wrapper">
 
             <div class="card p-0 m-0">
-                @if (config('pages.parameters.param1') == 'add')
+                @if (!request()->ajax())
                 <div class="card-header">
                     <h5 class="h3 mb-0">
                         {{ __(config("pages.form.role")) }}
@@ -68,7 +68,7 @@
                                                 </div>
 
                                             </div>
-                                            @if (config('pages.parameters.param1') == 'add')
+                                            @if (!request()->ajax())
                                             @if (!request()->ajax())
                                             <div class="card-footer">
                                                 <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"

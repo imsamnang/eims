@@ -50,9 +50,9 @@ class QuizStudentAnswerController extends Controller
         );
 
         $data['course_routine'] = StudentsStudyCourse::select((new QuizStudent())->getTable() . '.*')
-            ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', '=', (new StudentsStudyCourse())->getTable() . '.id')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
+            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
             ->where('student_id', Auth::user()->node_id)
             ->get()->toArray();
 
@@ -138,8 +138,8 @@ class QuizStudentAnswerController extends Controller
     public function list($data, $id = null)
     {
         $studentStudyCourse = StudentsStudyCourse::select((new StudentsStudyCourse())->getTable() . '.*')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
             ->where('student_id', Auth::user()->node_id)
             ->get()->toArray();
         $student_study_course_id = [];

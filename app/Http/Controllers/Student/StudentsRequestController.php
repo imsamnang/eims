@@ -134,7 +134,6 @@ class StudentsRequestController extends Controller
                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() == 'POST') {
-                dd($id);
                 return StudentsRequest::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
@@ -145,6 +144,8 @@ class StudentsRequestController extends Controller
         } else {
             abort(404);
         }
+
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],
@@ -294,7 +295,18 @@ class StudentsRequestController extends Controller
 
             $response        = StudentsRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsRequest)->getTable() . '.student_id')
                 ->whereIn((new StudentsRequest)->getTable() . '.id', explode(',', $id))
-                ->get()->map(function ($row) {
+                ->get([
+                    (new StudentsRequest)->getTable() . '.*',
+                    (new Students())->getTable() . '.first_name_km',
+                    (new Students())->getTable() . '.last_name_km',
+                    (new Students())->getTable() . '.first_name_en',
+                    (new Students())->getTable() . '.last_name_en',
+                    (new Students())->getTable() . '.gender_id',
+                    (new Students())->getTable() . '.photo',
+                    (new Students())->getTable() . '.email',
+                    (new Students())->getTable() . '.phone',
+
+                ])->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                     $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                     $row['action']  = [
@@ -379,6 +391,7 @@ class StudentsRequestController extends Controller
         }
 
         $response = $table->get([
+            (new StudentsRequest)->getTable() . '.*',
             (new Students)->getTable() . '.first_name_km',
             (new Students)->getTable() . '.last_name_km',
             (new Students)->getTable() . '.first_name_en',
@@ -386,7 +399,7 @@ class StudentsRequestController extends Controller
             (new Students)->getTable() . '.gender_id',
             (new Students)->getTable() . '.email',
             (new Students)->getTable() . '.phone',
-            (new StudentsRequest)->getTable() . '.*',
+
         ])->map(function ($row) {
             //$row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];

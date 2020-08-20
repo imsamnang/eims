@@ -1,6 +1,7 @@
 window.sweetalert2_i18n = {
     'Ok': 'យល់ព្រម',
     'Cancel': 'បោះបង់',
+    'Error': 'កំហុស',
     'Yes': 'បាទ\/ ចាស',
     "Yes delete!": "បាទ \/ ចាស លុប!",
     "Deleting": "កំពុងលុប ...",

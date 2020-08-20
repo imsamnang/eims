@@ -25,18 +25,18 @@ class PhotoController extends Controller
         view()->share('breadcrumb', []);
     }
 
-    public function index($param1 = 'make', $param2 = null, $param3 = null)
+    public function index($param1 = 'crop', $param2 = null, $param3 = null)
     {
         $data['formData'] = array(
             'photo' => asset('/assets/img/user/male.jpg'),
         );
         $data['formName']     = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
-        $data['formAction']   = '/photo';
+        $data['formAction']   = '/photo/crop';
         $data['listData']     = array();
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
-        if ($param1 == null || $param1 == 'make') {
-            $data = $this->make($data, $param3);
+        if ($param1 == null || $param1 == 'crop') {
+            $data = $this->crop($data, $param3);
         } else {
             abort(404);
         }
@@ -71,7 +71,7 @@ class PhotoController extends Controller
         return view('Photo.index', $data);
     }
 
-    public function make($data, $ts)
+    public function crop($data, $ts)
     {
         $data['view']       = 'Photo.includes.form.index';
         $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Photo');

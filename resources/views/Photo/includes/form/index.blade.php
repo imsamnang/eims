@@ -3,7 +3,7 @@
         <div class="card-wrapper">
 
             <div class="card p-0 m-0">
-                @if (config('pages.parameters.param1') == 'add')
+                @if (!request()->ajax())
                 <div class="card-header">
                     <h5 class="h3 mb-0">
                         {{ __(config("pages.form.role")) }}
@@ -55,7 +55,7 @@
                                     aria-labelledby="tab--{{config('pages.form.data.'.$key.'.id')}}">
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
                                         method="POST"
-                                        action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                                        action="{{config('pages.form.data.'.$key.'.action.photo',config("pages.form.action.detect"))}}"
                                         id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         @csrf
@@ -75,8 +75,7 @@
                                                     value="{{__('Update')}}" id="submit">
                                             </div>
                                             @endif
-
-
+                                            
                                         </div>
                                     </form>
                                 </div>

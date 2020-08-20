@@ -20,8 +20,10 @@
                         @include(config("pages.parent").".includes.form.index")
                         @elseif (config('pages.parameters.param1') == 'account')
                         @include(config("pages.parent").".includes.account.index")
-                        @else
+                        @elseif (config('pages.parameters.param1') == 'view')
                         @include(config("pages.parent").".includes.view.index")
+                        @else
+                        @include(config("pages.parent").".includes.form.index")
                         @endif
                         @endif
                     </div>

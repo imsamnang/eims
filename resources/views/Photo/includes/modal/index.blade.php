@@ -25,10 +25,8 @@
                 <button data-dismiss="modal" class="float-left btn btn-secondary">
                     {{__('Close')}}
                 </button>
-                @if (config('pages.parameters.param1') == 'edit')
                 @if (count($listData) == 1)
                 <button id="btn-submit" class="btn btn-primary float-right">{{__('Update')}}</button>
-                @endif
                 @endif
             </div>
         </div>

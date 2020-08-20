@@ -273,7 +273,7 @@ class StudentsStudyShortCourseController extends Controller
                     return $row;
                 });
             $data['student']['data'] = StudentsShortCourseRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
-                ->where('status', 0)
+                ->where('status', '0')
                 ->get()->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                     $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();

@@ -119,11 +119,11 @@ class StudentsStudyShortCourse extends Model
     public static function getDataTable()
     {
         $model = StudentsStudyShortCourse::select((new StudentsStudyShortCourse())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsShortCourseRequest())->getTable() . '.student_id')
-            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_session_id')
-            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', '=', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
-            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', '=', (new StudyShortCourseSchedule())->getTable() . '.institute_id');
+            ->join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_session_id')
+            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
+            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', (new StudyShortCourseSchedule())->getTable() . '.institute_id');
         return DataTables::eloquent($model)
             ->filter(function ($query) {
 
@@ -217,18 +217,11 @@ class StudentsStudyShortCourse extends Model
                     $response       = array(
                         'success'   => false,
                         'errors'    => [],
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -250,14 +243,7 @@ class StudentsStudyShortCourse extends Model
                     $response       = array(
                         'success'   => false,
                         'errors'    => [],
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('Update Unsuccessful') . PHP_EOL . __('Already exists'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   =>  __('Update Unsuccessful') . PHP_EOL . __('Already exists'),
                     );
                 }
                 if (!$exists) {
@@ -270,19 +256,12 @@ class StudentsStudyShortCourse extends Model
                             'success'   => true,
                             'type'      => 'update',
                             'data'      => QuizStudent::getData($id),
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   =>  __('Update Successfully'),
                         );
                     }
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -308,7 +287,7 @@ class StudentsStudyShortCourse extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
 
@@ -318,8 +297,8 @@ class StudentsStudyShortCourse extends Model
     public static function existsToTable($stu_sh_c_request_id, $stu_sh_c_session_id)
     {
         $student_request = StudentsShortCourseRequest::where('id', $stu_sh_c_request_id)->get()->first();
-        return StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', '=', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+        return StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
             ->where('student_id', $student_request->student_id)
             ->where('stu_sh_c_session_id', $stu_sh_c_session_id)
             ->groupBy('student_id')
@@ -354,52 +333,28 @@ class StudentsStudyShortCourse extends Model
                     try {
                         $delete    = StudentsStudyShortCourse::whereIn('id', $id)->delete();
                         if ($delete) {
-                            $response       =  array(
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
-                            );
+                            ];
                         }
                     } catch (\Exception $e) {
-                        $response       = $e;
+                        return $e;
                     }
-                } else {
-                    $response = response(
-                        array(
-                            'success'   => true,
-                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
-                                'ID : (' . implode(',', $id) . ')',
-                        )
-                    );
                 }
             } else {
-                $response = response(
-                    array(
-                        'success'   => false,
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('No Data'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-                    )
-                );
+                return [
+                    'success'   => false,
+                    'message'   =>   __('No Data'),
+
+                ];
             }
         } else {
-            $response = response(
-                array(
-                    'success'   => false,
-                    'message'   => array(
-                        'title' => __('Error'),
-                        'text'  => __('Please select data!'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                )
-            );
+            return [
+                'success'   => false,
+                'message'   =>  __('Please select data!'),
+
+            ];
         }
         return $response;
     }

@@ -51,7 +51,7 @@ class StudentsShortCourseRequest extends Model
             $get = $get->whereIn((new StudentsShortCourseRequest())->getTable() . '.id', $id);
         } else {
             if (request('ref') == StudentsStudyShortCourse::$path['url']) {
-                $get = $get->where('status', 0);
+                $get = $get->where('status', '0');
             }
             if ($student_id) {
                 $get = $get->where('student_id', $student_id);
@@ -274,7 +274,7 @@ class StudentsShortCourseRequest extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -338,7 +338,7 @@ class StudentsShortCourseRequest extends Model
                     }
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -372,7 +372,7 @@ class StudentsShortCourseRequest extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
 
@@ -396,64 +396,39 @@ class StudentsShortCourseRequest extends Model
 
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StudentsShortCourseRequest::whereIn('id', $id)->where('status', 0)->delete();
+                        $delete    = StudentsShortCourseRequest::whereIn('id', $id)->where('status', '0')->delete();
                         if ($delete) {
-                            $response       =  array(
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
-                            );
+                            ];
                         } else {
 
                             if (count($id) == 1) {
 
-                                $response       =  array(
-                                    'success'   => false,
-                                    'message'   => __('Can not edit or delete!') . PHP_EOL
+                                return [
+                                    'success'   => false,                                    'message'   => __('Can not edit or delete!') . PHP_EOL
                                         . __('Approved'),
-                                );
+                                ];
                             }
                         }
                     } catch (\Exception $e) {
-                        $response       = $e;
+                        return $e;
                     }
-                } else {
-                    $response = response(
-                        array(
-                            'success'   => true,
-                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
-                                'ID : (' . implode(',', $id) . ')',
-                        )
-                    );
                 }
             } else {
-                $response = response(
-                    array(
-                        'success'   => false,
-                        'message'   => array(
-                            'title' => __('Error'),
-                            'text'  => __('No Data'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-                    )
-                );
+                return [
+                    'success'   => false,
+                    'message'   =>   __('No Data'),
+
+                ];
             }
         } else {
-            $response = response(
-                array(
-                    'success'   => false,
-                    'message'   => array(
-                        'title' => __('Error'),
-                        'text'  => __('Please select data!'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
-                )
-            );
+            return [
+                'success'   => false,
+                'message'   =>  __('Please select data!'),
+
+            ];
         }
         return $response;
     }

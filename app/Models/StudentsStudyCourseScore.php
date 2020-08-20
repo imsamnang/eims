@@ -55,12 +55,12 @@ class StudentsStudyCourseScore extends Model
 
 
         $get = StudentsStudyCourseScore::select((new StudentsStudyCourseScore())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', '=', (new StudentsStudyCourseScore())->getTable() . '.student_study_course_id')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', '=', (new StudyCourseSchedule())->getTable() . '.institute_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsStudyCourseScore())->getTable() . '.student_study_course_id')
+            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', (new StudyCourseSchedule())->getTable() . '.institute_id')
             ->whereNotIn('study_status_id', [7])
             ->orderBy((new StudentsStudyCourseScore())->getTable() . '.id', $orderBy);
 
@@ -257,12 +257,12 @@ class StudentsStudyCourseScore extends Model
     public static function getDataTable()
     {
         $model = StudentsStudyCourseScore::select((new StudentsStudyCourseScore())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', '=', (new StudentsStudyCourseScore())->getTable() . '.student_study_course_id')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', '=', (new StudentsRequest())->getTable() . '.student_id')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', '=', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', '=', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', '=', (new StudyCourseSchedule())->getTable() . '.institute_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsStudyCourseScore())->getTable() . '.student_study_course_id')
+            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', (new StudyCourseSchedule())->getTable() . '.institute_id')
             ->whereNotIn('study_status_id', [7]);
 
         return DataTables::eloquent($model)
@@ -461,7 +461,7 @@ class StudentsStudyCourseScore extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -485,14 +485,7 @@ class StudentsStudyCourseScore extends Model
                     'success'   => true,
                     'type'      => 'update',
                     'data'      => StudentsStudyCourseScore::getData($id)['data'],
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         }
@@ -515,14 +508,7 @@ class StudentsStudyCourseScore extends Model
                     'success'   => true,
                     'type'      => 'update',
                     //'data'      => StudentsStudyCourseScore::getData($id)['data'],
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         }

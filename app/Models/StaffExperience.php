@@ -30,7 +30,7 @@ class StaffExperience extends Model
                     );
                 }
             } catch (DomainException $e) {
-                $response       = $e;
+                return $e;
             }
         }
         return $response;
@@ -65,7 +65,7 @@ class StaffExperience extends Model
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }
@@ -86,7 +86,7 @@ class StaffExperience extends Model
                         'experience_info' => isset(request('experience_info')[$key]) ? trim(request('experience_info')[$key]) : null,
                     ]);
                 } else {
-                    if($experience){
+                    if ($experience) {
                         $update = StaffExperience::insertGetId([
                             'staff_id' => $staff_id,
                             'experience'         => trim($experience),
@@ -101,18 +101,11 @@ class StaffExperience extends Model
             if ($update) {
                 $response       = array(
                     'success'   => true,
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Update Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   =>  __('Update Successfully'),
                 );
             }
         } catch (DomainException $e) {
-            $response       = $e;
+            return $e;
         }
         return $response;
     }
