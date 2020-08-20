@@ -3,14 +3,12 @@
 namespace App\Models;
 
 use DomainException;
-
 use App\Helpers\ImageHelper;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStaffTeachSubject;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Staff\StaffTeachSubjectController;
 
 class StaffTeachSubject extends Model
 {
@@ -18,186 +16,6 @@ class StaffTeachSubject extends Model
         'url'    => 'teach-subject',
         'view'   => 'StaffTeachSubject'
     ];
-
-    public static function getData($id = null, $edit = null, $paginate = null)
-    {
-
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/add/'),
-            ),
-        );
-
-
-
-        $orderBy = 'DESC';
-        $data = array();
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-        $get = StaffTeachSubject::orderBy('id', $orderBy);
-
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        }
-
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-                $staff = Staff::getData($row['staff_id'])['data'][0];
-
-                $action = [
-                    'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                    'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
-                ];
-                if (Auth::user()->role_id == 10) {
-                    $action['edit'] =  str_replace(Staff::$path['url'], 'teaching', $action['edit']);
-                    $action['view'] =  str_replace(Staff::$path['url'], 'teaching', $action['view']);
-                    $action['delete'] =  str_replace(Staff::$path['url'], 'teaching', $action['delete']);
-                }
-
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'name'          => $staff['first_name'] . ' ' . $staff['last_name'],
-                    'staff'         => $staff,
-                    'study_subject' => StudySubjects::getData($row['study_subject_id'])['data'][0],
-                    'year'          => $row['year'],
-                    'image'         => $staff['photo'],
-                    'action'        => $action,
-                );
-                if (request('ref') == StudySubjectLesson::$path['url']) {
-                    $data[$key]['name'] = $data[$key]['name'] . ' - ' . $data[$key]['study_subject']['name'] . ' - ' . $data[$key]['year'];
-                }
-
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-            }
-
-
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-    public static function getDataTable()
-    {
-
-        $model = StaffTeachSubject::select([(new StaffTeachSubject())->getTable() . '.*', (new StaffInstitutes())->getTable() . '.institute_id'])
-            ->join((new Staff())->getTable(), (new Staff())->getTable() . '.id', (new StaffTeachSubject())->getTable() . '.staff_id')
-            ->join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')
-            ->join((new StudySubjects())->getTable(), (new StudySubjects())->getTable() . '.id', (new StaffTeachSubject())->getTable() . '.study_subject_id');
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $staff = Staff::where('id', $row['staff_id'])->first(['first_name_' . app()->getLocale() . ' as first_name', 'last_name_' . app()->getLocale() . ' as last_name', 'photo']);
-                $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
-                $action = [
-                    'edit' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                    'view' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
-                ];
-                if (Auth::user()->role_id == 10) {
-                    $action['edit'] =  str_replace(Staff::$path['url'], 'teaching', $action['edit']);
-                    $action['view'] =  str_replace(Staff::$path['url'], 'teaching', $action['view']);
-                    $action['delete'] =  str_replace(Staff::$path['url'], 'teaching', $action['delete']);
-                }
-
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $staff->first_name . ' ' . $staff->last_name,
-                    'institute'     => Institute::where('id', $row['institute_id'])->pluck(app()->getLocale()),
-                    'study_subject' => [
-                        'name'  => $study_subject->name,
-                        'image'  => $study_subject->image ? (ImageHelper::site(StudySubjects::$path['image'], $study_subject->image)) : ImageHelper::prefix(),
-                    ],
-                    'year'          => $row['year'],
-                    'image'         => ImageHelper::site(Staff::$path['image'], $staff->photo),
-                    'action'        => $action,
-
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StaffInstitutes())->getTable() . '.institute_id', Auth::user()->institute_id);
-                }
-
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  Staff::searchName($query, request('search.value'));
-                            } elseif ($value['data'] == 'study_subject.name') {
-                                $query = $query->orWhere((new StudySubjects())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
-                                if (config('app.languages')) {
-                                    foreach (config('app.languages') as $lang) {
-                                        $query->orWhere((new StudySubjects())->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                    }
-                                }
-                            } elseif ($value['data'] == 'year') {
-                                $query->orWhere('year', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function getTeachSubjects($id = null, $staff_id = null, $study_subject_id = null, $paginate = null, $groupByYear = true, $year = null)
     {
@@ -330,18 +148,13 @@ class StaffTeachSubject extends Model
                     $values['year']       = trim(request('year'));
                     $add = StaffTeachSubject::insertGetId($values);
                     if ($add) {
+                        $controller = new StaffTeachSubjectController;
+
                         $response       = array(
                             'success'   => true,
                             'type'      => 'add',
-                            'data'      => StaffTeachSubject::getData($add)['data'],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Add Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'html'      => view(StaffTeachSubject::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'message'   => __('Add Successfully'),
                         );
                     }
                 } catch (DomainException $e) {
@@ -391,18 +204,18 @@ class StaffTeachSubject extends Model
                     $update = StaffTeachSubject::where('id', $id)->update($values);
                     if ($update) {
 
+                        $controller = new StaffTeachSubjectController;
                         $response       = array(
                             'success'   => true,
                             'type'      => 'update',
-                            'data'      => StaffTeachSubject::getData($id),
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Update Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'data'      => [
+                                [
+                                    'id' => $id,
+                                ]
+
+                            ],
+                            'html'      => view(StaffTeachSubject::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'message'   =>  __('Update Successfully')
                         );
                     }
                 } catch (DomainException $e) {

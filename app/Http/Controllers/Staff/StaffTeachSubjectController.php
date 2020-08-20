@@ -70,47 +70,40 @@ class StaffTeachSubjectController extends Controller
             } else {
                 $data = $this->list($data);
             }
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff teach subject');
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StaffTeachSubject::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
         } elseif ($param1 == 'grid') {
             $data = $this->grid($data);
         } elseif ($param1 == 'add') {
             $breadcrumb[]  = [
-                'title' => __('Add Staff teach subject'),
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/add'),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1),
             ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::addToTable();
             }
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff teach subject');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff teach subjects') . __($param1);
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
             $breadcrumb[]  = [
                 'title' => __('Edit Staff teach subject'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff teach subject');
+            $data['title']    = Users::role(app()->getLocale()) . ' | '  . __('Staff teach subjects') . __($param1);
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
             $breadcrumb[]  = [
-                'title' => __('View Staff teach subject'),
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff teach subject');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff teach subjects') . __($param1);
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return StaffTeachSubject::deleteFromTable($id);
@@ -207,6 +200,11 @@ class StaffTeachSubjectController extends Controller
             $table->where('year', request('year'));
         }
 
+        $count = $table->count();
+
+        if ($id) {
+            $table->whereIn((new StaffTeachSubject)->getTable() . '.id', explode(',', $id));
+        }
 
         $response = $table->get([
             (new StaffTeachSubject)->getTable() . '.id',
@@ -220,7 +218,8 @@ class StaffTeachSubjectController extends Controller
             (new StaffTeachSubject)->getTable() . '.year',
             (new StaffTeachSubject)->getTable() . '.created_at',
             (new StaffTeachSubject)->getTable() . '.updated_at',
-        ])->map(function ($row) {
+        ])->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
 
             $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
@@ -232,7 +231,9 @@ class StaffTeachSubjectController extends Controller
             ];
             return $row;
         });
-
+        if ($id) {
+            return $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = StaffTeachSubject::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff teach subject');
@@ -255,7 +256,19 @@ class StaffTeachSubjectController extends Controller
             $response = StaffTeachSubject::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new StaffTeachSubject)->getTable() . '.staff_id')
                 ->join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id')
                 ->whereIn((new StaffTeachSubject)->getTable() . '.id', explode(',', $id))
-                ->get()->map(function ($row) {
+                ->get([
+                    (new StaffTeachSubject)->getTable() . '.id',
+                    (new Staff)->getTable() . '.first_name_' . app()->getLocale(),
+                    (new Staff)->getTable() . '.last_name_' . app()->getLocale(),
+                    (new Staff)->getTable() . '.gender_id',
+                    (new Staff)->getTable() . '.phone',
+                    (new Staff)->getTable() . '.email',
+                    (new Staff)->getTable() . '.photo',
+                    (new StaffTeachSubject)->getTable() . '.study_subject_id',
+                    (new StaffTeachSubject)->getTable() . '.year',
+                    (new StaffTeachSubject)->getTable() . '.created_at',
+                    (new StaffTeachSubject)->getTable() . '.updated_at',
+                ])->map(function ($row) {
                     $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
                     $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                     $row['subjects'] = StudySubjects::where('id', $row->study_subject_id)->pluck(app()->getLocale())->first();
