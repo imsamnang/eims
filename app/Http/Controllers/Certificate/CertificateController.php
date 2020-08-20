@@ -230,7 +230,7 @@ class CertificateController extends Controller
         return view('Certificate.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = CertificateFrames::orderBy('id', 'DESC');
 
@@ -239,7 +239,7 @@ class CertificateController extends Controller
         }
         $response = $table->get()->map(function ($row) {
             $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
-            
+
             $row['layout'] = __($row->layout);
             $row['action']  = [
                 'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/set/' . $row['id']),

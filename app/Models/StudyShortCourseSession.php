@@ -8,7 +8,7 @@ use App\Helpers\DateHelper;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudyShortCourseSession;
 
@@ -312,14 +312,7 @@ class StudyShortCourseSession extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

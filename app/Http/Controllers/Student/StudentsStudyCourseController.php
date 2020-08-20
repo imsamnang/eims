@@ -482,7 +482,7 @@ class StudentsStudyCourseController extends Controller
 
 
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table =  StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')

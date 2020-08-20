@@ -6,7 +6,7 @@ use DomainException;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudentsStudyCourseScore;
 use Illuminate\Support\Facades\Auth;
@@ -457,14 +457,7 @@ class StudentsStudyCourseScore extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => [],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {

@@ -297,7 +297,7 @@ class QuizStudentController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = QuizStudent::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudent())->getTable() . '.quiz_id')
             ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudent())->getTable() . '.student_study_course_id')

@@ -6,10 +6,11 @@ use DomainException;
 
 
 use App\Helpers\ImageHelper;
+use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Requests\FormQuiz;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class Quiz extends Model
@@ -132,83 +133,14 @@ class Quiz extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
 
-        $model = Quiz::query();
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $student = QuizStudent::where('quiz_id', $row['id'])->count();
-                $question = QuizQuestion::where('quiz_id', $row['id'])->count();
-                return [
-                    'id'            => $row['id'],
-                    'institute'     => Institute::getData($row['institute_id'])['data'][0],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'question'      => [
-                        'total' => '(' .$question. __('Question') . ')',
-                        'link_view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list/?quizId=' . $row['id']),
-                    ],
-                    'student'       => [
-                        'total'  => __('Students') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
-                        'link_view'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/list?quizId=' . $row['id']),
-                    ],
-                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/delete/' . $row['id']),
-                        'question_answer'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list/?quizId=' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (Auth::user()->role_id == 8) {
-                    $query = $query->where('staff_id', Auth::user()->node_id);
-                } elseif (Auth::user()->role_id == 2) {
-                    $query =  $query->where('institute_id', Auth::user()->institute_id);
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name,question.total') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
-
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuiz::rulesField(), FormQuiz::customMessages(), FormQuiz::attributeField());
+        $rules = FormQuiz::rulesField();
+        $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name';
+        $validator          = Validator::make(request()->all(), $rules, FormQuiz::customMessages(), FormQuiz::attributeField());
 
         if ($validator->fails()) {
             $response       = array(
@@ -219,7 +151,7 @@ class Quiz extends Model
 
             try {
                 $add = Quiz::insertGetId([
-                    'staff_id'    => Auth::user()->id,
+                    'staff_id'    => Auth::user()->node_id,
                     'institute_id' => trim(request('institute')),
                     'name'        => trim(request('name')),
                     'description' => request('description'),
@@ -231,22 +163,14 @@ class Quiz extends Model
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
                         Quiz::updateImageToTable($add, ImageHelper::uploadImage($image, Quiz::$path['image']));
-                    } else {
-                        ImageHelper::uploadImage(false, Quiz::$path['image'], Quiz::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
                     }
+                    $controller = new QuizController;
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => Quiz::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'html'      => view(Quiz::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -260,7 +184,9 @@ class Quiz extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuiz::rulesField(), FormQuiz::customMessages(), FormQuiz::attributeField());
+        $rules = FormQuiz::rulesField();
+        $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name,' . $id;
+        $validator          = Validator::make(request()->all(), $rules, FormQuiz::customMessages(), FormQuiz::attributeField());
 
         if ($validator->fails()) {
             $response       = array(
@@ -270,6 +196,7 @@ class Quiz extends Model
         } else {
 
             try {
+
                 $update = Quiz::where('id', $id)->update([
                     'institute_id' => trim(request('institute')),
                     'name'        => trim(request('name')),
@@ -282,18 +209,18 @@ class Quiz extends Model
                         $image      = request()->file('image');
                         Quiz::updateImageToTable($id, ImageHelper::uploadImage($image, Quiz::$path['image']));
                     }
+                    $controller = new QuizController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => Quiz::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'data'      => [
+                            [
+                                'id' => $id,
+                            ]
+
+                        ],
+                        'html'      => view(Quiz::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   =>  __('Update Successfully')
                     );
                 }
             } catch (DomainException $e) {
@@ -319,14 +246,7 @@ class Quiz extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -347,14 +267,7 @@ class Quiz extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

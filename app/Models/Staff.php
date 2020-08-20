@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class Staff extends Model
@@ -296,14 +296,7 @@ class Staff extends Model
                         'success'   => true,
                         'data'      => Staff::getData($add)['data'][0],
                         'type'      => 'add',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -465,14 +458,7 @@ class Staff extends Model
                         'success'   => true,
                         //'data'      => Staff::getData($id)['data'][0],
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -500,14 +486,7 @@ class Staff extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -703,14 +682,7 @@ class Staff extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

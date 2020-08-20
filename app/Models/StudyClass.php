@@ -8,7 +8,7 @@ use DomainException;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStudyClass;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class StudyClass extends Model
@@ -46,9 +46,9 @@ class StudyClass extends Model
 
         if ($id) {
             $get = $get->whereIn('id', $id);
-        }else{
-            if(request('instituteId')){
-                $get = $get->where('institute_id',request('instituteId'));
+        } else {
+            if (request('instituteId')) {
+                $get = $get->where('institute_id', request('instituteId'));
             }
         }
         if ($search) {
@@ -146,8 +146,8 @@ class StudyClass extends Model
             ->filter(function ($query) {
 
 
-                if(request('instituteId')){
-                    $query = $query->where('institute_id',request('instituteId'));
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
 
                 if (request('search.value')) {
@@ -221,14 +221,7 @@ class StudyClass extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'data'      => StudyClass::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -271,14 +264,7 @@ class StudyClass extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => StudyClass::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -304,14 +290,7 @@ class StudyClass extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -333,14 +312,7 @@ class StudyClass extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

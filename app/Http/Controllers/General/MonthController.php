@@ -112,7 +112,7 @@ class MonthController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = Months::orderBy('id', 'DESC');
 

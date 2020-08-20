@@ -8,7 +8,7 @@ use DomainException;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStudyStatus;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class StudyStatus extends Model
@@ -217,14 +217,7 @@ class StudyStatus extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'data'      => StudyStatus::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -266,14 +259,7 @@ class StudyStatus extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => StudyStatus::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -299,14 +285,7 @@ class StudyStatus extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -328,14 +307,7 @@ class StudyStatus extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

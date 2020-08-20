@@ -238,14 +238,7 @@ class QuizStudentAnswer extends Model
                             'id'          => $add,
                             'answered'    => request('answer'),
                         ],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {

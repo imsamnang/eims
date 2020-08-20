@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\FormQuizAnswerType;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Quiz\QuizAnswerTypeController;
 
 class QuizAnswerType extends Model
 {
@@ -19,165 +17,6 @@ class QuizAnswerType extends Model
         'view'   => 'QuizAnswerType'
     ];
 
-    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
-    {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/add/'),
-            ),
-        );
-
-
-
-        $data = array();
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-            $get = QuizAnswerType::orderBy('id', $orderBy);
-        } else {
-            $get = QuizAnswerType::orderBy('id', 'DESC');
-        }
-
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-                // if( $row['id'] == 1 && Auth::user()->role_id != 1){
-                //     continue;
-                // }
-
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'image'         => $row['image'] ? (ImageHelper::site(QuizAnswerType::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'description'   => $row['description'],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/delete/' . $row['id']),
-                    ]
-                );
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'   => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-                );
-
-                if ($edit) {
-                    $data[$key]['name'] =  $row['name'];
-                    if (config('app.languages')) {
-                        foreach (config('app.languages') as $lang) {
-                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                        }
-                    }
-                }
-            }
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-
-    public static function getDataTable()
-    {
-        $model = QuizAnswerType::query();
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'image'         => $row['image'] ? (ImageHelper::site(QuizAnswerType::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'description'   => $row['description'],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswerType::$path['url'] . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
@@ -193,32 +32,33 @@ class QuizAnswerType extends Model
         } else {
 
             try {
-                $add = QuizAnswerType::insertGetId([
-                    'name'        => trim(request('name')),
-                    'description' => request('description'),
-                    'image'       => QuizAnswerType::$path['image'] . 'jpg',
-                ]);
+
+
+                $values['name']        = request('name');
+                $values['description'] = request('description');
+
+                if (config('app.languages')) {
+                    foreach (config('app.languages') as $lang) {
+                        $values[$lang['code_name']] = request($lang['code_name']);
+                    }
+                }
+
+                $add = QuizAnswerType::insertGetId($values);
+
                 if ($add) {
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
                         QuizAnswerType::updateImageToTable($add, ImageHelper::uploadImage($image, QuizAnswerType::$path['image']));
-                    } else {
-                        ImageHelper::uploadImage(false, QuizAnswerType::$path['image'], QuizAnswerType::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
                     }
+
+                    $controller = new QuizAnswerTypeController;
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => QuizAnswerType::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'html'      => view(QuizAnswerType::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -242,27 +82,34 @@ class QuizAnswerType extends Model
         } else {
 
             try {
-                $update = QuizAnswerType::where('id', $id)->update([
-                    'name' => trim(request('name')),
-                    'description' =>  request('description'),
-                ]);
+
+                $values['name']        = request('name');
+                $values['description'] = request('description');
+
+                if (config('app.languages')) {
+                    foreach (config('app.languages') as $lang) {
+                        $values[$lang['code_name']] = request($lang['code_name']);
+                    }
+                }
+
+                $update = QuizAnswerType::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
                         QuizAnswerType::updateImageToTable($id, ImageHelper::uploadImage($image, QuizAnswerType::$path['image']));
                     }
+                    $controller = new QuizAnswerTypeController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => QuizAnswerType::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'data'      => [
+                            [
+                                'id' => $id,
+                            ]
+
+                        ],
+                        'html'      => view(QuizAnswerType::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   =>  __('Update Successfully')
                     );
                 }
             } catch (DomainException $e) {
@@ -288,14 +135,7 @@ class QuizAnswerType extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -316,14 +156,7 @@ class QuizAnswerType extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

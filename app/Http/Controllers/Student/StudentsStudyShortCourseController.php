@@ -46,7 +46,9 @@ class StudentsStudyShortCourseController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -228,7 +230,7 @@ class StudentsStudyShortCourseController extends Controller
                 $row['name']   = $row['study'] . ' - ' . $row['location'];
                 return $row;
             });
-            
+
 
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
@@ -291,7 +293,7 @@ class StudentsStudyShortCourseController extends Controller
 
 
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table =  StudentsStudyShortCourse::join((new StudentsShortCourseRequest())->getTable(), (new StudentsShortCourseRequest())->getTable() . '.id', (new StudentsStudyShortCourse())->getTable() . '.stu_sh_c_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')

@@ -34,7 +34,9 @@ class QuizController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -99,7 +101,6 @@ class QuizController extends Controller
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Quiz');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Quiz::getData(null, null, 10, request('search'));
             } else {
                 $data = $this->list($data);
             }
@@ -203,9 +204,10 @@ class QuizController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+
+    public function list($data, $id = null)
     {
-        $table =  Quiz::orderBy('id', 'asc');
+        $table =  Quiz::orderBy('id', 'desc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
@@ -213,8 +215,13 @@ class QuizController extends Controller
         if (request('staffId')) {
             $table->where('staff_id', request('staffId'));
         }
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $data['response']['data'] = $table->get()->map(function ($row, $nid) use ($count) {
 
-        $data['response']['data'] = $table->get()->map(function ($row) {
+            $row['nid'] = $count - $nid;
             $row['name']   = $row->{app()->getLocale()};
             $row['image']   = $row->image ? ImageHelper::site(Quiz::$path['image'], $row->image) : ImageHelper::prefix();
             $row['questions'] = [
@@ -234,6 +241,10 @@ class QuizController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return  $data['response']['data'];
+        }
+
         $data['view']     = Quiz::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Quiz');
         return $data;

@@ -122,7 +122,7 @@ class StudyGradeController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudyGrade::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {

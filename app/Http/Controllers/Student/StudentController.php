@@ -454,7 +454,7 @@ class StudentController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = Students::whereHas('institute', function ($query) {
             $query->where('institute_id', request('instituteId'));

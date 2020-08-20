@@ -1,3 +1,33 @@
+var i18n = {
+    'Ok': 'Ok',
+    'Cancel': 'Cancel',
+    'Yes': 'Yes',
+    'Error': 'Error',
+    "Add Successfully": "Add Successfully",
+    "Update Successfully": "Update Successfully"
+};
+i18n = $.extend({}, i18n, sweetalert2_i18n);
+
+(function (old) {
+    $.fn.attr = function () {
+        if (arguments.length === 0) {
+            if (this.length === 0) {
+                return null;
+            }
+
+            var obj = {};
+            $.each(this[0].attributes, function () {
+                if (this.specified) {
+                    obj[this.name] = this.value;
+                }
+            });
+            return obj;
+        }
+
+        return old.apply(this, arguments);
+    };
+})($.fn.attr);
+
 (function ($) {
     $.fn.validation = function (options = {}) {
         $.ajaxSetup({
@@ -22,7 +52,6 @@
             a = settings.request_field.attributes,
             r = settings.request_field.rules,
             m = settings.request_field.messages,
-            loading = '<div class="loading" style="background-color: rgba(0, 0, 0, 0.4); position: absolute; height: 100%; width: 100%; z-index: 2;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><div class="spinner-border spinner-3 text-blue"></div></div></div>',
             ajax = () => {
                 $.ajax({
                     url: settings.url,
@@ -55,43 +84,89 @@
 
                     }
                 });
-                $(this).parent().prepend(loading);
             },
             onSuccess = response => {
                 $(this).parent().find(".loading").remove();
                 if (response.success) {
-                    // if (response.type == "add") {
-                    //     $(this)[0].reset();
-                    //     $(this).find(".has-success").removeClass("has-success");
-                    //     $(this).find(".has-error").removeClass("has-error");
-                    //     $(this).find("select").select2("val", 0);
-                    // }
+                    var rowNode = [];
+                    if (response.type == "add" && response.html) {
+                        if ($('table#datatable-basic').length) {
+                            var table = $('table#datatable-basic').dataTable() //not DataTable() function
 
-                    if ($('table#datatable-basic').length) {
-                        $('table#datatable-basic').each(function () {
-                            var ajaxTableData = new AjaxTableData($(this));
-                            ajaxTableData.build(response.data);
-                        });
-                        $.getScript(location.origin + "/assets/js/argon.min.js");
+                            $(response.html).each((i, element) => {
+                                var _td = [];
+                                $(element).find('td').each(function () {
+                                    _td.push($(this).html());
+                                });
+                                var _tr = table.api().row.add(_td);
+
+                                rowNode.push($(_tr.node()));
+
+                                var aiDisplayMaster = table.fnSettings()["aiDisplayMaster"];
+                                var irow = aiDisplayMaster.pop();
+                                aiDisplayMaster.unshift(irow);
+                                table.api().draw();
+
+                                //set attrs to tr
+                                $(_tr.node()).attr($(element).attr());
+
+                                //set attrs to td
+                                $(element).find('td').each(function (i) {
+                                    $(_tr.node()).find('td').eq(i).attr($(this).attr());
+                                });
+
+                            });
+                            $.getScript(location.origin + "/assets/js/argon.min.js");
+
+                        }
+                    } else if (response.type == "update" && response.html) {
+                        if ($('table#datatable-basic').length) {
+                            $.each(response.data, (i, row) => {
+                                var $tr = $('table#datatable-basic').find('tr[data-id="' + row.id + '"]');
+                                rowNode.push($tr);
+                                $tr.find('td').each((j, old_td) => {
+                                    /**
+                                     * {j=0}  = td checkbox
+                                     * {j=1}  = td id
+                                     * {j+1 = td.length}  = last td
+                                     */
+
+                                    if (j == 0 || j == 1) {
+
+                                    } else if ((j + 1) == $tr.find('td').length) {
+
+                                    } else {
+                                        var new_td = $(response.html).eq(i).find('td').eq(j);
+                                        $(old_td).html(new_td.html());
+                                    }
+                                });
+                            });
+
+                        }
                     }
-                   
-                    swal({
-                        showCloseButton: false,
-                        title: response.message.title,
-                        text: response.message.text,
-                        type: "success",
-                        buttonsStyling: !1,
+                    Swal.fire({
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
                         showCloseButton: true,
-                        confirmButtonClass: "btn btn-success",
-                        confirmButtonText: response.message.button.confirm,
+                        allowOutsideClick: false,
+                        timer: 2500,
                         onClose: () => {
                             if (response.reload) {
                                 location.reload();
                             }
+                            if (response.type == "add" && $(this).parents(".modal").length) {
+                                $(this).parents(".modal").modal("hide");
+                            }
 
-                            // if ($(this).parents(".modal").length) {
-                            //     $(this).parents(".modal").modal("hide");
-                            // }
+                            if (rowNode) {
+                                $.each(rowNode, (i, tr) => {
+                                    tr.css('backgroundColor', 'yellow')
+                                        .animate({
+                                            backgroundColor: 'unset'
+                                        }, 'slow');
+                                });
+                            }
 
                         }
                     });
@@ -101,14 +176,14 @@
                 } else {
                     swal({
                         showCloseButton: false,
-                        title: response.message.title,
-                        html: response.message.text.replace(/\n/g, "<br>"),
+                        title: i18n['Error'],
+                        html: response.message.replace(/\n/g, "<br>"),
                         type: "warning",
                         buttonsStyling: !1,
                         confirmButtonClass: "btn btn-primary",
-                        confirmButtonText: response.message.button.confirm,
+                        confirmButtonText: i18n['Ok'],
                         cancelButtonClass: "btn btn-secondary",
-                        cancelButtonText: response.message.button.cancel
+                        cancelButtonText: i18n['Cancel']
                     });
                 }
             },

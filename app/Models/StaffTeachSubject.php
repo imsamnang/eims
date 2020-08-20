@@ -7,7 +7,7 @@ use DomainException;
 use App\Helpers\ImageHelper;
 
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStaffTeachSubject;
 use Illuminate\Support\Facades\Auth;
@@ -432,14 +432,7 @@ class StaffTeachSubject extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

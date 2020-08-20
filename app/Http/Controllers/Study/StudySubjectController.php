@@ -131,7 +131,7 @@ class StudySubjectController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudySubjects::orderBy('id', 'DESC');
 
@@ -221,7 +221,7 @@ class StudySubjectController extends Controller
                 return $row;
             });
 
-        $table = StudySubjects::orderBy('id', 'asc');
+        $table = StudySubjects::orderBy('id', 'desc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

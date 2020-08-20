@@ -6,7 +6,7 @@ use DomainException;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudyCourseSchedule;
 use Illuminate\Support\Facades\Auth;
@@ -47,8 +47,8 @@ class StudyCourseSchedule extends Model
         if ($id) {
             $get = $get->whereIn('id', $id);
         } else {
-            if(request('ref') == StudyCourseSession::$path['url']){
-                $get = $get->whereNotIn('id',StudyCourseSession::select('study_course_schedule_id')->get());
+            if (request('ref') == StudyCourseSession::$path['url']) {
+                $get = $get->whereNotIn('id', StudyCourseSession::select('study_course_schedule_id')->get());
             }
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));
@@ -152,7 +152,7 @@ class StudyCourseSchedule extends Model
             })
             ->filter(function ($query) {
                 if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StudyCourseSchedule)->getTable().'.institute_id', Auth::user()->institute_id);
+                    $query =  $query->where((new StudyCourseSchedule)->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
                 if (request('search.value')) {
@@ -341,14 +341,7 @@ class StudyCourseSchedule extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

@@ -1,5 +1,4 @@
 <fieldset class="p-2 border text-sm">
-    <legend class="w-auto">(A)</legend>
     <table>
         <tbody>
             <tr>

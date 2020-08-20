@@ -10,7 +10,7 @@ use App\Helpers\Encryption;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStudyShortCourseRoutine;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class StudyShortCourseRoutine extends Model
@@ -130,10 +130,10 @@ class StudyShortCourseRoutine extends Model
 
     public static function getDataTable()
     {
-        $model = self::select((new self())->getTable().'.*')
-        ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', (new self())->getTable() . '.stu_sh_c_session_id')
-        ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
-        ->groupBy('stu_sh_c_session_id');
+        $model = self::select((new self())->getTable() . '.*')
+            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', (new self())->getTable() . '.stu_sh_c_session_id')
+            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
+            ->groupBy('stu_sh_c_session_id');
 
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
@@ -154,8 +154,8 @@ class StudyShortCourseRoutine extends Model
             })
             ->filter(function ($query) {
 
-                if(request('instituteId')){
-                    $query = $query->where('institute_id',request('instituteId'));
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
 
                 // if (request('search.value')) {
@@ -191,7 +191,7 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine ::customMessages(), FormStudyShortCourseRoutine  ::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine::customMessages(), FormStudyShortCourseRoutine::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -261,7 +261,7 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine ::customMessages(), FormStudyShortCourseRoutine  ::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine::customMessages(), FormStudyShortCourseRoutine::attributeField());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -339,14 +339,7 @@ class StudyShortCourseRoutine extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

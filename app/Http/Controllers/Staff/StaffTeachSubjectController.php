@@ -191,7 +191,7 @@ class StaffTeachSubjectController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StaffTeachSubject::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new StaffTeachSubject)->getTable() . '.staff_id')
             ->join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id')

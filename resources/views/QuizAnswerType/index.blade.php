@@ -30,12 +30,13 @@
 @section("content")
 @include(Auth::user()->role('view_path').".includes.navLeft")
 <div class="main-content" id="panel">
-    @include(Auth::user()->role('view_path').".includes.navTop") @include("layouts.navHeader")
+    @include(Auth::user()->role('view_path').".includes.navTop")
+    @include("layouts.navHeader")
 
     <div class="page-content container-fluid {{Agent::isDesktop() ?: "p-1"}}">
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))
-        @include(Auth::user()->role('view_path').".includes.navFooter")
+        @include("layouts.navFooter")
     </div>
 </div>
 
@@ -61,6 +62,7 @@
 @if (app()->getLocale() !== "en")
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
+<script src="{{asset("/assets/vendor/sweetalert2/dist/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
 @endif
 <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>

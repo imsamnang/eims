@@ -14,7 +14,7 @@
                         class="list-group-item list-group-item-action p-2 {{$key == 0 ? 'active' :''}}">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <img data-src="{{$list["front"]}}" class="avatar avatar-xs rounded-0">
+                                <img data-src="{{$list["image"]}}" class="avatar avatar-xs rounded-0">
                             </div>
                             <div class="col ml--2 p-0">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -49,8 +49,6 @@
                             <i class="fas fa-edit"></i>
                             {{__('Edit')}}
                         </a>
-
-
 
                         <a class="btn btn-danger" target="_blank" href="{{$row['action']['delete']}}">
                             <i class="fas fa-trash"></i>

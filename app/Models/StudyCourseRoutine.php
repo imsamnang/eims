@@ -10,7 +10,7 @@ use App\Helpers\Encryption;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormStudyCourseRoutine;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class StudyCourseRoutine extends Model
@@ -131,10 +131,10 @@ class StudyCourseRoutine extends Model
 
     public static function getDataTable()
     {
-        $model = self::select((new self())->getTable().'.*')
-        ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new self())->getTable() . '.study_course_session_id')
-        ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-        ->groupBy('study_course_session_id');
+        $model = self::select((new self())->getTable() . '.*')
+            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new self())->getTable() . '.study_course_session_id')
+            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+            ->groupBy('study_course_session_id');
 
         return DataTables::eloquent($model)
             ->setTransformer(function ($row) {
@@ -155,8 +155,8 @@ class StudyCourseRoutine extends Model
             })
             ->filter(function ($query) {
 
-                if(request('instituteId')){
-                    $query = $query->where('institute_id',request('instituteId'));
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
 
                 // if (request('search.value')) {
@@ -367,14 +367,7 @@ class StudyCourseRoutine extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

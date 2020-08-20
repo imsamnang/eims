@@ -26,7 +26,9 @@ class MailboxImportantController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -104,7 +106,7 @@ class MailboxImportantController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['response'] =  MailboxImportant::getData(null, 10, request('search'));
         $data['view']      = Mailbox::$path['view'] . '.includes.important.index';

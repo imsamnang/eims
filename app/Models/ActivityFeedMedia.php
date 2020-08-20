@@ -13,7 +13,7 @@ class ActivityFeedMedia extends Model
     public static function getData($activity_feed_id, $id = null)
     {
 
-        $get = ActivityFeedMedia::orderBy('id', 'ASC');
+        $get = ActivityFeedMedia::orderBy('id', 'desc');
         if ($activity_feed_id) {
             $get = $get->where('activity_feed_id', $activity_feed_id);
         }

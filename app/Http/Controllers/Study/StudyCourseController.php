@@ -131,7 +131,7 @@ class StudyCourseController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudyCourse::orderBy('id', 'DESC');
 
@@ -215,7 +215,7 @@ class StudyCourseController extends Controller
             });
 
 
-        $table = StudyCourse::orderBY('id', 'asc');
+        $table = StudyCourse::orderBy('id', 'desc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

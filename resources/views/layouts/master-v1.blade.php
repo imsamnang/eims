@@ -249,7 +249,7 @@
         @yield("content")
         @include("layouts.jsvars")
         @yield("script")
-        @include('sweetalert::alert')
+        
     </div>
 </body>
 

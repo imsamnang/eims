@@ -235,7 +235,7 @@ class SettingsController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['response'] =  App::getData(null, null, 10);
         $data['view']     =  App::$path['view'] . '.includes.list.index';

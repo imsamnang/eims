@@ -22,7 +22,9 @@ class TranslateController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -126,7 +128,7 @@ class TranslateController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['response'] = Translates::getData(null, 10);
         $data['view']     = Translates::$path['view'] . '.includes.list.index';

@@ -122,7 +122,7 @@ class StudyFacultyController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudyFaculty::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {

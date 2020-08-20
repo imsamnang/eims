@@ -9,7 +9,7 @@ use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\FormQuizStudent;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class QuizStudent extends Model
@@ -181,7 +181,7 @@ class QuizStudent extends Model
                     $query =  $query->where((new Quiz())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
-                if(request('quizId')){
+                if (request('quizId')) {
                     $query = $query->where((new QuizStudent())->getTable() . '.quiz_id', request('quizId'));
                 }
 
@@ -270,14 +270,7 @@ class QuizStudent extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'data'      => QuizStudent::getData($qsid)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 } else {
                     $response       = array(
@@ -324,14 +317,7 @@ class QuizStudent extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => QuizStudent::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -366,14 +352,7 @@ class QuizStudent extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

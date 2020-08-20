@@ -123,7 +123,7 @@ class HolidayController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = Holidays::orderBy('id', 'DESC');
 
@@ -191,7 +191,7 @@ class HolidayController extends Controller
                 return $row;
             });
 
-        $table =  Holidays::orderBy('id', 'asc');
+        $table =  Holidays::orderBy('id', 'desc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

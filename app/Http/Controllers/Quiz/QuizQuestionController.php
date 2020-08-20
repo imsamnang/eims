@@ -32,7 +32,9 @@ class QuizQuestionController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -117,7 +119,7 @@ class QuizQuestionController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormQuizQuestion::rulesField() + FormQuizAnswer::rulesField(),
+            'rules'       =>  FormQuizQuestion::rulesField() + FormQuizAnswer::rulesField('.*'),
             'attributes'  =>  FormQuizQuestion::attributeField() + FormQuizAnswer::attributeField(),
             'messages'    =>  FormQuizQuestion::customMessages() + FormQuizAnswer::customMessages(),
             'questions'   =>  FormQuizQuestion::questionField() + FormQuizAnswer::questionField(),
@@ -200,10 +202,10 @@ class QuizQuestionController extends Controller
     }
 
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = QuizQuestion::join((new Quiz)->getTable(), (new Quiz)->getTable() . '.id', (new QuizQuestion)->getTable() . '.quiz_id')
-            ->orderBy((new Quiz)->getTable() . '.id', 'DESC');
+            ->orderBy((new QuizQuestion)->getTable() . '.id', 'DESC');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
@@ -220,12 +222,16 @@ class QuizQuestionController extends Controller
         if (request('answerTypeId')) {
             $table->where('quiz_answer_type_id', request('answerTypeId'));
         }
-
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn((new QuizQuestion)->getTable() . '.id', explode(',', $id));
+        }
         $data['response']['data'] = $table->get([
             (new Quiz)->getTable() . '.image',
             (new Quiz)->getTable() . '.name as quiz',
             (new QuizQuestion())->getTable() . '.*',
-        ])->map(function ($row) {
+        ])->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['image']   = $row->image ? ImageHelper::site(Quiz::$path['image'], $row->image) : ImageHelper::prefix();
             $row['question_type'] = QuizQuestionType::where('id', $row->quiz_question_type_id)->pluck(app()->getLocale())->first();
             $row['answer_type'] = QuizAnswerType::where('id', $row->quiz_answer_type_id)->pluck(app()->getLocale())->first();
@@ -237,6 +243,9 @@ class QuizQuestionController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return $data['response']['data'];
+        }
         $data['view']     = QuizQuestion::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Quiz');
         return $data;

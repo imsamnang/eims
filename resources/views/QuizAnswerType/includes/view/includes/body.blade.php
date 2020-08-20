@@ -1,5 +1,5 @@
 <div class="card-body row">
-    <div class="col-3">
+    <div class="col-4">
         <div class="card sticky-top">
             <div class="card-header py-2 px-3">
                 <label class="label-arrow label-primary label-arrow-right label-arrow-left w-100">
@@ -29,35 +29,12 @@
             </div>
         </div>
     </div>
-    <div class="col-9">
+    <div class="col-8">
         <div class="tab-content bg-white p-0 border-0" id="myTabContent">
             @foreach ($response['data'] as $key => $row)
-
             <div id="tab--{{$row['id']}}" class="tab-pane fade {{$key == 0 ? 'active show' :''}}" role="tabpanel"
                 aria-labelledby="tab--{{$row['id']}}">
                 @include(config("pages.parent").".includes.view.includes.subbody.a",['row'=>$row])
-                @if (config('pages.parameters.param1') == 'view')
-                <div class="py-3">
-                    <div class="float-right​">
-
-                        @if (count($response['data']) > 1)
-                        <a class="btn" target="_blank"
-                            href="{{config('pages.form.action.edit')}}">{{__('Edit All')}}</a>
-                        @endif
-
-                        <a class="btn btn-primary" target="_blank" href="{{$row['action']['edit']}}">
-                            <i class="fas fa-edit"></i>
-                            {{__('Edit')}}
-                        </a>
-
-                        <a class="btn btn-danger" target="_blank" href="{{$row['action']['delete']}}">
-                            <i class="fas fa-trash"></i>
-                            {{__('Delete')}}
-                        </a>
-                    </div>
-                </div>
-                @endif
-
             </div>
             @endforeach
         </div>

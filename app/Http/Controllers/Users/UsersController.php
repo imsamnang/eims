@@ -37,7 +37,9 @@ class usersController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -243,7 +245,7 @@ class usersController extends Controller
         return $data;
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
 
         $table = Users::whereHas('institute', function ($query) {
@@ -329,7 +331,7 @@ class usersController extends Controller
                 return $row;
             });
 
-        $table = Users::orderBy('id', 'asc');
+        $table = Users::orderBy('id', 'desc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

@@ -122,7 +122,7 @@ class StudySessionController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudySession::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {

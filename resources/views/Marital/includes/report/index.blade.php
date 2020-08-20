@@ -16,7 +16,7 @@
 
                 <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
                     enctype="multipart/form-data">
-                  
+
 
                     <div style="margin: 10px 0">
                         <b> {{__('Sheet')}}</b>
@@ -113,12 +113,7 @@
                 </section>
 
                 @endif
-                <footer class="d-print-none">
-                    <div class="copyright">
-                        &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
-                            target="_blank">{{config('app.name')}}</a>
-                    </div>
-                </footer>
+                @include("layouts.navFooter")
             </div>
         </div>
     </div>

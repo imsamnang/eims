@@ -134,7 +134,7 @@ class VillageController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = Villages::whereHas('commune', function ($query) {
             $query->where('id', request('communeId'));

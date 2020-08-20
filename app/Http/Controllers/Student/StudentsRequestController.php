@@ -206,7 +206,7 @@ class StudentsRequestController extends Controller
         return view(StudentsRequest::$path['view'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudentsRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsRequest)->getTable() . '.student_id');
         if (request('instituteId')) {

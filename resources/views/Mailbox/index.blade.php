@@ -83,6 +83,7 @@
 <script src="{{ asset("/assets/vendor/timeago/locales/jquery.timeago.".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/datatables.net/i18n/".app()->getLocale().".js")}}"></script>
+<script src="{{asset("/assets/vendor/sweetalert2/dist/i18n/".app()->getLocale().".js")}}"></script>
 <script src="{{asset("/assets/vendor/validatorjs/dist/lang/".app()->getLocale().".js")}}"></script>
 @endif
 <script src="{{asset("/assets/vendor/viewerjs/dist/viewer.min.js")}}"></script>

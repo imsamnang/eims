@@ -117,7 +117,7 @@ class FeatureSliderController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = FeatureSlider::orderBy('id', 'DESC');
 

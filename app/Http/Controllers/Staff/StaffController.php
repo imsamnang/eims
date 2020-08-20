@@ -362,7 +362,7 @@ class StaffController extends Controller
         return view(Staff::$path['view'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
 
 

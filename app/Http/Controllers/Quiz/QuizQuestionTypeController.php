@@ -8,7 +8,6 @@ use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\DateHelper;
-
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
@@ -25,13 +24,28 @@ class QuizQuestionTypeController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Quiz'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Quiz::$path['url']),
+            ],
+            [
+                'title' => __('List Quiz Question type'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/list'),
+            ]
+        ];
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -40,6 +54,7 @@ class QuizQuestionTypeController extends Controller
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return QuizQuestionType::getData(null, null, 10);
             } else {
@@ -52,21 +67,36 @@ class QuizQuestionTypeController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/' . $param1),
+            ];
             if (request()->method() === 'POST') {
                 return QuizQuestionType::addToTable();
             }
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Quiz Designations');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | ' . __('Add');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/' . $param1 . '/' . $id),
+            ];
             if (request()->method() === 'POST') {
                 return QuizQuestionType::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Quiz Designations');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('Edit');
         } elseif ($param1 == 'view') {
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestionType::$path['url'] . '/' . $param1 . '/' . $id),
+            ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Quiz Designations');
+            $data['view']     = QuizQuestionType::$path['view'] . '.includes.view.index';
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('View');
         } elseif ($param1 == 'delete') {
             return QuizQuestionType::deleteFromTable($id);
         } elseif ($param1 == 'report') {
@@ -74,6 +104,8 @@ class QuizQuestionTypeController extends Controller
         } else {
             abort(404);
         }
+
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],
@@ -120,10 +152,19 @@ class QuizQuestionTypeController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = QuizQuestionType::orderBy('id', 'DESC');
-        $response = $table->get()->map(function ($row) {
+        if (request('instituteId')) {
+            $table->where('institute_id', request('instituteId'));
+        }
+        $count = $table->count();
+
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
             $row['image'] = ImageHelper::site(QuizQuestionType::$path['image'], $row['image']);
             $row['action']  = [
@@ -134,9 +175,12 @@ class QuizQuestionTypeController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return  $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = QuizQuestionType::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Quiz Designations');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('List');
         return $data;
     }
 
@@ -179,7 +223,7 @@ class QuizQuestionTypeController extends Controller
             'layout'  => request('layout', 'portrait'),
         ]);
 
-        config()->set('app.title', __('List Quiz Question type'));
+        config()->set('app.title', __('Report') . ' | ' . __('Quiz Question type'));
         config()->set('pages.parent', QuizQuestionType::$path['view']);
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', QuizQuestionType::groupBy('institute_id')->pluck('institute_id'))
@@ -189,7 +233,7 @@ class QuizQuestionTypeController extends Controller
             });
 
 
-        $table = new QuizQuestionType;
+        $table = QuizQuestionType::orderBy('id', 'asc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

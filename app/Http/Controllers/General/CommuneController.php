@@ -126,7 +126,7 @@ class CommuneController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = Communes::whereHas('district', function ($query) {
             $query->where('id', request('districtId'));

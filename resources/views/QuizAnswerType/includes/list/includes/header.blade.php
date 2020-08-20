@@ -1,12 +1,12 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
+        {{-- <a href="{{config("pages.form.action.detect")}}" class="btn btn-primary" data-toggle="modal"
             data-target="#modal-add" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Add")}}
             </span>
-        </a>
+        </a> --}}
         <a href="#" data-href="{{config("pages.form.action.view")}}" class="btn btn-primary disabled"
             data-checked-show="view" data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-eye m-0"></i>
@@ -14,7 +14,7 @@
                 {{__("View")}}
             </span>
         </a>
-        <a href="#" data-href="{{config("pages.form.action.edit")}}" class="btn btn-primary disabled"
+        {{-- <a href="#" data-href="{{config("pages.form.action.edit")}}" class="btn btn-primary disabled"
             data-checked-show="edit" data-target="#modal" data-backdrop="static" data-keyboard="false">
             <i class="fa fa-edit m-0"></i>
             <span class="d-none d-sm-inline">
@@ -27,7 +27,7 @@
             <span class="d-none d-sm-inline">
                 {{__("Delete")}}
             </span>
-        </a>
+        </a> --}}
 
 
         <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">

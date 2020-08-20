@@ -7,7 +7,7 @@ use DomainException;
 
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStaffCertificate;
 
@@ -45,9 +45,9 @@ class StaffCertificate extends Model
 
         if ($id) {
             $get = $get->whereIn('id', $id);
-        }else{
-            if(request('instituteId')){
-                $get = $get->where('institute_id',request('instituteId'));
+        } else {
+            if (request('instituteId')) {
+                $get = $get->where('institute_id', request('instituteId'));
             }
         }
 
@@ -140,8 +140,8 @@ class StaffCertificate extends Model
             ->filter(function ($query) {
 
 
-                if(request('instituteId')){
-                    $query = $query->where('institute_id',request('instituteId'));
+                if (request('instituteId')) {
+                    $query = $query->where('institute_id', request('instituteId'));
                 }
 
                 if (request('search.value')) {
@@ -190,7 +190,6 @@ class StaffCertificate extends Model
             try {
                 $values['name']        = trim(request('name'));
                 $values['description'] = trim(request('description'));
-                $values['image']       = null;
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {
@@ -203,22 +202,13 @@ class StaffCertificate extends Model
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
                         StaffCertificate::updateImageToTable($add, ImageHelper::uploadImage($image, StaffCertificate::$path['image']));
-                    } else {
-                        ImageHelper::uploadImage(false, StaffCertificate::$path['image'], StaffCertificate::$path['image'], public_path('/assets/img/icons/image.jpg'));
                     }
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
                         'data'      => StaffCertificate::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -260,14 +250,7 @@ class StaffCertificate extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => StaffCertificate::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -293,14 +276,7 @@ class StaffCertificate extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -321,14 +297,7 @@ class StaffCertificate extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

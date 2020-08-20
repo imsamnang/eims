@@ -32,7 +32,9 @@ class StudentsShortCourseRequestController extends Controller
     public function __construct()
     {
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -184,11 +186,11 @@ class StudentsShortCourseRequestController extends Controller
         return view(StudentsShortCourseRequest::$path['view'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudentsShortCourseRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsShortCourseRequest)->getTable() . '.student_id');
         if (request('instituteId')) {
-            $table->where((new StudentsShortCourseRequest)->getTable().'.institute_id', request('instituteId'));
+            $table->where((new StudentsShortCourseRequest)->getTable() . '.institute_id', request('instituteId'));
         }
 
         $response = $table->orderBy((new StudentsShortCourseRequest)->getTable() . '.id', 'DESC')
@@ -300,7 +302,7 @@ class StudentsShortCourseRequestController extends Controller
         if (request('instituteId')) {
             $table->where((new StudentsShortCourseRequest)->getTable() . '.institute_id', request('instituteId'));
         }
-        
+
 
         $response = $table->get([
             (new Students)->getTable() . '.first_name_km',

@@ -27,7 +27,9 @@ class StudentsCertificateController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -149,7 +151,7 @@ class StudentsCertificateController extends Controller
         return view('Certificate.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Certificate frames');

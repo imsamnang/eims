@@ -11,7 +11,7 @@ class ActivityFeedVideo extends Model
     public static function getData($activity_feed_id, $id = null)
     {
 
-        $get = ActivityFeedVideo::orderBy('id', 'ASC');
+        $get = ActivityFeedVideo::orderBy('id', 'desc');
         if ($activity_feed_id) {
             $get = $get->where('activity_feed_id', $activity_feed_id);
         }
@@ -30,7 +30,6 @@ class ActivityFeedVideo extends Model
                     'poster'        => $row['poster'],
                     'video'         => $row['video'] ? (VideoHelper::site(ActivityFeed::$path['video'], $row['video'])) : null,
                 );
-
             }
 
             $response       = array(

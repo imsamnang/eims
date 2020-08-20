@@ -34,18 +34,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div>
-                            <label style="display: inline-block;width:100%" for="staff">{{__('staff')}}</label>
-                            <select style="display: inline-block" class="form-control" data-toggle="select" id="staff"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __("Add new option") }}"
-                                data-placeholder="" data-select-value="{{request('staffId')}}" name="staffId">
-                                <option value="">{{__('Choose')}}</option>
-                                @foreach($staffFilter["data"] as $o)
-                                <option {{$o["id"] ==request('staffId') ?'selected':''}} data-src="{{$o["image"]}}"
-                                    value="{{$o["id"]}}">{{ $o["name"]}}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
                         <div>
                             <button type="submit" class="btn btn-primary float-right"><i
@@ -54,6 +42,7 @@
                         </div>
                     </div>
                     @endif
+
                     <div style="margin: 10px 0">
                         <b> {{__('Sheet')}}</b>
                     </div>
@@ -149,12 +138,7 @@
                 </section>
 
                 @endif
-                <footer class="d-print-none">
-                    <div class="copyright">
-                        &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
-                            target="_blank">{{config('app.name')}}</a>
-                    </div>
-                </footer>
+                @include("layouts.navFooter")
             </div>
         </div>
     </div>

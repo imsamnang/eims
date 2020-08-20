@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\FormLanguages;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class Languages extends Model
@@ -178,7 +178,7 @@ class Languages extends Model
 
     public static function getLanguages($id = null)
     {
-        $get = Languages::orderBy('id', 'ASC');
+        $get = Languages::orderBy('id', 'desc');
         if ($id) {
             $get = $get->where('id', $id);
         }
@@ -409,14 +409,7 @@ class Languages extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (\DomainException $e) {
@@ -476,14 +469,7 @@ class Languages extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

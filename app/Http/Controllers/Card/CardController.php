@@ -230,7 +230,7 @@ class CardController extends Controller
         return view('Card.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = CardFrames::orderBy('id', 'DESC');
 

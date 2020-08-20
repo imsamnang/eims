@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
 use App\Models\App;
-use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\DateHelper;
-
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
@@ -18,7 +16,7 @@ use App\Models\StaffDesignations;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStaffDesignations;
-
+use App\Models\Staff;
 
 class StaffDesignationController extends Controller
 {
@@ -27,6 +25,7 @@ class StaffDesignationController extends Controller
         $this->middleware('auth');
         App::setConfig();
         Languages::setConfig();
+        App::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -34,7 +33,6 @@ class StaffDesignationController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
         $breadcrumb  = [
             [
                 'title' => __('Staff & Teacher'),
@@ -47,7 +45,6 @@ class StaffDesignationController extends Controller
                 'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/list'),
             ]
         ];
-
 
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
@@ -70,37 +67,36 @@ class StaffDesignationController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            $breadcrumb[]  = [
-                'title' => __('Add Staff Designations'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/add'),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/' . $param1),
             ];
-
             if (request()->method() === 'POST') {
                 return StaffDesignations::addToTable();
             }
-
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Designations');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Designations') . ' | ' . __('Add');
         } elseif ($param1 == 'edit') {
-            $breadcrumb[]  = [
-                'title' => __('Edit Staff Designations'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/edit/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffDesignations::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Designations');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Designations') . ' | '  . __('Edit');
         } elseif ($param1 == 'view') {
-            $breadcrumb[]  = [
-                'title' => __('View Staff Designations'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/view/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Designations');
+            $data['view']     = StaffDesignations::$path['view'] . '.includes.view.index';
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Designations') . ' | '  . __('View');
         } elseif ($param1 == 'delete') {
             return StaffDesignations::deleteFromTable($id);
         } elseif ($param1 == 'report') {
@@ -108,6 +104,7 @@ class StaffDesignationController extends Controller
         } else {
             abort(404);
         }
+
         view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
@@ -143,24 +140,31 @@ class StaffDesignationController extends Controller
             $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
             return $row;
         });
+
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffDesignations::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
                 $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
                 return $row;
             });
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StaffDesignations::orderBy('id', 'DESC');
-
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
             $row['image'] = ImageHelper::site(StaffDesignations::$path['image'], $row['image']);
             $row['action']  = [
@@ -171,9 +175,12 @@ class StaffDesignationController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return  $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = StaffDesignations::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff Designations');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Designations') . ' | '  . __('List');
         return $data;
     }
 
@@ -216,9 +223,8 @@ class StaffDesignationController extends Controller
             'layout'  => request('layout', 'portrait'),
         ]);
 
-        config()->set('app.title', __('List Staff Designations'));
+        config()->set('app.title', __('Report') . ' | ' . __('Staff Designations'));
         config()->set('pages.parent', StaffDesignations::$path['view']);
-
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffDesignations::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
@@ -226,7 +232,8 @@ class StaffDesignationController extends Controller
                 return $row;
             });
 
-        $table = new StaffDesignations;
+
+        $table = StaffDesignations::orderBy('id', 'asc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }

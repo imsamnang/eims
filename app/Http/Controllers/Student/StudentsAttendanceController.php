@@ -30,7 +30,9 @@ class StudentsAttendanceController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
     public function index($param1 = 'list', $param2 = null, $param3 = null)
@@ -101,7 +103,7 @@ class StudentsAttendanceController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['formData']['node_type'] = request('type');
         $data['attendances_type']     = AttendancesType::getData();

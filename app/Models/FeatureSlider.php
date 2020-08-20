@@ -9,7 +9,7 @@ use DomainException;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\FormFeatureSlider;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 
 class FeatureSlider extends Model
@@ -49,7 +49,7 @@ class FeatureSlider extends Model
 
         if ($id) {
             $get = $get->whereIn('id', $id);
-        }else{
+        } else {
             if (request('instituteId')) {
                 $get = $get->where('institute_id', request('instituteId'));
             }
@@ -209,14 +209,7 @@ class FeatureSlider extends Model
                         'success'   => true,
                         'type'      => 'add',
                         'data'      => FeatureSlider::getData($add)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -254,14 +247,7 @@ class FeatureSlider extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => FeatureSlider::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -287,14 +273,7 @@ class FeatureSlider extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -316,14 +295,7 @@ class FeatureSlider extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

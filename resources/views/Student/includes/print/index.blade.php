@@ -92,12 +92,7 @@
                     <div class="nodata-text">{{__('No Data')}}</div>
                 </section>
                 @endif
-                <footer class="d-print-none">
-                    <div class="copyright">
-                        &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
-                            target="_blank">{{config('app.name')}}</a>
-                    </div>
-                </footer>
+                @include("layouts.navFooter")
             </div>
         </div>
     </div>

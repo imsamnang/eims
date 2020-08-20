@@ -25,7 +25,9 @@ class StudentsStudyCourseScoreController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -134,7 +136,7 @@ class StudentsStudyCourseScoreController extends Controller
         return $data;
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['response'] = StudentsStudyCourseScore::getData(null, null, null, null, true);
         $data['view']     = StudentsStudyCourseScore::$path['view'] . '.includes.list.index';

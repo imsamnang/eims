@@ -63,14 +63,7 @@ class StudentsScore extends Model
                         'success'   => true,
                         //'data'      => StudentsStudyCourseScore::getData($student_study_course_score_id)['data'],
                         'type'      => 'add',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Add Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Add Successfully'),
                     );
                 }
             }
@@ -99,14 +92,7 @@ class StudentsScore extends Model
                         'success'   => true,
                         'type'      => 'update',
                         //'data'      => StudentsStudyCourseScore::getData($student_study_course_score_id)['data'],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             }

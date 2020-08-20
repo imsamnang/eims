@@ -203,14 +203,7 @@ class App extends Model
                         'success'   => true,
                         'type'      => 'update',
                         'data'      => [],
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {
@@ -240,7 +233,7 @@ class App extends Model
                             'title' => __('Success'),
                             'text'  => __('Update Successfully'),
                             'button'   => array(
-                                'confirm' => __('Ok'),                                
+                                'confirm' => __('Ok'),
                                 'cancel'  => __('Cancel'),
                             ),
                         ),
@@ -272,14 +265,7 @@ class App extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'   => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
+                        'message'   => __('Update Successfully'),
                     );
                 }
             } catch (DomainException $e) {

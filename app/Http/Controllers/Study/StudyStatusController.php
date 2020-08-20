@@ -121,7 +121,7 @@ class StudyStatusController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $table = StudyStatus::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {

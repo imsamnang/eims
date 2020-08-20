@@ -8,7 +8,7 @@ use App\Helpers\DateHelper;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\DataTables\Facades\DataTables;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudyCourseSession;
 
@@ -185,7 +185,7 @@ class StudyCourseSession extends Model
             })
             ->filter(function ($query) {
                 if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StudyCourseSchedule())->getTable().'.institute_id', Auth::user()->institute_id);
+                    $query =  $query->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id);
                 }
 
                 if (request('search.value')) {
@@ -356,14 +356,7 @@ class StudyCourseSession extends Model
                         if ($delete) {
                             $response       =  array(
                                 'success'   => true,
-                                'message'   => array(
-                                    'title' => __('Deleted'),
-                                    'text'  => __('Delete Successfully'),
-                                    'button'   => array(
-                                        'confirm' => __('Ok'),
-                                        'cancel'  => __('Cancel'),
-                                    ),
-                                ),
+                                'message'   => __('Delete Successfully'),
                             );
                         }
                     } catch (\Exception $e) {

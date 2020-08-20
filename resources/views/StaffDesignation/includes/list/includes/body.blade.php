@@ -15,7 +15,7 @@
                         {{__("Id")}}​</th>
 
                     <th>
-                        {{__("Designation")}}​
+                        {{__('Name')}}​
                     </th>
                     <th>
                         {{__("Description")}}​

@@ -23,7 +23,9 @@ class InstituteController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -109,7 +111,7 @@ class InstituteController extends Controller
         return view($pages['parent'] . '.index', $data);
     }
 
-    public function list($data)
+    public function list($data, $id = null)
     {
         $data['view']     = Institute::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Institute');
