@@ -4,9 +4,10 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\ImageHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\FormQuizQuestionType;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\FormQuizQuestionType;
 use App\Http\Controllers\Quiz\QuizQuestionTypeController;
 
 class QuizQuestionType extends Model
@@ -33,7 +34,7 @@ class QuizQuestionType extends Model
 
             try {
 
-
+                $values['institute_id'] = Auth::user()->institute_id;
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -82,7 +83,7 @@ class QuizQuestionType extends Model
         } else {
 
             try {
-
+                $values['institute_id'] = Auth::user()->institute_id;
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 

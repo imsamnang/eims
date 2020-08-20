@@ -29,7 +29,6 @@
             </span>
         </a>
         @if (Auth::user()->role_id == 1)
-
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
             <span class="d-none d-sm-inline">

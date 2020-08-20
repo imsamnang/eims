@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\FormStaffDesignations;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Staff\StaffDesignationController;
+use Illuminate\Support\Facades\Auth;
 
 class StaffDesignations extends Model
 {
@@ -32,8 +33,7 @@ class StaffDesignations extends Model
         } else {
 
             try {
-
-
+                $values['institute_id'] = Auth::user()->institute_id;
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -82,7 +82,7 @@ class StaffDesignations extends Model
         } else {
 
             try {
-
+                $values['institute_id'] = Auth::user()->institute_id;
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 

@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
 use App\Models\App;
-use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\DateHelper;
-
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
@@ -18,7 +16,7 @@ use App\Models\StaffCertificate;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormStaffCertificate;
-
+use App\Models\Staff;
 
 class StaffCertificateController extends Controller
 {
@@ -27,6 +25,7 @@ class StaffCertificateController extends Controller
         $this->middleware('auth');
         App::setConfig();
         Languages::setConfig();
+        App::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -68,37 +67,36 @@ class StaffCertificateController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            $breadcrumb[]  = [
-                'title' => __('Add Staff Certificate'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/add'),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/' . $param1),
             ];
-
             if (request()->method() === 'POST') {
                 return StaffCertificate::addToTable();
             }
-
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Staff Certificate');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Certificate') . ' | ' . __('Add');
         } elseif ($param1 == 'edit') {
-            $breadcrumb[]  = [
-                'title' => __('Edit Staff Certificate'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/edit/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffCertificate::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Staff Certificate');
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Certificate') . ' | '  . __('Edit');
         } elseif ($param1 == 'view') {
-            $breadcrumb[]  = [
-                'title' => __('View Staff Certificate'),
+            $breadcrumb[] = [
+                'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/view/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Staff Certificate');
+            $data['view']     = StaffCertificate::$path['view'] . '.includes.view.index';
+            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Certificate') . ' | '  . __('View');
         } elseif ($param1 == 'delete') {
             return StaffCertificate::deleteFromTable($id);
         } elseif ($param1 == 'report') {
@@ -108,6 +106,7 @@ class StaffCertificateController extends Controller
         }
 
         view()->share('breadcrumb', $breadcrumb);
+
         MetaHelper::setConfig([
             'title'       => $data['title'],
             'author'      => config('app.name'),
@@ -141,11 +140,13 @@ class StaffCertificateController extends Controller
             $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
             return $row;
         });
+
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffCertificate::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
                 $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
                 return $row;
             });
+
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);
@@ -154,11 +155,16 @@ class StaffCertificateController extends Controller
     public function list($data, $id = null)
     {
         $table = StaffCertificate::orderBy('id', 'DESC');
-
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
             $row['image'] = ImageHelper::site(StaffCertificate::$path['image'], $row['image']);
             $row['action']  = [
@@ -169,9 +175,12 @@ class StaffCertificateController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return  $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = StaffCertificate::$path['view'] . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff Certificate');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff Certificate') . ' | '  . __('List');
         return $data;
     }
 
@@ -214,9 +223,8 @@ class StaffCertificateController extends Controller
             'layout'  => request('layout', 'portrait'),
         ]);
 
-        config()->set('app.title', __('List Staff Certificate'));
+        config()->set('app.title', __('Report') . ' | ' . __('Staff Certificate'));
         config()->set('pages.parent', StaffCertificate::$path['view']);
-
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffCertificate::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
@@ -224,7 +232,8 @@ class StaffCertificateController extends Controller
                 return $row;
             });
 
-        $table = new StaffCertificate;
+
+        $table = StaffCertificate::orderBy('id', 'asc');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
