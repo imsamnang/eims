@@ -2,8 +2,9 @@
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="add_modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
             <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
-                enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
+                data-validate="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title mr-3" class="h3 mr-2">

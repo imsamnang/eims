@@ -237,7 +237,12 @@ class CertificateController extends Controller
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
 
             $row['layout'] = __($row->layout);
@@ -250,6 +255,9 @@ class CertificateController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = CertificateFrames::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Certificate');

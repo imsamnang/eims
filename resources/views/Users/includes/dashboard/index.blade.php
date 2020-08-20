@@ -2,8 +2,9 @@
     <div class="col-xl-12 col-lg-12  col-md-12 col-sm-12 col-xs-12">
         <div class="card-wrapper">
             <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
-                enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
+                data-validate="{{json_encode(config('pages.form.validate'))}}">
                 <div class="card p-0">
                     <div class="card-header">
                         <h5 class="h3 mb-0">
@@ -58,30 +59,30 @@
                             {{-- <div class="col">
                                 <select class="form-control" data-toggle="select" id="teacher_or_student"
                                     title="Simple select" data-text="{{ __("Add new option") }}"
-                                    data-placeholder=""
-                                    name="teacher_or_student"
-                                    {{config("pages.form.validate.rules.teacher_or_student") ? "required" : ""}}>
-                                    <option value="6">{{ __("Student")}}</option>
-                                    <option value="8">{{ __("Teacher")}}</option>
-                                </select>
-                            </div> --}}
-                            <div class="col">
-                                <button
-                                    class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
-                                    type="submit">
-                                    @if (config("pages.form.role") == "add")
-                                    {{ __("Register") }}
-                                    @endif
-                                </button>
-                            </div>
+                            data-placeholder=""
+                            name="teacher_or_student"
+                            {{config("pages.form.validate.rules.teacher_or_student") ? "required" : ""}}>
+                            <option value="6">{{ __("Student")}}</option>
+                            <option value="8">{{ __("Teacher")}}</option>
+                            </select>
+                        </div> --}}
+                        <div class="col">
+                            <button
+                                class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
+                                type="submit">
+                                @if (config("pages.form.role") == "add")
+                                {{ __("Register") }}
+                                @endif
+                            </button>
                         </div>
-
-
                     </div>
 
+
                 </div>
-            </form>
 
         </div>
+        </form>
+
     </div>
+</div>
 </div>

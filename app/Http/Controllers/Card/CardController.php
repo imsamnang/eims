@@ -12,7 +12,6 @@ use App\Models\CardFrames;
 use App\Helpers\CardHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Requests\FormCard;
@@ -237,7 +236,12 @@ class CardController extends Controller
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row['nid'] = $count - $nid;
             $row['front'] = ImageHelper::site(CardFrames::$path['image'], $row->front, 'original');
             $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'original');
             $row['layout'] = __($row->layout);
@@ -250,6 +254,9 @@ class CardController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = CardFrames::$path['view'] . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Card');

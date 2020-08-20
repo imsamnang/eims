@@ -58,13 +58,9 @@
 
                         <div class="col-md-12 mb-3">
                             <select class="form-control" data-toggle="select" id="study_course_session"
-                                title="Simple select"
-
-                                data-allow-clear="true"
-
-                                data-text="{{ __("Add new option") }}"
-                                data-placeholder=""
-                                name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
+                                title="Simple select" data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                data-placeholder="" name="course-sessionId"
+                                data-select-value="{{request('course-sessionId')}}">
                                 @foreach($study_course_session["data"] as $o)
                                 <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                                 @endforeach
@@ -78,8 +74,7 @@
                                         <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                     </div>
                                     <input type="text" class="form-control datepicker" data-start-date=""
-                                        data-end-date="+1" placeholder=""
-                                        type="text" id="month_year" name="month_year"
+                                        data-end-date="+1" placeholder="" type="text" id="month_year" name="month_year"
                                         value="{{request('month').'-'.request('year')}}" data-format="mm-yyyy"
                                         data-min-view="true" />
                                 </div>

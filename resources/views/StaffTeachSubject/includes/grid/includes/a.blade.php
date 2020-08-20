@@ -28,7 +28,8 @@
                 {{__("Delete")}}
             </span>
         </a>
-        <a href="{{str_replace("add","list",config("pages.form.action.detect"))}}" class="btn btn-primary">
+        <a href="{{str_replace("add","list",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
+            class="btn btn-primary">
             <i class="fas fa-list m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("List")}}

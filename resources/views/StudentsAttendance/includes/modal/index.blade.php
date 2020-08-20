@@ -3,8 +3,9 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable {{count($listData) > 1 ? "modal-xl" : "modal-lg"}}"
             role="document">
             <form role="{{config("pages.form.role")}}" class="needs-validation" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
-                enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
+                data-validate="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title mr-3" class="h3 mr-2">
@@ -46,8 +47,8 @@
     <div class="modal fade" id="modal-qrcode" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <form role="" class="needs-validation" novalidate="" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-" enctype="multipart/form-data"
-                style="height: 100%;display: contents;">
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-" enctype="multipart/form-data" style="height: 100%;display: contents;">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -64,7 +65,8 @@
                         @if (config("pages.parameters.param1") != "scan")
                         <div class="card m-0">
                             <div class="card-body">
-                                <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}"
+                                <div data-toggle="qrcode-reader"
+                                    data-url="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                     class="text-center"
                                     data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                     <div class="please_wait"

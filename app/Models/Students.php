@@ -11,6 +11,7 @@ use App\Models\StudentsGuardians;
 use App\Http\Requests\FormStudents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Student\StudentController;
 
 class Students extends Model
 {
@@ -104,13 +105,13 @@ class Students extends Model
     {
         $response           = array();
         $rules = [];
-        if (strtolower(trim(request('guardian'))) == 'other') {
+        if (strtolower(request('guardian')) == 'other') {
             $rules += [
                 'guardian_fullname'    => 'required|only_string',
                 'guardian_occupation'  => 'required',
                 'guardian_phone'       => 'required',
             ];
-        } elseif (strtolower(trim(request('guardian'))) == 'father' || strtolower(trim(request('guardian'))) == 'mother') {
+        } elseif (strtolower(request('guardian')) == 'father' || strtolower(request('guardian')) == 'mother') {
             $rules = [];
         }
 
@@ -149,6 +150,8 @@ class Students extends Model
 
 
         $rules += FormStudents::rulesField();
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
+        $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
         $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
 
@@ -160,16 +163,16 @@ class Students extends Model
         } else {
             try {
                 $add = Students::insertGetId([
-                    'institute_id'      => trim(request('institute')),
-                    'first_name_km'    => trim(request('first_name_km')),
-                    'last_name_km'     => trim(request('last_name_km')),
-                    'first_name_en'    => trim(request('first_name_en')),
-                    'last_name_en'     => trim(request('last_name_en')),
+                    'institute_id'      => request('institute'),
+                    'first_name_km'    => request('first_name_km'),
+                    'last_name_km'     => request('last_name_km'),
+                    'first_name_en'    => request('first_name_en'),
+                    'last_name_en'     => request('last_name_en'),
                     'nationality_id'   => request('nationality'),
                     'mother_tong_id'   => request('mother_tong'),
-                    'national_id'      => trim(request('national_id')),
+                    'national_id'      => request('national_id'),
                     'gender_id'        => request('gender'),
-                    'date_of_birth'    => DateHelper::convert(trim(request('date_of_birth'))),
+                    'date_of_birth'    => DateHelper::convert(request('date_of_birth')),
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
 
@@ -183,11 +186,11 @@ class Students extends Model
                     'curr_district_id' => request('curr_district'),
                     'curr_commune_id'  => request('curr_commune'),
                     'curr_village_id'  => request('curr_village'),
-                    'permanent_address'  => trim(request('permanent_address')),
-                    'temporaray_address' => trim(request('temporaray_address')),
-                    'phone'              => trim(request('phone')),
-                    'email'              => strtolower(trim(request('email'))),
-                    'extra_info'         => trim(request('student_extra_info')),
+                    'permanent_address'  => request('permanent_address'),
+                    'temporaray_address' => request('temporaray_address'),
+                    'phone'              => request('phone'),
+                    'email'              => strtolower(request('email')),
+                    'extra_info'         => request('student_extra_info'),
                     'photo'              => (request('gender') == '1') ? 'male.jpg' : 'female.jpg',
 
                 ]);
@@ -200,10 +203,12 @@ class Students extends Model
                         ImageHelper::uploadImage(false, Students::$path['image'], (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
                     }
 
+                    $controller = new StudentController;
+
                     $response       = array(
                         'success'   => true,
-                        // 'data'      => Students::getData($add)['data'][0],
                         'type'      => 'add',
+                        'html'      => view(Students::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -235,8 +240,8 @@ class Students extends Model
         unset($rules['mother_phone']);
         unset($rules['guardian']);
         unset($rules['__guardian']);
-        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:students,phone';
-        $rules['email'] = 'required|email|unique:students,email';
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
+        $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
         $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
         if ($validator->fails()) {
@@ -247,23 +252,23 @@ class Students extends Model
         } else {
 
             $values = [
-                'institute_id'     => trim(request('institute')),
-                'first_name_km'    => trim(request('first_name_km')),
-                'last_name_km'     => trim(request('last_name_km')),
-                'first_name_en'    => trim(request('first_name_en')),
-                'last_name_en'     => trim(request('last_name_en')),
+                'institute_id'     => request('institute'),
+                'first_name_km'    => request('first_name_km'),
+                'last_name_km'     => request('last_name_km'),
+                'first_name_en'    => request('first_name_en'),
+                'last_name_en'     => request('last_name_en'),
                 'nationality_id'   => request('nationality'),
                 'mother_tong_id'   => request('mother_tong'),
-                'national_id'      => trim(request('national_id')),
+                'national_id'      => request('national_id'),
                 'gender_id'        => request('gender'),
-                'date_of_birth'    => DateHelper::convert(trim(request('date_of_birth'))),
+                'date_of_birth'    => DateHelper::convert(request('date_of_birth')),
                 'marital_id'       => request('marital'),
 
-                'permanent_address'  => trim(request('permanent_address')),
-                'temporaray_address' => trim(request('temporaray_address')),
-                'phone'              => trim(request('phone')),
-                'email'              => strtolower(trim(request('email'))),
-                'extra_info'         => trim(request('student_extra_info')),
+                'permanent_address'  => request('permanent_address'),
+                'temporaray_address' => request('temporaray_address'),
+                'phone'              => request('phone'),
+                'email'              => strtolower(request('email')),
+                'extra_info'         => request('student_extra_info'),
                 'photo'              => (request('gender') == '1') ? 'male.jpg' : 'female.jpg',
             ];
             $add = Students::insertGetId($values);
@@ -297,7 +302,10 @@ class Students extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudents::rulesField(), FormStudents::customMessages(), FormStudents::attributeField());
+        $rules = FormStudents::rulesField();
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone,' . $id;
+        $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email,' . $id;
+        $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
 
         if ($validator->fails()) {
             $response       = array(
@@ -308,16 +316,16 @@ class Students extends Model
             try {
 
                 $update = Students::where('id', $id)->update([
-                    'institute_id'      => trim(request('institute')),
-                    'first_name_km'    => trim(request('first_name_km')),
-                    'last_name_km'     => trim(request('last_name_km')),
-                    'first_name_en'    => trim(request('first_name_en')),
-                    'last_name_en'     => trim(request('last_name_en')),
+                    'institute_id'      => request('institute'),
+                    'first_name_km'    => request('first_name_km'),
+                    'last_name_km'     => request('last_name_km'),
+                    'first_name_en'    => request('first_name_en'),
+                    'last_name_en'     => request('last_name_en'),
                     'nationality_id'   => request('nationality'),
                     'mother_tong_id'   => request('mother_tong'),
-                    'national_id'      => trim(request('national_id')),
+                    'national_id'      => request('national_id'),
                     'gender_id'        => request('gender'),
-                    'date_of_birth'    => DateHelper::convert(trim(request('date_of_birth'))),
+                    'date_of_birth'    => DateHelper::convert(request('date_of_birth')),
                     'marital_id'       => request('marital'),
                     'blood_group_id'   => request('blood_group'),
 
@@ -332,11 +340,11 @@ class Students extends Model
                     'curr_commune_id'  => request('curr_commune'),
                     'curr_village_id'  => request('curr_village'),
 
-                    'permanent_address'  => trim(request('permanent_address')),
-                    'temporaray_address' => trim(request('temporaray_address')),
-                    'phone'              => trim(request('phone')),
-                    'email'              => trim(request('email')),
-                    'extra_info'         => trim(request('student_extra_info')),
+                    'permanent_address'  => request('permanent_address'),
+                    'temporaray_address' => request('temporaray_address'),
+                    'phone'              => request('phone'),
+                    'email'              => request('email'),
+                    'extra_info'         => request('student_extra_info'),
                 ]);
 
                 if ($update &&  StudentsGuardians::updateToTable($id)) {
@@ -346,11 +354,18 @@ class Students extends Model
                         Students::updateImageToTable($id, ImageHelper::uploadImage($photo, Students::$path['image']));
                     }
 
+                    $controller = new StudentController;
                     $response       = array(
                         'success'   => true,
-                        'data'      => Students::getData($id)['data'][0],
                         'type'      => 'update',
-                        'message'   => __('Update Successfully'),
+                        'data'      => [
+                            [
+                                'id' => $id,
+                            ]
+
+                        ],
+                        'html'      => view(Students::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   =>  __('Update Successfully')
                     );
                 }
             } catch (DomainException $e) {
@@ -487,15 +502,8 @@ class Students extends Model
                     $response = response(
                         array(
                             'success'   => true,
-                            'message'   => array(
-                                'title' => __('Are you sure?'),
-                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
-                                    'ID : (' . implode(',', $id) . ')',
-                                'button'   => array(
-                                    'confirm' => __('Yes delete!'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
+                                'ID : (' . implode(',', $id) . ')',
                         )
                     );
                 }

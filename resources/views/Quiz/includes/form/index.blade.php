@@ -54,7 +54,8 @@
                                     class="tab-pane fade {{$key == 0 ? 'active show' :''}}" role="tabpanel"
                                     aria-labelledby="tab--{{config('pages.form.data.'.$key.'.id')}}">
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
-                                        method="POST" action="{{config("pages.form.action.detect")}}"
+                                        method="POST"
+                                        action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                         id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         <div class="card m-0">

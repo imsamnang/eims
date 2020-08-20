@@ -48,18 +48,13 @@
 
 
 </div>
-<div class="card-header border-0 pb-0 collapse"   id="filter">
+<div class="card-header border-0 pb-0 collapse" id="filter">
     <form role="search" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-datatable-filter"
         enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-8 mb-3">
-                <select class="form-control" data-toggle="select" id="study_course_session"
-                    title="Simple select"
-
-                    data-allow-clear="true"
-
-                    data-text="{{ __("Add new option") }}"
-                    data-placeholder=""
+                <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
+                    data-allow-clear="true" data-text="{{ __("Add new option") }}" data-placeholder=""
                     name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                     @foreach($study_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -69,8 +64,8 @@
 
 
             <div class="col-md-4">
-                <button type="submit" class="btn btn-primary float-right"><i
-                        class="fa fa-filter-search"></i> {{__("Search filter")}}</button>
+                <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
+                    {{__("Search filter")}}</button>
             </div>
 
         </div>

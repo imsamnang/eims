@@ -29,7 +29,7 @@ class FormCertificate extends FormRequest
         return [
             'institute'                     => 'required',
             'type'                          => 'required',
-            'name'                          => 'required|string|min:5|max:200',
+            'name'                          => 'required',
             'layout'                        => 'required',
         ];
     }

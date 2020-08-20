@@ -2,8 +2,9 @@
     <div class="col-xl-12">
         <div class="card-wrapper">
             <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-course-routine"
-                enctype="multipart/form-data" data-validation="{{json_encode(config('pages.form.validate'))}}">
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-course-routine" enctype="multipart/form-data"
+                data-validation="{{json_encode(config('pages.form.validate'))}}">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="h3 mb-0">

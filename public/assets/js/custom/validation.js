@@ -3,8 +3,8 @@ var i18n = {
     'Cancel': 'Cancel',
     'Yes': 'Yes',
     'Error': 'Error',
-    "Add Successfully": "Add Successfully",
-    "Update Successfully": "Update Successfully"
+    "Saving data": "Saving data ...",
+    "Updating data": "Updating data ...",
 };
 i18n = $.extend({}, i18n, sweetalert2_i18n);
 
@@ -72,6 +72,7 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
             },
             onBeforeSend = xhr => {
                 Swal({
+                    title: $(this).attr('role') == 'add' ? i18n['Saving data'] : i18n['Updating data'],
                     showCloseButton: true,
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
@@ -94,26 +95,29 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                             var table = $('table#datatable-basic').dataTable() //not DataTable() function
 
                             $(response.html).each((i, element) => {
-                                var _td = [];
-                                $(element).find('td').each(function () {
-                                    _td.push($(this).html());
-                                });
-                                var _tr = table.api().row.add(_td);
+                                if ($(element).find('td').length) {
+                                    var _td = [];
+                                    $(element).find('td').each(function () {
+                                        _td.push($(this).html());
+                                    });
+                                    var _tr = table.api().row.add(_td);
 
-                                rowNode.push($(_tr.node()));
+                                    rowNode.push($(_tr.node()));
 
-                                var aiDisplayMaster = table.fnSettings()["aiDisplayMaster"];
-                                var irow = aiDisplayMaster.pop();
-                                aiDisplayMaster.unshift(irow);
-                                table.api().draw();
+                                    var aiDisplayMaster = table.fnSettings()["aiDisplayMaster"];
+                                    var irow = aiDisplayMaster.pop();
+                                    aiDisplayMaster.unshift(irow);
+                                    table.api().draw();
 
-                                //set attrs to tr
-                                $(_tr.node()).attr($(element).attr());
+                                    //set attrs to tr
+                                    $(_tr.node()).attr($(element).attr());
 
-                                //set attrs to td
-                                $(element).find('td').each(function (i) {
-                                    $(_tr.node()).find('td').eq(i).attr($(this).attr());
-                                });
+                                    //set attrs to td
+                                    $(element).find('td').each(function (i) {
+                                        $(_tr.node()).find('td').eq(i).attr($(this).attr());
+                                    });
+                                }
+
 
                             });
                             $.getScript(location.origin + "/assets/js/argon.min.js");

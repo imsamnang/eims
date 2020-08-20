@@ -1,5 +1,4 @@
 <fieldset class="p-2 border text-sm">
-    <legend class="w-auto">(A)</legend>
     <table>
         <tbody>
             <tr>
@@ -41,7 +40,7 @@
                                 <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
 
                                     @if ($row['type'])
-                                    <strong>{{$row['type']}}</strong>
+                                    <strong>{{__($row['type'])}}</strong>
                                     @else
                                     <strong class="text-danger">{{__('N/A')}}</strong>
                                     @endif

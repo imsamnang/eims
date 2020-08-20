@@ -30,8 +30,8 @@
         </a>
 
         @if (request()->segment(3) !== "request")
-        <a href="{{str_replace("add","list",config("pages.form.action.detect"))}}" target="_blank"
-            class="float-right full-link">
+        <a href="{{str_replace("add","list",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
+            target="_blank" class="float-right full-link">
             <i class="fas fa-external-link"></i>
         </a>
         @endif

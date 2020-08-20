@@ -58,8 +58,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
-                                <select class="form-control" data-toggle="select" id="type" title="Simple select"
-                                    data-minimum-results-for-search="Infinity" data-placeholder=""
+                                <select class="form-control" data-toggle="select" id="type" name="type"
+                                    title="Simple select" data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".type")}}">
                                     <option value="student">
                                         {{ __("Student")}}
@@ -93,7 +93,7 @@
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
                                 <select class="form-control" data-change-text="frame_front,frame_background"
-                                    data-toggle="select" id="layout" title="Simple select"
+                                    data-toggle="select" id="layout" title="Simple select" name="layout"
                                     data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".layout")}}">
                                     <option data-text="(250x350 pixels)" value="vertical">

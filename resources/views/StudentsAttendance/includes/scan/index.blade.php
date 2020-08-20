@@ -6,7 +6,7 @@
                     <div class="col-6 col-lg-6 col-xs-12">
                         <div class="card">
                             <div class="card-header">
-                            <h5 class="h3 mb-0">{{__("Scaned")}}</h5>
+                                <h5 class="h3 mb-0">{{__("Scaned")}}</h5>
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush list my--3" id="scaned">
@@ -19,11 +19,12 @@
                         <div class="card bg-dark m-0">
                             <div class="card-body">
                                 <form role="" class="needs-validation" novalidate="" method="POST"
-                                    action="{{config("pages.form.action.detect")}}" id="form-"
-                                    enctype="multipart/form-data" style="height: 100%;display: contents;">
+                                    action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                                    id="form-" enctype="multipart/form-data" style="height: 100%;display: contents;">
                                     @csrf
-                                    <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}" data-target="#scaned"
-                                        class="text-center"
+                                    <div data-toggle="qrcode-reader"
+                                        data-url="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                                        data-target="#scaned" class="text-center"
                                         data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                         <div class="please_wait"
                                             style="position: absolute;    z-index: 1;    top: 50%;    left: 50%;    font-size: 1.5rem;    font-weight: 600;    color: white;    user-select: none;    transform: translate(-50%, -50%);">

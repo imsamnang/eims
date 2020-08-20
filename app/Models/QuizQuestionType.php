@@ -4,7 +4,6 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\ImageHelper;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormQuizQuestionType;
@@ -34,7 +33,7 @@ class QuizQuestionType extends Model
 
             try {
 
-                $values['institute_id'] = Auth::user()->institute_id;
+                $values['institute_id'] = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -83,7 +82,7 @@ class QuizQuestionType extends Model
         } else {
 
             try {
-                $values['institute_id'] = Auth::user()->institute_id;
+                $values['institute_id'] = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -167,15 +166,8 @@ class QuizQuestionType extends Model
                     $response = response(
                         array(
                             'success'   => true,
-                            'message'   => array(
-                                'title' => __('Are you sure?'),
-                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
-                                    'ID : (' . implode(',', $id) . ')',
-                                'button'   => array(
-                                    'confirm' => __('Yes delete!'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
+                                'ID : (' . implode(',', $id) . ')',
                         )
                     );
                 }

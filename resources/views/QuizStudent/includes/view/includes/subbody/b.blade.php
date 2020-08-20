@@ -85,7 +85,7 @@
 
                         </div>
                         <form role="update" class="needs-validation" novalidate="" method="POST"
-                            action="{{str_replace("add","score/update",config("pages.form.action.detect"))}}"
+                            action="{{str_replace("add","score/update",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
                             id="form-quiz-answer" enctype="multipart/form-data"
                             data-validation="{{json_encode(config("pages.form2.validate"))}}">
                             <div class="d-flex mb-3">
@@ -128,7 +128,8 @@
                         'questions' => [],
                         ];
                         @endphp
-                        <form action="{{str_replace("add","answer_again",config("pages.form.action.detect"))}}"
+                        <form
+                            action="{{str_replace("add","answer_again",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
                             method="POST" id="form-quiz-answer" data-validate='{{json_encode($validate)}}'>
                             @csrf
                             <input type="hidden" name="id" value="{{$q['id']}}">

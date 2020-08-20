@@ -10,7 +10,6 @@ use App\Models\Gender;
 use App\Models\Students;
 use App\Models\Institute;
 use App\Models\Languages;
-
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
@@ -43,7 +42,18 @@ class StudentsRequestController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-
+        $breadcrumb  = [
+            [
+                'title' => __('Students'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url']),
+            ],
+            [
+                'title' => __('List Student request study'),
+                'status' => false,
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/list'),
+            ]
+        ];
 
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
@@ -57,21 +67,29 @@ class StudentsRequestController extends Controller
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudentsRequest::getData(null, null, 10, request('search'));
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StudentsRequest::getDataTable();
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-            $data = $this->show($data, null, $param1);
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/' . $param1),
+            ];
+            if (request()->method() == 'POST') {
+                return StudentsRequest::addToTable();
+            } else {
+                $data = $this->show($data, null, $param1);
+            }
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/' . $param1 . '/' . $id),
+            ];
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Students required');
             $data['response']['data'] = StudentsRequest::join((new Students)->getTable(), (new Students)->getTable() . '.id', (new StudentsRequest)->getTable() . '.student_id')
                 ->whereIn((new StudentsRequest)->getTable() . '.id', explode(',', $id))
@@ -110,8 +128,14 @@ class StudentsRequestController extends Controller
             $data['view']  = StudentsRequest::$path['view'] . '.includes.view.index';
         } elseif ($param1 == 'edit') {
             $id = request('id', $param2);
+            $breadcrumb[] = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsRequest::$path['url'] . '/' . $param1 . '/' . $id),
+            ];
             if (request()->method() == 'POST') {
-                return StudentsRequest::updateToTable(request('id', $param2));
+                dd($id);
+                return StudentsRequest::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
         } elseif ($param1 == 'report') {
@@ -213,6 +237,10 @@ class StudentsRequestController extends Controller
             $table->where((new StudentsRequest)->getTable() . '.institute_id', request('instituteId'));
         }
 
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn((new StudentsRequest)->getTable() . '.id', explode(',', $id));
+        }
         $response = $table->orderBy((new StudentsRequest)->getTable() . '.id', 'DESC')
             ->get([
                 (new Students)->getTable() . '.first_name_km',
@@ -223,7 +251,8 @@ class StudentsRequestController extends Controller
                 (new Students)->getTable() . '.email',
                 (new Students)->getTable() . '.phone',
                 (new StudentsRequest)->getTable() . '.*',
-            ])->map(function ($row) {
+            ])->map(function ($row, $nid) use ($count) {
+                $row['nid'] = $count - $nid;
                 $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
                 $row['institute']            = Institute::where('id', $row->institute_id)->pluck(app()->getLocale())->first();
@@ -241,9 +270,12 @@ class StudentsRequestController extends Controller
                 ];
 
                 return $row;
-            })->toArray();
+            });
 
 
+        if ($id) {
+            return $response;
+        }
         $data['response'] = [
             'data'      => $response,
             'gender'    => Students::gender($table),

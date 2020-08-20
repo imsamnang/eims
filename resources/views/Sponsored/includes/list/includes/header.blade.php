@@ -28,7 +28,7 @@
                 {{__("Delete")}}
             </span>
         </a>
-       
+
     </div>
 
 </div>

@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="add_modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
-            action="{{config("pages.form.action.detect")}}"
+            action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
             id="{{config("pages.parameters.param1") == "subject-lesson" ? "form-lesson" : "form-".config("pages.form.name")}}"
             enctype="multipart/form-data"
             {{config("pages.parameters.param1") == "subject-lesson" ? "data-validation=" : "data-validate="}}{{json_encode(config("pages.form.validate"))}}>
@@ -63,8 +63,8 @@
 <div class="modal fade" id="modal-qrcode" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <form role="" class="needs-validation" novalidate="" method="POST"
-            action="{{config("pages.form.action.detect")}}" id="form-" enctype="multipart/form-data"
-            style="height: 100%;display: contents;">
+            action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}" id="form-"
+            enctype="multipart/form-data" style="height: 100%;display: contents;">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -80,7 +80,8 @@
                 <div class="modal-body p-0">
                     <div class="card m-0">
                         <div class="card-body">
-                            <div data-toggle="qrcode-reader" data-url="{{config("pages.form.action.detect")}}"
+                            <div data-toggle="qrcode-reader"
+                                data-url="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                 class="text-center"
                                 data-camera-error="{{__("There was a problem with your camera. <br> No cameras found.")}}">
                                 <div class="please_wait"

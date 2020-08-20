@@ -7,7 +7,7 @@
                     <th>{{__("Quiz")}}​</th>
                     <th>
                         @if (request()->segment(3) !== "quiz")
-                        <a href="{{str_replace("answer/add","list",config("pages.form.action.detect"))}}"
+                        <a href="{{str_replace("answer/add","list",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
                             target="_blank" class="float-right full-link">
                             <i class="fas fa-external-link"></i>
                         </a>
@@ -139,7 +139,7 @@
 
                                                 @else
                                                 <form role="update" class="needs-validation" novalidate="" method="POST"
-                                                    action="{{str_replace("add","update",config("pages.form.action.detect"))}}"
+                                                    action="{{str_replace("add","update",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
                                                     id="form-quiz-answer" enctype="multipart/form-data"
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">
@@ -215,7 +215,7 @@
 
                                                 <form role="{{config("pages.form.role")}}" class="needs-validation"
                                                     novalidate="" method="POST"
-                                                    action="{{config("pages.form.action.detect")}}"
+                                                    action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                                     id="form-quiz-answer" enctype="multipart/form-data"
                                                     data-validation="{{json_encode(config("pages.form.validate"))}}">
                                                     <div class="d-flex mb-3">

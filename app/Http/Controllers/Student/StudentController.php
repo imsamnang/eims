@@ -26,7 +26,6 @@ use App\Models\CardFrames;
 use App\Models\MotherTong;
 use App\Models\StudyClass;
 use App\Helpers\DateHelper;
-
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Models\Nationality;
@@ -459,9 +458,14 @@ class StudentController extends Controller
         $table = Students::whereHas('institute', function ($query) {
             $query->where('institute_id', request('instituteId'));
         });
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
 
         $response = $table->orderBy('id', 'DESC')
-            ->get()->map(function ($row) {
+            ->get()->map(function ($row, $nid) use ($count) {
+                $row['nid'] = $count - $nid;
                 $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
                 $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
@@ -476,9 +480,11 @@ class StudentController extends Controller
                 ];
 
                 return $row;
-            })->toArray();
+            });
 
-
+        if ($id) {
+            return $response;
+        }
         $data['response'] = [
             'data'      => $response,
             'gender'    => Students::gender($table),

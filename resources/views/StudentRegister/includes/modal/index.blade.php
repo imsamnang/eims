@@ -14,7 +14,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{-- <form action="{{config("pages.form.action.detect")}}/excel" enctype="multipart/form-data"
+                    {{-- <form action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}/excel"
+                    enctype="multipart/form-data"
                     method="POST">
                     @csrf
 

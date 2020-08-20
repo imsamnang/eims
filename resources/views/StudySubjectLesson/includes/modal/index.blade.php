@@ -3,7 +3,8 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable {{count($listData) > 1 ? "modal-xl" : "modal-lg"}}"
             role="document">
             <form role="{{config("pages.form.role")}}" class="needs-validation" method="POST"
-                action="{{config("pages.form.action.detect")}}" id="form-lesson" enctype="multipart/form-data"
+                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                id="form-lesson" enctype="multipart/form-data"
                 data-validation="{{json_encode(config('pages.form.validate'))}}">
                 <div class="modal-content">
                     <div class="modal-header">

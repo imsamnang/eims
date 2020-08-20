@@ -312,15 +312,8 @@ class CurriculumEndorsement extends Model
                     $response = response(
                         array(
                             'success'   => true,
-                            'message'   => array(
-                                'title' => __('Are you sure?'),
-                                'text'  => __('You wont be able to revert this!') . PHP_EOL .
-                                    'ID : (' . implode(',', $id) . ')',
-                                'button'   => array(
-                                    'confirm' => __('Yes delete!'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   => __('You wont be able to revert this!') . PHP_EOL .
+                                'ID : (' . implode(',', $id) . ')',
                         )
                     );
                 }

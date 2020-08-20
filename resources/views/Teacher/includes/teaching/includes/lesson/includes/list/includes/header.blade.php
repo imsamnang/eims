@@ -1,7 +1,8 @@
 <div class="card-header">
     <div class="col-lg-12 p-0">
-        <a href="{{config("pages.form.action.detect")}}?t-subjectId={{request("t-subjectId")}}" class="btn btn-primary"
-            data-toggle="modal-ajax" data-target="#modal" data-backdrop="static" data-keyboard="false">
+        <a href="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}?t-subjectId={{request("t-subjectId")}}"
+            class="btn btn-primary" data-toggle="modal-ajax" data-target="#modal" data-backdrop="static"
+            data-keyboard="false">
             <i class="fa fa-plus m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Add")}}
@@ -35,7 +36,8 @@
                 {{__("Filter")}}
             </span>
         </a>
-        <a href="{{str_replace("add","grid",config("pages.form.action.detect"))}}" class="btn btn-primary">
+        <a href="{{str_replace("add","grid",config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect")))}}"
+            class="btn btn-primary">
             <i class="fas fa-list m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Grid")}}
@@ -51,9 +53,7 @@
                 <div class="form-row">
                     <div class="col-md-8">
                         <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
-
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}"
-                            data-placeholder=""
+                            data-allow-clear="true" data-text="{{ __("Add new option") }}" data-placeholder=""
                             data-select-value="{{request("t-subjectId")}}">
                             @foreach($staff_teach_subject["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

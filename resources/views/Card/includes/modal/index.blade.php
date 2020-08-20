@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h6 class="modal-title mr-3" class="h3 mr-2">
                     @if (config('pages.parameters.param1') == 'make')
-                        {{ __("Make Card") }}
+                    {{ __("Make Card") }}
                     @else
                     {{ __(config("pages.form.role")) }}
                     @endif

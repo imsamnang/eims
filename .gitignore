@@ -9,6 +9,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-# storage/app/public/images/activity-feed/
-# storage/app/public/videos/activity-feed/
-# storage/app/public/images/profile/
+storage

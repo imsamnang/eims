@@ -10,4 +10,6 @@ window.sweetalert2_i18n = {
     "Update Successfully": "កែប្រែដោយជោគជ័យ",
     "Delete Successfully": "លុបដោយជោគជ័យ",
     "Deleted": "បានលុប",
+    "Saving data": "កំពុងរក្សាទុកទិន្នន័យ ...",
+    "Updating data": "កំពុងធ្វើការកែប្រែទិន្នន័យ ...",
 };

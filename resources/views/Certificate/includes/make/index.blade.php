@@ -92,7 +92,7 @@
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
                                         method="POST" id="form-card-make-{{$key}}" enctype="multipart/form-data"
                                         action-one="{{str_replace('add','make/'.$row['id'],config("pages.form.action.add"))}}"
-                                        action-all="{{config("pages.form.action.detect")}}"
+                                        action-all="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         <div class="card m-0">
                                             <div class="card-body p-0">

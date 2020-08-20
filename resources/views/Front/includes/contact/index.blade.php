@@ -39,15 +39,15 @@
             </div>
             <div class="col-lg-6 col-12">
                 <form class="needs-validation" novalidate="" method="POST"
-                    action="{{config("pages.form.action.detect")}}" id="form-{{config("pages.form.name")}}"
-                    enctype="multipart/form-data" data-validate="{{json_encode(config('pages.form.validate'))}}">
+                    action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                    id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
+                    data-validate="{{json_encode(config('pages.form.validate'))}}">
                     <div class="form-group mb-3">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input class="form-control " placeholder=""
-                                value="" name="name" autocomplete="name">
+                            <input class="form-control " placeholder="" value="" name="name" autocomplete="name">
                         </div>
                     </div>
 
@@ -56,8 +56,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input class="form-control " placeholder=""
-                                value="" name="email" autocomplete="email">
+                            <input class="form-control " placeholder="" value="" name="email" autocomplete="email">
                         </div>
                     </div>
 
@@ -66,8 +65,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input class="form-control " placeholder=""
-                                value="" name="phone" autocomplete="phone">
+                            <input class="form-control " placeholder="" value="" name="phone" autocomplete="phone">
                         </div>
                     </div>
                     <div class="form-group mb-3">
@@ -75,12 +73,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope-open-text"></i></span>
                             </div>
-                            <textarea class="form-control" id="" name="message"
-                                placeholder=""></textarea>
+                            <textarea class="form-control" id="" name="message" placeholder=""></textarea>
                         </div>
                     </div>
-                    <button type="submit"
-                        class="btn float-right btn-primary">{{__("Send message")}}</button>
+                    <button type="submit" class="btn float-right btn-primary">{{__("Send message")}}</button>
                 </form>
             </div>
 

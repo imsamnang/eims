@@ -54,7 +54,8 @@
                                     class="tab-pane fade {{$key == 0 ? 'active show' :''}}" role="tabpanel"
                                     aria-labelledby="tab--{{config('pages.form.data.'.$key.'.id')}}">
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
-                                        method="POST" action="{{config("pages.form.action.detect")}}"
+                                        method="POST"
+                                        action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                                         id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         <div class="card m-0">
@@ -65,7 +66,7 @@
                                                         @include(config("pages.parent").".includes.form.includes.a",['key'=>$key])
                                                     </div>
                                                 </div>
-
+                                                <a href="" name="scrollTo"></a>
                                             </div>
                                             @if (config('pages.parameters.param1') == 'add')
 
@@ -75,7 +76,7 @@
                                                     class="btn btn-default" type="button">
                                                     {{ __("Back") }}
                                                 </a>
-                                                <a href="" name="scrollTo"></a>
+
                                                 <input class="btn btn-primary float-right" type="submit"
                                                     value="{{__('Save')}}" id="submit">
                                             </div>
@@ -87,7 +88,7 @@
                                                     class="btn btn-default" type="button">
                                                     {{ __("Back") }}
                                                 </a>
-                                                <a href="" name="scrollTo"></a>
+
 
                                                 <input class="btn btn-primary float-right" type="submit"
                                                     value="{{__('Update')}}" id="submit">
@@ -95,7 +96,7 @@
                                             @else
                                             @if (count($listData) > 1)
                                             <div class="card-footer">
-                                                <a href="" name="scrollTo"></a>
+
                                                 <input class="btn btn-primary float-right" type="submit"
                                                     value="{{__('Update')}}" id="submit">
                                             </div>

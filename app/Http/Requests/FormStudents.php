@@ -27,7 +27,7 @@ class FormStudents extends FormRequest
     {
         return [
 
-            'institute'              => 'required',
+            'institute'            => 'required',
             'first_name_km'        => 'required|only_khmer_character|only_string',
             'last_name_km'         => 'required|only_khmer_character|only_string',
             'first_name_en'        => 'required|string',
@@ -76,8 +76,8 @@ class FormStudents extends FormRequest
                 ]
             ]),
 
-            'phone'                   => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:students,phone',
-            'email'                   => 'required|email|unique:students,email',
+            'phone'                   => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
+            'email'                   => 'required|email',
             // 'student_extra_info'   => 'required',
             //  'photo'                => 'required|image|mimes:jpeg,jpg,bmp,png|max:1024',
         ];
