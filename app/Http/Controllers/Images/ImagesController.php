@@ -29,10 +29,10 @@ class ImagesController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
-        ImageHelper::generate(Sponsored::$path['image']);
-        dd();
 
-        if (strtolower($param1) == Staff::$path['image']) {
+        if (strtolower($param1) == 'manager') {
+           return ImageHelper::generate();
+        } elseif (strtolower($param1) == Staff::$path['image']) {
             $this->response = ImageHelper::getImage($param2, Staff::$path['image'], request('type'), request('w'), request('h'), request('q'));
         } else if (strtolower($param1) == Students::$path['image']) {
             if (in_array($param2, [

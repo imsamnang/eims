@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use DomainException;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -226,21 +227,26 @@ class ImageHelper
         return $str;
     }
 
-    public static function generate($path)
+    /**
+     * @param array $paths
+     */
+    public static function generate()
     {
-        $dir = storage_path('app/public/images/' . $path);
-
-        foreach ((File::allFiles($dir . '/original')) as $image) {
-            foreach (self::$path['resize'] as $sizeName => $size) {
-                $target = str_replace('original', $sizeName, $image->getPathname());
-                File::copy($image->getPathname(), $target);
-                try {
-                    Image::make($target)->resize($size, $size, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })->save(null, 100);
-                } catch (DomainException $e) {
-                    return $e;
+        foreach (Storage::disk('public')->allDirectories(self::$path['image']) as  $directory) {
+            if (Str::contains($directory, 'original')) {
+                foreach ((File::allFiles(storage_path('app/public/' . $directory))) as $image) {
+                    foreach (self::$path['resize'] as $sizeName => $size) {
+                        $target = str_replace('original', $sizeName, $image->getPathname());
+                        File::copy($image->getPathname(), $target);
+                        try {
+                            Image::make($target)->resize($size, $size, function ($constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->save(null, 100);
+                        } catch (DomainException $e) {
+                            return $e;
+                        }
+                    }
                 }
             }
         }
