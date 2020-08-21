@@ -62,29 +62,7 @@ class Staff extends Model
         });
     }
 
-    public static function staffDetail($id = null)
-    {
-        $get = Staff::orderBY('id');
 
-        if ($id) {
-            $get = $get->where('id', $id);
-        }
-
-        $get = $get->get()->toArray();
-
-        if ($get) {
-            $data = [];
-            foreach ($get as $key => $row) {
-
-                $data[$key] = [
-                    'id'    => $row['id'],
-                    'first_name'   => $row['first_name_km'],
-                    'gender'    => Gender::getData($row['gender_id'])['data'][0],
-                ];
-            }
-            return $data;
-        }
-    }
 
 
     public static function gender($query)
@@ -136,11 +114,11 @@ class Staff extends Model
     {
         $data = [];
         if (gettype($query) == 'object' && $query->count()) {
-            $staffStatus = StaffStatus::getData();
-            if ($staffStatus['success']) {
-                foreach ($staffStatus['data'] as  $status) {
+            $staffStatus = StaffStatus::get();
+            if ($staffStatus->count()) {
+                foreach ($staffStatus as  $status) {
                     $data[$status['id']] = [
-                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('Staff') . $status['name'],
+                        'title' => in_array($status['id'], [2, 3]) ? $status[app()->getLocale()] :  __('Staff') . $status[app()->getLocale()],
                         'color' => $status['color'],
                         'text' => 0,
                     ];
@@ -680,7 +658,7 @@ class Staff extends Model
                     try {
                         $delete    = Staff::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -694,7 +672,7 @@ class Staff extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

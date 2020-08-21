@@ -134,16 +134,11 @@ class StaffController extends Controller
             $breadcrumb[1]['status']  = 'active';
 
             if ((request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  Staff::getData(null, null, 10, request('search'));
+
             } else {
                 $data = $this->list($data);
             }
-        } elseif ($param1 == 'list-datatable') {
-            if ((request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  Staff::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
+        
         } elseif ($param1 == 'add') {
 
             $breadcrumb[]  = [
