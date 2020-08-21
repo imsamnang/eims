@@ -99,12 +99,7 @@
                 @endif
 
             </div>
-            <footer class="d-print-none">
-                <div class="copyright">
-                    &copy; 2019 <a href="{{config("app.website")}}" class="font-weight-bold ml-1"
-                        target="_blank">{{config('app.name')}}</a>
-                </div>
-            </footer>
+            @include("layouts.navFooter")
         </div>
     </div>
 </body>
@@ -113,7 +108,20 @@
 <script src="{{ asset("/assets/vendor/konva/konva.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/jquery/dist/jquery.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/sweetalert2/dist/sweetalert2.min.js")}}"></script>
+@if (app()->getLocale() !== "en")
+<script src="{{asset("/assets/vendor/sweetalert2/dist/i18n/".app()->getLocale().".js")}}"></script>
+@endif
 <script>
+    var i18n = {
+        'Ok': 'Ok',
+        'Cancel': 'Cancel',
+        'Yes': 'Yes',
+        'Error': 'Error',
+        "Saving data": "Saving data ...",
+        "Updating data": "Updating data ...",
+    };
+    i18n = $.extend({}, i18n, sweetalert2_i18n);
+
     function b64toFile(dataURI) {
         const byteString = atob(dataURI.split(',')[1]);
         const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
@@ -141,7 +149,7 @@
     var response = {!!json_encode($response["data"]) !!};
     var j = 1;
     for (var i in response) {
-        var id = response[i].id;
+        var id = response[i].realId;
         var sheet = $("<section></section>");
         sheet.attr({
             id: id,
@@ -194,7 +202,7 @@
             contentType: false,
             beforeSend: function () {
                 swal({
-                    title: 'Saving',
+                    title: i18n['Saving data'],
                     showCloseButton: true,
                     allowEscapeKey: false,
                     allowOutsideClick: false,
@@ -209,12 +217,11 @@
             success: function (response) {
                 if (response.success) {
                     swal({
-                        title: response.message.title,
-                        text: response.message.text,
+                        title: response.message,
                         type: "success",
                         buttonsStyling: !1,
                         confirmButtonClass: "btn",
-                        confirmButtonText: response.message.button.confirm,
+                        confirmButtonText: i18n['Ok'],
                     });
                 }
             }

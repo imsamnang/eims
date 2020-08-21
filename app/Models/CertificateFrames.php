@@ -21,12 +21,12 @@ class CertificateFrames extends Model
     public static function addToTable()
     {
 
-        if (!request()->hasFile('front')) {
+        if (!request()->hasFile('foreground')) {
             return array(
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => __('Add Unsuccessful') . PHP_EOL
-                    . __('Frame Front empty'),
+                    . __('Frame foreground empty'),
             );
         }
         $response           = array();
@@ -54,9 +54,9 @@ class CertificateFrames extends Model
                 $add = CertificateFrames::insertGetId($values);
                 if ($add) {
 
-                    if (request()->hasFile('front')) {
-                        $image      = request()->file('front');
-                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'front');
+                    if (request()->hasFile('foreground')) {
+                        $image      = request()->file('foreground');
+                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'foreground');
                     }
 
                     $controller = new CertificateController;
@@ -98,9 +98,9 @@ class CertificateFrames extends Model
 
                 $update = CertificateFrames::where('id', $id)->update($values);
                 if ($update) {
-                    if (request()->hasFile('front')) {
-                        $image      = request()->file('front');
-                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'front');
+                    if (request()->hasFile('foreground')) {
+                        $image      = request()->file('foreground');
+                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'foreground');
                     }
                     $controller = new CertificateController;
                     $response       = array(
@@ -198,15 +198,12 @@ class CertificateFrames extends Model
                     if ($update) {
                         $response       = array(
                             'success'   => true,
-                            'data'      => CertificateFrames::getData($id, true)['data'][0],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Set as default successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'data'      => CertificateFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
+                                $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
+                                $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+                                return $row;
+                            })->first(),
+                            'message'   => __('Set as default successfully'),
                         );
                     }
                 } catch (DomainException $e) {
@@ -225,7 +222,7 @@ class CertificateFrames extends Model
                     try {
                         $delete    = CertificateFrames::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -239,7 +236,7 @@ class CertificateFrames extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

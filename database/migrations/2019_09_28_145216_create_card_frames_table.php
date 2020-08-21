@@ -18,12 +18,12 @@ class CreateCardFramesTable extends Migration
             $table->string('name')->unique();
             $table->string('type')->nullable();
             $table->bigInteger('institute_id')->unsigned()->nullable();
-            $table->text('front')->nullable();
+            $table->text('foreground')->nullable();
             $table->text('background')->nullable();
             $table->string('layout')->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->nullable();
-             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

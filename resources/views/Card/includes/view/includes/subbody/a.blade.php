@@ -102,7 +102,7 @@
                     </table>
                 </td>
                 <td style="vertical-align: top; text-align: center;">
-                    <img data-src="{{$row['front']}}" style="width: 100px;">
+                    <img data-src="{{$row['foreground']}}" style="width: 100px;">
                 </td>
                 <td style="vertical-align: top; text-align: center;">
                     <img data-src="{{$row['background']}}" style="width: 100px;">

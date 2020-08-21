@@ -38,11 +38,12 @@ class QRHelper
 
 
         $object = array_merge($defaults, $object);
-        $QRErrorCorrectLevel =[
-            'L' => 'L',//  1,
-            'M' => 'M',//  0,
-            'Q' => 'Q',//  3,
-            'H' => 'H',//  2
+        $QRErrorCorrectLevel = [
+            'M' => 'M', //  0,
+            'L' => 'L', //  1,
+            'H' => 'H', //  2
+            'Q' => 'Q', //  3,
+
         ];
 
         $qr = QrCode::format($object["type"])
@@ -68,17 +69,17 @@ class QRHelper
     public static function encrypt($code, $query_string = "?fc")
     {
         $encrypt        = Encryption::encode($code);
-        $qrCodeWithUrl  = url(QRHelper::$path['url'].$query_string.'=' . $encrypt);
+        $qrCodeWithUrl  = url(QRHelper::$path['url'] . $query_string . '=' . $encrypt);
         return $qrCodeWithUrl;
     }
 
-    public static function decrypt($codeUrl , $query_string = "fc", $unserialize = false)
+    public static function decrypt($codeUrl, $query_string = "fc", $unserialize = false)
     {
         $query_str = parse_url($codeUrl, PHP_URL_QUERY);
         parse_str($query_str, $query_params);
-        if($unserialize){
+        if ($unserialize) {
             $decrypt = Encryption::decode($query_params[$query_string]);
-        }else{
+        } else {
             $decrypt = $query_params[$query_string];
         }
         return $decrypt;

@@ -20,8 +20,10 @@ use App\Helpers\MetaHelper;
 use App\Models\StudyCourse;
 use App\Models\StudyStatus;
 use App\Helpers\ImageHelper;
+use App\Helpers\KhmerNumber;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
+use App\Models\StudyPrograms;
 use App\Models\StudySemesters;
 use App\Models\StudentsRequest;
 use App\Models\StudyGeneration;
@@ -41,7 +43,6 @@ use App\Http\Controllers\QrCode\QrCodeController;
 use App\Http\Controllers\Certificate\CertificateController;
 use App\Http\Controllers\Student\StudentsAttendanceController;
 use App\Http\Controllers\Student\StudentsStudyCourseScoreController;
-use App\Models\StudyPrograms;
 
 class StudentsStudyCourseController extends Controller
 {
@@ -71,7 +72,6 @@ class StudentsStudyCourseController extends Controller
                 'link'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
             ]
         ];
-        request()->merge(['ref' => request('ref', StudentsStudyCourse::$path['url'])]);
 
         $data['study_course_session'] = StudyCourseSession::getData();
 
@@ -177,11 +177,8 @@ class StudentsStudyCourseController extends Controller
                     $row['study_academic_year'] = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
                     $row['study_semester'] = StudySemesters::where('id', $row->study_semester_id)->pluck(app()->getLocale())->first();
                     $row['study_session'] = StudySession::where('id', $row->study_session_id)->pluck(app()->getLocale())->first();
-
                     $row['study_status'] = StudyStatus::where('id', $row->study_status_id)->pluck(app()->getLocale())->first();
-
                     $row['study'] = $row['study_program'] . ' (' . $row['study_course'] . ' - ' . $row['study_generation'] . ', ' . $row['study_academic_year'] . ', ' . $row['study_semester'] . ', ' . $row['study_session'] . ')';
-
                     $row['action']  = [
                         'account'   => url(Users::role() . '/' . Students::$path['url'] . '/account/create/' . $row['id']),
                         'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/edit/' . $row['id']),
@@ -202,13 +199,11 @@ class StudentsStudyCourseController extends Controller
         } elseif ($param1 == 'photo') {
             $id =  request('id', $param3);
 
-            request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-photo']);
             $view = new PhotoController();
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::makeImageToTable($id);
             }
-            $ts = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            $nodes = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                 ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                 ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
                 ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
@@ -252,16 +247,15 @@ class StudentsStudyCourseController extends Controller
 
                     return $row;
                 });
-            return $view->index($param2, $param3, $ts);
+            return $view->index($param2, $param3, $nodes);
         } elseif ($param1 == 'qrcode') {
             $id = request('id', $param3);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-qrcode']);
             request()->merge(['id' => $id, 'qrcode_type' => Students::$path['role']]);
             if (request()->method() === 'POST') {
                 return StudentsStudyCourse::makeQrcodeToTable($id);
             }
             $view = new QrCodeController();
-            $ts = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+            $nodes = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                 ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                 ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
                 ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
@@ -312,27 +306,115 @@ class StudentsStudyCourseController extends Controller
                     return $row;
                 });
 
-            return $view->index($param2, $param3, $ts);
+            return $view->index($param2, $param3, $nodes);
         } elseif ($param1 == CardFrames::$path['url']) {
             $id =  request('id', $param3);
             request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-card']);
             if (request()->method() == "POST") {
                 if ($param2 == "save") {
                     return StudentsStudyCourse::makeCardToTable();
                 }
             }
             $view = new CardController();
-            return $view->index($param2, $param3, StudentsStudyCourse::getData($id));
+            $nodes = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                ->whereIn((new StudentsStudyCourse())->getTable() . '.id', explode(',', $id))
+                ->get([
+                    (new StudyCourseSchedule())->getTable() . '.study_course_id',
+                    (new StudentsStudyCourse())->getTable() . '.id',
+                    (new Students())->getTable() . '.first_name_km',
+                    (new Students())->getTable() . '.last_name_km',
+                    (new Students())->getTable() . '.first_name_en',
+                    (new Students())->getTable() . '.last_name_en',
+                    (new Students())->getTable() . '.gender_id',
+                    (new Students())->getTable() . '.photo',
+                    (new StudentsStudyCourse())->getTable() . '.qrcode',
+                    (new StudentsStudyCourse())->getTable() . '.photo as photo_crop',
+
+
+                ])->map(function ($row) {
+                    $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                    $row['photo_crop'] = ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $row->photo_crop, 'original');
+                    $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
+                    $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
+                    $row['qrcode'] = ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row->qrcode, 'original');
+
+                    return  [
+                        'realId'       =>  $row->id,
+                        'id'           => 'student-' . $row->id,
+                        'fullname'     => $row->first_name_km . ' ' . $row->last_name_km,
+                        '_fullname'    => $row->first_name_en . ' ' . $row->last_name_en,
+                        'photo'        => $row['photo_crop'] ? $row['photo_crop'] : $row['photo'],
+                        'qrcode'       => $row['qrcode'],
+                        'gender'       => $row['gender'],
+                        'course'       => $row['study_course'],
+                        'action'  => [
+                            'card'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CardFrames::$path['url'] . '/make/' . $row['id']),
+                        ]
+                    ];
+                });
+            return $view->index($param2, $param3, $nodes);
         } elseif ($param1 == StudentsStudyCourseScore::$path['url']) {
             $view = new StudentsStudyCourseScoreController();
             return $view->index($param2, $param3);
         } elseif ($param1 == CertificateFrames::$path['url']) {
-            $id = $param3 ? $param3 : request('id');
+            $id =  request('id', $param3);
             request()->merge(['id' => $id]);
-            request()->merge(['ref' => StudentsStudyCourse::$path['image'] . '-certificate']);
+            if (request()->method() == "POST") {
+                if ($param2 == "save") {
+                    return StudentsStudyCourse::makeCertificateToTable();
+                }
+            }
             $view = new CertificateController();
-            return $view->index($param2, $param3, StudentsStudyCourse::getData($id, 'certificate'));
+            $nodes = StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                ->whereIn((new StudentsStudyCourse())->getTable() . '.id', explode(',', $id))
+                ->get([
+                    (new StudyCourseSchedule())->getTable() . '.study_course_id',
+                    (new StudentsStudyCourse())->getTable() . '.id',
+                    (new Students())->getTable() . '.first_name_km',
+                    (new Students())->getTable() . '.last_name_km',
+                    (new Students())->getTable() . '.first_name_en',
+                    (new Students())->getTable() . '.last_name_en',
+                    (new Students())->getTable() . '.gender_id',
+                    (new Students())->getTable() . '.photo',
+                    (new Students())->getTable() . '.date_of_birth',
+                    (new StudentsStudyCourse())->getTable() . '.qrcode',
+                    (new StudentsStudyCourse())->getTable() . '.photo as photo_crop',
+
+
+                ])->map(function ($row) {
+                    $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                    $row['photo_crop'] = ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $row->photo_crop, 'original');
+                    $row['gender'] = Gender::where('id', $row->gender_id)->get()->first();
+                    $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->get()->first();
+                    $row['qrcode'] = ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $row->qrcode, 'original');
+                    $k = new KhmerNumber;
+
+                    return  [
+                        'realId'       =>  $row->id,
+                        'id'           => 'student-' . $row->id,
+                        'fullname'     => $row->first_name_km . ' ' . $row->last_name_km,
+                        '_fullname'    => $row->first_name_en . ' ' . $row->last_name_en,
+                        'photo'        => $row['photo_crop'] ? $row['photo_crop'] : $row['photo'],
+                        'qrcode'       => $row['qrcode'],
+                        'gender'       => $row['gender']['km'],
+                        '_gender'      => $row['gender']['en'],
+                        'course'       => $row['study_course']['km'],
+                        '_course'      => $row['study_course']['en'],
+                        'dob'          =>  $k->convert(DateHelper::convert($row->date_of_birth, 'd-M-Y')),
+                        '_dob'          => DateHelper::convert($row->date_of_birth, 'd-F-Y', false),
+                        'action'  => [
+                            'certificate'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'] . '/make/' . $row['id']),
+                        ]
+                    ];
+                });
+
+            return $view->index($param2, $param3, $nodes);
         } elseif ($param1 == StudentsAttendances::$path['url']) {
 
             $view = new StudentsAttendanceController();

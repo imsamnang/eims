@@ -21,12 +21,12 @@ class CardFrames extends Model
     {
         $response           = array();
 
-        if (!request()->hasFile('front')) {
+        if (!request()->hasFile('foreground')) {
             return array(
                 'success'   => false,
                 'type'      => 'add',
                 'message'   => __('Add Unsuccessful') . PHP_EOL
-                    . __('Frame Front empty'),
+                    . __('Frame foreground empty'),
             );
         }
         if (!request()->hasFile('background')) {
@@ -64,9 +64,9 @@ class CardFrames extends Model
 
                 if ($add) {
 
-                    if (request()->hasFile('front')) {
-                        $image      = request()->file('front');
-                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'front');
+                    if (request()->hasFile('foreground')) {
+                        $image      = request()->file('foreground');
+                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'foreground');
                     }
                     if (request()->hasFile('background')) {
                         $image      = request()->file('background');
@@ -113,9 +113,9 @@ class CardFrames extends Model
 
                 $update = CardFrames::where('id', $id)->update($values);
                 if ($update) {
-                    if (request()->hasFile('front')) {
-                        $image      = request()->file('front');
-                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'front');
+                    if (request()->hasFile('foreground')) {
+                        $image      = request()->file('foreground');
+                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'foreground');
                     }
                     if (request()->hasFile('background')) {
                         $image      = request()->file('background');
@@ -216,15 +216,12 @@ class CardFrames extends Model
                     if ($update) {
                         $response       = array(
                             'success'   => true,
-                            'data'      => CardFrames::getData($id, true)['data'][0],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Set as default successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'data'      => CardFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
+                                $row['foreground'] = ImageHelper::site(CardFrames::$path['image'], $row->foreground, 'large');
+                                $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'large');
+                                return $row;
+                            })->first(),
+                            'message'   => __('Set as default successfully'),
                         );
                     }
                 } catch (DomainException $e) {
@@ -243,7 +240,7 @@ class CardFrames extends Model
                     try {
                         $delete    = CardFrames::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -257,7 +254,7 @@ class CardFrames extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [
@@ -266,6 +263,5 @@ class CardFrames extends Model
 
             ];
         }
-        return $response;
     }
 }

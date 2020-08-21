@@ -709,8 +709,8 @@ class TranslatesTableSeeder extends Seeder
                 'km' => 'ផ្ទៃខាងក្រោយស៊ុម'
             ],
             [
-                'phrase' => 'frame_front',
-                'en' => 'Frame Front',
+                'phrase' => 'frame_foreground',
+                'en' => 'Frame foreground',
                 'km' => 'ផ្ទៃខាងមុខស៊ុម'
             ],
             [

@@ -39,7 +39,7 @@
                     data-title="{{__("Set as default")}}" data-text="{{$row['name']}}"
                     data-confirm-button-text="{{__("Set")}}" data-cancel-button-text="{{__("Cancel")}}"
                     data-text-select="{{ __("Select") }}" data-text-selected="{{ __("Selected") }}"
-                    data-image="{{$row['front']}},{{$row['background']}}" data-link="{{$row['action']['set']}}"
+                    data-image="{{$row['foreground']}},{{$row['background']}}" data-link="{{$row['action']['set']}}"
                     class="dropdown-item">
                     <i class="fas fa-check-square"></i>
                     {{__("Set as default")}}

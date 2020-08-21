@@ -24,7 +24,7 @@
 
         <a data-loadscript='["{{ asset('/assets/vendor/croppie/croppie.js')}}","{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"]'
             data-loadstyle='["{{ asset('/assets/vendor/croppie/croppie.css')}}"]' href="#"
-            data-href="{{str_replace('edit','photo/make',config("pages.form.action.edit"))}}"
+            data-href="{{str_replace('edit','photo/crop',config("pages.form.action.edit"))}}"
             class="btn btn-primary mb-3 disabled" data-checked-show="photo" data-target="#modal" data-backdrop="static"
             data-keyboard="false">
             <i class="fas fa-portrait m-0"></i>

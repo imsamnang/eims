@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use DomainException;
 use App\Helpers\QRHelper;
 use App\Helpers\ImageHelper;
@@ -40,15 +41,15 @@ class StudentsStudyCourse extends Model
                         if (strpos($query->toSql(), 'institute_id') > 0) {
                             $value = $query->getBindings();
                             if ($value) {
-                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
+                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
                             }
                         } elseif (strpos($query->toSql(), 'study_program_id') > 0) {
                             $value = $query->getBindings();
                             if ($value) {
-                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list/?programId=' . $value[0] . '&statusId=' . $status['id']);
+                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?programId=' . $value[0] . '&statusId=' . $status['id']);
                             }
                         } else {
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list/?statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?statusId=' . $status['id']);
                         }
                     }
                 }
@@ -67,7 +68,7 @@ class StudentsStudyCourse extends Model
 
     public static function updateStudyStatus($student_study_course_id, $study_status_id)
     {
-        return StudentsStudyCourse::where('id', $student_study_course_id)->update([
+        return self::where('id', $student_study_course_id)->update([
             'study_status_id' => $study_status_id
         ]);
     }
@@ -86,14 +87,14 @@ class StudentsStudyCourse extends Model
                 $sid = '';
                 foreach (request('student') as $student_request_id) {
 
-                    if (!StudentsStudyCourse::existsToTable($student_request_id, request('study_course_session'))) {
+                    if (!self::existsToTable($student_request_id, request('study_course_session'))) {
 
                         $values = [
                             'student_request_id'  => $student_request_id,
                             'study_course_session_id'  => request('study_course_session'),
                             'study_status_id'  => request('study_status'),
                         ];
-                        $add = StudentsStudyCourse::insertGetId($values);
+                        $add = self::insertGetId($values);
                         if ($add) {
                             $sid  .= $add . ',';
                         }
@@ -103,7 +104,7 @@ class StudentsStudyCourse extends Model
                     $controller = new StudentsStudyCourseController;
                     $html = '';
                     foreach ($controller->list([], $sid) as  $row) {
-                        $html .= view(StudentsStudyCourse::$path['view'] . '.includes.tpl.tr', ['row' => $row])->render();
+                        $html .= view(self::$path['view'] . '.includes.tpl.tr', ['row' => $row])->render();
                     }
 
                     $response       = array(
@@ -136,7 +137,7 @@ class StudentsStudyCourse extends Model
             );
         } else {
             try {
-                $exists =  StudentsStudyCourse::existsToTable(request('student')[0], request('study_course_session'));
+                $exists =  self::existsToTable(request('student')[0], request('study_course_session'));
                 if ($exists) {
                     $response       = array(
                         'success'   => false,
@@ -150,7 +151,7 @@ class StudentsStudyCourse extends Model
                     }
                 }
                 if (!$exists) {
-                    $update = StudentsStudyCourse::where('id', $id)->update([
+                    $update = self::where('id', $id)->update([
                         'student_request_id'  =>    request('student')[0],
                         'study_course_session_id'  => request('study_course_session'),
                         'study_status_id'  => request('study_status'),
@@ -166,7 +167,7 @@ class StudentsStudyCourse extends Model
                                 ]
 
                             ],
-                            'html'      => view(StudentsStudyCourse::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'html'      => view(self::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                             'message'   =>  __('Update Successfully')
                         );
                     }
@@ -181,7 +182,7 @@ class StudentsStudyCourse extends Model
     public static function existsToTable($student_request_id, $study_course_session_id)
     {
         $student_request = StudentsRequest::where('id', $student_request_id)->get()->first();
-        return StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+        return self::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
             ->where('student_id', $student_request->student_id)
             ->where('study_course_session_id', $study_course_session_id)
@@ -197,7 +198,7 @@ class StudentsStudyCourse extends Model
         );
         if ($photo) {
             try {
-                $update =  StudentsStudyCourse::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'photo'    => $photo,
                 ]);
 
@@ -224,7 +225,7 @@ class StudentsStudyCourse extends Model
         );
 
         if ($student_request_id) {
-            $get = StudentsStudyCourse::where('student_request_id', $student_request_id)->get()->toArray();
+            $get = self::where('student_request_id', $student_request_id)->get()->toArray();
             $data = array();
             if ($get) {
                 foreach ($get as $key => $row) {
@@ -232,7 +233,7 @@ class StudentsStudyCourse extends Model
                         $data[] = array(
                             'id'                      => $row['id'],
                             'study_course_session'    => ($row['study_course_session_id'] == null ? null : StudyCourseSession::getData($row['study_course_session_id'])['data'][0]),
-                            'photo'                   => (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $row['photo'])),
+                            'photo'                   => (ImageHelper::site(Students::$path['image'] . '/' . self::$path['image'], $row['photo'])),
                         );
                     }
                 }
@@ -263,20 +264,20 @@ class StudentsStudyCourse extends Model
 
             $photo = ImageHelper::uploadImage(
                 $photo,
-                Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'],
+                Students::$path['image'] . '/' . self::$path['image'],
                 null,
                 request('photo')
             );
             if ($photo) {
                 try {
-                    $update =  StudentsStudyCourse::where('id', $id)->update([
+                    $update =  self::where('id', $id)->update([
                         'photo' => $photo,
                     ]);
                     if ($update) {
                         $response       = array(
                             'success'   => true,
                             'type'      => 'makePhoto',
-                            'data'      => ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $photo),
+                            'data'      => ImageHelper::site(Students::$path['image'] . '/' . self::$path['image'], $photo),
                             'message'   =>  __('Update Successfully'),
                         );
                     }
@@ -289,21 +290,22 @@ class StudentsStudyCourse extends Model
     }
     public static function makeQrcodeToTable($id = null, $options = null)
     {
-        $response = array(
-            'success'   => false,
-            'type'   => 'makeQRCode',
-            'data'   => [],
-        );
-
 
         if ($id) {
-            $get = StudentsStudyCourse::getData($id);
-            if ($get['success']) {
-                $data = array();
-                foreach ($get['data'] as $row) {
-
+            return [
+                'success'   => true,
+                'type'   => 'makeQRCode',
+                'message'   =>  __('Update Successfully'),
+                'data'  => self::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                     $q['size'] = request('qrcode_size') ? request('qrcode_size') : 100;
-                    $q['code']  = $row['qrcode_url'];
+                    $date = new DateTime();
+                    $date->modify(request('expired', '+1 year'));
+                    $q['code']  = QRHelper::encrypt([
+                        'stuId'  => $row->student_request_id,
+                        'id'     => $row->id,
+                        'type'   => Students::$path['role'],
+                        'exp'    => $date->format('Y-m-d'),
+                    ], '?fc');
                     if (request('qrcode_image_size')) {
                         $q['center']  = array(
                             'image' => $row['photo'],
@@ -315,25 +317,27 @@ class StudentsStudyCourse extends Model
 
                     if ($qrCode) {
                         try {
-                            StudentsStudyCourse::where('id', $row['id'])->update([
+                            $table = self::where('id', $row['id']);
+                            $exists = $table->pluck('qrcode');
+                            if ($exists) {
+                                ImageHelper::delete(Students::$path['image'] . '/' . QRHelper::$path['image'], $exists->first());
+                            }
+                            $table->update([
                                 'qrcode'  => $qrCode,
                             ]);
                         } catch (DomainException $e) {
                             return $e;
                         }
-                        $data[] = ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $qrCode);
+                        return ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $qrCode);
                     }
-                }
-
-                $response       = array(
-                    'success'   => true,
-                    'type'   => 'makeQRCode',
-                    'data'   => StudentsStudyCourse::getData($id)['data'],
-                    'message'   =>  __('Update Successfully'),
-                );
-            }
+                })
+            ];
         }
-        return $response;
+        return [
+            'success'   => false,
+            'type'   => 'makeQRCode',
+            'data'   => [],
+        ];
     }
 
     public static function makeCardToTable()
@@ -355,8 +359,56 @@ class StudentsStudyCourse extends Model
 
                 $image =  ImageHelper::uploadImage($card['image'], Students::$path['image'] . '/' . CardFrames::$path['image']);
                 if ($image) {
-                    StudentsStudyCourse::where('id', $card['id'])->update([
-                        'card'  => $image,
+
+                    try {
+                        $table = self::where('id', $card['id']);
+                        $exists = $table->pluck('card');
+                        if ($exists) {
+                            ImageHelper::delete(Students::$path['image'] . '/' . CardFrames::$path['image'], $exists->first());
+                        }
+                        $table->update([
+                            'card'  => $image,
+                        ]);
+                    } catch (DomainException $e) {
+                        return $e;
+                    }
+                }
+            }
+            $response       = array(
+                'success'   => true,
+                'type'   => 'make',
+                'message'   => __('Success'),
+            );
+        }
+        return $response;
+    }
+
+    public static function makeCertificateToTable()
+    {
+
+        $response = array(
+            'success'   => false,
+            'type'   => 'make',
+            'data'   => [],
+        );
+        $id = '';
+        if (request('certificates')) {
+            foreach (request('certificates') as $key => $certificate) {
+                if (count(request('certificates')) == $key + 1) {
+                    $id .= $certificate['id'];
+                } else {
+                    $id .= $certificate['id'] . ',';
+                }
+
+                $image =  ImageHelper::uploadImage($certificate['image'], Students::$path['image'] . '/' . CertificateFrames::$path['image']);
+                if ($image) {
+                    $table = self::where('id', $certificate['id']);
+                    $exists = $table->get();
+                    if ($exists) {
+                        dd($exists);
+                    }
+                    $table->update([
+                        'certificate'  => $image,
                     ]);
                 }
             }
@@ -368,48 +420,15 @@ class StudentsStudyCourse extends Model
         }
         return $response;
     }
-    public static function makeCertificateToTable()
-    {
-
-        $response = array(
-            'success'   => false,
-            'type'   => 'make',
-            'data'   => [],
-        );
-        $id = '';
-
-        if (request('certificates')) {
-            foreach (request('certificates') as $key => $certificate) {
-                if (count(request('certificates')) == $key + 1) {
-                    $id .= $certificate['id'];
-                } else {
-                    $id .= $certificate['id'] . ',';
-                }
-
-                $image =  ImageHelper::uploadImage($certificate['image'], Students::$path['image'] . '/' . CertificateFrames::$path['image']);
-                if ($image) {
-                    StudentsStudyCourse::where('id', $certificate['id'])->update([
-                        'certificate'  => $image,
-                    ]);
-                }
-            }
-            $response       = array(
-                'success'   => true,
-                'type'   => 'make',
-                'message'   => __('Make Successfully'),
-            );
-        }
-        return $response;
-    }
 
     public static function deleteFromTable($id)
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (StudentsStudyCourse::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StudentsStudyCourse::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
@@ -438,7 +457,7 @@ class StudentsStudyCourse extends Model
 
     public static function getStudy($student_id)
     {
-        $get =  StudentsStudyCourse::join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+        $get =  self::join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_id')
             ->where((new StudentsStudyCourse())->getTable() . '.student_id', $student_id)
             ->groupBy('study_course_session_id')

@@ -10,7 +10,7 @@ function Certificate(options) {
             max_height: 14,
             font_size: 14,
             text_color: "#23499E",
-            frame_front: "../../img/certificate/front.png",
+            frame_foreground: "../../img/certificate/foreground.png",
             frame_background: "../../img/certificate/background.png",
             data: {
                 photo: "../../img/user/male.jpg",
@@ -32,12 +32,12 @@ function Certificate(options) {
         settings = $.extend(true, settings, opts);
     };
     var certificate = {
-        frameFrontImage: new Image(),
+        frameForegroundImage: new Image(),
         frameBackImage: new Image(),
         delta: 2,
         GUIDELINE_OFFSET: 5,
         selected: false,
-        frameFront: [],
+        frameForeground: [],
         frameBack: [],
         photo: new Image(),
         qrcode: new Image(),
@@ -56,8 +56,8 @@ function Certificate(options) {
     self.update = function() {
         certificate.data = self.getData();
         certificate.layout = settings.layout;
-        certificate.frameFrontImage.src = settings.frame_front;
-        certificate.frameFrontImage.src = settings.frame_background;
+        certificate.frameForegroundImage.src = settings.frame_foreground;
+        certificate.frameForegroundImage.src = settings.frame_background;
         certificate.stage.destroy();
         make();
     };
@@ -92,19 +92,19 @@ function Certificate(options) {
         certificate.background.setZIndex(0);
         certificate.layer.setZIndex(1);
 
-        certificate.frameFrontImage = new Image();
-        certificate.frameFrontImage.onload = function() {
-            certificate.frameFront = new Konva.Image({
+        certificate.frameForegroundImage = new Image();
+        certificate.frameForegroundImage.onload = function() {
+            certificate.frameForeground = new Konva.Image({
                 x: 0,
                 y: 0,
-                image: certificate.frameFrontImage,
+                image: certificate.frameForegroundImage,
                 width: settings.layout == "vertical" ? 1000 : 700,
                 height: settings.layout == "vertical" ? 700 : 1000
             });
-            certificate.background.add(certificate.frameFront);
+            certificate.background.add(certificate.frameForeground);
             certificate.background.batchDraw();
         };
-        certificate.frameFrontImage.src = settings.frame_front;
+        certificate.frameForegroundImage.src = settings.frame_foreground;
 
         certificate.frameBackImage = new Image();
         certificate.frameBackImage.onload = function() {
@@ -289,20 +289,34 @@ function Certificate(options) {
             .unbind("input")
             .on("input", function(e) {
                 var files = !!this.files ? this.files : [];
-                var getid = $(this).attr("id");
+                var getid = $(this).attr("name");
                 if (!files.length || !window.FileReader) return;
                 if (/^image/.test(files[0].type)) {
                     var Reader = new FileReader();
                     Reader.readAsDataURL(files[0]);
                     Reader.onload = e => {
-                        if (getid === "front_certificate") {
-                            certificate.frameFrontImage.src = e.target.result;
+                        if (getid === "foreground_certificate") {
+                            certificate.frameForegroundImage.src = e.target.result;
                         } else if (getid === "back_certificate") {
                             certificate.frameBackImage.src = e.target.result;
                         }
                     };
                 }
             });
+
+
+
+        settings.form.find("#submit-one").unbind().click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-one"));
+            settings.form.submit();
+        });
+
+        settings.form.find("#submit-all").unbind().click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-all"));
+            settings.form.submit();
+        });
 
         settings.form.unbind("submit").on("submit", e => {
             e.preventDefault();
@@ -311,30 +325,19 @@ function Certificate(options) {
             var c = {
                 settings: {
                     frame_background: certificate.settings.frame_background,
-                    frame_front: certificate.settings.frame_front,
+                    frame_foreground: certificate.settings.frame_foreground,
                     layout: certificate.settings.layout
                 },
                 attributes: self.getAttributes()
             };
-            formData.append("certificate", JSON.stringify(c));
+            formData.append("certificates", JSON.stringify(c));
             ajax(url, formData);
         });
 
-        settings.form.find("#submit-one").click(function (event) {
-            event.preventDefault();
-            settings.form.attr("action", settings.form.attr("action-one"));
-            settings.form.submit();
-        });
-
-        settings.form.find("#submit-all").click(function (event) {
-            event.preventDefault();
-            settings.form.attr("action", settings.form.attr("action-all"));
-            settings.form.submit();
-        });
-
-        $(document)
-            .unbind("keydown")
-            .on("keydown", e => {
+        certificate.stage.container().tabIndex = 1;
+        certificate.stage.container().focus();
+        certificate.stage.container()
+            .addEventListener('keydown', function (e) {
                 if (certificate.selected) {
                     if (e.keyCode === 37) {
                         attribute(certificate.selected, true, false, "-");
@@ -348,7 +351,7 @@ function Certificate(options) {
                     e.preventDefault();
                     certificate.layer.batchDraw();
                 }
-                return;
+
             });
 
         settings.form
@@ -376,7 +379,7 @@ function Certificate(options) {
         });
 
         certificate.stage.on("click tap dragmove", e => {
-            if (e.target === certificate.frameFront || e.target === certificate.frameBack) {
+            if (e.target === certificate.frameForeground || e.target === certificate.frameBack) {
                 certificate.stage.find("Transformer").destroy();
                 certificate.layer.draw();
                 return;
@@ -712,25 +715,43 @@ function Certificate(options) {
         delete link;
     }
 
+
     function ajax(url, formData) {
-        $.ajax({
+        var a = $.ajax({
             url: url,
             method: "POST",
             data: formData,
             processData: false,
             contentType: false,
             beforeSend: xhr => {
-                var loading =
-                    '<div class="loading" style="background-color: rgba(0, 0, 0, 0.4); position: absolute; height: 100%; width: 100%; z-index: 2;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><div class="spinner-border spinner-3 text-blue"></div></div></div>';
-                settings.form.parent().prepend(loading);
+                Swal({
+                    title: sweetalert2Locale.__('Adjusting'),
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                    onClose: () => {
+                        if (a && a.abort) {
+                            a.abort();
+                        }
+                    }
+                });
             },
             success: response => {
-                settings.form
-                    .parent()
-                    .find(".loading")
-                    .remove();
                 if (response.success) {
-                    window.open(response.redirect);
+                    swal({
+                        title: response.message.replace(/\n/g, "<br>"),
+                        type: "success",
+                        html: `<a href="${response.redirect}" target="_blank">
+                            ${sweetalert2Locale.__('Results')}
+                            <i class="fas fa-external-link"></i>
+                        </a>`,
+                        confirmButtonText: sweetalert2Locale.__('Ok'),
+                    });
+                    if (response.redirect) {
+                        window.open(response.redirect);
+                    }
                 }
             },
             error: (xhr, type, error) => {}

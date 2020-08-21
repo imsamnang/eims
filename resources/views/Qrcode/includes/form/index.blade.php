@@ -55,7 +55,8 @@
                                     aria-labelledby="tab--{{config('pages.form.data.'.$key.'.id')}}">
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
                                         method="POST"
-                                        action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                                        action-one="{{$row['action']['qrcode']}}"
+                                        action-all="{{config("pages.form.action.detect")}}"
                                         id="form-{{config("pages.form.name")}}" enctype="multipart/form-data"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         @csrf
@@ -72,15 +73,16 @@
                                             </div>
 
 
-                                            @if (count($listData) > 1)
                                             <div class="card-footer">
                                                 <a href="" name="scrollTo"></a>
+                                                @if (count(config('pages.form.data')) > 1)
+                                                <input class="btn btn-primary float-left" type="submit"
+                                                    value="{{__('Make All')}}" id="submit-all">
+                                                @endif
+
                                                 <input class="btn btn-primary float-right" type="submit"
-                                                    value="{{__('Update')}}" id="submit">
+                                                    value="{{__('Make')}}" id="submit-one">
                                             </div>
-                                            @endif
-
-
                                         </div>
                                     </form>
                                 </div>

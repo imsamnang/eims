@@ -283,7 +283,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     </div>
-                                    <input class="form-control @error('email') is-invalid @enderror"
+                                    <input type="password" class="form-control @error('email') is-invalid @enderror"
                                         placeholder=""
                                         value="{{old('password')}}" name="password" required>
                                     @error('password')
@@ -356,27 +356,4 @@
 <script src="{{asset("assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js")}}"></script>
 <script src="{{asset("assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js")}}"></script>
 <script src="{{asset("assets/js/argon.min.js?v=1.1.0")}}"></script>
-
-
-{{-- <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '{your-app-id}',
-        cookie     : true,
-        xfbml      : true,
-        version    : '{api-version}'
-      });
-
-      FB.AppEvents.logPageView();
-
-    };
-
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
-  </script> --}}
 @endsection

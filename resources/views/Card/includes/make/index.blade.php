@@ -52,7 +52,7 @@
                                                 @foreach ($cards["data"] as $card)
                                                 <tr data-id="{{$card["id"]}}">
                                                     <td class="text-left image p-1">
-                                                        <img width="70px" data-src="{{$card["front"]}}" alt="">
+                                                        <img width="70px" data-src="{{$card["foreground"]}}" alt="">
                                                         <img width="70px" data-src="{{$card["background"]}}" alt="">
                                                     </td>
                                                     <td class="text-right p-1">
@@ -64,7 +64,7 @@
                                                             data-cancel-button-text="{{__("Cancel")}}"
                                                             data-text-select="{{ __("Select") }}"
                                                             data-text-selected="{{ __("Selected") }}"
-                                                            data-image="{{$card["front"]}},{{$card["background"]}}"
+                                                            data-image="{{$card["foreground"]}},{{$card["background"]}}"
                                                             data-link="{{$card["action"]["set"]}}"
                                                             class="btn btn-sm btn-primary {{$card["status"] ? 'disabled' : ''}}">
                                                             {{__("Select")}}
@@ -88,8 +88,8 @@
                                     role="tabpanel" aria-labelledby="tab--{{$row['id']}}">
                                     <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate=""
                                         method="POST" id="form-card-make-{{$key}}" enctype="multipart/form-data"
-                                        action-one="{{str_replace('add','make/'.$row['id'],config("pages.form.action.add"))}}"
-                                        action-all="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                                        action-one="{{$row['action']['card']}}"
+                                        action-all="{{config("pages.form.action.detect")}}"
                                         data-validate="{{json_encode(config('pages.form.validate'))}}">
                                         <div class="card m-0">
                                             <div class="card-body p-0">
@@ -109,11 +109,11 @@
                                                 <a href="" name="scrollTo"></a>
                                                 @if (count($response['data']) > 1)
                                                 <input class="btn btn-primary float-left" type="submit"
-                                                    value="{{__('Make All')}}" id="submit-all">
+                                                    value="{{__('Adjust​ All')}}" id="submit-all">
                                                 @endif
 
                                                 <input class="btn btn-primary float-right" type="submit"
-                                                    value="{{__('Make')}}" id="submit-one">
+                                                    value="{{__('Adjust')}}" id="submit-one">
                                             </div>
                                         </div>
                                     </form>

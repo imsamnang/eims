@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Helpers;
-
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use RenatoMarinho\LaravelPageSpeed\Middleware\LazyLoadImages;
 
 class FileHelper
 {

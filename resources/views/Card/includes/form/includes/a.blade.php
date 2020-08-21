@@ -58,7 +58,7 @@
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
                                 <select class="form-control" data-toggle="select" id="type" title="Simple select"
-                                    data-minimum-results-for-search="Infinity" data-placeholder=""  name="type"
+                                    data-minimum-results-for-search="Infinity" data-placeholder="" name="type"
                                     data-select-value="{{config("pages.form.data.".$key.".type")}}">
                                     <option value="student">
                                         {{ __("Student")}}
@@ -91,7 +91,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
-                                <select class="form-control" data-change-text="frame_front,frame_background"
+                                <select class="form-control" data-change-text="frame_foreground,frame_background"
                                     data-toggle="select" id="layout" title="Simple select" name="layout"
                                     data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".layout")}}">
@@ -132,22 +132,22 @@
 
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
-                        <label data-toggle="tooltip" for="front" class="form-control-label">
-                            {{ __("Frame Front") }}
-                            <span data-change-text-id="frame_front"></span>
-                            @if(array_key_exists("front",config("pages.form.validate.rules")))
+                        <label data-toggle="tooltip" for="foreground" class="form-control-label">
+                            {{ __("Frame foreground") }}
+                            <span data-change-text-id="frame_foreground"></span>
+                            @if(array_key_exists("foreground",config("pages.form.validate.rules")))
                             <span class="badge badge-md badge-circle badge-floating badge-danger"
                                 style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
                             @endif
 
                         </label>
                         <div class="dropzone dropzone-single" data-toggle="dropzone"
-                            data-dropzone-url="{{config("pages.form.data.".$key.".front")}}">
+                            data-dropzone-url="{{config("pages.form.data.".$key.".foreground")}}">
                             <div class="fallback">
                                 <div class="custom-file">
                                     <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
-                                        name="front"
-                                        {{(array_key_exists("front", config("pages.form.validate.rules"))) ? "required" : ""}} />
+                                        name="foreground"
+                                        {{(array_key_exists("foreground", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
                                         for="dropzoneBasicUpload">{{ __("Choose image") }}</label>
@@ -156,8 +156,9 @@
 
                             <div class="dz-preview dz-preview-single">
                                 <div class="dz-preview-cover">
-                                    <img class="dz-preview-img" data-src="{{config("pages.form.data.".$key.".front")}}"
-                                        alt data-dz-thumbnail>
+                                    <img class="dz-preview-img"
+                                        data-src="{{config("pages.form.data.".$key.".foreground")}}" alt
+                                        data-dz-thumbnail>
                                 </div>
                             </div>
                         </div>

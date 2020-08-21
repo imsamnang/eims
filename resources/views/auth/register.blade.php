@@ -118,7 +118,7 @@
                                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder=""
+                                        placeholder="" type="password"
                                         value="{{old('password')}}" name="password" required
                                         autocomplete="new-password">
                                     @error('password')
@@ -134,7 +134,7 @@
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                     </div>
                                     <input class="form-control @error('email') is-invalid @enderror"
-                                        placeholder=""
+                                        placeholder="" type="password"
                                         value="{{old('password-confirm')}}" name="password_confirmation" required
                                         autocomplete="new-password">
                                     @error('password-confirm')

@@ -1,10 +1,10 @@
 <div class="card m-0">
     <div class="card-header">
-        <label class="btn btn-outline-primary m-0" for="front_card-{{$row['id']}}">
-            <img width="25px" src="{{config("pages.form.data.0.front")}}" alt="">
-            {{__("Frame Front")}}
+        <label class="btn btn-outline-primary m-0" for="foreground_card-{{$row['id']}}">
+            <img width="25px" src="{{config("pages.form.data.0.foreground")}}" alt="">
+            {{__("Frame foreground")}}
         </label>
-        <input hidden type="file" name="front_card" id="front_card-{{$row['id']}}">
+        <input hidden type="file" name="foreground_card" id="foreground_card-{{$row['id']}}">
 
         <label class="btn btn-outline-primary m-0" for="back_card-{{$row['id']}}">
             <img width="25px" src="{{config("pages.form.data.0.background")}}" alt="">
@@ -47,8 +47,9 @@
         </style>
 
         <div class="col-12">
-            <div id="stage" data-toggle="card-maker" data-layout="{{$frame["layout"]}}" data-front="{{$frame["front"]}}"
-                data-background="{{$frame["background"]}}" data-user='{!! json_encode($row)!!}'></div>
+            <div id="stage" data-toggle="card-maker" data-layout="{{$frame["layout"]}}"
+                data-foreground="{{$frame["foreground"]}}" data-background="{{$frame["background"]}}"
+                data-user='{!! json_encode($row)!!}'></div>
         </div>
     </div>
 </div>

@@ -1,12 +1,3 @@
-var i18n = {
-    'Ok': 'Ok',
-    'Cancel': 'Cancel',
-    'Yes': 'Yes',
-    'Error': 'Error',
-    "Saving data": "Saving data ...",
-    "Updating data": "Updating data ...",
-};
-i18n = $.extend({}, i18n, sweetalert2_i18n);
 
 (function (old) {
     $.fn.attr = function () {
@@ -78,7 +69,7 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                     $(this).find('[type="submit"]').append(load);
                 }
                 Swal({
-                    title: $(this).attr('role') == 'add' ? i18n['Saving data'] : i18n['Updating data'],
+                    title: $(this).attr('role') == 'add' ? sweetalert2Locale.__('Saving data'): sweetalert2Locale.__('Updating data'),
                     showCloseButton: true,
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
@@ -159,7 +150,7 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                     }
                     Swal.fire({
                         type: 'success',
-                        title: response.message,
+                        title: response.message.replace(/\n/g, "<br>"),
                         showConfirmButton: false,
                         showCloseButton: true,
                         allowOutsideClick: false,
@@ -186,14 +177,14 @@ i18n = $.extend({}, i18n, sweetalert2_i18n);
                 } else {
                     swal({
                         showCloseButton: false,
-                        title: i18n['Error'],
+                        title: sweetalert2Locale.__('Error'),
                         html: response.message.replace(/\n/g, "<br>"),
                         type: "warning",
                         buttonsStyling: !1,
                         confirmButtonClass: "btn btn-primary",
-                        confirmButtonText: i18n['Ok'],
+                        confirmButtonText: sweetalert2Locale.__('Ok'),
                         cancelButtonClass: "btn btn-secondary",
-                        cancelButtonText: i18n['Cancel']
+                        cancelButtonText: sweetalert2Locale.__('Cancel')
                     });
                 }
             },

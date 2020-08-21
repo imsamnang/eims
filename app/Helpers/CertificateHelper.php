@@ -1,47 +1,52 @@
 <?php
 
 namespace App\Helpers;
-
-
 use App\Models\CertificateFrames;
 use Illuminate\Support\Facades\Session;
 
 class CertificateHelper
 {
-    public static function make($arrayObject)
+    /**
+     * @param array $nodes students | teachers | staff
+     * @return array
+     */
+    public static function make($nodes)
     {
-
         $certificate       = Session::get('certificate');
-        $certificateFrame         = CertificateFrames::getData(CertificateFrames::where("status", 1)->first()->id, true)["data"][0];
-        $certificate_front = Session::has('certificate_front') ? (Session::get('certificate_front')) : $certificateFrame["front_o"];
-        $certificate_back  = Session::has('certificate_back') ? (Session::get('certificate_back')) : $certificateFrame["background"];
-        $layout     = ($certificate && $certificate["settings"]["layout"]) ? $certificate["settings"]["layout"] : $certificateFrame["layout"];
+        $certificateframe = CertificateFrames::where('status', 1)->get()->map(function ($row) {
+            $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
+            $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+            return $row;
+        })->first();
+        $certificate_foreground = Session::has('certificate_foreground') ? (Session::get('certificate_foreground')) : $certificateframe["foreground"];
+        $certificate_background  = Session::has('certificate_background') ? (Session::get('certificate_background')) : $certificateframe["background"];
+        $layout     = ($certificate && $certificate["settings"]["layout"]) ? $certificate["settings"]["layout"] : $certificateframe["layout"];
 
         $allcertificates = array();
         $certificateContainer = [
             'width'  => ($layout ==  'vertical') ? 1000 : 700,
             'height' => ($layout ==  'vertical') ?  700 : 250,
         ];
-        $certificate_front = [
+        $certificate_foreground = [
             'x'     => 0,
             'y'     => 0,
             'width' => ($layout ==  'vertical') ? 1000 : 2481,
             'height' => ($layout ==  'vertical') ? 700 : 250,
-            'image' => $certificate_front
+            'image' => $certificate_foreground
         ];
 
 
-        $certificate_back  = [
+        $certificate_background  = [
             'x'     => ($layout ==  'vertical') ? 252 : 352,
             'y'     => 0,
             'width' => ($layout ==  'vertical') ? 700 : 2481,
             'height' => ($layout ==  'vertical') ? 700 : 250,
-            'image' => $certificate_back
+            'image' => $certificate_background
         ];
 
         $textColor = '#23499E';
-        if ($arrayObject['success']) {
-            foreach ($arrayObject["data"] as $row) {
+        if ($nodes) {
+            foreach ($nodes as $row) {
 
                 $certificateTmp = $certificate && $certificate["attributes"] ? $certificate["attributes"] : CertificateFrames::FrameData();
                 $certificateData  = array();
@@ -149,6 +154,7 @@ class CertificateHelper
 
                 $makecertificate = [
                     'id' => $row["id"],
+                    'realId' => $row["realId"],
                     'attrs' => [
                         'width'  => $certificateContainer["width"],
                         'height' => $certificateContainer["height"],
@@ -163,11 +169,11 @@ class CertificateHelper
                                 [
                                     'attrs' =>
                                     [
-                                        'x'      => $certificate_front['x'],
-                                        'y'      => $certificate_front['y'],
-                                        'width'  => $certificate_front['width'],
-                                        'height' => $certificate_front['height'],
-                                        'source' => $certificate_front['image'],
+                                        'x'      => $certificate_foreground['x'],
+                                        'y'      => $certificate_foreground['y'],
+                                        'width'  => $certificate_foreground['width'],
+                                        'height' => $certificate_foreground['height'],
+                                        'source' => $certificate_foreground['image'],
                                     ],
                                     'className' => 'Image',
                                 ],
@@ -175,11 +181,11 @@ class CertificateHelper
                                 [
                                     'attrs' =>
                                     [
-                                        'x'      => $certificate_back['x'],
-                                        'y'      => $certificate_back['y'],
-                                        'width'  => $certificate_back['width'],
-                                        'height' => $certificate_back['height'],
-                                        'source' => $certificate_back['image'],
+                                        'x'      => $certificate_background['x'],
+                                        'y'      => $certificate_background['y'],
+                                        'width'  => $certificate_background['width'],
+                                        'height' => $certificate_background['height'],
+                                        'source' => $certificate_background['image'],
                                     ],
                                     'className' => 'Image',
                                 ],
@@ -202,7 +208,7 @@ class CertificateHelper
                 'settings'  => $certificate && $certificate["settings"] ? $certificate["settings"] : [
                     "layout" => "vertical"
                 ],
-                "frame" => $certificateFrame,
+                "frame" => $certificateframe,
             );
         }
 
@@ -213,7 +219,7 @@ class CertificateHelper
             'settings'  => $certificate && $certificate["settings"] ? $certificate["settings"] : [
                 "layout" => "vertical"
             ],
-            "frame" => $certificateFrame,
+            "frame" => $certificateframe,
         );
     }
 }

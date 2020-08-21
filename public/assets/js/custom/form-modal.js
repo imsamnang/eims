@@ -1,4 +1,4 @@
-AjaxFormModal = function(opts) {
+AjaxFormModal = function (opts) {
     var defaults = {
             modalContainer: $(".modal"),
             url: null,
@@ -17,31 +17,38 @@ AjaxFormModal = function(opts) {
     this.load = () => {
         ajax();
     };
+    var a = null;
+    this.abort = () => {
+        if (a && a.abort) {
+            a.abort();
+        };
+    };
+
     var ajax = () => {
-            $.ajax({
+            a = $.ajax({
                 url: settings.url,
                 method: settings.method,
                 processData: true,
                 contentType: "text/html",
                 beforeSend: xhr => {
-                    typeof settings.onBeforeSend == "function"
-                        ? settings.onBeforeSend(xhr)
-                        : onBeforeSend(xhr);
+                    typeof settings.onBeforeSend == "function" ?
+                        settings.onBeforeSend(xhr) :
+                        onBeforeSend(xhr);
                 },
                 success: response => {
-                    typeof settings.onBeforeSend == "function"
-                        ? settings.onSuccess(response)
-                        : onSuccess(response);
+                    typeof settings.onBeforeSend == "function" ?
+                        settings.onSuccess(response) :
+                        onSuccess(response);
                 },
                 error: (xhr, type, error) => {
-                    typeof settings.onBeforeSend == "function"
-                        ? settings.onError(xhr, type, error)
-                        : onError(xhr, type, error);
+                    typeof settings.onBeforeSend == "function" ?
+                        settings.onError(xhr, type, error) :
+                        onError(xhr, type, error);
                 }
             });
         },
         onBeforeSend = xhr => {
-            settings.modalContainer.find(".full-link").attr("href",settings.url);
+            settings.modalContainer.find(".full-link").attr("href", settings.url);
             settings.modalContainer
                 .find(".modal-dialog")
                 .removeClass("modal-xlll")
@@ -71,40 +78,44 @@ AjaxFormModal = function(opts) {
                 oldModalBody = oldModal.find("div.modal-body");
 
 
-                oldModal.html(newModal.html());
-                oldModalHeader.html(newModalHeader.html());
+            oldModal.html(newModal.html());
+            oldModalHeader.html(newModalHeader.html());
 
-                var loadstyle = settings.element ?  settings.element.data("loadstyle") : [];
-                var loadscript = settings.element ?  settings.element.data("loadscript") : [];
+            var loadstyle = settings.element ? settings.element.data("loadstyle") : [];
+            var loadscript = settings.element ? settings.element.data("loadscript") : [];
 
-
-                if (loadstyle) {
-                    $.each(loadstyle, (i, link) => {
-                        var style = $("<link>").attr({
-                            rel: "stylesheet",
-                            href: link,
-                            type: "text/css",
-                        });
-                        $("head").append(style);
+            var loadscript_finished = [];
+            if (loadstyle) {
+                $.each(loadstyle, (i, link) => {
+                    var style = $("<link>").attr({
+                        rel: "stylesheet",
+                        href: link,
+                        type: "text/css",
                     });
-                }
-                if (loadscript) {
-                    $.each(loadscript, (i, script) => {
-                        $.getScript(script);
+                    $("head").append(style);
+                });
+            }
+            if (loadscript) {
+                $.each(loadscript, (i, script) => {
+                    $.getScript(script).done((response, type, xhr) => {
+                        if (type == "success") {
+                            loadscript_finished.push(script);
+                        }
                     });
-                }
-
+                });
+            }
 
 
             $.getScript(location.origin + "/assets/js/argon.min.js").done(
                 (response, type, xhr) => {
                     if (type == "success") {
-                        typeof settings.onCompleted == "function"
-                            ? settings.onCompleted(xhr, type, oldModalBody)
-                            : onCompleted(xhr, type, oldModalBody);
+                        typeof settings.onCompleted == "function" ?
+                            settings.onCompleted(xhr, type, oldModalBody) :
+                            onCompleted(xhr, type, oldModalBody);
                     }
                 }
             );
+
         },
         onCompleted = (xhr, type, modalBody) => {
             if (type == "success") {

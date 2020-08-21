@@ -382,10 +382,10 @@
     "Type": "ប្រភេទ",
     "Name": "ឈ្មោះ",
     "Layout": "ទម្រង់",
-    "Frame front": "ផ្ទៃស៊ុមខាងមុខ",
+    "Frame foreground": "ផ្ទៃស៊ុមខាងមុខ",
     "Frame background": "ផ្ទៃស៊ុមខាងក្រោយ",
     "Extra information": "ព័ត៌មានបន្ថែម",
-    "Frame Front": "ផ្ទៃស៊ុមខាងមុខ",
+    "Frame foreground": "ផ្ទៃស៊ុមខាងមុខ",
     "Frame Background": "ផ្ទៃស៊ុមខាងក្រោយ",
     "Class": "ថ្នាក់",
     "Start time hour": "ម៉ោងចាប់ផ្តើម",
@@ -500,7 +500,7 @@
     "Yes delete!": "បាទ \/ ចាស លុប!",
     "Please select data!": "សូមជ្រើសរើសទិន្នន័យ!",
     "Add Unsuccessful": "បន្ថែមមិនជោគជ័យ",
-    "Frame Front empty": "ផ្ទៃស៊ុមខាងមុខទទេ",
+    "Frame foreground empty": "ផ្ទៃស៊ុមខាងមុខទទេ",
     "Frame Background empty": "ផ្ទៃស៊ុមខាងក្រោយទទេ",
     "Fullname": "ឈ្មោះ​ពេញ",
     "Fullname Latin": "ឈ្មោះ​ពេញឡាតាំង",
@@ -782,5 +782,9 @@
     "Fri": "ស្រុក",
     "Sat": "សៅ",
     "Sun": "អ.ទិ",
-    "Experience Information": "ព័ត៌មានអំពីបទពិសោធន៍"
+    "Setting card layout Successfully": "កំណត់ទម្រង់កាតដោយជោគជ័យ",
+    "Experience Information": "ព័ត៌មានអំពីបទពិសោធន៍",
+    "Adjust": "ធ្វើការកែតម្រូវ",
+    "Adjust​ All": "កែតម្រូវទាំងអស់",
+    "Adjusted Successfully": "កែតម្រូវដោយជោគជ័យ"
 }

@@ -10,14 +10,18 @@ class DateHelper
     public function __construct()
     {
         date_default_timezone_set('Asia/Phnom_Penh');
-
     }
-    public static function convert($date, $format = 'Y-m-d')
+    public static function convert($date, $format = 'Y-m-d', $translate = true)
     {
         if ($date) {
             $date = str_replace('/', '-', $date);
             $dt = new Carbon($date);
-            $date = $dt->translatedFormat($format);
+            if($translate){
+                $date = $dt->translatedFormat($format);
+            }else{
+                $date = $dt->format($format);
+            }
+
         }
         return $date;
     }
@@ -65,7 +69,7 @@ class DateHelper
 
     public static  function dayOfWeek($date = null)
     {
-        if($date == null){
+        if ($date == null) {
             $date = date('Y-m-d');
         }
 
@@ -76,7 +80,7 @@ class DateHelper
         );
     }
 
-    public static  function dateOfMonth($year = null, $month = null , $date = null)
+    public static  function dateOfMonth($year = null, $month = null, $date = null)
     {
         if ($year == null) {
             $year = Carbon::now()->year;

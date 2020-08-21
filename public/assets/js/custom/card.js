@@ -10,7 +10,7 @@ function Card(options) {
             max_height: 14,
             font_size: 14,
             text_color: "#23499E",
-            frame_front: "../../img/card/front.png",
+            frame_foreground: "../../img/card/foreground.png",
             frame_background: "../../img/card/background.png",
             data: {
                 photo: "../../img/user/male.jpg",
@@ -28,12 +28,12 @@ function Card(options) {
         settings = $.extend(true, settings, opts);
     };
     var card = {
-        frameFrontImage: new Image(),
+        frameForegroundImage: new Image(),
         frameBackImage: new Image(),
         delta: 2,
         GUIDELINE_OFFSET: 5,
         selected: false,
-        frameFront: [],
+        frameForeground: [],
         frameBack: [],
         photo: new Image(),
         qrcode: new Image(),
@@ -52,8 +52,8 @@ function Card(options) {
     self.update = function () {
         card.data = self.getData();
         card.layout = settings.layout;
-        card.frameFrontImage.src = settings.frame_front;
-        card.frameFrontImage.src = settings.frame_background;
+        card.frameForegroundImage.src = settings.frame_foreground;
+        card.frameForegroundImage.src = settings.frame_background;
         card.stage.destroy();
         make();
     };
@@ -89,19 +89,19 @@ function Card(options) {
         card.background.setZIndex(0);
         card.layer.setZIndex(1);
 
-        card.frameFrontImage = new Image();
-        card.frameFrontImage.onload = function () {
-            card.frameFront = new Konva.Image({
+        card.frameForegroundImage = new Image();
+        card.frameForegroundImage.onload = function () {
+            card.frameForeground = new Konva.Image({
                 x: 0,
                 y: 0,
-                image: card.frameFrontImage,
+                image: card.frameForegroundImage,
                 width: settings.layout == "vertical" ? 250 : 350,
                 height: settings.layout == "vertical" ? 350 : 250
             });
-            card.background.add(card.frameFront);
+            card.background.add(card.frameForeground);
             card.background.batchDraw();
         };
-        card.frameFrontImage.src = settings.frame_front;
+        card.frameForegroundImage.src = settings.frame_foreground;
 
         card.frameBackImage = new Image();
         card.frameBackImage.onload = function () {
@@ -276,14 +276,14 @@ function Card(options) {
             .unbind("input")
             .on("input", function (e) {
                 var files = !!this.files ? this.files : [];
-                var getid = $(this).attr("id");
+                var getid = $(this).attr("name");
                 if (!files.length || !window.FileReader) return;
                 if (/^image/.test(files[0].type)) {
                     var Reader = new FileReader();
                     Reader.readAsDataURL(files[0]);
                     Reader.onload = e => {
-                        if (getid === "front_card") {
-                            card.frameFrontImage.src = e.target.result;
+                        if (getid === "foreground_card") {
+                            card.frameForegroundImage.src = e.target.result;
                         } else if (getid === "back_card") {
                             card.frameBackImage.src = e.target.result;
                         }
@@ -291,6 +291,19 @@ function Card(options) {
                 }
             });
 
+
+
+        settings.form.find("#submit-one").unbind().click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-one"));
+            settings.form.submit();
+        });
+
+        settings.form.find("#submit-all").unbind().click(function (event) {
+            event.preventDefault();
+            settings.form.attr("action", settings.form.attr("action-all"));
+            settings.form.submit();
+        });
         settings.form.unbind("submit").on("submit", e => {
             e.preventDefault();
             var url = settings.form.attr("action"),
@@ -298,7 +311,7 @@ function Card(options) {
             var c = {
                 settings: {
                     frame_background: card.settings.frame_background,
-                    frame_front: card.settings.frame_front,
+                    frame_foreground: card.settings.frame_foreground,
                     layout: card.settings.layout
                 },
                 attributes: self.getAttributes()
@@ -306,23 +319,10 @@ function Card(options) {
             formData.append("card", JSON.stringify(c));
             ajax(url, formData);
         });
-
-        settings.form.find("#submit-one").click(function (event) {
-            event.preventDefault();
-            settings.form.attr("action", settings.form.attr("action-one"));
-            settings.form.submit();
-        });
-
-        settings.form.find("#submit-all").click(function (event) {
-            event.preventDefault();
-            settings.form.attr("action", settings.form.attr("action-all"));
-            settings.form.submit();
-        });
-
-
-        $(document)
-            .unbind("keydown")
-            .on("keydown", e => {
+        card.stage.container().tabIndex = 1;
+        card.stage.container().focus();
+        card.stage.container()
+            .addEventListener('keydown', function (e) {
                 if (card.selected) {
                     if (e.keyCode === 37) {
                         attribute(card.selected, true, false, "-");
@@ -336,7 +336,6 @@ function Card(options) {
                     e.preventDefault();
                     card.layer.batchDraw();
                 }
-                return;
             });
 
         settings.form
@@ -364,7 +363,7 @@ function Card(options) {
         });
 
         card.stage.on("click tap dragmove", e => {
-            if (e.target === card.frameFront || e.target === card.frameBack) {
+            if (e.target === card.frameForeground || e.target === card.frameBack) {
                 card.stage.find("Transformer").destroy();
                 card.layer.draw();
                 return;
@@ -705,24 +704,41 @@ function Card(options) {
     }
 
     function ajax(url, formData) {
-        $.ajax({
+        var a = $.ajax({
             url: url,
             method: "POST",
             data: formData,
             processData: false,
             contentType: false,
             beforeSend: xhr => {
-                var loading =
-                    '<div class="loading" style="background-color: rgba(0, 0, 0, 0.4); position: absolute; height: 100%; width: 100%; z-index: 2;"><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><div class="spinner-border spinner-3 text-blue"></div></div></div>';
-                settings.form.parent().prepend(loading);
+                Swal({
+                    title: sweetalert2Locale.__('Adjusting'),
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                    onClose: () => {
+                        if (a && a.abort) {
+                            a.abort();
+                        }
+                    }
+                });
             },
             success: response => {
-                settings.form
-                    .parent()
-                    .find(".loading")
-                    .remove();
                 if (response.success) {
-                    window.open(response.redirect);
+                    swal({
+                        title: response.message.replace(/\n/g, "<br>"),
+                        type: "success",
+                        html: `<a href="${response.redirect}" target="_blank">
+                            ${sweetalert2Locale.__('Results')}
+                            <i class="fas fa-external-link"></i>
+                        </a>`,
+                        confirmButtonText: sweetalert2Locale.__('Ok'),
+                    });
+                    if (response.redirect) {
+                        window.open(response.redirect);
+                    }
                 }
             },
             error: (xhr, type, error) => {}

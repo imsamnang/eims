@@ -2,46 +2,54 @@
 
 namespace App\Helpers;
 
-
 use App\Models\CardFrames;
 use Illuminate\Support\Facades\Session;
 
 class CardHelper
 {
-    public static function make($arrayObject)
+    /**
+     * @param array $nodes students | teachers | staff
+     * @return array
+     */
+    public static function make($nodes)
     {
-
         $card = Session::get('card');
-        $cardFrame  = CardFrames::getData(CardFrames::where("status", 1)->first()->id, true)["data"][0];
-        $card_front = Session::has('card_front') ? (Session::get('card_front')) : $cardFrame["front_o"];
-        $card_back  = Session::has('card_back') ? (Session::get('card_back')) : $cardFrame["background_o"];
-        $layout     = ($card && $card["settings"]["layout"]) ? $card["settings"]["layout"] : $cardFrame["layout"];
+        $frame  = CardFrames::where('status', 1)->get()->map(function ($row) {
+            $row['foreground'] = ImageHelper::site(CardFrames::$path['image'], $row->foreground, 'large');
+            $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'large');
+            return $row;
+        })->first();
+        $card_foreground = Session::has('card_foreground') ? (Session::get('card_foreground')) : $frame["foreground"];
+        $card_background  = Session::has('card_background') ? (Session::get('card_background')) : $frame["background"];
+        $layout     = ($card && $card["settings"]["layout"]) ? $card["settings"]["layout"] : $frame["layout"];
 
         $allCards = array();
         $cardContainer = [
             'width'  => ($layout ==  'vertical') ? 500 : 700,
             'height' => ($layout ==  'vertical') ?  350 : 250,
         ];
-        $card_front = [
+        $card["settings"]["container"] = $cardContainer;
+        $card_foreground = [
             'x'     => 0,
             'y'     => 0,
             'width' => ($layout ==  'vertical') ? 250 : 350,
             'height' => ($layout ==  'vertical') ? 350 : 250,
-            'image' => $card_front
+            'image' => $card_foreground
         ];
 
 
-        $card_back  = [
+        $card_background  = [
             'x'     => ($layout ==  'vertical') ? 252 : 352,
             'y'     => 0,
             'width' => ($layout ==  'vertical') ? 250 : 350,
             'height' => ($layout ==  'vertical') ? 350 : 250,
-            'image' => $card_back
+            'image' => $card_background
         ];
 
         $textColor = '#23499E';
-        if ($arrayObject['success']) {
-            foreach ($arrayObject["data"] as $row) {
+
+        if ($nodes) {
+            foreach ($nodes as $row) {
 
                 $cardTmp = $card && $card["attributes"] ? $card["attributes"] : CardFrames::FrameData();
                 $cardData  = array();
@@ -138,6 +146,7 @@ class CardHelper
                 }
 
                 $makeCard = [
+                    'realId' => $row["realId"],
                     'id' => $row["id"],
                     'attrs' => [
                         'width'  => $cardContainer["width"],
@@ -153,11 +162,11 @@ class CardHelper
                                 [
                                     'attrs' =>
                                     [
-                                        'x'      => $card_front['x'],
-                                        'y'      => $card_front['y'],
-                                        'width'  => $card_front['width'],
-                                        'height' => $card_front['height'],
-                                        'source' => $card_front['image'],
+                                        'x'      => $card_foreground['x'],
+                                        'y'      => $card_foreground['y'],
+                                        'width'  => $card_foreground['width'],
+                                        'height' => $card_foreground['height'],
+                                        'source' => $card_foreground['image'],
                                     ],
                                     'className' => 'Image',
                                 ],
@@ -165,11 +174,11 @@ class CardHelper
                                 [
                                     'attrs' =>
                                     [
-                                        'x'      => $card_back['x'],
-                                        'y'      => $card_back['y'],
-                                        'width'  => $card_back['width'],
-                                        'height' => $card_back['height'],
-                                        'source' => $card_back['image'],
+                                        'x'      => $card_background['x'],
+                                        'y'      => $card_background['y'],
+                                        'width'  => $card_background['width'],
+                                        'height' => $card_background['height'],
+                                        'source' => $card_background['image'],
                                     ],
                                     'className' => 'Image',
                                 ],
@@ -190,20 +199,21 @@ class CardHelper
                 'success'   => true,
                 'data'      => $allCards,
                 'settings'  => $card && $card["settings"] ? $card["settings"] : [
-                    "layout" => "vertical"
+                    "layout" => $layout,
+                    "container"  => $cardContainer
                 ],
-                "frame" => $cardFrame,
+                "frame" => $frame,
             );
         }
-
 
         return array(
             'success'   => false,
             'data'      => $allCards,
             'settings'  => $card && $card["settings"] ? $card["settings"] : [
-                "layout" => "vertical"
+                "layout" => $layout,
+                "container"  => $cardContainer
             ],
-            "frame" => $cardFrame,
+            "frame" => $frame,
         );
     }
 }

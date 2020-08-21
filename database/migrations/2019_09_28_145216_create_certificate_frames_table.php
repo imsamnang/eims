@@ -18,7 +18,7 @@ class CreateCertificateFramesTable extends Migration
             $table->string('name')->unique();
             $table->string('type')->nullable();
             $table->bigInteger('institute_id')->unsigned()->nullable();
-            $table->text('front')->nullable();
+            $table->text('foreground')->nullable();
             $table->text('background')->nullable();
             $table->string('layout')->nullable();
             $table->text('description')->nullable();

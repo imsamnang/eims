@@ -345,14 +345,7 @@ class ThemeBackground extends Model
                         $response       = array(
                             'success'   => true,
                             'data'      => ThemeBackground::getData($id, true)['data'][0],
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Set as default successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'message'   => __('Set as default successfully'),
                         );
                     }
                 } catch (DomainException $e) {
@@ -372,7 +365,7 @@ class ThemeBackground extends Model
                     try {
                         $delete    = ThemeBackground::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -386,7 +379,7 @@ class ThemeBackground extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

@@ -51,7 +51,7 @@ class CertificateController extends Controller
 
         $data['formData'] = array(
             [
-                'front' => asset('/assets/img/certificate/front.png'),
+                'foreground' => asset('/assets/img/certificate/foreground.png'),
 
             ]
         );
@@ -125,28 +125,33 @@ class CertificateController extends Controller
             if (request()->method() == 'POST') {
                 if (request()->all()) {
                     Session::put('Certificate', json_decode(request()->post("Certificate"), true));
-                    if (request()->hasFile('front_Certificate')) {
-                        $file = request()->front_Certificate;
+                    if (request()->hasFile('foreground_Certificate')) {
+                        $file = request()->foreground_Certificate;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $Certificate_front = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('Certificate_front',  $Certificate_front);
+                        $certificate_foreground = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('certificate_foreground',  $certificate_foreground);
+                    }else{
+                        Session::forget('certificate_foreground');
                     }
 
-                    if (request()->hasFile('back_Certificate')) {
-                        $file = request()->back_Certificate;
+                    if (request()->hasFile('certificate_background')) {
+                        $file = request()->certificate_background;
                         $file_tmp  = $file->getPathName();
                         $file_type = $file->getMimeType();
                         $file_str  = file_get_contents($file_tmp);
                         $tob64img  = base64_encode($file_str);
-                        $Certificate_back = 'data:' . $file_type . ';base64,' . $tob64img;
-                        Session::put('Certificate_back',  $Certificate_back);
+                        $certificate_background = 'data:' . $file_type . ';base64,' . $tob64img;
+                        Session::put('certificate_background',  $certificate_background);
+                    }else{
+                        Session::forget('certificate_background');
                     }
 
                     return array(
                         'success' => true,
+                        'message' => __('Adjusted Successfully'),
                         'redirect' => str_replace('make', 'result', request()->getUri())
                     );
                 }
@@ -166,14 +171,15 @@ class CertificateController extends Controller
                     'image'       => null
                 ]
             );
-            config()->set('app.title', $d['title']);
-            request()->merge([
-                'size'  => request('size', 'A4'),
-                'layout'  => request('layout', 'landscape'),
-            ]);
 
 
             $d['response'] = CertificateHelper::make($param3);
+            config()->set('app.title', $d['title']);
+            request()->merge([
+                'size'  => request('size', 'A4'),
+                'layout'  => request('layout', $d['response']['frame']['layout'] == 'vertical' ? 'landscape' : 'portrait')
+            ]);
+
 
             return view('Certificate.includes.result.index', $d);
         } elseif ($param1 == 'save') {
@@ -243,7 +249,7 @@ class CertificateController extends Controller
         }
         $response = $table->get()->map(function ($row, $nid) use ($count) {
             $row['nid'] = $count - $nid;
-            $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+            $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
 
             $row['layout'] = __($row->layout);
             $row['action']  = [
@@ -270,7 +276,7 @@ class CertificateController extends Controller
         if ($id) {
 
             $response           = CertificateFrames::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+                $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'large');
 
 
                 $row['action']  = [
@@ -284,7 +290,7 @@ class CertificateController extends Controller
                 return [
                     'id'  => $row->id,
                     'name'  => $row->name,
-                    'image'  => $row->front,
+                    'image'  => $row->foreground,
                     'action'  => [
                         'edit'   => url(Users::role() . '/' . CertificateFrames::$path['url'] . '/' . CertificateFrames::$path['url'] . '/edit/' . $row['id']),
                     ],
@@ -300,28 +306,30 @@ class CertificateController extends Controller
 
 
 
-    public function make($data, $ts)
+    public function make($data, $nodes)
     {
 
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Certificate');
         $data['view']  = CertificateFrames::$path['view'] . '.includes.make.index';
-        $data['response']['frame']  = CertificateFrames::getData(CertificateFrames::where('status', 1)->first()->id, 10)['data'][0];
-        $data['response']['frame']['front'] = $data['response']['frame']['front_o'];
-
+        $data['response']['frame']  = CertificateFrames::where('status', 1)->get()->map(function ($row) {
+            $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
+            $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+            return $row;
+        })->first();
 
         $data['formName']   = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . CertificateFrames::$path['url'];
         $data['formAction'] = '/make/' . request('id');
 
         $data['response']['all'] = CertificateFrames::frameData('all');
         $data['response']['selected'] = CertificateFrames::frameData('selected');
-        if ($ts['success']) {
-            $data['response']['data'] = $ts['data'];
+        if ($nodes) {
+            $data['response']['data'] = $nodes;
         } else {
             $data['response']['data'] =  [];
         }
 
         $data['certificates']['data'] = CertificateFrames::get()->map(function ($row) {
-            $row['front'] = ImageHelper::site(CertificateFrames::$path['image'], $row->front, 'original');
+            $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'large');
             $row['layout'] = __($row->layout);
             $row['action']  = [
                 'set' => url(Users::role() . '/' . Students::$path['url'] . '/' . CertificateFrames::$path['url'] . '/set/' . $row['id']),

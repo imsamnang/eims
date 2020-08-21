@@ -10,7 +10,6 @@
     "require": {
         "php": "^7.2",
         "ext-curl": "^7.2",
-        "barryvdh/laravel-translation-manager": "^0.5.8",
         "deanblackborough/php-quill-renderer": "^3.18",
         "embed/embed": "^3.4",
         "fideloper/proxy": "^4.0",
@@ -18,6 +17,7 @@
         "highideas/laravel-users-online": "^3.0",
         "intervention/image": "^2.5",
         "jenssegers/agent": "^2.6",
+        "joedixon/laravel-translation": "^1.1",
         "laracasts/utilities": "^3.0",
         "laravel-notification-channels/pusher-push-notifications": "^1.1",
         "laravel/framework": "^6.0",

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Images;
 
-use App\Models\App;
 use App\Models\Staff;
 use App\Models\Students;
 use App\Helpers\QRHelper;
@@ -12,6 +11,7 @@ use App\Models\StudentsRequest;
 use App\Models\CertificateFrames;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
+use App\Models\Sponsored;
 use App\Models\StudentsShortCourseRequest;
 
 class ImagesController extends Controller
@@ -29,6 +29,8 @@ class ImagesController extends Controller
 
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
+        ImageHelper::generate(Sponsored::$path['image']);
+        dd();
 
         if (strtolower($param1) == Staff::$path['image']) {
             $this->response = ImageHelper::getImage($param2, Staff::$path['image'], request('type'), request('w'), request('h'), request('q'));
@@ -45,8 +47,6 @@ class ImagesController extends Controller
             } else {
                 $this->response = ImageHelper::getImage($param2, Students::$path['image'], request('type'), request('w'), request('h'), request('q'));
             }
-        } else if (strtolower($param1) == QRHelper::$path['image']) {
-            $this->response = ImageHelper::getImageNoType($param2, QRHelper::$path['image']);
         } else {
             $this->response = ImageHelper::getImage($param2, $param1, request('type'), request('w'), request('h'), request('q'));
         }
