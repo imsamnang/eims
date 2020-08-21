@@ -31,11 +31,8 @@
         "paquettg/php-html-parser": "^2.2",
         "phpdocumentor/graphviz": "^1.0",
         "pusher/pusher-php-server": "^4.1",
-        "realrashid/sweet-alert": "^3.1",
         "simplesoftwareio/simple-qrcode": "^2.0",
-        "spatie/db-dumper": "^2.15",
-        "yajra/laravel-datatables-fractal": "^1.5",
-        "yajra/laravel-datatables-oracle": "^9.10"
+        "spatie/db-dumper": "^2.15"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -63,7 +60,7 @@
         "files": [
             "app/Helpers/DateHelper.php",
             "app/Helpers/Internet.php"
-            
+
         ]
     },
     "autoload-dev": {
