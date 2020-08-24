@@ -23,7 +23,7 @@ use App\Models\StudyAcademicYears;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\FormQuizzesStudentAnswers;
+use App\Http\Requests\FormQuizStudentAnswers;
 use App\Models\QuizAnswerTypes;
 use App\Models\Students;
 use App\Models\StudentsRequest;
@@ -124,10 +124,10 @@ class QuizStudentAnswerController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormQuizzesStudentAnswers::rules(),
-            'attributes'  =>  FormQuizzesStudentAnswers::attributes(),
-            'messages'    =>  FormQuizzesStudentAnswers::messages(),
-            'questions'   =>  FormQuizzesStudentAnswers::questions(),
+            'rules'       =>  FormQuizStudentAnswers::rules(),
+            'attributes'  =>  FormQuizStudentAnswers::attributes(),
+            'messages'    =>  FormQuizStudentAnswers::messages(),
+            'questions'   =>  FormQuizStudentAnswers::questions(),
         ];
 
         config()->set('app.title', $data['title']);

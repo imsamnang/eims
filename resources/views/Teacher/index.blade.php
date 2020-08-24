@@ -36,7 +36,7 @@
 
         @include(config("pages.parent").".includes.modal.index")
         @include(config("pages.view"))
-        @include(Auth::user()->role("view_path").".includes.navFooter")
+        @include("layouts.navFooter")
     </div>
 </div>
 

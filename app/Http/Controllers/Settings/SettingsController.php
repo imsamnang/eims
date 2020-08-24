@@ -10,7 +10,6 @@ use App\Models\Sponsored;
 use App\Models\Translates;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
@@ -129,16 +128,13 @@ class SettingsController extends Controller
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  App::getData(null, null, 10);
+                return  AppModel::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
-            if (request()->ajax()) {
-                if (request()->method() === 'POST') {
-                    return App::addToTable();
-                }
+            if (request()->method() === 'POST') {
+                return AppModel::addToTable();
             }
 
             $data = $this->add($data);
@@ -146,7 +142,7 @@ class SettingsController extends Controller
             $id = request('id', $param2);
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
-                    return App::updateToTable($id);
+                    return AppModel::updateToTable($id);
                 }
             }
 
@@ -159,13 +155,13 @@ class SettingsController extends Controller
             }
 
             if (request()->method() == 'POST') {
-                return App::updateToTable($param3);
+                return AppModel::updateToTable($param3);
             }
             $data = $this->general($data, $id);
         } elseif ($param1 == 'color') {
 
             if ($param2 == 'set' && request()->method() == 'POST') {
-                return App::updateThemeColorToTable(config('app.id'), $param3);
+                return AppModel::updateThemeColorToTable(config('app.id'), $param3);
             }
 
             $data = $this->color($data);
@@ -195,7 +191,7 @@ class SettingsController extends Controller
             dd('cache config route view are clear.');
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
-            return App::deleteFromTable($id);
+            return AppModel::deleteFromTable($id);
         } else {
             abort(404);
         }
@@ -237,7 +233,7 @@ class SettingsController extends Controller
 
     public function list($data, $id = null)
     {
-        $data['response'] =  App::getData(null, null, 10);
+        $data['response'] =  AppModel::getData(null, null, 10);
         $data['view']     =  AppModel::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Settings');
         return $data;
@@ -246,7 +242,7 @@ class SettingsController extends Controller
 
     public function general($data, $id)
     {
-        $response           = App::getData($id, true);
+        $response           = AppModel::getData($id, true);
         $data['view']       = AppModel::path('view') . '.includes.general.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         $data['metaImage']  = asset('assets/img/icons/register.png');

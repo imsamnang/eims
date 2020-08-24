@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormThemeBackgrounds extends FormRequest

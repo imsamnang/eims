@@ -17,7 +17,7 @@ class ThemesColor extends Model
         $table = (new self)->getTable();
         $path = [
             'image'  => $table,
-            'url'    => $table,
+            'url'    => str_replace('_', '-', $table),
             'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
         ];
         return $key ? @$path[$key] : $path;

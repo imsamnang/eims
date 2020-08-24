@@ -12,7 +12,7 @@ use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\ThemeBackground;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormThemeBackground;
+use App\Http\Requests\FormThemeBackgrounds;
 
 
 class ThemeBackgroundController extends Controller
@@ -94,12 +94,7 @@ class ThemeBackgroundController extends Controller
             'parent'     => ThemeBackground::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormThemeBackground::rules(),
-            'attributes'  =>  FormThemeBackground::attributes(),
-            'messages'    =>  FormThemeBackground::messages(),
-            'questions'   =>  FormThemeBackground::questions(),
-        ];
+        $pages['form']['validate'] = ThemeBackground::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

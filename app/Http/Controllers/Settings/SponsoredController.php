@@ -94,12 +94,7 @@ class SponsoredController extends Controller
             'parent'     => Sponsored::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormSponsored::rules(),
-            'attributes'  =>  FormSponsored::attributes(),
-            'messages'    =>  FormSponsored::messages(),
-            'questions'   =>  FormSponsored::questions(),
-        ];
+        $pages['form']['validate'] = Sponsored::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

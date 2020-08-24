@@ -4,7 +4,7 @@ namespace App\Models;
 
 
 
-use App\Http\Requests\FormQuizzesStudentAnswers;
+use App\Http\Requests\FormQuizStudentAnswers;
 use App\Http\Requests\FormQuizStudentAnswersMarks;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
@@ -229,7 +229,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizzesStudentAnswers::rules('.*'), FormQuizzesStudentAnswers::messages(), FormQuizzesStudentAnswers::attributes());
+        $validator          = Validator::make(request()->all(), FormQuizStudentAnswers::rules('.*'), FormQuizStudentAnswers::messages(), FormQuizStudentAnswers::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -283,7 +283,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizzesStudentAnswers::rules('.*'), FormQuizzesStudentAnswers::messages(), FormQuizzesStudentAnswers::attributes());
+        $validator          = Validator::make(request()->all(), FormQuizStudentAnswers::rules('.*'), FormQuizStudentAnswers::messages(), FormQuizStudentAnswers::attributes());
 
         if ($validator->fails()) {
             $response       = array(

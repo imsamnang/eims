@@ -94,12 +94,7 @@ class RolesController extends Controller
             'parent'     => Roles::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormRoles::rules(),
-            'attributes'  =>  FormRoles::attributes(),
-            'messages'    =>  FormRoles::messages(),
-            'questions'   =>  FormRoles::questions(),
-        ];
+        $pages['form']['validate'] = Roles::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
