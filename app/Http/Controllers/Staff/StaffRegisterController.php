@@ -22,6 +22,7 @@ use App\Helpers\MetaHelper;
 
 use App\Models\Nationality;
 use App\Models\StaffStatus;
+use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Imports\StaffsImport;
 use App\Http\Requests\FormStaff;
@@ -32,7 +33,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StaffsReqisterTemplateExport;
-use App\Http\Controllers\Staff\StaffCertificateController;
+use App\Http\Controllers\Staff\StaffCertificateFramesController;
 use App\Http\Controllers\Staff\StaffDesignationController;
 
 class StaffRegisterController extends Controller
@@ -50,29 +51,16 @@ class StaffRegisterController extends Controller
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null)
     {
 
-        $data['institute']           = Institute::getData();
-        $data['status']              = StaffStatus::getData();
-        $data['designation']         = StaffDesignations::getData();
+
         $data['formData']            = array(
             'photo'                  => asset('/assets/img/user/male.jpg'),
         );
 
-        $data['mother_tong']         = MotherTong::getData();
-        $data['gender']              = Gender::getData();
-        $data['nationality']         = Nationality::getData();
-        $data['marital']             = Marital::getData();
-        $data['blood_group']         = BloodGroup::getData();
-        $data['staff_certificate']   = StaffCertificate::getData();
         $data['formAction']          = 'add';
         $data['formName']            = '';
         $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Staff Register');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
-
-
-
-
-
         $data['listData']            = array();
 
         if ($param1 == null || $param1 == 'add') {
@@ -154,8 +142,45 @@ class StaffRegisterController extends Controller
             'view'       => $data['view'],
         );
 
-        $rules = FormStaff::rulesField();
+        //Select Option
 
+        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
+            return $row;
+        });
+        $data['status']['data']   = StaffStatus::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['designation']['data']  = StaffDesignations::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+
+        $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+
+        $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+        $data['staff_certificate']['data']   = StaffCertificate::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            return $row;
+        });
+
+
+        $rules = (new FormStaff)->rules();
         unset($rules['pob_province']);
         unset($rules['pob_district']);
         unset($rules['pob_commune']);
@@ -176,9 +201,9 @@ class StaffRegisterController extends Controller
 
         $pages['form']['validate'] = [
             'rules'       => $rules,
-            'attributes'  => FormStaff::attributeField(),
-            'messages'    => FormStaff::customMessages(),
-            'questions'   => FormStaff::questionField(),
+            'attributes'  => (new FormStaff)->attributes(),
+            'messages'    => (new FormStaff)->messages(),
+            'questions'   => (new FormStaff)->questions(),
         ];
 
 

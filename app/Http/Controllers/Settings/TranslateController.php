@@ -52,7 +52,7 @@ class TranslateController extends Controller
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName'] = App::$path['url'] . '/' . Translates::$path['url'];
+        $data['formName'] = App::path('url') . '/' . Translates::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -113,14 +113,14 @@ class TranslateController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Translates::$path['view'],
+            'parent'     => Translates::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormTranslates::rulesField(),
-            'attributes'  =>  FormTranslates::attributeField(),
-            'messages'    =>  FormTranslates::customMessages(),
-            'questions'   =>  FormTranslates::questionField(),
+            'rules'       =>  FormTranslates::rules(),
+            'attributes'  =>  FormTranslates::attributes(),
+            'messages'    =>  FormTranslates::messages(),
+            'questions'   =>  FormTranslates::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -131,14 +131,14 @@ class TranslateController extends Controller
     public function list($data, $id = null)
     {
         $data['response'] = Translates::getData(null, 10);
-        $data['view']     = Translates::$path['view'] . '.includes.list.index';
+        $data['view']     = Translates::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Translates');
         return $data;
     }
 
     public function add($data)
     {
-        $data['view']      = Translates::$path['view'] . '.includes.form.index';
+        $data['view']      = Translates::path('view') . '.includes.form.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Translates');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -148,7 +148,7 @@ class TranslateController extends Controller
     public function edit($data, $id)
     {
         $response = Translates::getData($id, true);
-        $data['view']       = Translates::$path['view'] . '.includes.form.index';
+        $data['view']       = Translates::path('view') . '.includes.form.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Translates');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
@@ -161,7 +161,7 @@ class TranslateController extends Controller
     public function view($data, $id)
     {
         $response = Translates::getData($id, true);
-        $data['view']       = Translates::$path['view'] . '.includes.form.index';
+        $data['view']       = Translates::path('view') . '.includes.form.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Translates');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);

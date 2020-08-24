@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Marital extends Model
 {
-    public static $path = [
-        'image'  => 'marital',
-        'url'    => 'marital',
-        'view'   => 'Marital'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Marital::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/' . Marital::path('url') . '/add/'),
             ),
         );
 
@@ -76,11 +85,11 @@ class Marital extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Marital::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Marital::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Marital::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Marital::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Marital::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Marital::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Marital::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Marital::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -129,11 +138,11 @@ class Marital extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Marital::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Marital::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Marital::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Marital::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Marital::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Marital::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Marital::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Marital::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -178,7 +187,7 @@ class Marital extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMarital::rulesField(), FormMarital::customMessages(), FormMarital::attributeField());
+        $validator          = Validator::make(request()->all(), FormMarital::rules(), FormMarital::messages(), FormMarital::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -202,9 +211,9 @@ class Marital extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Marital::updateImageToTable($add, ImageHelper::uploadImage($image, Marital::$path['image']));
+                        Marital::updateImageToTable($add, ImageHelper::uploadImage($image, Marital::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Marital::$path['image'], Marital::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Marital::path('image'), Marital::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -225,7 +234,7 @@ class Marital extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMarital::rulesField(), FormMarital::customMessages(), FormMarital::attributeField());
+        $validator          = Validator::make(request()->all(), FormMarital::rules(), FormMarital::messages(), FormMarital::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -247,7 +256,7 @@ class Marital extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Marital::updateImageToTable($id, ImageHelper::uploadImage($image, Marital::$path['image']));
+                        Marital::updateImageToTable($id, ImageHelper::uploadImage($image, Marital::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -299,7 +308,7 @@ class Marital extends Model
                     try {
                         $delete    = Marital::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -313,7 +322,7 @@ class Marital extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

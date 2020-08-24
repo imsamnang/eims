@@ -61,7 +61,7 @@ class MailboxImportantController extends Controller
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
             $data['response'] =  MailboxImportant::getData($id, $param1);
-            $data['view']      = Mailbox::$path['view'] . '.includes.view.index';
+            $data['view']      = Mailbox::path('view') . '.includes.view.index';
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return MailboxImportant::deleteFromTable($id, Auth::user()->id);
@@ -90,15 +90,15 @@ class MailboxImportantController extends Controller
                 'param3' => $param3,
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
-            'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction'], Mailbox::$path['url']),
-            'parent'     => Mailbox::$path['view'],
+            'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction'], Mailbox::path('url')),
+            'parent'     => Mailbox::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormMailbox::rulesField(),
-            'attributes'  =>  FormMailbox::attributeField(),
-            'messages'    =>  FormMailbox::customMessages(),
-            'questions'   =>  FormMailbox::questionField(),
+            'rules'       =>  FormMailbox::rules(),
+            'attributes'  =>  FormMailbox::attributes(),
+            'messages'    =>  FormMailbox::messages(),
+            'questions'   =>  FormMailbox::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -109,7 +109,7 @@ class MailboxImportantController extends Controller
     public function list($data, $id = null)
     {
         $data['response'] =  MailboxImportant::getData(null, 10, request('search'));
-        $data['view']      = Mailbox::$path['view'] . '.includes.important.index';
+        $data['view']      = Mailbox::path('view') . '.includes.important.index';
         return $data;
     }
 }

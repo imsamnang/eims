@@ -15,8 +15,8 @@ class CardHelper
     {
         $card = Session::get('card');
         $frame  = CardFrames::where('status', 1)->get()->map(function ($row) {
-            $row['foreground'] = ImageHelper::site(CardFrames::$path['image'], $row->foreground, 'large');
-            $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'large');
+            $row['foreground'] = ImageHelper::site(CardFrames::path('image'), $row->foreground, 'large');
+            $row['background'] = ImageHelper::site(CardFrames::path('image'), $row->background, 'large');
             return $row;
         })->first();
         $card_foreground = Session::has('card_foreground') ? (Session::get('card_foreground')) : $frame["foreground"];

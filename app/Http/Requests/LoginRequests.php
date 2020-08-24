@@ -38,7 +38,7 @@ class LoginRequests extends FormRequest
         ];
     }
 
-    public static function customMessages()
+    public static function messages()
     {
         return [];
     }

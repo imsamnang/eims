@@ -13,11 +13,20 @@ use App\Http\Requests\FormStudentsStudyShortCourse;
 
 class StudentsStudyShortCourse extends Model
 {
-    public static $path  = [
-        'url'    => 'study-short-course',
-        'image'   => 'study-short-course',
-        'view'   => 'StudentsStudyShortCourse',
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $paginate = null, $search = null)
     {
@@ -84,11 +93,11 @@ class StudentsStudyShortCourse extends Model
                     'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
                     'study_short_course_session'    =>  StudyShortCourseSession::getData($row['stu_sh_c_session_id'])['data'][0],
                     'account'   => $account ? Users::getData($account->id)['data'][0] : null,
-                    'photo' => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyShortCourse::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo' => $row['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsStudyShortCourse::path('image'), $row['photo'])) : ImageHelper::site(Students::path('image'), $student['photo']),
                     'action'    => [
-                        'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/edit/' . $row['id']),
-                        'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/delete/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/edit/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
                 $pages['listData'][] = array(
@@ -158,11 +167,11 @@ class StudentsStudyShortCourse extends Model
                     'name'  => $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
                     'study_short_course_session'    =>  StudyShortCourseSession::getData($row['stu_sh_c_session_id'])['data'][0],
                     'account'   => $account ? Users::getData($account->id)['data'][0] : null,
-                    'photo' => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyShortCourse::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo' => $row['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsStudyShortCourse::path('image'), $row['photo'])) : ImageHelper::site(Students::path('image'), $student['photo']),
                     'action'    => [
-                        'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/edit/' . $row['id']),
-                        'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/delete/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/edit/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
             })
@@ -182,7 +191,7 @@ class StudentsStudyShortCourse extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyShortCourse::rulesField('.*'), FormStudentsStudyShortCourse::customMessages(), FormStudentsStudyShortCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsStudyShortCourse::rules('.*'), FormStudentsStudyShortCourse::messages(), FormStudentsStudyShortCourse::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -229,7 +238,7 @@ class StudentsStudyShortCourse extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyShortCourse::rulesField('.*'), FormStudentsStudyShortCourse::customMessages(), FormStudentsStudyShortCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsStudyShortCourse::rules('.*'), FormStudentsStudyShortCourse::messages(), FormStudentsStudyShortCourse::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

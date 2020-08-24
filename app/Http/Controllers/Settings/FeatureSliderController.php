@@ -34,7 +34,7 @@ class FeatureSliderController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::$path['url'] . '/' . FeatureSlider::$path['url'];
+        $data['formName'] = App::path('url') . '/' . FeatureSlider::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -92,24 +92,24 @@ class FeatureSliderController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => FeatureSlider::$path['view'],
+            'parent'     => FeatureSlider::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormFeatureSlider::rulesField(),
-            'attributes'  =>  FormFeatureSlider::attributeField(),
-            'messages'    =>  FormFeatureSlider::customMessages(),
-            'questions'   =>  FormFeatureSlider::questionField(),
+            'rules'       =>  FormFeatureSlider::rules(),
+            'attributes'  =>  FormFeatureSlider::attributes(),
+            'messages'    =>  FormFeatureSlider::messages(),
+            'questions'   =>  FormFeatureSlider::questions(),
         ];
         //Select Option
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
         $data['instituteFilter']['data'] = Institute::whereIn('id', FeatureSlider::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         config()->set('app.title', $data['title']);
@@ -127,32 +127,32 @@ class FeatureSliderController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->title;
-            $row['image'] = ImageHelper::site(FeatureSlider::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(FeatureSlider::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = FeatureSlider::$path['view'] . '.includes.list.index';
+        $data['view']     = FeatureSlider::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature Slide');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = FeatureSlider::$path['view'] . '.includes.form.index';
+        $data['view']       = FeatureSlider::path('view') . '.includes.form.index';
         if ($id) {
             $response           = FeatureSlider::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                 $row['name']  = $row->title;
-                $row['image'] = $row['image'] ? ImageHelper::site(FeatureSlider::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(FeatureSlider::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -162,7 +162,7 @@ class FeatureSliderController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

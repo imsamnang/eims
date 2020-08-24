@@ -37,7 +37,7 @@ class DayController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'general/' . Days::$path['url'];
+        $data['formName'] = 'general/' . Days::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -97,14 +97,14 @@ class DayController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Days::$path['view'],
+            'parent'     => Days::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormDay::rulesField(),
-            'attributes'  =>  FormDay::attributeField(),
-            'messages'    =>  FormDay::customMessages(),
-            'questions'   =>  FormDay::questionField(),
+            'rules'       =>  FormDay::rules(),
+            'attributes'  =>  FormDay::attributes(),
+            'messages'    =>  FormDay::messages(),
+            'questions'   =>  FormDay::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -118,31 +118,31 @@ class DayController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Days::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Days::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'general/' . Days::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Days::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Days::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Days::$path['view'] . '.includes.list.index';
+        $data['view']     = Days::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Day');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Days::$path['view'] . '.includes.form.index';
+        $data['view']       = Days::path('view') . '.includes.form.index';
         if ($id) {
             $response           = Days::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Days::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Days::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'general/' . Days::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Days::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Days::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -152,7 +152,7 @@ class DayController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'general/' . Days::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'general/' . Days::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -172,7 +172,7 @@ class DayController extends Controller
         ]);
 
         config()->set('app.title', __('List Days'));
-        config()->set('pages.parent', Days::$path['view']);
+        config()->set('pages.parent', Days::path('view'));
 
 
         $table = new Days;
@@ -180,7 +180,7 @@ class DayController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(Days::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Days::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -216,10 +216,10 @@ class DayController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Day'));
-        return view(Days::$path['view'] . '.includes.report.index', $data);
+        return view(Days::path('view') . '.includes.report.index', $data);
     }
 }

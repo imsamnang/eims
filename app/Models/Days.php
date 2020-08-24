@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Days extends Model
 {
-    public static $path = [
-        'image'  => 'day',
-        'url'    => 'day',
-        'view'   => 'Day'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Days::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/' . Days::path('url') . '/add/'),
             ),
         );
 
@@ -74,11 +83,11 @@ class Days extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Days::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Days::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Days::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Days::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Days::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Days::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Days::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Days::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -127,11 +136,11 @@ class Days extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Communes::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Communes::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Communes::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Communes::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -176,7 +185,7 @@ class Days extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormDay::rulesField(), FormDay::customMessages(), FormDay::attributeField());
+        $validator          = Validator::make(request()->all(), FormDay::rules(), FormDay::messages(), FormDay::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -199,9 +208,9 @@ class Days extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Days::updateImageToTable($add, ImageHelper::uploadImage($image, Days::$path['image']));
+                        Days::updateImageToTable($add, ImageHelper::uploadImage($image, Days::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Days::$path['image'], Days::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Days::path('image'), Days::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -222,7 +231,7 @@ class Days extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormDay::rulesField(), FormDay::customMessages(), FormDay::attributeField());
+        $validator          = Validator::make(request()->all(), FormDay::rules(), FormDay::messages(), FormDay::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -244,7 +253,7 @@ class Days extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Days::updateImageToTable($id, ImageHelper::uploadImage($image, Days::$path['image']));
+                        Days::updateImageToTable($id, ImageHelper::uploadImage($image, Days::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -302,7 +311,7 @@ class Days extends Model
                     try {
                         $delete    = Days::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -316,7 +325,7 @@ class Days extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

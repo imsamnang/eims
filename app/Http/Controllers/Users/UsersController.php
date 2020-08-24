@@ -21,7 +21,7 @@ use App\Models\Nationality;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Rules\KhmerCharacter;
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use App\Http\Requests\FormStaff;
 use App\Http\Requests\FormUsers;
 use Illuminate\Support\Collection;
@@ -47,7 +47,7 @@ class usersController extends Controller
     public function index($param1 = null, $param2 = null, $param3 = null)
     {
         request()->merge([
-            'ref'   => Users::$path['url'],
+            'ref'   => Users::path('url'),
         ]);
 
         $data['listData']       = array();
@@ -69,7 +69,7 @@ class usersController extends Controller
             $data['formData']  = array(
                 ['profile' => asset('/assets/img/icons/image.jpg'),]
             );
-            $data['formName'] = users::$path['url'];
+            $data['formName'] = users::path('url');
             $data['formAction'] = '/add';
             if ($param1 == null || $param1 == 'list') {
                 if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -128,22 +128,22 @@ class usersController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Users::$path['view'],
+            'parent'     => Users::path('view'),
             'view'       => $data['view'],
         );
         if (Auth::user()->role_id == 9) {
             $pages['form']['validate'] = [
-                'rules'       =>  FormUsers::rulesField2(),
-                'attributes'  =>  FormStaff::attributeField() + ['teacher_or_student' => __('Teacher or Student')],
-                'messages'    =>  FormStaff::customMessages(),
-                'questions'   =>  FormStaff::questionField(),
+                'rules'       =>  FormUsers::rules2(),
+                'attributes'  =>  FormStaff::attributes() + ['teacher_or_student' => __('Teacher or Student')],
+                'messages'    =>  FormStaff::messages(),
+                'questions'   =>  FormStaff::questions(),
             ];
         } else {
             $pages['form']['validate'] = [
-                'rules'       =>  FormUsers::rulesField(),
-                'attributes'  =>  FormUsers::attributeField(),
-                'messages'    =>  FormUsers::customMessages(),
-                'questions'   =>  FormUsers::questionField(),
+                'rules'       =>  FormUsers::rules(),
+                'attributes'  =>  FormUsers::attributes(),
+                'messages'    =>  FormUsers::messages(),
+                'questions'   =>  FormUsers::questions(),
             ];
         }
 
@@ -159,21 +159,21 @@ class usersController extends Controller
         //Select Option
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
         $data['instituteFilter']['data'] = Institute::whereIn('id', Users::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['roleFilter']['data'] = Roles::whereIn('id', Users::groupBy('role_id')->pluck('role_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Roles::$path['image'], $row->image);
+                $row['image']   = ImageHelper::site(Roles::path('image'), $row->image);
                 return $row;
             });
         $data['roles']['data']  = Roles::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->image);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->image);
             return $row;
         });
 
@@ -184,7 +184,7 @@ class usersController extends Controller
             ->whereNotIn('id', Users::whereNotNull('node_id')->where('role_id', Students::$path['roleId'])->pluck('node_id'))
             ->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
                 $row['name']  = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
-                $row['photo']  = ImageHelper::site(Students::$path['image'], $row['photo']);
+                $row['photo']  = ImageHelper::site(Students::path('image'), $row['photo']);
                 return $row;
             });
         $data['staff']['data'] = Staff::whereHas('institute', function ($query) {
@@ -192,7 +192,7 @@ class usersController extends Controller
             $query->whereNotIn('staff_id', Users::whereNotNull('node_id')->whereNotIn('role_id', [1, 6, 7, 9, 10])->pluck('node_id'));
         })->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
             $row['name']  = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
-            $row['photo']  = ImageHelper::site(Staff::$path['image'], $row['photo']);
+            $row['photo']  = ImageHelper::site(Staff::path('image'), $row['photo']);
             return $row;
         });
         config()->set('app.title', $data['title']);
@@ -208,7 +208,7 @@ class usersController extends Controller
         $data['blood_group']              = BloodGroup::getData();
         $data['blood_group']              = BloodGroup::getData();
 
-        $data['attendances_type']     = AttendancesType::getData();
+        $data['attendances_type']     = AttendanceTypes::getData();
         $data['formAction']          = 'register';
         $data['formName']            = '';
         $data['metaImage']           = asset('assets/img/icons/add.png');
@@ -257,34 +257,34 @@ class usersController extends Controller
         }
 
         $data['response']['data'] = $table->orderBy('id', 'DESC')->get()->map(function ($row) {
-            $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+            $row['profile'] = ImageHelper::site(Users::path('image'), $row['profile']);
             $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
 
             $row['action']        = [
-                'edit' => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
-                'view' => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                'edit' => url(Users::role() . '/' . Users::path('url') . '/edit/' . $row['id']),
+                'view' => url(Users::role() . '/' . Users::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Users::path('url') . '/delete/' . $row['id']),
             ];
             return $row;
         });
 
-        $data['view']     =  Users::$path['view'] . '.includes.list.index';
+        $data['view']     =  Users::path('view') . '.includes.list.index';
         $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('List Users');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Users::$path['view'] . '.includes.form.index';
+        $data['view']       = Users::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = Users::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                $row['profile'] = ImageHelper::site(Users::path('image'), $row['profile']);
                 $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Users::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Users::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Users::path('url') . '/delete/' . $row['id']),
                 ];
 
                 return $row;
@@ -296,7 +296,7 @@ class usersController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->profile,
                     'action'  => [
-                        'edit'    => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row->id),
+                        'edit'    => url(Users::role() . '/' . Users::path('url') . '/edit/' . $row->id),
                     ],
                 ];
             });
@@ -318,16 +318,16 @@ class usersController extends Controller
         ]);
 
         config()->set('app.title', __('List Users'));
-        config()->set('pages.parent', Users::$path['view']);
+        config()->set('pages.parent', Users::path('view'));
 
         $data['instituteFilter']['data']  = Institute::whereIn('id', Users::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['roleFilter']['data']  = Roles::whereIn('id', Users::groupBy('role_id')->pluck('role_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->image);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->image);
                 return $row;
             });
 
@@ -341,7 +341,7 @@ class usersController extends Controller
         }
 
         $response = $table->get()->map(function ($row) {
-            $row['profile'] =  ImageHelper::site(Users::$path['image'], $row->profile);
+            $row['profile'] =  ImageHelper::site(Users::path('image'), $row->profile);
             $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
             return $row;
         })->toArray();
@@ -379,12 +379,12 @@ class usersController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
 
         config()->set('pages.title', __('List Users'));
 
-        return view(Users::$path['view'] . '.includes.report.index', $data);
+        return view(Users::path('view') . '.includes.report.index', $data);
     }
 }

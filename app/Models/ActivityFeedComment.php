@@ -42,12 +42,12 @@ class ActivityFeedComment extends Model
                     'feed_id'       => $row['activity_feed_id'],
                     'id'            => $row['id'],
                     'user'          => Users::where('id', $row['user_id'])->get()->map(function ($row) {
-                        $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                        $row['profile'] = ImageHelper::site(Users::path('image'), $row['profile']);
                         $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
                         $row['action']  = [
-                            'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
-                            'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
-                            'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                            'edit'   => url(Users::role() . '/' . Users::path('url') . '/edit/' . $row['id']),
+                            'view'   => url(Users::role() . '/' . Users::path('url') . '/view/' . $row['id']),
+                            'delete' => url(Users::role() . '/' . Users::path('url') . '/delete/' . $row['id']),
                         ];
 
                         return $row;

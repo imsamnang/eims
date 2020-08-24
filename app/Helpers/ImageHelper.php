@@ -11,23 +11,27 @@ use Illuminate\Support\Facades\Storage;
 class ImageHelper
 {
 
-    public static $path = [
-        'image'     =>  'images',
-        'resize'    =>  [
-            'small' => 120,
-            'large' => 480,
-        ],
-        'mime'      => [
-            'image/png',
-            'image/x-png',
-            'image/jpg',
-            'image/jpeg',
-            'image/pjpeg',
-            'image/gif',
-            'image/webp',
-            'image/x-webp',
-        ],
-    ];
+    public static function path($key)
+    {
+        $path = [
+            'image'     =>  'images',
+            'resize'    =>  [
+                'small' => 120,
+                'large' => 480,
+            ],
+            'mime'      => [
+                'image/png',
+                'image/x-png',
+                'image/jpg',
+                'image/jpeg',
+                'image/pjpeg',
+                'image/gif',
+                'image/webp',
+                'image/x-webp',
+            ],
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     /**
      * @return asset('/assets/img/icons/image.jpg');
      */
@@ -40,7 +44,7 @@ class ImageHelper
     {
         ini_set('memory_limit', '1G');
 
-        $folder = 'public/' . self::$path['image'] . '/' . $destination;
+        $folder = 'public/' . self::path('image') . '/' . $destination;
         Storage::makeDirectory($folder);
 
         $destinationPath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
@@ -59,7 +63,7 @@ class ImageHelper
 
 
             if ($photo->move($destinationPath, $name)) {
-                if (in_array(File::mimeType($destinationPath . '/' . $name), self::$path['mime'])) {
+                if (in_array(File::mimeType($destinationPath . '/' . $name), self::path('mime'))) {
                     $image = Image::make($destinationPath . '/' . $name);
                     $image->widen($image->width(), function ($constraint) {
                         $constraint->upsize();
@@ -77,39 +81,28 @@ class ImageHelper
         }
 
         if ($resize) {
-            foreach (self::$path['resize'] as $size) {
-                $folderSize = 'public/' . self::$path['image'] . '/' . $destination . '/' . $size;
+            foreach (self::path('resize') as $sizeName =>  $size) {
+                $folderSize = 'public/' . self::path('image') . '/' . $destination . '/' . $sizeName;
                 Storage::makeDirectory($folderSize);
-                $fileInFolderSize = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folderSize . '/' . $name;
+                $fileInFolderSize =  storage_path('app/'  . $folderSize . '/' . $name);
                 if (!file_exists($fileInFolderSize)) {
                     File::copy($destinationPath . '/' . $name, $fileInFolderSize);
-                    if ($size == 'small') {
-                        try {
-                            Image::make($fileInFolderSize)->resize(120, 120, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })->save(null, 100);
-                        } catch (DomainException $e) {
-                            return $e;
-                        }
-                    } elseif ($size == 'large') {
-                        try {
-                            Image::make($fileInFolderSize)->resize(480, 480, function ($constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })->save(null, 100);
-                        } catch (DomainException $e) {
-                            return $e;
-                        }
+                    try {
+                        Image::make($fileInFolderSize)->resize($size, $size, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        })->save(null, 100);
+                    } catch (DomainException $e) {
+                        return $e;
                     }
                 }
             }
         }
 
         if ($slide) {
-            $folderSize = 'public/' . self::$path['image'] . '/' . $destination . '/slide';
+            $folderSize = 'public/' . self::path('image') . '/' . $destination . '/slide';
             Storage::makeDirectory($folderSize);
-            $fileInFolderSize = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folderSize . '/' . $name;
+            $fileInFolderSize =  storage_path('app/'  . $folderSize . '/' . $name);
             if (!file_exists($fileInFolderSize)) {
                 File::copy($destinationPath . '/' . $name, $fileInFolderSize);
                 Image::make($fileInFolderSize)->fit(1000, 400, function ($constraint) {
@@ -125,9 +118,9 @@ class ImageHelper
 
 
         if ($type) {
-            $folderSize = 'public/' . self::$path['image'] . '/' . $path . '/' . $type;
+            $folderSize = 'public/' . self::path('image') . '/' . $path . '/' . $type;
         } else {
-            $folderSize = 'public/' . self::$path['image'] . '/' . $path . '/small';
+            $folderSize = 'public/' . self::path('image') . '/' . $path . '/small';
         }
 
 
@@ -139,7 +132,7 @@ class ImageHelper
             'error'   => '?type=[small, large, original]'
         ];
         if (File::exists($file)) {
-            if (in_array(File::mimeType($file), self::$path['mime'])) {
+            if (in_array(File::mimeType($file), self::path('mime'))) {
                 $response = Image::make($file)->response(null, $quality);
             }
         } else {
@@ -153,7 +146,7 @@ class ImageHelper
     public static function getImageNoType($filename, $path, $encode = null)
     {
         if ($filename && $path) {
-            $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . 'public/' . (self::$path['image'] . '/' . $path);
+            $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . 'public/' . (self::path('image') . '/' . $path);
 
             $file = $dir . '/' . $filename;
             if ($encode) {
@@ -171,7 +164,7 @@ class ImageHelper
 
 
         if ($path && $filename) {
-            $uurl = url(self::$path['image'] . '/' . $path . '/' . $filename);
+            $uurl = url(self::path('image') . '/' . $path . '/' . $filename);
 
             if ($type) {
                 $uurl .= '?type=' . $type;
@@ -204,12 +197,12 @@ class ImageHelper
         $dir = Storage::disk('local')
             ->getDriver()
             ->getAdapter()
-            ->getPathPrefix() . 'public/' . self::$path['image'] . '/' . $path;
+            ->getPathPrefix() . 'public/' . self::path('image') . '/' . $path;
 
         if (File::exists($dir . '/original/' . $filename)) {
             File::delete($dir . '/original/' . $filename);
         }
-        foreach (self::$path['resize'] as $size) {
+        foreach (self::path('resize') as $size) {
             $file = $dir . '/' . $size . '/' . $filename;
             if (File::exists($file)) {
                 File::delete($file);
@@ -232,10 +225,10 @@ class ImageHelper
      */
     public static function generate()
     {
-        foreach (Storage::disk('public')->allDirectories(self::$path['image']) as  $directory) {
+        foreach (Storage::disk('public')->allDirectories(self::path('image')) as  $directory) {
             if (Str::contains($directory, 'original')) {
                 foreach ((File::allFiles(storage_path('app/public/' . $directory))) as $image) {
-                    foreach (self::$path['resize'] as $sizeName => $size) {
+                    foreach (self::path('resize') as $sizeName => $size) {
                         $target = str_replace('original', $sizeName, $image->getPathname());
                         File::copy($image->getPathname(), $target);
                         try {

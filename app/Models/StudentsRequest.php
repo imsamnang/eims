@@ -8,20 +8,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudentsRequest;
-use App\Http\Controllers\Student\StudentsRequestController;
+use App\Http\Controllers\Students\StudentsRequestController;
 
 class StudentsRequest extends Model
 {
-    public static $path = [
-        'image'  => 'request',
-        'url'    => 'request',
-        'view'   => 'StudentsRequest'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField('.*'), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsRequest::rules('.*'), FormStudentsRequest::messages(), FormStudentsRequest::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -52,7 +61,7 @@ class StudentsRequest extends Model
                         if ($add) {
                             if (count(request('student')) == 1 && request()->hasFile('photo')) {
                                 $image      = request()->file('photo');
-                                StudentsRequest::updateImageToTable($add, ImageHelper::uploadImage($image, Students::$path['image'] . '/' . StudentsRequest::$path['image']));
+                                StudentsRequest::updateImageToTable($add, ImageHelper::uploadImage($image, Students::path('image') . '/' . StudentsRequest::path('image')));
                             }
                             $sid  .= $add . ',';
                         }
@@ -63,7 +72,7 @@ class StudentsRequest extends Model
                     $controller = new StudentsRequestController;
                     $html = '';
                     foreach ($controller->list([], $sid) as  $row) {
-                        $html .= view(StudentsRequest::$path['view'] . '.includes.tpl.tr', ['row' => $row])->render();
+                        $html .= view(StudentsRequest::path('view') . '.includes.tpl.tr', ['row' => $row])->render();
                     }
 
                     $response       = array(
@@ -91,7 +100,7 @@ class StudentsRequest extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsRequest::rulesField('.*'), FormStudentsRequest::customMessages(), FormStudentsRequest::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsRequest::rules('.*'), FormStudentsRequest::messages(), FormStudentsRequest::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -130,7 +139,7 @@ class StudentsRequest extends Model
                         if ($update) {
                             if (request()->hasFile('photo')) {
                                 $image      = request()->file('photo');
-                                StudentsRequest::updateImageToTable($id, ImageHelper::uploadImage($image, Students::$path['url'] . '/' . StudentsRequest::$path['image']));
+                                StudentsRequest::updateImageToTable($id, ImageHelper::uploadImage($image, Students::path('url') . '/' . StudentsRequest::path('image')));
                             }
                             $controller = new StudentsRequestController;
                             $response       = array(
@@ -142,7 +151,7 @@ class StudentsRequest extends Model
                                     ]
 
                                 ],
-                                'html'      => view(StudentsRequest::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                                'html'      => view(StudentsRequest::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                                 'message'   =>  __('Update Successfully')
                             );
                         }

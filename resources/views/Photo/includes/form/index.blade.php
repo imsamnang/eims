@@ -3,10 +3,16 @@
         <div class="card-wrapper">
 
             <div class="card p-0 m-0">
-                @if (!request()->ajax())
+                @if (config('pages.parameters.param1') == 'add')
                 <div class="card-header">
                     <h5 class="h3 mb-0">
-                        {{ __(config("pages.form.role")) }}
+                        {{ __(config('pages.form.role')) }}
+                    </h5>
+                </div>
+                @elseif(config('pages.parameters.param1') == 'edit' && !request()->ajax())
+                <div class="card-header">
+                    <h5 class="h3 mb-0">
+                        {{ __(config('pages.form.role')) }}
                     </h5>
                 </div>
                 @endif
@@ -75,7 +81,7 @@
                                                     value="{{__('Update')}}" id="submit">
                                             </div>
                                             @endif
-                                            
+
                                         </div>
                                     </form>
                                 </div>

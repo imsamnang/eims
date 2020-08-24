@@ -33,7 +33,7 @@ class RolesController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::$path['url'] . '/' . Roles::$path['url'];
+        $data['formName'] = App::path('url') . '/' . Roles::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -91,14 +91,14 @@ class RolesController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Roles::$path['view'],
+            'parent'     => Roles::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormRoles::rulesField(),
-            'attributes'  =>  FormRoles::attributeField(),
-            'messages'    =>  FormRoles::customMessages(),
-            'questions'   =>  FormRoles::questionField(),
+            'rules'       =>  FormRoles::rules(),
+            'attributes'  =>  FormRoles::attributes(),
+            'messages'    =>  FormRoles::messages(),
+            'questions'   =>  FormRoles::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -112,32 +112,32 @@ class RolesController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name'] = $row->km;
-            $row['image'] = ImageHelper::site(Roles::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Roles::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Roles::$path['view'] . '.includes.list.index';
+        $data['view']     = Roles::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Roles');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Roles::$path['view'] . '.includes.form.index';
+        $data['view']       = Roles::path('view') . '.includes.form.index';
         if ($id) {
             $response           = Roles::whereIn('id', explode(',', $id))->get()->map(function ($row) {
 
-                $row['image'] = $row['image'] ? ImageHelper::site(Roles::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Roles::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -147,7 +147,7 @@ class RolesController extends Controller
                     'name'  => $row->{app()->getLocale()},
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

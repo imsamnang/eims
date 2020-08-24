@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Gender extends Model
 {
-    public static $path = [
-        'image'  => 'gender',
-        'url'    => 'gender',
-        'view'   => 'Gender'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/'  . Gender::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/'  . Gender::path('url') . '/add/'),
             ),
         );
 
@@ -77,11 +86,11 @@ class Gender extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Gender::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Gender::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Gender::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Gender::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Gender::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Gender::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Gender::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Gender::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -128,11 +137,11 @@ class Gender extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Communes::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Communes::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Communes::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Communes::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Communes::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Communes::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -177,7 +186,7 @@ class Gender extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormGender::rulesField(), FormGender::customMessages(), FormGender::attributeField());
+        $validator          = Validator::make(request()->all(), FormGender::rules(), FormGender::messages(), FormGender::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -204,9 +213,9 @@ class Gender extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Gender::updateImageToTable($add, ImageHelper::uploadImage($image, Gender::$path['image']));
+                        Gender::updateImageToTable($add, ImageHelper::uploadImage($image, Gender::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Gender::$path['image'], Gender::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Gender::path('image'), Gender::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -227,7 +236,7 @@ class Gender extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormGender::rulesField(), FormGender::customMessages(), FormGender::attributeField());
+        $validator          = Validator::make(request()->all(), FormGender::rules(), FormGender::messages(), FormGender::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -251,7 +260,7 @@ class Gender extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Gender::updateImageToTable($id, ImageHelper::uploadImage($image, Gender::$path['image']));
+                        Gender::updateImageToTable($id, ImageHelper::uploadImage($image, Gender::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -303,7 +312,7 @@ class Gender extends Model
                     try {
                         $delete    = Gender::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -317,7 +326,7 @@ class Gender extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

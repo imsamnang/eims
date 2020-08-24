@@ -7,41 +7,33 @@ use App\Helpers\ImageHelper;
 use App\Http\Requests\FormCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Card\CardController;
+use App\Http\Controllers\CardFrames\CardFramesController;
 
 class CardFrames extends Model
 {
-    public static $path = [
-        'image'  => 'card',
-        'url'    => 'card',
-        'view'   => 'Card'
-    ];
-
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function addToTable()
     {
         $response           = array();
-
-        if (!request()->hasFile('foreground')) {
-            return array(
-                'success'   => false,
-                'type'      => 'add',
-                'message'   => __('Add Unsuccessful') . PHP_EOL
-                    . __('Frame foreground empty'),
-            );
-        }
-        if (!request()->hasFile('background')) {
-            return array(
-                'success'   => false,
-                'type'      => 'add',
-                'message'   => __('Add Unsuccessful') . PHP_EOL
-                    . __('Frame Background empty'),
-            );
-        }
-
-        $rules = FormCard::rulesField();
+        $rules = (new FormCard)->rules();
         $rules['name'] = 'required|unique:' . (new CardFrames)->getTable() . ',name';
+        $rules['foreground'] = 'required';
+        $rules['background'] = 'required';
 
-        $validator          = Validator::make(request()->all(), $rules, FormCard::customMessages(), FormCard::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, (new FormCard)->messages(), (new FormCard)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -66,17 +58,17 @@ class CardFrames extends Model
 
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'foreground');
+                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::path('image')), 'foreground');
                     }
                     if (request()->hasFile('background')) {
                         $image      = request()->file('background');
-                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'background');
+                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::path('image')), 'background');
                     }
-                    $controller = new CardController;
+                    $controller = new CardFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(CardFrames::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(CardFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   =>  __('Add Successfully')
                     );
                 }
@@ -91,9 +83,9 @@ class CardFrames extends Model
     {
 
         $response           = array();
-        $rules = FormCard::rulesField();
+        $rules = (new FormCard)->rules();
         $rules['name'] = 'required|unique:' . (new CardFrames)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormCard::customMessages(), FormCard::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, (new FormCard)->messages(), (new FormCard)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -115,13 +107,13 @@ class CardFrames extends Model
                 if ($update) {
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'foreground');
+                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::path('image')), 'foreground');
                     }
                     if (request()->hasFile('background')) {
                         $image      = request()->file('background');
-                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::$path['image']), 'background');
+                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::path('image')), 'background');
                     }
-                    $controller = new CardController;
+                    $controller = new CardFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
@@ -131,7 +123,7 @@ class CardFrames extends Model
                             ]
 
                         ],
-                        'html'      => view(CardFrames::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(CardFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -217,8 +209,8 @@ class CardFrames extends Model
                         $response       = array(
                             'success'   => true,
                             'data'      => CardFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
-                                $row['foreground'] = ImageHelper::site(CardFrames::$path['image'], $row->foreground, 'large');
-                                $row['background'] = ImageHelper::site(CardFrames::$path['image'], $row->background, 'large');
+                                $row['foreground'] = ImageHelper::site(CardFrames::path('image'), $row->foreground, 'large');
+                                $row['background'] = ImageHelper::site(CardFrames::path('image'), $row->background, 'large');
                                 return $row;
                             })->first(),
                             'message'   => __('Set as default successfully'),

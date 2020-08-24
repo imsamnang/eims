@@ -67,7 +67,7 @@ class QuizStudentAnswerController extends Controller
 
 
 
-        $data['formName'] = 'study/' . Quiz::$path['url'] . '/' . QuizStudentAnswer::$path['url'];
+        $data['formName'] = 'study/' . Quiz::path('url') . '/' . QuizStudentAnswer::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list' || $param1 == null) {
@@ -90,7 +90,7 @@ class QuizStudentAnswerController extends Controller
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return QuizStudentAnswer::deleteFromTable($id);
-        } elseif ($param1 == QuizStudentAnswer::$path['url']) {
+        } elseif ($param1 == QuizStudentAnswer::path('url')) {
             if ($param2 == 'add') {
                 return QuizStudentAnswer::addToTable();
             } elseif ($param2 == 'update') {
@@ -120,14 +120,14 @@ class QuizStudentAnswerController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => QuizStudentAnswer::$path['view'],
+            'parent'     => QuizStudentAnswer::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormQuizStudentAnswer::rulesField(),
-            'attributes'  =>  FormQuizStudentAnswer::attributeField(),
-            'messages'    =>  FormQuizStudentAnswer::customMessages(),
-            'questions'   =>  FormQuizStudentAnswer::questionField(),
+            'rules'       =>  FormQuizStudentAnswer::rules(),
+            'attributes'  =>  FormQuizStudentAnswer::attributes(),
+            'messages'    =>  FormQuizStudentAnswer::messages(),
+            'questions'   =>  FormQuizStudentAnswer::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -148,7 +148,7 @@ class QuizStudentAnswerController extends Controller
         }
         $data['response'] = QuizStudentAnswer::getData1($student_study_course_id);
 
-        $data['view']     = QuizStudentAnswer::$path['view'] . '.includes.list.index';
+        $data['view']     = QuizStudentAnswer::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student answer');
         return $data;
     }
@@ -167,7 +167,7 @@ class QuizStudentAnswerController extends Controller
         $data['student']              = StudentsStudyCourse::getData(null, null, 10);
         $data['class']                = StudentsStudyCourse::studyClass(null, true);
 
-        $data['view']      = QuizStudentAnswer::$path['view'] . '.includes.form.index';
+        $data['view']      = QuizStudentAnswer::path('view') . '.includes.form.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Quiz Student answer');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -189,7 +189,7 @@ class QuizStudentAnswerController extends Controller
         $data['class']                = StudentsStudyCourse::studyClass(null, true);
 
         $response = QuizStudentAnswer::getData($id, 10);
-        $data['view']       = QuizStudentAnswer::$path['view'] . '.includes.form.index';
+        $data['view']       = QuizStudentAnswer::path('view') . '.includes.form.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student answer');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

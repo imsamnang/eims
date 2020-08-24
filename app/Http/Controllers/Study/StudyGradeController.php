@@ -37,7 +37,7 @@ class StudyGradeController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'study/' . StudyGrade::$path['url'];
+        $data['formName'] = 'study/' . StudyGrade::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -96,24 +96,24 @@ class StudyGradeController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyGrade::$path['view'],
+            'parent'     => StudyGrade::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyGrade::rulesField(),
-            'attributes'  =>  FormStudyGrade::attributeField(),
-            'messages'    =>  FormStudyGrade::customMessages(),
-            'questions'   =>  FormStudyGrade::questionField(),
+            'rules'       =>  FormStudyGrade::rules(),
+            'attributes'  =>  FormStudyGrade::attributes(),
+            'messages'    =>  FormStudyGrade::messages(),
+            'questions'   =>  FormStudyGrade::questions(),
         ];
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudyGrade::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -127,32 +127,32 @@ class StudyGradeController extends Controller
         $table = StudyGrade::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(StudyGrade::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(StudyGrade::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = StudyGrade::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyGrade::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study grade');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = StudyGrade::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyGrade::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = StudyGrade::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StudyGrade::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StudyGrade::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -162,7 +162,7 @@ class StudyGradeController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'study/' . StudyGrade::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -182,11 +182,11 @@ class StudyGradeController extends Controller
         ]);
 
         config()->set('app.title', __('List Study grade'));
-        config()->set('pages.parent', StudyGrade::$path['view']);
+        config()->set('pages.parent', StudyGrade::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudyGrade::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -198,7 +198,7 @@ class StudyGradeController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(StudyGrade::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(StudyGrade::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -234,10 +234,10 @@ class StudyGradeController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Study grade'));
-        return view(StudyGrade::$path['view'] . '.includes.report.index', $data);
+        return view(StudyGrade::path('view') . '.includes.report.index', $data);
     }
 }

@@ -58,13 +58,13 @@ class ActivityFeedController extends Controller
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName'] = ActivityFeed::$path['url'];
+        $data['formName'] = ActivityFeed::path('url');
         $data['formAction'] = '/post';
         $data['title'] = 'Feed';
         $data['listData']       = array();
         if ($param1 == null) {
             $data['response'] =  ActivityFeed::getData(null, true);
-            $data['view']      = ActivityFeed::$path['view'] . '.includes.feed.index';
+            $data['view']      = ActivityFeed::path('view') . '.includes.feed.index';
         } elseif (strtolower($param1) == 'post') {
             if (request()->method() == "POST") {
                 return ActivityFeed::addToTable();
@@ -76,7 +76,7 @@ class ActivityFeedController extends Controller
                 }
                 if ($id) {
                     $data['response'] =  ActivityFeed::getData($id);
-                    $data['view']      = ActivityFeed::$path['view'] . '.includes.view.post.index';
+                    $data['view']      = ActivityFeed::path('view') . '.includes.view.post.index';
                 } else {
                     abort(404);
                 }
@@ -131,7 +131,7 @@ class ActivityFeedController extends Controller
             } else {
                 abort(404);
             }
-        } elseif (strtolower($param1) == Users::$path['url']) {
+        } elseif (strtolower($param1) == Users::path('url')) {
             if (request()->method() == "GET") {
                 $search = request('search');
 
@@ -146,7 +146,7 @@ class ActivityFeedController extends Controller
                         $data[] = [
                             'id'        => $row['id'],
                             'name'      => $row['name'],
-                            'profile'   => $row['profile'] ? (ImageHelper::site(Users::$path['image'], $row['profile'])) : null,
+                            'profile'   => $row['profile'] ? (ImageHelper::site(Users::path('image'), $row['profile'])) : null,
                         ];
                     }
 
@@ -190,7 +190,7 @@ class ActivityFeedController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => ActivityFeed::$path['view'],
+            'parent'     => ActivityFeed::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [

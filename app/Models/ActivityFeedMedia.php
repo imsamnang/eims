@@ -36,7 +36,7 @@ class ActivityFeedMedia extends Model
                 );
 
                 if ($row['type'] == 'image') {
-                    $data[$key]['source'] = ImageHelper::site(ActivityFeed::$path['image'], $row['source']);
+                    $data[$key]['source'] = ImageHelper::site(ActivityFeed::path('image'), $row['source']);
                 } elseif ($row['type'] == 'video') {
                     $data[$key]['source'] =  VideoHelper::site(ActivityFeed::$path['video'], $row['source']);
                     // $data[$key]['source'] =  Storage::disk('local')->get(VideoHelper::$path['video'].'/'.ActivityFeed::$path['video'].'/'. $row['source']);
@@ -94,9 +94,9 @@ class ActivityFeedMedia extends Model
                 foreach (request()->file('media') as $media) {
 
                     if (preg_match("/image\/*/", strtolower($media->getMimeType()))) {
-                        $upload = ImageHelper::uploadImage($media, ActivityFeed::$path['image']);
+                        $upload = ImageHelper::uploadImage($media, ActivityFeed::path('image'));
                         $type   = 'image';
-                        $source = ImageHelper::site(ActivityFeed::$path['image'], $upload);
+                        $source = ImageHelper::site(ActivityFeed::path('image'), $upload);
                     } elseif (preg_match("/video\/*/", strtolower($media->getMimeType()))) {
                         $upload = VideoHelper::uploadVideo($media, ActivityFeed::$path['video']);
                         $type   = 'video';

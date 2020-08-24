@@ -12,6 +12,9 @@ use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormLanguages;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 
 
 class LanguagesController extends Controller
@@ -32,7 +35,7 @@ class LanguagesController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::$path['url'] . '/' . Languages::$path['url'];
+        $data['formName'] = App::path('url') . '/' . Languages::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -90,14 +93,14 @@ class LanguagesController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Languages::$path['view'],
+            'parent'     => Languages::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormLanguages::rulesField(),
-            'attributes'  =>  FormLanguages::attributeField(),
-            'messages'    =>  FormLanguages::customMessages(),
-            'questions'   =>  FormLanguages::questionField(),
+            'rules'       =>  (new FormLanguages)->rules(),
+            'attributes'  =>  (new FormLanguages)->attributes(),
+            'messages'    =>  (new FormLanguages)->messages(),
+            'questions'   =>  (new FormLanguages)->questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -111,31 +114,31 @@ class LanguagesController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Languages::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Languages::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Languages::$path['view'] . '.includes.list.index';
+        $data['view']     = Languages::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Language');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Languages::$path['view'] . '.includes.form.index';
+        $data['view']       = Languages::path('view') . '.includes.form.index';
         if ($id) {
             $response           = Languages::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Languages::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Languages::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -145,7 +148,7 @@ class LanguagesController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -155,5 +158,30 @@ class LanguagesController extends Controller
             $data['formAction'] = '/' . $type . '/' . $id;
         }
         return $data;
+    }
+
+    public function setLocale($locale = null)
+    {
+
+        $locale = strtolower($locale);
+        if ($locale) {
+            if (Schema::hasColumn('languages', $locale)) {
+                Session::put('locale', $locale);
+                if (request()->method() == 'POST') {
+                    $this->response = array(
+                        'success' => true,
+                        'redirect'  => request()->header('referer')
+                    );
+                } else {
+                    $this->response = redirect()->back();
+                }
+            } else {
+                $this->response =  array(
+                    'success' => false,
+                    'errors'  => __('Language') . __($locale) . __('Not in list.'),
+                );
+            }
+        }
+        return $this->response;
     }
 }

@@ -60,8 +60,12 @@ class User extends Authenticatable
     public static function institute($get = null)
     {
         if (Auth::user()) {
-
-            $data = Institute::getData(Auth::user()->institute_id)['data'][0];
+            $data = Institute::where('id', request('instituteId'))
+                ->get(['logo', app()->getLocale() . ' as name'])
+                ->map(function ($row) {
+                    $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
+                    return $row;
+                })->first();
             if ($get) {
                 return $data[$get];
             }

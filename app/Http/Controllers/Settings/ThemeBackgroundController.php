@@ -33,7 +33,7 @@ class ThemeBackgroundController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::$path['url'] . '/' . ThemeBackground::$path['url'];
+        $data['formName'] = App::path('url') . '/' . ThemeBackground::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -91,14 +91,14 @@ class ThemeBackgroundController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => ThemeBackground::$path['view'],
+            'parent'     => ThemeBackground::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormThemeBackground::rulesField(),
-            'attributes'  =>  FormThemeBackground::attributeField(),
-            'messages'    =>  FormThemeBackground::customMessages(),
-            'questions'   =>  FormThemeBackground::questionField(),
+            'rules'       =>  FormThemeBackground::rules(),
+            'attributes'  =>  FormThemeBackground::attributes(),
+            'messages'    =>  FormThemeBackground::messages(),
+            'questions'   =>  FormThemeBackground::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -112,31 +112,31 @@ class ThemeBackgroundController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(ThemeBackground::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(ThemeBackground::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = ThemeBackground::$path['view'] . '.includes.list.index';
+        $data['view']     = ThemeBackground::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Theme Background');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = ThemeBackground::$path['view'] . '.includes.form.index';
+        $data['view']       = ThemeBackground::path('view') . '.includes.form.index';
         if ($id) {
             $response           = ThemeBackground::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(ThemeBackground::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(ThemeBackground::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -146,7 +146,7 @@ class ThemeBackgroundController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

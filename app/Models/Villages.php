@@ -10,11 +10,20 @@ use Illuminate\Support\Facades\Validator;
 
 class Villages extends Model
 {
-    public static $path = [
-        'image'  => 'village',
-        'url'    => 'village',
-        'view'   => 'Cambodia'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public function commune()
     {
@@ -25,7 +34,7 @@ class Villages extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormVillage::rulesField(), FormVillage::customMessages(), FormVillage::attributeField());
+        $validator          = Validator::make(request()->all(), FormVillage::rules(), FormVillage::messages(), FormVillage::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -52,9 +61,9 @@ class Villages extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Villages::updateImageToTable($add, ImageHelper::uploadImage($image, Villages::$path['image']));
+                        Villages::updateImageToTable($add, ImageHelper::uploadImage($image, Villages::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Villages::$path['image'], Villages::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Villages::path('image'), Villages::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -75,7 +84,7 @@ class Villages extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormVillage::rulesField(), FormVillage::customMessages(), FormVillage::attributeField());
+        $validator          = Validator::make(request()->all(), FormVillage::rules(), FormVillage::messages(), FormVillage::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -100,7 +109,7 @@ class Villages extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Villages::updateImageToTable($id, ImageHelper::uploadImage($image, Villages::$path['image']));
+                        Villages::updateImageToTable($id, ImageHelper::uploadImage($image, Villages::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -152,7 +161,7 @@ class Villages extends Model
                     try {
                         $delete    = Villages::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -166,7 +175,7 @@ class Villages extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

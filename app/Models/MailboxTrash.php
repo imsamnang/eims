@@ -75,9 +75,9 @@ class MailboxTrash extends Model
                     'subject' => $row['subject'],
                     'created_at' => $row['created_at'],
                     'action'    => [
-                        'view'  => url(Mailbox::$path['url'] . '/' . MailboxTrash::$path['url'] . '/view/' . $id),
-                        'move_inbox'  => url(Mailbox::$path['url'] . '/' . MailboxTrash::$path['url'] . '/move-inbox/' . $id),
-                        'delete'  => url(Mailbox::$path['url'] . '/' . MailboxTrash::$path['url'] . '/delete/' . $id),
+                        'view'  => url(Mailbox::path('url') . '/' . MailboxTrash::path('url') . '/view/' . $id),
+                        'move_inbox'  => url(Mailbox::path('url') . '/' . MailboxTrash::path('url') . '/move-inbox/' . $id),
+                        'delete'  => url(Mailbox::path('url') . '/' . MailboxTrash::path('url') . '/delete/' . $id),
                     ]
                 ];
 

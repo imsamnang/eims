@@ -62,59 +62,59 @@ class GeneralController extends Controller
             $data['shortcut'] = array(
                 [
                     'name'  => __('List Province'),
-                    'link'  => url(Users::role() . '/general/' . Provinces::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Provinces::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Province'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List District'),
-                    'link'  => url(Users::role() . '/general/' . Districts::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Districts::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('District'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Commune'),
-                    'link'  => url(Users::role() . '/general/' . Communes::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Communes::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Commune'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Village'),
-                    'link'  => url(Users::role() . '/general/' . Villages::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Villages::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Village'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Nationality'),
-                    'link'  => url(Users::role() . '/general/' . Nationality::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Nationality::path('url') . '/list'),
                     'icon'  => 'fas fa-flag',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Mother tong'),
-                    'link'  => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . MotherTong::path('url') . '/list'),
                     'icon'  => 'fas fa-head-side-headphones',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Gender'),
-                    'link'  => url(Users::role() . '/general/' . Gender::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Gender::path('url') . '/list'),
                     'icon'  => 'fas fa-venus-mars',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Marital'),
-                    'link'  => url(Users::role() . '/general/' . Marital::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Marital::path('url') . '/list'),
                     'icon'  => 'fas fa-rings-wedding',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Blood group'),
-                    'link'  => url(Users::role() . '/general/' . BloodGroup::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . BloodGroup::path('url') . '/list'),
                     'icon'  => 'fas fa-hand-holding-water',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -127,21 +127,21 @@ class GeneralController extends Controller
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Month'),
-                    'link'  => url(Users::role() . '/general/' . Months::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Months::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Month'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Day'),
-                    'link'  => url(Users::role() . '/general/' . Days::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Days::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Day'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Holiday'),
-                    'link'  => url(Users::role() . '/general/' . Holidays::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/general/' . Holidays::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Holiday'),
                     'image' => null,
@@ -150,40 +150,40 @@ class GeneralController extends Controller
             );
             $data['view']  = 'General.includes.dashboard.index';
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('General');
-        } elseif (strtolower($param1) == Provinces::$path['url']) {
+        } elseif (strtolower($param1) == Provinces::path('url')) {
             $view = new ProvinceController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Districts::$path['url']) {
+        } elseif (strtolower($param1) == Districts::path('url')) {
             $view = new DistrictController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Communes::$path['url']) {
+        } elseif (strtolower($param1) == Communes::path('url')) {
             $view = new CommuneController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Villages::$path['url']) {
+        } elseif (strtolower($param1) == Villages::path('url')) {
             $view = new VillageController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Nationality::$path['url']) {
+        } elseif (strtolower($param1) == Nationality::path('url')) {
             $view = new NationalityController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == MotherTong::$path['url']) {
+        } elseif (strtolower($param1) == MotherTong::path('url')) {
             $view = new MotherTongController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Gender::$path['url']) {
+        } elseif (strtolower($param1) == Gender::path('url')) {
             $view = new GenderController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Marital::$path['url']) {
+        } elseif (strtolower($param1) == Marital::path('url')) {
             $view = new MaritalController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == BloodGroup::$path['url']) {
+        } elseif (strtolower($param1) == BloodGroup::path('url')) {
             $view = new BloodGroupController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Months::$path['url']) {
+        } elseif (strtolower($param1) == Months::path('url')) {
             $view = new MonthController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Days::$path['url']) {
+        } elseif (strtolower($param1) == Days::path('url')) {
             $view = new DayController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Holidays::$path['url']) {
+        } elseif (strtolower($param1) == Holidays::path('url')) {
             $view = new HolidayController();
             return $view->index($param2, $param3);
         } else {

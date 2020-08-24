@@ -35,7 +35,7 @@ class InstituteController extends Controller
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName'] = 'study/' . Institute::$path['url'];
+        $data['formName'] = 'study/' . Institute::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -68,7 +68,7 @@ class InstituteController extends Controller
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
-            $data['view']       = Institute::$path['view'] . '.includes.view.index';
+            $data['view']       = Institute::path('view') . '.includes.view.index';
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Institute');
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
@@ -96,14 +96,14 @@ class InstituteController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Institute::$path['view'],
+            'parent'     => Institute::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormInstitute::rulesField(),
-            'attributes'  =>  FormInstitute::attributeField(),
-            'messages'    =>  FormInstitute::customMessages(),
-            'questions'   =>  FormInstitute::questionField(),
+            'rules'       =>  FormInstitute::rules(),
+            'attributes'  =>  FormInstitute::attributes(),
+            'messages'    =>  FormInstitute::messages(),
+            'questions'   =>  FormInstitute::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -113,15 +113,15 @@ class InstituteController extends Controller
 
     public function list($data, $id = null)
     {
-        $data['view']     = Institute::$path['view'] . '.includes.list.index';
+        $data['view']     = Institute::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Institute');
         $data['response']['data'] = Institute::get()->map(function ($row) {
-            $row['logo'] = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['logo'] = ImageHelper::site(Institute::path('image'), $row->logo);
             $row['name'] = $row->{app()->getLocale()};
             $row['action']        = [
-                'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
-                'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
+                'edit' => url(Users::role() . '/study/' . Institute::path('url') . '/edit/' . $row['id']),
+                'view' => url(Users::role() . '/study/' . Institute::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/study/' . Institute::path('url') . '/delete/' . $row['id']),
             ];
             return $row;
         });
@@ -129,15 +129,15 @@ class InstituteController extends Controller
     }
     public function show($data, $id, $type)
     {
-        $data['view']       = Institute::$path['view'] . '.includes.form.index';
+        $data['view']       = Institute::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = Institute::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['logo'] = $row['logo'] ? ImageHelper::site(Institute::$path['image'], $row->logo) : ImageHelper::prefix();
+                $row['logo'] = $row['logo'] ? ImageHelper::site(Institute::path('image'), $row->logo) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/study/' . Institute::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/study/' . Institute::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/study/' . Institute::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });

@@ -23,7 +23,7 @@ class FormStudyCourseSchedule extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
             'institute'            => 'required',
@@ -37,7 +37,7 @@ class FormStudyCourseSchedule extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
             'institute'         => __('Institute'),
@@ -49,15 +49,14 @@ class FormStudyCourseSchedule extends FormRequest
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

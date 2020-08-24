@@ -13,17 +13,25 @@ use Illuminate\Support\Facades\Validator;
 
 class Nationality extends Model
 {
-    public static $path = [
-        'image'  => 'nationality',
-        'url'    => 'nationality',
-        'view'   => 'Nationality'
-    ];
-
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Nationality::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/' . Nationality::path('url') . '/add/'),
             ),
         );
 
@@ -77,11 +85,11 @@ class Nationality extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Nationality::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Nationality::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Nationality::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -130,11 +138,11 @@ class Nationality extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Nationality::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Nationality::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Nationality::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Nationality::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -179,7 +187,7 @@ class Nationality extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormNationality::rulesField(), FormNationality::customMessages(), FormNationality::attributeField());
+        $validator          = Validator::make(request()->all(), FormNationality::rules(), FormNationality::messages(), FormNationality::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -203,9 +211,9 @@ class Nationality extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Nationality::updateImageToTable($add, ImageHelper::uploadImage($image, Nationality::$path['image']));
+                        Nationality::updateImageToTable($add, ImageHelper::uploadImage($image, Nationality::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Nationality::$path['image'], Nationality::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Nationality::path('image'), Nationality::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -226,7 +234,7 @@ class Nationality extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormNationality::rulesField(), FormNationality::customMessages(), FormNationality::attributeField());
+        $validator          = Validator::make(request()->all(), FormNationality::rules(), FormNationality::messages(), FormNationality::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -248,7 +256,7 @@ class Nationality extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Nationality::updateImageToTable($id, ImageHelper::uploadImage($image, Nationality::$path['image']));
+                        Nationality::updateImageToTable($id, ImageHelper::uploadImage($image, Nationality::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -300,7 +308,7 @@ class Nationality extends Model
                     try {
                         $delete    = Nationality::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -314,7 +322,7 @@ class Nationality extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

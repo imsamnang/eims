@@ -23,7 +23,7 @@ class FormQuizQuestion extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         $rules['quiz']   = 'required';
         $rules['quiz_type']   = 'required';
@@ -33,7 +33,7 @@ class FormQuizQuestion extends FormRequest
         return $rules;
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         $attributes['quiz']    = __('Quiz group');
         $attributes['quiz_type']    = __('Quiz type');
@@ -44,15 +44,14 @@ class FormQuizQuestion extends FormRequest
         return $attributes;
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

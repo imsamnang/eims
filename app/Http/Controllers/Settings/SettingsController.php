@@ -46,7 +46,7 @@ class SettingsController extends Controller
             'logo' => asset('/assets/img/icons/common/template-logo.png'),
             'favicon' => asset('/assets/img/icons/common/template-favicon.png'),
         );
-        $data['formName'] = App::$path['url'];
+        $data['formName'] = App::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == null) {
@@ -55,7 +55,7 @@ class SettingsController extends Controller
             if (Auth::user()->role_id == 1) {
                 $data['shortcut'][] = [
                     'name'  => __('General'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/general'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/general'),
                     'icon'  => 'fas fa-sliders-h-square',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -63,7 +63,7 @@ class SettingsController extends Controller
 
                 $data['shortcut'][] = [
                     'name'  => __('Color'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/color'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/color'),
                     'icon'  => 'fas fa-palette',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -71,7 +71,7 @@ class SettingsController extends Controller
 
                 $data['shortcut'][] = [
                     'name'  => __('Theme Background'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . ThemeBackground::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/list'),
                     'icon'  => 'fas fa-file-image',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -79,14 +79,14 @@ class SettingsController extends Controller
 
                 $data['shortcut'][] = [
                     'name'  => __('Sponsored'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/list'),
                     'icon'  => 'fas fa-hands-usd',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
                 $data['shortcut'][] = [
                     'name'  => __('Language'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Languages::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/' . Languages::path('url') . '/list'),
                     'icon'  => 'fas fa-flag',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -94,21 +94,21 @@ class SettingsController extends Controller
 
                 $data['shortcut'][] = [
                     'name'  => __('Translate'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/list'),
                     'icon'  => 'fas fa-language',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
                 $data['shortcut'][] = [
                     'name'  => __('Clean'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/clean'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/clean'),
                     'icon'  => 'fas fa-recycle',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ];
                 $data['shortcut'][] = [
                     'name'  => __('Role'),
-                    'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/list'),
                     'icon'  => 'fas fa-user-shield',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -117,7 +117,7 @@ class SettingsController extends Controller
 
             $data['shortcut'][] = [
                 'name'  => __('Feature'),
-                'link'  => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/list'),
+                'link'  => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/list'),
                 'icon'  => 'fas fa-images',
                 'image' => null,
                 'color' => 'bg-' . config('app.theme_color.name'),
@@ -125,7 +125,7 @@ class SettingsController extends Controller
 
 
 
-            $data['view']  = App::$path['view'] . '.includes.dashboard.index';
+            $data['view']  = App::path('view') . '.includes.dashboard.index';
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -169,22 +169,22 @@ class SettingsController extends Controller
             }
 
             $data = $this->color($data);
-        } elseif ($param1 == Languages::$path['url']) {
+        } elseif ($param1 == Languages::path('url')) {
             $view = new LanguagesController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == Translates::$path['url']) {
+        } elseif ($param1 == Translates::path('url')) {
             $view = new TranslateController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == FeatureSlider::$path['url']) {
+        } elseif ($param1 == FeatureSlider::path('url')) {
             $view = new FeatureSliderController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == Sponsored::$path['url']) {
+        } elseif ($param1 == Sponsored::path('url')) {
             $view = new SponsoredController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == ThemeBackground::$path['url']) {
+        } elseif ($param1 == ThemeBackground::path('url')) {
             $view = new ThemeBackgroundController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == Roles::$path['url']) {
+        } elseif ($param1 == Roles::path('url')) {
             $view = new RolesController();
             return $view->index($param2, $param3);
         } elseif ($param1 == 'clean') {
@@ -219,15 +219,15 @@ class SettingsController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => App::$path['view'],
+            'parent'     => App::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormApp::rulesField(),
-            'attributes'  =>  FormApp::attributeField(),
-            'messages'    =>  FormApp::customMessages(),
-            'questions'   =>  FormApp::questionField(),
+            'rules'       => (new FormApp)->rules(),
+            'attributes'  => (new FormApp)->attributes(),
+            'messages'    => (new FormApp)->messages(),
+            'questions'   => (new FormApp)->questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -238,7 +238,7 @@ class SettingsController extends Controller
     public function list($data, $id = null)
     {
         $data['response'] =  App::getData(null, null, 10);
-        $data['view']     =  App::$path['view'] . '.includes.list.index';
+        $data['view']     =  App::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Settings');
         return $data;
     }
@@ -247,7 +247,7 @@ class SettingsController extends Controller
     public function general($data, $id)
     {
         $response           = App::getData($id, true);
-        $data['view']       = App::$path['view'] . '.includes.general.index';
+        $data['view']       = App::path('view') . '.includes.general.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Settings');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');
@@ -262,7 +262,7 @@ class SettingsController extends Controller
     public function color($data)
     {
         $data['response']   = ThemesColor::getData();
-        $data['view']       = App::$path['view'] . '.includes.color.index';
+        $data['view']       = App::path('view') . '.includes.color.index';
         $data['title']      = $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Set color');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/');

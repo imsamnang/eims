@@ -22,7 +22,7 @@ class FormUsers extends FormRequest
      *
      * @return array
      */
-    public static function rulesField()
+    public function rules()
     {
         return [
             'institute'     => 'required',
@@ -37,7 +37,7 @@ class FormUsers extends FormRequest
         ];
     }
 
-    public static function rulesField2()
+    public static function rules2()
     {
        return [
            'institute'             => 'required',
@@ -55,7 +55,7 @@ class FormUsers extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
                 'institute'    => __('Institute'),
@@ -71,11 +71,11 @@ class FormUsers extends FormRequest
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
-    public static function customMessages()
+    public static function messages()
     {
         return [];
     }

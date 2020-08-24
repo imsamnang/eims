@@ -12,21 +12,29 @@ use Illuminate\Support\Facades\Validator;
 
 class App extends Model
 {
-    public static $path = [
-        'image'  => 'brand',
-        'url'    => 'settings',
-        'view'   => 'App'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $path = [
+            'image'  => (new self)->getTable(),
+            'url'    => 'settings',
+            'view'   => (new self)->getTable()
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function setConfig()
     {
-        $app = app::where('status', 1)->first()->toArray();
+        $app = self::where('status', 1)->first()->toArray();
         $themeColor = ThemesColor::where('id', $app['theme_color_id'])->first()->toArray();
         $themeBackground = ThemeBackground::where('status', 1)->first();
         if ($themeBackground) {
             config()->set('app.theme_background', [
                 'id'    => $themeBackground->id,
                 'name'  => $themeBackground->name,
-                'image' => ImageHelper::site(ThemeBackground::$path['url'], $themeBackground->image, 'original'),
+                'image' => ImageHelper::site(ThemeBackground::path('url'), $themeBackground->image, 'original'),
             ]);
         }
         foreach ($app as $key => $value) {
@@ -34,7 +42,7 @@ class App extends Model
                 if ($key == 'theme_color_id') {
                     config()->set('app.theme_color', $themeColor);
                 } elseif ($key == 'logo' || $key == 'favicon') {
-                    config()->set('app.' . $key, ImageHelper::site(App::$path['image'], $value, 'original'));
+                    config()->set('app.' . $key, ImageHelper::site(self::path('image'), $value));
                 } elseif (array_key_exists($key, Languages::getLanguages()['data'])) {
                     config()->set('app.name', $app[app()->getLocale()] ? $app[app()->getLocale()] : $app['name']);
                 } else {
@@ -47,7 +55,7 @@ class App extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -69,9 +77,9 @@ class App extends Model
             } else {
                 $orderBy = 'DESC';
             }
-            $get = App::orderBy('id', $orderBy);
+            $get = self::orderBy('id', $orderBy);
         } else {
-            $get = App::orderBy('id', 'DESC');
+            $get = self::orderBy('id', 'DESC');
         }
 
         if ($id) {
@@ -115,13 +123,13 @@ class App extends Model
                     'location'      => $row['location'],
                     'website'       => $row['website'],
                     'description'   => $row['description'],
-                    'logo'          => ImageHelper::site(App::$path['image'], $row['logo'], 'original'),
-                    'favicon'       => ImageHelper::site(App::$path['image'], $row['favicon']),
+                    'logo'          => ImageHelper::site(self::path('image'), $row['logo'], 'original'),
+                    'favicon'       => ImageHelper::site(self::path('image'), $row['favicon']),
                     'theme_color'   => ThemesColor::getData($row['theme_color_id'])['data'][0],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . self::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . self::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . self::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -164,7 +172,7 @@ class App extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormApp::rulesField(), FormApp::customMessages(), FormApp::attributeField());
+        $validator          = Validator::make(request()->all(), (new FormApp)->rules(), (new FormApp)->messages(), (new FormApp)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -186,17 +194,17 @@ class App extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $update = App::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     SocailsMedia::updateToTable($id);
                     if (request()->hasFile('logo')) {
                         $logo      = request()->file('logo');
-                        App::updateImageToTable($id, ImageHelper::uploadImage($logo, App::$path['image']), 'logo');
+                        self::updateImageToTable($id, ImageHelper::uploadImage($logo, self::path('image')), 'logo');
                     }
 
                     if (request()->hasFile('favicon')) {
                         $favicon      = request()->file('favicon');
-                        App::updateImageToTable($id, ImageHelper::uploadImage($favicon, App::$path['image']), 'favicon');
+                        self::updateImageToTable($id, ImageHelper::uploadImage($favicon, self::path('image')), 'favicon');
                     }
 
                     $response       = array(
@@ -221,7 +229,7 @@ class App extends Model
         );
         if ($image) {
             try {
-                $update =  App::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     $col_name   => $image,
                 ]);
 
@@ -257,7 +265,7 @@ class App extends Model
         );
         if ($id && $theme_color_id) {
             try {
-                $update =  App::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'theme_color_id'   => $theme_color_id,
                 ]);
 

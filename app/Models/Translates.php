@@ -12,17 +12,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Translates extends Model
 {
-    public static $path = [
-        'image'  => 'translate',
-        'url'    => 'translate',
-        'view'   => 'Translate'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Translates::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . Translates::path('url') . '/add/'),
             ),
         );
 
@@ -68,9 +77,9 @@ class Translates extends Model
 
                 $data[$key] = $row;
                 $data[$key]['action'] = [
-                    'edit'    => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/edit/' . $row['id']),
-                    'view'    => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/view/' . $row['id']),
-                    'delete'  => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/delete/' . $row['id']),
+                    'edit'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
+                    'view'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
+                    'delete'  => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
                 ];
                 $pages['listData'][] = array(
                     'id'     => $data[$key]['id'],
@@ -106,9 +115,9 @@ class Translates extends Model
                 $row = $row->toArray();
                 return $row + [
                     'action'        => [
-                        'edit'    => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/edit/' . $row['id']),
-                        'view'    => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/view/' . $row['id']),
-                        'delete'  => url(Users::role() . '/' . App::$path['url'] . '/' . Translates::$path['url'] . '/delete/' . $row['id']),
+                        'edit'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
+                        'view'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
+                        'delete'  => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
             })
@@ -150,7 +159,7 @@ class Translates extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormTranslates::rulesField(), FormTranslates::customMessages(), FormTranslates::attributeField());
+        $validator          = Validator::make(request()->all(), FormTranslates::rules(), FormTranslates::messages(), FormTranslates::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -185,7 +194,7 @@ class Translates extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormTranslates::rulesField(), FormTranslates::customMessages(), FormTranslates::attributeField());
+        $validator          = Validator::make(request()->all(), FormTranslates::rules(), FormTranslates::messages(), FormTranslates::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -228,7 +237,7 @@ class Translates extends Model
                     try {
                         $delete    = Translates::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -242,7 +251,7 @@ class Translates extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

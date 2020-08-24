@@ -13,17 +13,26 @@ use App\Http\Requests\FormStudyGeneration;
 
 class StudyGeneration extends Model
 {
-    public static $path = [
-        'image'  => 'study-generation',
-        'url'    => 'generation',
-        'view'   => 'StudyGeneration'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/add/'),
             ),
         );
 
@@ -81,11 +90,11 @@ class StudyGeneration extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -134,11 +143,11 @@ class StudyGeneration extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGeneration::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -187,7 +196,7 @@ class StudyGeneration extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyGeneration::rulesField(), FormStudyGeneration::customMessages(), FormStudyGeneration::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyGeneration::rules(), FormStudyGeneration::messages(), FormStudyGeneration::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -212,9 +221,9 @@ class StudyGeneration extends Model
                 if ($add) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyGeneration::updateImageToTable($add, ImageHelper::uploadImage($image, StudyGeneration::$path['image']));
+                        StudyGeneration::updateImageToTable($add, ImageHelper::uploadImage($image, StudyGeneration::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyGeneration::$path['image'], StudyGeneration::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, StudyGeneration::path('image'), StudyGeneration::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
 
                     $response       = array(
@@ -235,7 +244,7 @@ class StudyGeneration extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyGeneration::rulesField(), FormStudyGeneration::customMessages(), FormStudyGeneration::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyGeneration::rules(), FormStudyGeneration::messages(), FormStudyGeneration::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -257,7 +266,7 @@ class StudyGeneration extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyGeneration::updateImageToTable($id, ImageHelper::uploadImage($image, StudyGeneration::$path['image']));
+                        StudyGeneration::updateImageToTable($id, ImageHelper::uploadImage($image, StudyGeneration::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -310,7 +319,7 @@ class StudyGeneration extends Model
                     try {
                         $delete    = StudyGeneration::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -324,7 +333,7 @@ class StudyGeneration extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

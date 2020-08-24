@@ -6,11 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentsCertificate extends Model
 {
-    public static $path = [
-        'image'  => 'certificate',
-        'url'    => 'certificate',
-        'view'   => 'StudentsCertificate'
-    ];
-
-    
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 }

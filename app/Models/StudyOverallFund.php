@@ -13,17 +13,26 @@ use App\Http\Requests\FormStudyOverallFund;
 
 class StudyOverallFund extends Model
 {
-    public static $path = [
-        'image'  => 'study-overall-fund',
-        'url'    => 'overall-fund',
-        'view'   => 'StudyOverallFund'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/add/'),
             ),
         );
 
@@ -78,11 +87,11 @@ class StudyOverallFund extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyOverallFund::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyOverallFund::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -131,11 +140,11 @@ class StudyOverallFund extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyOverallFund::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyOverallFund::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -180,7 +189,7 @@ class StudyOverallFund extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyOverallFund::rulesField(), FormStudyOverallFund::customMessages(), FormStudyOverallFund::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyOverallFund::rules(), FormStudyOverallFund::messages(), FormStudyOverallFund::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -205,9 +214,9 @@ class StudyOverallFund extends Model
                 if ($add) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyOverallFund::updateImageToTable($add, ImageHelper::uploadImage($image, StudyOverallFund::$path['image']));
+                        StudyOverallFund::updateImageToTable($add, ImageHelper::uploadImage($image, StudyOverallFund::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyOverallFund::$path['image'], StudyOverallFund::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, StudyOverallFund::path('image'), StudyOverallFund::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
 
                     $response       = array(
@@ -228,7 +237,7 @@ class StudyOverallFund extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyOverallFund::rulesField(), FormStudyOverallFund::customMessages(), FormStudyOverallFund::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyOverallFund::rules(), FormStudyOverallFund::messages(), FormStudyOverallFund::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -250,7 +259,7 @@ class StudyOverallFund extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyOverallFund::updateImageToTable($id, ImageHelper::uploadImage($image, StudyOverallFund::$path['image'], null, true));
+                        StudyOverallFund::updateImageToTable($id, ImageHelper::uploadImage($image, StudyOverallFund::path('image'), null, true));
                     }
                     $response       = array(
                         'success'   => true,
@@ -303,7 +312,7 @@ class StudyOverallFund extends Model
                     try {
                         $delete    = StudyOverallFund::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -317,7 +326,7 @@ class StudyOverallFund extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

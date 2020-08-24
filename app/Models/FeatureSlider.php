@@ -14,17 +14,26 @@ use Illuminate\Support\Facades\Validator;
 
 class FeatureSlider extends Model
 {
-    public static $path = [
-        'image'  => 'feature',
-        'url'    => 'feature',
-        'view'   => 'FeatureSlider'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $paginate = null, $random = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::$path['url'] . '/' .  FeatureSlider::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . App::path('url') . '/' .  FeatureSlider::path('url') . '/add/'),
             ),
         );
 
@@ -77,11 +86,11 @@ class FeatureSlider extends Model
                     'title'         => $row['title'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : ImageHelper::prefix(),                    'status'        => $key == 0 ? 'active' : '',
+                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::path('image'), $row['image'])) : ImageHelper::prefix(),                    'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -121,11 +130,11 @@ class FeatureSlider extends Model
                     'title'         => $row['title'],
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . FeatureSlider::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
 
                     ]
                 ];
@@ -165,7 +174,7 @@ class FeatureSlider extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormFeatureSlider::rulesField(), FormFeatureSlider::customMessages(), FormFeatureSlider::attributeField());
+        $validator          = Validator::make(request()->all(), FormFeatureSlider::rules(), FormFeatureSlider::messages(), FormFeatureSlider::attributes());
 
         if (!request()->hasFile('image')) {
             return array(
@@ -202,7 +211,7 @@ class FeatureSlider extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null, null, true));
+                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true));
                     }
 
                     $response       = array(
@@ -223,7 +232,7 @@ class FeatureSlider extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormFeatureSlider::rulesField(), FormFeatureSlider::customMessages(), FormFeatureSlider::attributeField());
+        $validator          = Validator::make(request()->all(), FormFeatureSlider::rules(), FormFeatureSlider::messages(), FormFeatureSlider::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -241,7 +250,7 @@ class FeatureSlider extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::$path['image'], null, null, true));
+                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true));
                     }
                     $response       = array(
                         'success'   => true,
@@ -293,7 +302,7 @@ class FeatureSlider extends Model
                     try {
                         $delete    = FeatureSlider::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -307,7 +316,7 @@ class FeatureSlider extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

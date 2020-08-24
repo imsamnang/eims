@@ -23,7 +23,7 @@ class FormStaff extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
             'institute'            => 'required',
@@ -84,7 +84,7 @@ class FormStaff extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
 
@@ -95,8 +95,8 @@ class FormStaff extends FormRequest
 
             'first_name_km'        => __('First name Khmer'),
             'last_name_km'         => __('Last name Khmer'),
-            'first_name_en'        => __('first name Latin'),
-            'last_name_en'         => __('last name Latin'),
+            'first_name_en'        => __('First name Latin'),
+            'last_name_en'         => __('Last name Latin'),
 
             'nationality'          => __('Nationality'),
             'mother_tong'          => __('Mother tong'),
@@ -140,12 +140,12 @@ class FormStaff extends FormRequest
             'phone'                => __('Phone'),
             'email'                => __('Email'),
             'password'             => __('Password'),
-            'staff_extra_info'    => __('Extra info'),
+            'staff_extra_info'     => __('Extra info'),
             'photo'                => __('Photo'),
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
@@ -153,15 +153,14 @@ class FormStaff extends FormRequest
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [
-            'first_name_km'                                       => [
-                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
+            'first_name_km'                   => [
+                'only_khmer_character'        => __('first_name_km.required_only_khmer_character'),
             ],
-            'last_name_km'                                        => [
-                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
+            'last_name_km'                    => [
+                'only_khmer_character'        => __('first_name_km.required_only_khmer_character'),
             ],
         ];
     }

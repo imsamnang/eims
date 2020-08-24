@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use DateTime;
 
 class DateHelper
 {
@@ -15,13 +16,12 @@ class DateHelper
     {
         if ($date) {
             $date = str_replace('/', '-', $date);
-            $dt = new Carbon($date);
-            if($translate){
+            $dt = new Carbon(DateTime::createFromFormat($format, $date));
+            if ($translate) {
                 $date = $dt->translatedFormat($format);
-            }else{
+            } else {
                 $date = $dt->format($format);
             }
-
         }
         return $date;
     }

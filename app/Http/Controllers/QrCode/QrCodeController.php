@@ -32,7 +32,7 @@ class QrCodeController extends Controller
         $data['formData'] = array(
             'photo' => asset('/assets/img/user/male.jpg'),
         );
-        $data['formName']     = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . QRHelper::$path['url'];
+        $data['formName']     = Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . QRHelper::path('url');
         $data['formAction']   = '/qrcode';
         $data['listData']     = array();
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
@@ -65,7 +65,7 @@ class QrCodeController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => QRHelper::$path['view'],
+            'parent'     => QRHelper::path('view'),
             'view'       => $data['view'],
         );
 
@@ -73,13 +73,13 @@ class QrCodeController extends Controller
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-        return view(QRHelper::$path['view'] . '.index', $data);
+        return view(QRHelper::path('view') . '.index', $data);
     }
 
 
     public function make($data, $ts)
     {
-        $data['view']       = QRHelper::$path['view'] . '.includes.form.index';
+        $data['view']       = QRHelper::path('view') . '.includes.form.index';
         $data['title']      = Users::role(app()->getLocale()) . ' | ' . __('Qrcode');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['formData']   = $ts;

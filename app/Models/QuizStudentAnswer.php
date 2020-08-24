@@ -12,10 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizStudentAnswer extends Model
 {
-    public static $path = [
-        'url'    => 'answer',
-        'view'   => 'QuizStudentAnswer'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function getData($quiz_student_id, $paginate = null)
     {
         $total_marks = 0;
@@ -103,7 +113,7 @@ class QuizStudentAnswer extends Model
 
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . 'study/' . Quiz::$path['url'] . '/' . QuizStudentAnswer::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . 'study/' . Quiz::path('url') . '/' . QuizStudentAnswer::path('url') . '/add/'),
             ),
         );
 
@@ -198,7 +208,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rulesField('.*'), FormQuizStudentAnswer::customMessages(), FormQuizStudentAnswer::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rules('.*'), FormQuizStudentAnswer::messages(), FormQuizStudentAnswer::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -252,7 +262,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rulesField('.*'), FormQuizStudentAnswer::customMessages(), FormQuizStudentAnswer::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rules('.*'), FormQuizStudentAnswer::messages(), FormQuizStudentAnswer::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -358,7 +368,7 @@ class QuizStudentAnswer extends Model
     {
         if ($id) {
             $response           = array();
-            $validator          = Validator::make(request()->all(), FormQuizStudentAnswerMarks::rulesField(), FormQuizStudentAnswerMarks::customMessages(), FormQuizStudentAnswerMarks::attributeField());
+            $validator          = Validator::make(request()->all(), FormQuizStudentAnswerMarks::rules(), FormQuizStudentAnswerMarks::messages(), FormQuizStudentAnswerMarks::attributes());
 
             if ($validator->fails()) {
                 $response       = array(

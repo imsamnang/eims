@@ -31,7 +31,7 @@ class StudyCourseSessionController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
         request()->merge([
-            'ref'   => StudyCourseSession::$path['url']
+            'ref'   => StudyCourseSession::path('url')
         ]);
         $data['study_course_schedule'] = StudyCourseSchedule::getData();
         $data['study_session'] = StudySession::getData();
@@ -39,7 +39,7 @@ class StudyCourseSessionController extends Controller
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName']       = 'study/' . StudyCourseSession::$path['url'];
+        $data['formName']       = 'study/' . StudyCourseSession::path('url');
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -102,15 +102,15 @@ class StudyCourseSessionController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyCourseSession::$path['view'],
+            'parent'     => StudyCourseSession::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyCourseSession::rulesField(),
-            'attributes'  =>  FormStudyCourseSession::attributeField(),
-            'messages'    =>  FormStudyCourseSession::customMessages(),
-            'questions'   =>  FormStudyCourseSession::questionField(),
+            'rules'       =>  FormStudyCourseSession::rules(),
+            'attributes'  =>  FormStudyCourseSession::attributes(),
+            'messages'    =>  FormStudyCourseSession::messages(),
+            'questions'   =>  FormStudyCourseSession::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -120,14 +120,14 @@ class StudyCourseSessionController extends Controller
 
     public function list($data, $param1)
     {
-        $data['view']     = StudyCourseSession::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyCourseSession::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Course Session');
         return $data;
     }
 
     public function add($data)
     {
-        $data['view']      = StudyCourseSession::$path['view'] . '.includes.form.index';
+        $data['view']      = StudyCourseSession::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Course Session');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -137,7 +137,7 @@ class StudyCourseSessionController extends Controller
     public function show($data, $id, $type)
     {
         $response = StudyCourseSession::getData($id, true);
-        $data['view']       = StudyCourseSession::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyCourseSession::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

@@ -8,17 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class ThemesColor extends Model
 {
-    public static $path = [
-        'image'  => 'theme-color',
-        'url'    => 'theme-color',
-        'view'   => 'ThemesColor'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => $table,
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . ThemesColor::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -35,9 +44,9 @@ class ThemesColor extends Model
             } else {
                 $orderBy = 'DESC';
             }
-            $get = ThemesColor::orderBy('id', $orderBy);
+            $get = self::orderBy('id', $orderBy);
         } else {
-            $get = ThemesColor::orderBy('id', 'DESC');
+            $get = self::orderBy('id', 'DESC');
         }
 
         if ($id) {
@@ -67,13 +76,13 @@ class ThemesColor extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(ThemesColor::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(self::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'color'         => $row['color'],
                     'color_name'    => $row['name'],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . ThemesColor::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . ThemesColor::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . ThemesColor::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . self::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . self::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . self::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(

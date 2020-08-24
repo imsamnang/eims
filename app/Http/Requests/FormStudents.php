@@ -23,7 +23,7 @@ class FormStudents extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
 
@@ -83,7 +83,7 @@ class FormStudents extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
 
@@ -139,20 +139,19 @@ class FormStudents extends FormRequest
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [
-            'first_name_km'                                       => [
-                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
+            'first_name_km'                   => [
+                'only_khmer_character'        => __('first_name_km.required_only_khmer_character'),
             ],
-            'last_name_km'                                        => [
-                'only_khmer_character'                            => __('first_name_km.required_only_khmer_character'),
+            'last_name_km'                    => [
+                'only_khmer_character'        => __('first_name_km.required_only_khmer_character'),
             ],
         ];
     }

@@ -79,10 +79,10 @@ class Mailbox extends Model
                     'subject' => $row['subject'],
                     'created_at' => $row['created_at'],
                     'action'    => [
-                        'view'  => url(Mailbox::$path['url'] . '/inbox/view/' . $id),
-                        'mark_read'  => url(Mailbox::$path['url'] . '/inbox/mark-read/' . $id),
-                        'mark_important'  => url(Mailbox::$path['url'] . '/inbox/mark-important/' . $id),
-                        'move_trash'  => url(Mailbox::$path['url'] . '/inbox/move-trash/' . $id),
+                        'view'  => url(Mailbox::path('url') . '/inbox/view/' . $id),
+                        'mark_read'  => url(Mailbox::path('url') . '/inbox/mark-read/' . $id),
+                        'mark_important'  => url(Mailbox::path('url') . '/inbox/mark-important/' . $id),
+                        'move_trash'  => url(Mailbox::path('url') . '/inbox/move-trash/' . $id),
                     ]
                 ];
 
@@ -134,7 +134,7 @@ class Mailbox extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMailbox::rulesField('.*'), FormMailbox::customMessages(), FormMailbox::attributeField());
+        $validator          = Validator::make(request()->all(), FormMailbox::rules('.*'), FormMailbox::messages(), FormMailbox::attributes());
 
         if ($validator->fails()) {
             $response       = array(

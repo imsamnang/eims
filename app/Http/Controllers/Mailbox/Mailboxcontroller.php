@@ -62,14 +62,14 @@ class MailboxController extends Controller
             if (request()->method() == 'POST') {
                 return Mailbox::addToTable();
             }
-            $data['view']      = Mailbox::$path['view'] . '.includes.form.index';
+            $data['view']      = Mailbox::path('view') . '.includes.form.index';
         } elseif ($param1 == 'upload') {
             if (request()->method() == 'POST' && request()->hasFile('image')) {
-                $image = ImageHelper::uploadImage(request()->file('image'), Mailbox::$path['image']);
+                $image = ImageHelper::uploadImage(request()->file('image'), Mailbox::path('image'));
                 if ($image) {
                     return [
                         'success' => true,
-                        'data'  => [ImageHelper::site(Mailbox::$path['image'], $image, 'original')]
+                        'data'  => [ImageHelper::site(Mailbox::path('image'), $image, 'original')]
                     ];
                 }
             }
@@ -85,28 +85,28 @@ class MailboxController extends Controller
             $id = request('id', $param3);
             if ($param2 == 'view') {
                 $data['response'] =  Mailbox::getData($id, $param2);
-                $data['view']      = Mailbox::$path['view'] . '.includes.view.index';
+                $data['view']      = Mailbox::path('view') . '.includes.view.index';
             } elseif ($param2 == 'move-trash') {
                 return MailboxTrash::addToTable($id, Auth::user()->id);
             } else {
                 $data['response'] =  Mailbox::getData($id, 'list', 10);
-                $data['view']      = Mailbox::$path['view'] . '.includes.inbox.index';
+                $data['view']      = Mailbox::path('view') . '.includes.inbox.index';
             }
         } elseif ($param1 == 'sent') {
             $id = request('id', $param3);
             if ($param2 == 'view') {
                 $data['response'] =  MailboxSent::getData($id, $param2);
-                $data['view']      = Mailbox::$path['view'] . '.includes.view.index';
+                $data['view']      = Mailbox::path('view') . '.includes.view.index';
             } elseif ($param2 == 'move-trash') {
                 return MailboxTrash::addToTable($id, Auth::user()->id);
             } else {
                 $data['response'] =  MailboxSent::getData($id, 'list', 10);
-                $data['view']      = Mailbox::$path['view'] . '.includes.sent.index';
+                $data['view']      = Mailbox::path('view') . '.includes.sent.index';
             }
-        } elseif ($param1 == MailboxImportant::$path['url']) {
+        } elseif ($param1 == MailboxImportant::path('url')) {
             $view = new MailboxImportantController;
             return $view->index($param2, $param3);
-        } elseif ($param1 == MailboxTrash::$path['url']) {
+        } elseif ($param1 == MailboxTrash::path('url')) {
             $view = new MailboxTrashController;
             return $view->index($param2, $param3);
         } elseif ($param1 == 'move-trash') {
@@ -140,15 +140,15 @@ class MailboxController extends Controller
                 'param3' => $param3,
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
-            'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction'], Mailbox::$path['url']),
-            'parent'     => Mailbox::$path['view'],
+            'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction'], Mailbox::path('url')),
+            'parent'     => Mailbox::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormMailbox::rulesField(),
-            'attributes'  =>  FormMailbox::attributeField(),
-            'messages'    =>  FormMailbox::customMessages(),
-            'questions'   =>  FormMailbox::questionField(),
+            'rules'       =>  FormMailbox::rules(),
+            'attributes'  =>  FormMailbox::attributes(),
+            'messages'    =>  FormMailbox::messages(),
+            'questions'   =>  FormMailbox::questions(),
         ];
 
         config()->set('app.title', $data['title']);

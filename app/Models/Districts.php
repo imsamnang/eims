@@ -10,11 +10,20 @@ use Illuminate\Support\Facades\Validator;
 
 class Districts extends Model
 {
-    public static $path = [
-        'image'  => 'district',
-        'url'    => 'district',
-        'view'   => 'Cambodia'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public function province()
@@ -26,7 +35,7 @@ class Districts extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormDistrict::rulesField(), FormDistrict::customMessages(), FormDistrict::attributeField());
+        $validator          = Validator::make(request()->all(), FormDistrict::rules(), FormDistrict::messages(), FormDistrict::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -54,9 +63,9 @@ class Districts extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Districts::updateImageToTable($add, ImageHelper::uploadImage($image, Districts::$path['image']));
+                        Districts::updateImageToTable($add, ImageHelper::uploadImage($image, Districts::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Districts::$path['image'], Districts::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Districts::path('image'), Districts::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -77,7 +86,7 @@ class Districts extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormDistrict::rulesField(), FormDistrict::customMessages(), FormDistrict::attributeField());
+        $validator          = Validator::make(request()->all(), FormDistrict::rules(), FormDistrict::messages(), FormDistrict::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -102,7 +111,7 @@ class Districts extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Districts::updateImageToTable($id, ImageHelper::uploadImage($image, Districts::$path['image']));
+                        Districts::updateImageToTable($id, ImageHelper::uploadImage($image, Districts::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -154,7 +163,7 @@ class Districts extends Model
                     try {
                         $delete    = Districts::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -168,7 +177,7 @@ class Districts extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

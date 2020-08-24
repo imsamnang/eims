@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Validator;
 
 class Communes extends Model
 {
-    public static $path = [
-        'image'  => 'commune',
-        'url'    => 'commune',
-        'view'   => 'Cambodia'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public function district()
     {
@@ -27,7 +36,7 @@ class Communes extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCommune::rulesField(), FormCommune::customMessages(), FormCommune::attributeField());
+        $validator          = Validator::make(request()->all(), FormCommune::rules(), FormCommune::messages(), FormCommune::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -54,9 +63,9 @@ class Communes extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Communes::updateImageToTable($add, ImageHelper::uploadImage($image, Communes::$path['image']));
+                        Communes::updateImageToTable($add, ImageHelper::uploadImage($image, Communes::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Communes::$path['image'], Communes::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Communes::path('image'), Communes::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -77,7 +86,7 @@ class Communes extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCommune::rulesField(), FormCommune::customMessages(), FormCommune::attributeField());
+        $validator          = Validator::make(request()->all(), FormCommune::rules(), FormCommune::messages(), FormCommune::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -102,7 +111,7 @@ class Communes extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Communes::updateImageToTable($id, ImageHelper::uploadImage($image, Communes::$path['image']));
+                        Communes::updateImageToTable($id, ImageHelper::uploadImage($image, Communes::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -154,7 +163,7 @@ class Communes extends Model
                     try {
                         $delete    = Communes::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -168,7 +177,7 @@ class Communes extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

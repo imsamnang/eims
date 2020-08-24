@@ -23,7 +23,7 @@ class FormQuizStudentAnswer extends FormRequest
      * @return array
      */
 
-    public static function rulesField($flag = '[]')
+    public function rules($flag = '[]')
     {
         $rules = [
             'quiz_student'         => 'required',
@@ -34,7 +34,7 @@ class FormQuizStudentAnswer extends FormRequest
         return $rules;
     }
 
-    public static function attributeField($flag = '[]')
+    public function attributes($flag = '[]')
     {
         $attributes = [
             'answer'.$flag            => __('Answer'),
@@ -43,15 +43,14 @@ class FormQuizStudentAnswer extends FormRequest
         return $attributes;
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

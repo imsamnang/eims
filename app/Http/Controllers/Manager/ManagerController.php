@@ -26,7 +26,7 @@ use App\Http\Controllers\Study\StudyController;
 use App\Http\Controllers\users\usersController;
 use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
 use App\Models\StudentsRequest;
@@ -54,14 +54,14 @@ class ManagerController extends Controller
 
         if (strtolower($param1) == null || strtolower($param1) == 'dashboard') {
             return $this->dashboard();
-        } elseif (strtolower($param1) == ActivityFeed::$path['url']) {
+        } elseif (strtolower($param1) == ActivityFeed::path('url')) {
             $view = new ActivityFeedController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Staff::$path['url']) {
+        } elseif (strtolower($param1) == Staff::path('url')) {
             $view = new StaffController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Students::$path['url']) {
-            $view = new StudentController();
+        } elseif (strtolower($param1) == Students::path('url')) {
+            $view = new StudentsController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == 'study') {
             $view = new StudyController();
@@ -69,16 +69,16 @@ class ManagerController extends Controller
         } elseif (strtolower($param1) == 'general') {
             $view = new GeneralController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Users::$path['url']) {
+        } elseif (strtolower($param1) == Users::path('url')) {
             $view = new UsersController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == App::$path['url']) {
+        } elseif (strtolower($param1) == App::path('url')) {
             $view = new SettingsController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == 'profile') {
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Quiz::$path['url']) {
+        } elseif (strtolower($param1) == Quiz::path('url')) {
             $view = new QuizController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } else {
@@ -120,7 +120,7 @@ class ManagerController extends Controller
         $data['staff'] = array(
             [
                 'title'   => __('Staff & Teacher'),
-                'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
+                'link'    => url(Users::role() . '/' . Staff::path('url') . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
                 'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->whereNotIn('designation_id', [1])->where('institute_id', Auth::user()->institute_id)),
@@ -129,7 +129,7 @@ class ManagerController extends Controller
             ],
             [
                 'title'   => __('Teacher'),
-                'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
+                'link'    => url(Users::role() . '/' . Staff::path('url') . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
                 'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('designation_id', 2)->where('institute_id', Auth::user()->institute_id)),
@@ -141,7 +141,7 @@ class ManagerController extends Controller
         $data['student'] = array(
             [
                 'title'       => __('List all students'),
-                'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
+                'link'        => url(Users::role() . '/' . Students::path('url') . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
                 'gender'      => Students::gender(Students::where('institute_id', Auth::user()->institute_id)),
@@ -150,7 +150,7 @@ class ManagerController extends Controller
             ],
             [
                 'title'       => __('Student study course'),
-                'link'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+                'link'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
                 'gender'  => Students::gender(
@@ -172,7 +172,7 @@ class ManagerController extends Controller
             foreach ($studyPrograms['data'] as $row) {
                 $data['studyProgram'][] = [
                     'title'   => $row['name'],
-                    'link'    => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list?programId=' . $row['id']),
+                    'link'    => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list?programId=' . $row['id']),
                     'icon'    => null,
                     'image'   => $row['image'],
                     'gender'  => Students::gender(

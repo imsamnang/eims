@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Roles;
 use App\Models\Staff;
 use App\Models\Users;
@@ -36,18 +36,16 @@ use App\Models\StaffQualifications;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StaffsReportTemplateExport;
-use App\Http\Controllers\Staff\StaffCertificateController;
+use App\Http\Controllers\Staff\StaffCertificateFramesController;
 use App\Http\Controllers\Staff\StaffDesignationController;
-use Mpdf\Mpdf;
 
 class StaffController extends Controller
 {
 
-
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         Languages::setConfig();
         view()->share('breadcrumb', []);
@@ -59,17 +57,17 @@ class StaffController extends Controller
             [
                 'title' => __('Staff & Teacher'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+                'link'  => url(Users::role() . '/' . Staff::path('url')),
             ],
             [
                 'title' => __('List Staff'),
                 'status' => false,
-                'link'  => url(Users::role() . '/' . Staff::$path['url']) . '/list',
+                'link'  => url(Users::role() . '/' . Staff::path('url')) . '/list',
             ]
         ];
 
         $data['formAction']          = '/add';
-        $data['formName']            = Staff::$path['url'];
+        $data['formName']            = Staff::path('url');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
         $data['formData']            = array(
@@ -84,7 +82,7 @@ class StaffController extends Controller
             $data['shortcut'] = [
                 [
                     'name'  => __('Add Staff'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/add'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/add'),
                     'icon'  => 'fas fa-user-plus',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -97,38 +95,38 @@ class StaffController extends Controller
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List all Staff'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/list'),
                     'icon'  => 'fas fa-users-class',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Designation'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffDesignations::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffDesignations::path('url') . '/list'),
                     'icon'  => 'fas fa-user-tie',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Staff status'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/list'),
                     'icon'  => 'fas fa-question-square',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Staff Certificate'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffCertificate::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffCertificate::path('url') . '/list'),
                     'icon'  => 'fas fa-file-certificate',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Staff teach subject'),
-                    'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/list'),
                     'icon'  => 'fas fa-chalkboard-teacher',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
 
             ];
-            $data['view']  = Staff::$path['view'] . '.includes.dashboard.index';
+            $data['view']  = Staff::path('view') . '.includes.dashboard.index';
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff & Teacher');
         } elseif ($param1 == 'list') {
             $breadcrumb[1]['status']  = 'active';
@@ -138,13 +136,13 @@ class StaffController extends Controller
             } else {
                 $data = $this->list($data);
             }
-        
+
         } elseif ($param1 == 'add') {
 
             $breadcrumb[]  = [
                 'title' => __('Add Staff'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/add'),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/add'),
             ];
 
             if (request()->method() === 'POST') {
@@ -157,7 +155,7 @@ class StaffController extends Controller
             $breadcrumb[]  = [
                 'title' => __('View Staff'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/view/' . $id),
             ];
 
 
@@ -170,18 +168,18 @@ class StaffController extends Controller
                 $row['marital'] = Marital::where('id', $row->marital_id)->pluck(app()->getLocale())->first();
                 $row['blood_group'] = BloodGroup::where('id', $row->blood_group_id)->pluck(app()->getLocale())->first();
                 $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
-                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
-                    'print' => url(Users::role() . '/' . Staff::$path['url'] . '/print/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Staff::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::path('url') . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::path('url') . '/account/create/' . $row['id']),
+                    'print' => url(Users::role() . '/' . Staff::path('url') . '/print/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
             $data['formAction']          = '/view/' . $id;
-            $data['view']  = Staff::$path['view'] . '.includes.view.index';
+            $data['view']  = Staff::path('view') . '.includes.view.index';
         } elseif (($param1) == 'print') {
             $id = request('id', $param2);
             return $this->print($id);
@@ -190,7 +188,7 @@ class StaffController extends Controller
             $breadcrumb[]  = [
                 'title' => __('Edit Staff'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/edit/' . $id),
             ];
 
             if (request()->method() === 'POST') {
@@ -209,7 +207,7 @@ class StaffController extends Controller
             $breadcrumb[]  = [
                 'title' => __('Create account'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/account/create/' . $id),
             ];
             if ($param2 == 'create') {
                 if (request()->method() == 'POST') {
@@ -218,23 +216,23 @@ class StaffController extends Controller
 
                 $data = $this->show($data, $id, $param1);
                 $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Create account');
-                $data['view']       = Staff::$path['view'] . '.includes.account.index';
+                $data['view']       = Staff::path('view') . '.includes.account.index';
 
                 $data['roles']['data']  = Roles::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                    $row['image']   = $row->image ?  ImageHelper::site(Roles::$path['image'], $row->image) : ImageHelper::prefix();
+                    $row['image']   = $row->image ?  ImageHelper::site(Roles::path('image'), $row->image) : ImageHelper::prefix();
                     return $row;
                 });
             }
-        } elseif (($param1) == StaffDesignations::$path['url']) {
+        } elseif (($param1) == StaffDesignations::path('url')) {
             $view = new StaffDesignationController();
             return $view->index($param2, $param3, $param4);
-        } elseif (($param1) == StaffStatus::$path['url']) {
+        } elseif (($param1) == StaffStatus::path('url')) {
             $view = new StaffStatusController();
             return $view->index($param2, $param3, $param4);
-        } elseif (($param1) == StaffCertificate::$path['url']) {
-            $view = new StaffCertificateController();
+        } elseif (($param1) == StaffCertificate::path('url')) {
+            $view = new StaffCertificateFramesController();
             return $view->index($param2, $param3, $param4);
-        } elseif (($param1) == StaffTeachSubject::$path['url']) {
+        } elseif (($param1) == StaffTeachSubject::path('url')) {
             $view = new StaffTeachSubjectController();
             return $view->index($param2, $param3, $param4);
         } else {
@@ -265,85 +263,85 @@ class StaffController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Staff::$path['view'],
-            'modal'      => Staff::$path['view'] . '.includes.modal.index',
+            'parent'     => Staff::path('view'),
+            'modal'      => Staff::path('view') . '.includes.modal.index',
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       => ($param1) == 'account' ? [] : FormStaff::rulesField(),
-            'attributes'  => ($param1) == 'account' ? [] : FormStaff::attributeField(),
-            'messages'    => ($param1) == 'account' ? [] : FormStaff::customMessages(),
-            'questions'   => ($param1) == 'account' ? [] : FormStaff::questionField(),
+            'rules'       => ($param1) == 'account' ? [] : (new FormStaff)->rules(),
+            'attributes'  => ($param1) == 'account' ? [] : (new FormStaff)->attributes(),
+            'messages'    => ($param1) == 'account' ? [] : (new FormStaff)->messages(),
+            'questions'   => ($param1) == 'account' ? [] : (new FormStaff)->questions(),
         ];
 
 
         //Select Option
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
         $data['instituteFilter']['data'] = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['designationFilter']['data']  = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             });
 
         $data['status']['data']   = StaffStatus::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['designation']['data']  = StaffDesignations::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
 
         $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['provinces']['data']           = Provinces::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['districts']           =  [
             'data'  => [],
             'action' => [
-                'list'  =>  url(Users::role() . '/general/' . Districts::$path['url'] . '/list'),
+                'list'  =>  url(Users::role() . '/general/' . Districts::path('url') . '/list'),
             ]
         ];
         $data['communes']            = [
             'data'  => [],
             'action' => [
-                'list'  =>  url(Users::role() . '/general/' . Communes::$path['url'] . '/list'),
+                'list'  =>  url(Users::role() . '/general/' . Communes::path('url') . '/list'),
             ]
         ];
         $data['villages']            = [
             'data'  => [],
             'action' => [
-                'list'  =>  url(Users::role() . '/general/' . Villages::$path['url'] . '/list'),
+                'list'  =>  url(Users::role() . '/general/' . Villages::path('url') . '/list'),
             ]
         ];
         $data['staff_certificate']['data']   = StaffCertificate::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['curr_districts']      = $data['districts'];
@@ -354,7 +352,7 @@ class StaffController extends Controller
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
 
-        return view(Staff::$path['view'] . '.index', $data);
+        return view(Staff::path('view') . '.index', $data);
     }
 
     public function list($data, $id = null)
@@ -376,13 +374,13 @@ class StaffController extends Controller
                 $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
                 $row['designation'] = StaffDesignations::where('id', $row->designation_id)->pluck(app()->getLocale())->first();
                 $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                 $row['account'] = Users::where('node_id', $row->id)->where('email', $row->email)->exists();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
-                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Staff::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::path('url') . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::path('url') . '/account/create/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::path('url') . '/delete/' . $row['id']),
                 ];
 
                 return $row;
@@ -396,14 +394,14 @@ class StaffController extends Controller
         ];
 
 
-        $data['view']  = Staff::$path['view'] . '.includes.list.index';
+        $data['view']  = Staff::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Staff::$path['view'] . '.includes.form.index';
+        $data['view']       = Staff::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = Staff::whereIn('id', explode(',', $id))->get()->map(function ($row) {
@@ -417,14 +415,14 @@ class StaffController extends Controller
                 $row['staff_guardian'] = StaffGuardians::where('staff_id', $row->id)->first();
                 $row['staff_experience']    = StaffExperience::where('staff_id', $row->id)->get();
                 $row['staff_qualification'] = StaffQualifications::where('staff_id', $row->id)->first();
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                 $row['account'] = Users::where('email', $row->email)->where('node_id', $row->id)->exists();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/view/' . $row['id']),
-                    'account' => url(Users::role() . '/' . Staff::$path['url'] . '/account/create/' . $row['id']),
-                    'print' => url(Users::role() . '/' . Staff::$path['url'] . '/print/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Staff::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::path('url') . '/view/' . $row['id']),
+                    'account' => url(Users::role() . '/' . Staff::path('url') . '/account/create/' . $row['id']),
+                    'print' => url(Users::role() . '/' . Staff::path('url') . '/print/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::path('url') . '/delete/' . $row['id']),
                 ];
 
                 if ($row['staff_institute']->designation_id == 1) {
@@ -441,7 +439,7 @@ class StaffController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->photo,
                     'action'  => [
-                        'edit'    => url(Users::role() . '/' . Staff::$path['url'] . '/edit/' . $row->id),
+                        'edit'    => url(Users::role() . '/' . Staff::path('url') . '/edit/' . $row->id),
                     ],
                 ];
             });
@@ -471,7 +469,7 @@ class StaffController extends Controller
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
             $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
             $row['designation'] = StaffDesignations::where('id', $row->designation_id)->pluck(app()->getLocale())->first();
-            $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+            $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
 
             return $row;
         })->toArray();
@@ -479,13 +477,13 @@ class StaffController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
 
         $data['designation']  = StaffDesignations::where('id', request('designationId'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             })->first();
 
@@ -501,16 +499,16 @@ class StaffController extends Controller
         ]);
 
         config()->set('app.title', __('List all Staff'));
-        config()->set('pages.parent', Staff::$path['view']);
+        config()->set('pages.parent', Staff::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['designationFilter']['data']           = StaffDesignations::whereIn('id', StaffInstitutes::groupBy('designation_id')->pluck('designation_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             });
 
@@ -545,7 +543,7 @@ class StaffController extends Controller
             ]
         ];
 
-        return view(Staff::$path['view'] . '.includes.report.index', $data);
+        return view(Staff::path('view') . '.includes.report.index', $data);
     }
 
     public function print($id)
@@ -556,7 +554,7 @@ class StaffController extends Controller
         ]);
 
         config()->set('app.title', __('List all Staff'));
-        config()->set('pages.parent', Staff::$path['view']);
+        config()->set('pages.parent', Staff::path('view'));
 
         if ($id) {
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Print Staff');
@@ -568,12 +566,12 @@ class StaffController extends Controller
                 $row['marital'] = Marital::where('id', $row->marital_id)->pluck(app()->getLocale())->first();
                 $row['blood_group'] = BloodGroup::where('id', $row->blood_group_id)->pluck(app()->getLocale())->first();
                 $row['staff_guardian'] = StaffGuardians::getData($row->id)['data'][0];
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                 return $row;
             });
-            $data['view']  = Staff::$path['view'] . '.includes.print.index';
+            $data['view']  = Staff::path('view') . '.includes.print.index';
         }
 
-        return view(Staff::$path['view'] . '.includes.print.index', $data);
+        return view(Staff::path('view') . '.includes.print.index', $data);
     }
 }

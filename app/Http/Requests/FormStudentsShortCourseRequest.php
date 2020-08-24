@@ -23,7 +23,7 @@ class FormStudentsShortCourseRequest extends FormRequest
      * @return array
      */
 
-    public static function rulesField($flag = '[]')
+    public function rules($flag = '[]')
     {
         return [
             'institute'           => 'required',
@@ -34,7 +34,7 @@ class FormStudentsShortCourseRequest extends FormRequest
         ];
     }
 
-    public static function attributeField($flag = '[]')
+    public function attributes($flag = '[]')
     {
         return [
             'institute'   => __('Institute'),
@@ -45,13 +45,12 @@ class FormStudentsShortCourseRequest extends FormRequest
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

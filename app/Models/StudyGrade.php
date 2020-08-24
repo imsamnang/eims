@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class StudyGrade extends Model
 {
-    public static $path = [
-        'image'  => 'study-grade',
-        'url'    => 'grade',
-        'view'   => 'StudyGrade'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyGrade::path('url') . '/add/'),
             ),
         );
 
@@ -79,11 +88,11 @@ class StudyGrade extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'score'         => $row['score'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -132,11 +141,11 @@ class StudyGrade extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyGrade::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyGrade::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -185,7 +194,7 @@ class StudyGrade extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyGrade::rulesField(), FormStudyGrade::customMessages(), FormStudyGrade::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyGrade::rules(), FormStudyGrade::messages(), FormStudyGrade::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -211,9 +220,9 @@ class StudyGrade extends Model
                 if ($add) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyGrade::updateImageToTable($add, ImageHelper::uploadImage($image, StudyGrade::$path['image']));
+                        StudyGrade::updateImageToTable($add, ImageHelper::uploadImage($image, StudyGrade::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyGrade::$path['image'], StudyGrade::$path['image'], public_path('/assets/img/icons/image.jpg'));
+                        ImageHelper::uploadImage(false, StudyGrade::path('image'), StudyGrade::path('image'), public_path('/assets/img/icons/image.jpg'));
                     }
 
                     $response       = array(
@@ -234,7 +243,7 @@ class StudyGrade extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyGrade::rulesField(), FormStudyGrade::customMessages(), FormStudyGrade::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyGrade::rules(), FormStudyGrade::messages(), FormStudyGrade::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -257,7 +266,7 @@ class StudyGrade extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyGrade::updateImageToTable($id, ImageHelper::uploadImage($image, StudyGrade::$path['image']));
+                        StudyGrade::updateImageToTable($id, ImageHelper::uploadImage($image, StudyGrade::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -310,7 +319,7 @@ class StudyGrade extends Model
                     try {
                         $delete    = StudyGrade::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -324,7 +333,7 @@ class StudyGrade extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

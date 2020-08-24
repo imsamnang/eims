@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class StudyPrograms extends Model
 {
-    public static $path = [
-        'image'  => 'study-program',
-        'url'    => 'program',
-        'view'   => 'StudyProgram'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/add/'),
             ),
         );
 
@@ -81,11 +90,11 @@ class StudyPrograms extends Model
                     '_name'         => $row['en'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -135,11 +144,11 @@ class StudyPrograms extends Model
                     '_name'         => $row['en'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyPrograms::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -185,7 +194,7 @@ class StudyPrograms extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyPrograms::rulesField(), FormStudyPrograms::customMessages(), FormStudyPrograms::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyPrograms::rules(), FormStudyPrograms::messages(), FormStudyPrograms::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -209,9 +218,9 @@ class StudyPrograms extends Model
                 if ($add) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyPrograms::updateImageToTable($add, ImageHelper::uploadImage($image, StudyPrograms::$path['image']));
+                        StudyPrograms::updateImageToTable($add, ImageHelper::uploadImage($image, StudyPrograms::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyPrograms::$path['image'], StudyPrograms::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, StudyPrograms::path('image'), StudyPrograms::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
                     $response       = array(
                         'success'   => true,
@@ -231,7 +240,7 @@ class StudyPrograms extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyPrograms::rulesField(), FormStudyPrograms::customMessages(), FormStudyPrograms::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyPrograms::rules(), FormStudyPrograms::messages(), FormStudyPrograms::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -252,7 +261,7 @@ class StudyPrograms extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyPrograms::updateImageToTable($id, ImageHelper::uploadImage($image, StudyPrograms::$path['image']));
+                        StudyPrograms::updateImageToTable($id, ImageHelper::uploadImage($image, StudyPrograms::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -305,7 +314,7 @@ class StudyPrograms extends Model
                     try {
                         $delete    = StudyPrograms::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -319,7 +328,7 @@ class StudyPrograms extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

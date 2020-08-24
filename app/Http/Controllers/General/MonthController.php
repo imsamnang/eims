@@ -37,7 +37,7 @@ class MonthController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'general/' . Months::$path['url'];
+        $data['formName'] = 'general/' . Months::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -97,14 +97,14 @@ class MonthController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Months::$path['view'],
+            'parent'     => Months::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormMonth::rulesField(),
-            'attributes'  =>  FormMonth::attributeField(),
-            'messages'    =>  FormMonth::customMessages(),
-            'questions'   =>  FormMonth::questionField(),
+            'rules'       =>  FormMonth::rules(),
+            'attributes'  =>  FormMonth::attributes(),
+            'messages'    =>  FormMonth::messages(),
+            'questions'   =>  FormMonth::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -118,31 +118,31 @@ class MonthController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Months::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Months::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'general/' . Months::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Months::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Months::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Months::$path['view'] . '.includes.list.index';
+        $data['view']     = Months::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Months');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Months::$path['view'] . '.includes.form.index';
+        $data['view']       = Months::path('view') . '.includes.form.index';
         if ($id) {
             $response           = Months::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Months::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Months::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'general/' . Months::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Months::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Months::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -152,7 +152,7 @@ class MonthController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'general/' . Months::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'general/' . Months::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -172,7 +172,7 @@ class MonthController extends Controller
         ]);
 
         config()->set('app.title', __('List Months'));
-        config()->set('pages.parent', Months::$path['view']);
+        config()->set('pages.parent', Months::path('view'));
 
 
         $table = new Months;
@@ -180,7 +180,7 @@ class MonthController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(Months::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Months::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -216,10 +216,10 @@ class MonthController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Months'));
-        return view(Months::$path['view'] . '.includes.report.index', $data);
+        return view(Months::path('view') . '.includes.report.index', $data);
     }
 }

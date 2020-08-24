@@ -12,18 +12,27 @@ use Illuminate\Support\Facades\Auth;
 
 class StaffDesignations extends Model
 {
-    public static $path = [
-        'image'  => 'designation',
-        'url'    => 'designation',
-        'view'   => 'StaffDesignation'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffDesignations::rulesField(), FormStaffDesignations::customMessages(), FormStaffDesignations::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffDesignations::rules(), FormStaffDesignations::messages(), FormStaffDesignations::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -49,7 +58,7 @@ class StaffDesignations extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffDesignations::updateImageToTable($add, ImageHelper::uploadImage($image, StaffDesignations::$path['image']));
+                        StaffDesignations::updateImageToTable($add, ImageHelper::uploadImage($image, StaffDesignations::path('image')));
                     }
 
                     $controller = new StaffDesignationController;
@@ -57,7 +66,7 @@ class StaffDesignations extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(StaffDesignations::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(StaffDesignations::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -72,7 +81,7 @@ class StaffDesignations extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffDesignations::rulesField(), FormStaffDesignations::customMessages(), FormStaffDesignations::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffDesignations::rules(), FormStaffDesignations::messages(), FormStaffDesignations::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -96,7 +105,7 @@ class StaffDesignations extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffDesignations::updateImageToTable($id, ImageHelper::uploadImage($image, StaffDesignations::$path['image']));
+                        StaffDesignations::updateImageToTable($id, ImageHelper::uploadImage($image, StaffDesignations::path('image')));
                     }
                     $controller = new StaffDesignationController;
                     $response       = array(
@@ -108,7 +117,7 @@ class StaffDesignations extends Model
                             ]
 
                         ],
-                        'html'      => view(StaffDesignations::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(StaffDesignations::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -154,7 +163,7 @@ class StaffDesignations extends Model
                     try {
                         $delete    = StaffDesignations::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -168,7 +177,7 @@ class StaffDesignations extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

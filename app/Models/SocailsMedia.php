@@ -12,11 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class SocailsMedia extends Model
 {
-    public static $path = [
-        'image'  => 'socail-media',
-        'url'    => 'socail-media',
-        'view'   => 'SocailsMedia'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function setConfig()
     {
@@ -29,7 +38,7 @@ class SocailsMedia extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . SocailsMedia::path('url') . '/add/'),
             ),
         );
 
@@ -80,11 +89,11 @@ class SocailsMedia extends Model
                     'link'          => $row['link'],
                     'icon'          => $row['icon'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(SocailsMedia::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(SocailsMedia::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . SocailsMedia::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . SocailsMedia::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . SocailsMedia::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . SocailsMedia::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -130,7 +139,7 @@ class SocailsMedia extends Model
     public static function updateToTable($app_id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormSocailsMedia::rulesField(), FormSocailsMedia::customMessages(), FormSocailsMedia::attributeField());
+        $validator          = Validator::make(request()->all(), FormSocailsMedia::rules(), FormSocailsMedia::messages(), FormSocailsMedia::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

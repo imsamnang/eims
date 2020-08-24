@@ -11,17 +11,27 @@ use App\Models\StudentsGuardians;
 use App\Http\Requests\FormStudents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Students\StudentsController;
 
 class Students extends Model
 {
-    public static $path = [
-        'image'   => 'student',
-        'url'     => 'student',
-        'view'    => 'Student',
-        'role'    => 'student',
-        'roleId'  => 6,
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $role = Roles::find(5)->first();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table))),
+            'role'   => $role->name,
+            'roleId'   => $role->id,
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public function institute()
     {
@@ -149,11 +159,11 @@ class Students extends Model
         // }
 
 
-        $rules += FormStudents::rulesField();
+        $rules += FormStudents::rules();
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -198,17 +208,17 @@ class Students extends Model
                 if ($add && StudentsGuardians::addToTable($add)) {
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Students::updateImageToTable($add, ImageHelper::uploadImage($photo, Students::$path['image']));
+                        Students::updateImageToTable($add, ImageHelper::uploadImage($photo, Students::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Students::$path['image'], (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
+                        ImageHelper::uploadImage(false, Students::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
                     }
 
-                    $controller = new StudentController;
+                    $controller = new StudentsController;
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(Students::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(Students::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -222,7 +232,7 @@ class Students extends Model
     public static function register()
     {
 
-        $rules = FormStudents::rulesField();
+        $rules = FormStudents::rules();
 
         unset($rules['pob_province']);
         unset($rules['pob_district']);
@@ -243,7 +253,7 @@ class Students extends Model
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -277,20 +287,13 @@ class Students extends Model
                 StudentsGuardians::insert(['student_id' => $add]);
                 if (request()->hasFile('photo')) {
                     $photo      = request()->file('photo');
-                    Students::updateImageToTable($add, ImageHelper::uploadImage($photo, Students::$path['image']));
+                    Students::updateImageToTable($add, ImageHelper::uploadImage($photo, Students::path('image')));
                 }
 
                 $response       = array(
                     'success'   => true,
                     'type'      => 'add',
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Register Successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   => __('Register Successfully'),
                 );
             }
         }
@@ -302,10 +305,10 @@ class Students extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $rules = FormStudents::rulesField();
+        $rules = FormStudents::rules();
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone,' . $id;
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::customMessages(), FormStudents::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -351,10 +354,10 @@ class Students extends Model
 
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Students::updateImageToTable($id, ImageHelper::uploadImage($photo, Students::$path['image']));
+                        Students::updateImageToTable($id, ImageHelper::uploadImage($photo, Students::path('image')));
                     }
 
-                    $controller = new StudentController;
+                    $controller = new StudentsController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
@@ -364,7 +367,7 @@ class Students extends Model
                             ]
 
                         ],
-                        'html'      => view(Students::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(Students::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -422,8 +425,8 @@ class Students extends Model
             foreach ($make['data'] as $row) {
                 $oldQrcode = $row['qrcode']['image'];
                 if ($oldQrcode) {
-                    if (file_exists(storage_path(ImageHelper::$path['image'] . '/' . Students::$path['image'] . '/' . QRHelper::$path['image'] . '/' . $oldQrcode))) {
-                        unlink(storage_path(ImageHelper::$path['image'] . '/' . Students::$path['image'] . '/' . QRHelper::$path['image'] . '/' . $oldQrcode));
+                    if (file_exists(storage_path(ImageHelper::path('image') . '/' . Students::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode))) {
+                        unlink(storage_path(ImageHelper::path('image') . '/' . Students::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode));
                     }
                 }
 
@@ -432,20 +435,20 @@ class Students extends Model
                 $q['size'] = $options && $options['code'] ? $options['code'] : 100;
                 $q['code']  = Qrcode::encryptQrcode([
                     'id'    => $row['id'],
-                    'type'  => Students::$path['role'],
+                    'type'  => Students::path('role'),
                     'aYear'  =>  $row['study_academic_year_id']['id'],
                     'exp'  =>  $date->format('Y-m-d'),
                 ]);
 
                 if ($options && $options['image'] > 0) {
                     $q['center']  = array(
-                        'image' => $row['photo'] . '?type=larg', //ImageHelper::getImage($row['photoName'], Students::$path['image'], true), //storage_path(ImageHelper::$path['image'] . '/' . Students::$path['image'] . '/' . ImageHelper::$path['resize'][0] . '/' . $row['photoName']),
+                        'image' => $row['photo'] . '?type=larg', //ImageHelper::getImage($row['photoName'], Students::path('image'), true), //storage_path(ImageHelper::path('image') . '/' . Students::path('image') . '/' . ImageHelper::$path['resize'][0] . '/' . $row['photoName']),
                         'percentage' => $options && $options['image'] ? $options['image'] / $options['code']  : .19
                     );
                 }
 
                 $qrCode  = QRHelper::make($q, true);
-                $qrCode_image = ImageHelper::uploadImage($qrCode, ImageHelper::$path['image'] . '/' . Students::$path['image'] . '/' . QRHelper::$path['image']);
+                $qrCode_image = ImageHelper::uploadImage($qrCode, ImageHelper::path('image') . '/' . Students::path('image') . '/' . QRHelper::path('image'));
                 if ($qrCode_image) {
 
                     try {
@@ -457,7 +460,7 @@ class Students extends Model
                         return $e;
                     }
 
-                    $data[] = ImageHelper::site(QRHelper::$path['image'], $qrCode_image);
+                    $data[] = ImageHelper::site(QRHelper::path('image'), $qrCode_image);
                 }
             }
 
@@ -490,7 +493,7 @@ class Students extends Model
                     try {
                         $delete    = Students::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -504,7 +507,7 @@ class Students extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

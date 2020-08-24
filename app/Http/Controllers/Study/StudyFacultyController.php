@@ -37,7 +37,7 @@ class StudyFacultyController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'study/' . StudyFaculty::$path['url'];
+        $data['formName'] = 'study/' . StudyFaculty::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -96,24 +96,24 @@ class StudyFacultyController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyFaculty::$path['view'],
+            'parent'     => StudyFaculty::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyFaculty::rulesField(),
-            'attributes'  =>  FormStudyFaculty::attributeField(),
-            'messages'    =>  FormStudyFaculty::customMessages(),
-            'questions'   =>  FormStudyFaculty::questionField(),
+            'rules'       =>  FormStudyFaculty::rules(),
+            'attributes'  =>  FormStudyFaculty::attributes(),
+            'messages'    =>  FormStudyFaculty::messages(),
+            'questions'   =>  FormStudyFaculty::questions(),
         ];
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudyFaculty::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -127,32 +127,32 @@ class StudyFacultyController extends Controller
         $table = StudyFaculty::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(StudyFaculty::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(StudyFaculty::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = StudyFaculty::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyFaculty::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study faculty');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = StudyFaculty::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyFaculty::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = StudyFaculty::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StudyFaculty::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StudyFaculty::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -162,7 +162,7 @@ class StudyFacultyController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'study/' . StudyFaculty::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -182,11 +182,11 @@ class StudyFacultyController extends Controller
         ]);
 
         config()->set('app.title', __('List Study faculty'));
-        config()->set('pages.parent', StudyFaculty::$path['view']);
+        config()->set('pages.parent', StudyFaculty::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudyFaculty::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -198,7 +198,7 @@ class StudyFacultyController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(StudyFaculty::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(StudyFaculty::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -234,10 +234,10 @@ class StudyFacultyController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Study faculty'));
-        return view(StudyFaculty::$path['view'] . '.includes.report.index', $data);
+        return view(StudyFaculty::path('view') . '.includes.report.index', $data);
     }
 }

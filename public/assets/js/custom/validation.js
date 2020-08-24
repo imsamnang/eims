@@ -1,4 +1,3 @@
-
 (function (old) {
     $.fn.attr = function () {
         if (arguments.length === 0) {
@@ -58,18 +57,18 @@
                         options.hasOwnProperty("onSuccess") && "function" == typeof options.onSuccess ? settings.onSuccess(response, load) : onSuccess(response, load);
                     },
                     error: (xhr, type, error) => {
-                        options.hasOwnProperty("onError") && "function" == typeof options.onError ? settings.onError(xhr, type, error) : onError(xhr, type, error,load);
+                        options.hasOwnProperty("onError") && "function" == typeof options.onError ? settings.onError(xhr, type, error) : onError(xhr, type, error, load);
                     }
                 });
             },
             onBeforeSend = (xhr, load) => {
                 if ($(this).parents(".modal").length) {
                     $(this).parents(".modal").find("button#btn-submit").append(load);
-                }else{
+                } else {
                     $(this).find('[type="submit"]').append(load);
                 }
                 Swal({
-                    title: $(this).attr('role') == 'add' ? sweetalert2Locale.__('Saving data'): sweetalert2Locale.__('Updating data'),
+                    title: $(this).attr('role') == 'add' ? sweetalert2Locale.__('Saving data') : sweetalert2Locale.__('Updating data'),
                     showCloseButton: true,
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
@@ -87,65 +86,78 @@
                 load.remove();
                 if (response.success) {
                     var rowNode = [];
-                    if (response.type == "add" && response.html) {
+                    if (response.type == "add") {
+
                         if ($(this).parents(".modal").length) {
                             $(this).parents(".modal").modal("hide");
+                        } else {
+                            $(this).find(".invalid-feedback").remove();
+                            $(this).find(".has-error").removeClass("has-error");
+                            $(this).find(".has-success").removeClass("has-success");
+                            $(this).get(0).reset();
+                            $(this).find("select").val(null).trigger("change");
                         }
-                        if ($('table#datatable-basic').length) {
-                            var table = $('table#datatable-basic').dataTable() //not DataTable() function
+                        if (response.html) {
+                            if ($('table#datatable-basic').length) {
+                                var table = $('table#datatable-basic').dataTable() //not DataTable() function
 
-                            $(response.html).each((i, element) => {
-                                if ($(element).find('td').length) {
-                                    var _td = [];
-                                    $(element).find('td').each(function () {
-                                        _td.push($(this).html());
-                                    });
-                                    var _tr = table.api().row.add(_td);
+                                $(response.html).each((i, element) => {
+                                    if ($(element).find('td').length) {
+                                        var _td = [];
+                                        $(element).find('td').each(function () {
+                                            _td.push($(this).html());
+                                        });
+                                        var _tr = table.api().row.add(_td);
 
-                                    rowNode.push($(_tr.node()));
+                                        rowNode.push($(_tr.node()));
 
-                                    var aiDisplayMaster = table.fnSettings()["aiDisplayMaster"];
-                                    var irow = aiDisplayMaster.pop();
-                                    aiDisplayMaster.unshift(irow);
-                                    table.api().draw();
+                                        var aiDisplayMaster = table.fnSettings()["aiDisplayMaster"];
+                                        var irow = aiDisplayMaster.pop();
+                                        aiDisplayMaster.unshift(irow);
+                                        table.api().draw();
 
-                                    //set attrs to tr
-                                    $(_tr.node()).attr($(element).attr());
+                                        //set attrs to tr
+                                        $(_tr.node()).attr($(element).attr());
 
-                                    //set attrs to td
-                                    $(element).find('td').each(function (i) {
-                                        $(_tr.node()).find('td').eq(i).attr($(this).attr());
-                                    });
-                                }
-
-
-                            });
-                            $.getScript(location.origin + "/assets/js/argon.min.js");
-
-                        }
-                    } else if (response.type == "update" && response.html) {
-                        if ($('table#datatable-basic').length) {
-                            $.each(response.data, (i, row) => {
-                                var $tr = $('table#datatable-basic').find('tr[data-id="' + row.id + '"]');
-                                rowNode.push($tr);
-                                $tr.find('td').each((j, old_td) => {
-                                    /**
-                                     * {j=0}  = td checkbox
-                                     * {j=1}  = td id
-                                     * {j+1 = td.length}  = last td
-                                     */
-
-                                    if (j == 0 || j == 1) {
-
-                                    } else if ((j + 1) == $tr.find('td').length) {
-
-                                    } else {
-                                        var new_td = $(response.html).eq(i).find('td').eq(j);
-                                        $(old_td).html(new_td.html());
+                                        //set attrs to td
+                                        $(element).find('td').each(function (i) {
+                                            $(_tr.node()).find('td').eq(i).attr($(this).attr());
+                                        });
                                     }
-                                });
-                            });
 
+
+                                });
+                                $.getScript(location.origin + "/assets/js/argon.min.js");
+
+                            }
+                        }
+
+
+                    } else if (response.type == "update") {
+                        if (response.html) {
+                            if ($('table#datatable-basic').length) {
+                                $.each(response.data, (i, row) => {
+                                    var $tr = $('table#datatable-basic').find('tr[data-id="' + row.id + '"]');
+                                    rowNode.push($tr);
+                                    $tr.find('td').each((j, old_td) => {
+                                        /**
+                                         * {j=0}  = td checkbox
+                                         * {j=1}  = td id
+                                         * {j+1 = td.length}  = last td
+                                         */
+
+                                        if (j == 0 || j == 1) {
+
+                                        } else if ((j + 1) == $tr.find('td').length) {
+
+                                        } else {
+                                            var new_td = $(response.html).eq(i).find('td').eq(j);
+                                            $(old_td).html(new_td.html());
+                                        }
+                                    });
+                                });
+
+                            }
                         }
                     }
                     Swal.fire({
@@ -188,7 +200,7 @@
                     });
                 }
             },
-            onError = (xhr, type, error,load) => {
+            onError = (xhr, type, error, load) => {
                 load.remove();
                 swal({
                     type: "error",
@@ -244,10 +256,10 @@
                             }).css("display", "block").text(fields[error]);
                             if ($('[name="' + error + '"]').length) {
                                 if ($('[name="' + error + '"]').parent().hasClass("dz-preview")) {
-                                    // $(form).find('[name="' + error + '"]').parent().find(".input-group-text").addClass("has-error");
-                                    // if ($(form).find('[name="' + error + '"]').addClass("has-error").parent().parent().parent().find('[id="has-error-for-' + error.replace(/\[/g, "").replace(/\]/g, "") + '"]').length == 0) {
-                                    //     $(form).find('[name="' + error + '"]').addClass("has-error").parent().parent().addClass("has-error rounded-right").after(msg);
-                                    // }
+                                    $(form).find('[name="' + error + '"]').parent().find(".input-group-text").addClass("has-error");
+                                    if ($(form).find('[name="' + error + '"]').addClass("has-error").parent().parent().parent().find('[id="has-error-for-' + error.replace(/\[/g, "").replace(/\]/g, "") + '"]').length == 0) {
+                                        $(form).find('[name="' + error + '"]').addClass("has-error").parent().parent().addClass("has-error rounded-right").after(msg);
+                                    }
                                 } else if ($.trim($('[name="' + error + '"]').attr('type')).toLowerCase() === "radio") {
                                     if ($(form).find('[name="' + error + '"]').parents('.custom-control.custom-radio.custom-control-inline').parent().parent().find('[id="has-error-for-' + error.replace(/\[/g, "").replace(/\]/g, "") + '"]').length == 0) {
                                         $(form).find('[name="' + error + '"]').parents('.custom-control.custom-radio.custom-control-inline').parent().addClass("has-error").after(msg);

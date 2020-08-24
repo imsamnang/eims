@@ -23,7 +23,7 @@ class FormMailbox extends FormRequest
      * @return array
      */
 
-    public static function rulesField($flag = '[]')
+    public function rules($flag = '[]')
     {
         return [
             'recipient'.$flag => 'required',
@@ -32,7 +32,7 @@ class FormMailbox extends FormRequest
         ];
     }
 
-    public static function attributeField($flag = '[]')
+    public function attributes($flag = '[]')
     {
 
         return [
@@ -43,13 +43,13 @@ class FormMailbox extends FormRequest
 
     }
 
-    public static function questionField($flag = '[]')
+    public static function questions($flag = '[]')
     {
         return [];
     }
 
     // validation.php // view/lang/en/validation.php
-    public static function customMessages($flag = '[]')
+    public static function messages($flag = '[]')
     {
         return [];
     }

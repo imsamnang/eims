@@ -8,6 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class FormCard extends FormRequest
 {
+    public function __call($method, $parameters)
+    {
+        return $this->$method(...$parameters);
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,39 +28,36 @@ class FormCard extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
-            'institute'                     => 'required',
-            'type'                          => 'required',
-            'name'                          => 'required',
-            'layout'                        => 'required',
+            'institute' => 'required',
+            'type'      => 'required',
+            'name'      => 'required',
+            'layout'    => 'required',
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
-            'institute'                     => __('Institute'),
-            'type'                          => __('Type'),
-            'name'                          => __('Name'),
-            'layout'                        => __('Layout'),
-            'front'                         => __('Frame front'),
-            'background'                    => __('Frame background'),
-            'extra_info'                    => __('Extra information'),
+            'institute' => __('Institute'),
+            'type'      => __('Type'),
+            'name'      => __('Name'),
+            'layout'    => __('Layout'),
+            'foreground'=> __('Frame foreground'),
+            'background'=> __('Frame background'),
+            'extra_info'=> __('Extra information'),
 
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
-
-
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

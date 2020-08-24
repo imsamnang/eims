@@ -15,17 +15,26 @@ use Illuminate\Support\Facades\Validator;
 
 class StudyShortCourseRoutine extends Model
 {
-    public static $path = [
-        'image'  => 'study-short-course-routines',
-        'url'    => 'short-course-routine',
-        'view'   => 'StudyShortCourseRoutine'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($stu_sh_c_session_id = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . self::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . self::path('url') . '/add/'),
             ),
         );
         $data = array();
@@ -75,7 +84,7 @@ class StudyShortCourseRoutine extends Model
                             'name'  => $first_name . ' ' . $last_name,
                             'email'  => $teacher->email,
                             'phone'  => $teacher->phone,
-                            'photo'  => ImageHelper::site(Staff::$path['image'], $teacher->photo),
+                            'photo'  => ImageHelper::site(Staff::path('image'), $teacher->photo),
                         ];
                     }
                     $kdata[$k['start_time'] . '-' . $k['end_time']]['times'] = [
@@ -96,8 +105,8 @@ class StudyShortCourseRoutine extends Model
                     'study_course_session' => StudyShortCoursesession::getData($row['stu_sh_c_session_id'])['data'][0],
                     'children' => array_values($kdata),
                     'action' => [
-                        'edit'    => url(users::role() . '/study/' . self::$path['url'] . '/edit/' . $generateId),
-                        'delete'  => url(users::role() . '/study/' . self::$path['url'] . '/delete/' . $generateId),
+                        'edit'    => url(users::role() . '/study/' . self::path('url') . '/edit/' . $generateId),
+                        'delete'  => url(users::role() . '/study/' . self::path('url') . '/delete/' . $generateId),
                     ]
                 );
                 $data[$key]['name'] =  $data[$key]['study_course_session']['name'];
@@ -146,9 +155,9 @@ class StudyShortCourseRoutine extends Model
                     'id'    => $row['id'],
                     'study_course_session' => $study_course_session,
                     'action' => [
-                        'view'    => url(users::role() . '/study/' . self::$path['url'] . '/view/' . $generateId),
-                        'edit'    => url(users::role() . '/study/' . self::$path['url'] . '/edit/' . $generateId),
-                        'delete'  => url(users::role() . '/study/' . self::$path['url'] . '/delete/' . $generateId),
+                        'view'    => url(users::role() . '/study/' . self::path('url') . '/view/' . $generateId),
+                        'edit'    => url(users::role() . '/study/' . self::path('url') . '/edit/' . $generateId),
+                        'delete'  => url(users::role() . '/study/' . self::path('url') . '/delete/' . $generateId),
                     ]
                 ];
             })
@@ -191,7 +200,7 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine::customMessages(), FormStudyShortCourseRoutine::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rules('.*'), FormStudyShortCourseRoutine::messages(), FormStudyShortCourseRoutine::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -254,7 +263,7 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rulesField('.*'), FormStudyShortCourseRoutine::customMessages(), FormStudyShortCourseRoutine::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rules('.*'), FormStudyShortCourseRoutine::messages(), FormStudyShortCourseRoutine::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

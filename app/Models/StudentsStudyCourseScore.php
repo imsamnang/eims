@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentsStudyCourseScore extends Model
 {
-    public static $path = [
-        'image'  => 'score',
-        'url'    => 'score',
-        'view'   => 'StudentsStudyCourseScore'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $student_study_course_id = null, $generate = false)
     {
@@ -25,7 +34,7 @@ class StudentsStudyCourseScore extends Model
 
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . StudentsStudyCourseScore::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . StudentsStudyCourseScore::path('url') . '/add/'),
             ),
         );
 
@@ -138,7 +147,7 @@ class StudentsStudyCourseScore extends Model
                         ],
                         'score' => $row['attendance_score'],
                         'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/attendance/edit/' . $row['id']),
                     ],
                     'other_score' => [
                         'id'    => $row['id'],
@@ -147,7 +156,7 @@ class StudentsStudyCourseScore extends Model
                         ],
                         'score' => $row['other_score'],
                         'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/other/edit/' . $row['id']),
                     ]
                 ];
                 $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_score') + $row['attendance_score'] + $row['other_score'];
@@ -183,9 +192,9 @@ class StudentsStudyCourseScore extends Model
                     'average'      => $average,
                     'grade'        => $grade,
                     'action'       => [
-                        'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/view/' . $row['id']),
-                        'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/edit/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/delete/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/view/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/edit/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/delete/' . $row['id']),
                     ]
                 );
 
@@ -305,7 +314,7 @@ class StudentsStudyCourseScore extends Model
                         ],
                         'score' => $row['attendance_score'],
                         'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/attendance/edit/' . $row['id']),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/attendance/edit/' . $row['id']),
                     ],
                     'other_score' => [
                         'id'    => $row['id'],
@@ -314,7 +323,7 @@ class StudentsStudyCourseScore extends Model
                         ],
                         'score' => $row['other_score'],
                         'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/other/edit/' . $row['id']),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/other/edit/' . $row['id']),
                     ]
                 ];
                 $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_score') + $row['attendance_score'] + $row['other_score'];
@@ -349,9 +358,9 @@ class StudentsStudyCourseScore extends Model
                     'average'      => $average,
                     'grade'        => $grade,
                     'action'       => [
-                        'view'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/view/' . $row['id']),
-                        'edit'   => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/edit/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/delete/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/view/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/edit/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
             })
@@ -429,7 +438,7 @@ class StudentsStudyCourseScore extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourseScore::rulesField('.*'), FormStudentsStudyCourseScore::customMessages(), FormStudentsStudyCourseScore::attributeField('.*'));
+        $validator          = Validator::make(request()->all(), FormStudentsStudyCourseScore::rules('.*'), FormStudentsStudyCourseScore::messages(), FormStudentsStudyCourseScore::attributes('.*'));
 
         if ($validator->fails()) {
             $response       = array(

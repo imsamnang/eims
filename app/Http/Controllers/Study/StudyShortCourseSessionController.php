@@ -35,7 +35,7 @@ class StudyShortCourseSessionController extends Controller
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
         request()->merge([
-            'ref'   => StudyShortCourseSession::$path['url']
+            'ref'   => StudyShortCourseSession::path('url')
         ]);
         $data['study_short_course_schedule'] = StudyShortCourseSchedule::getData();
         $data['study_session'] = StudySession::getData();
@@ -43,7 +43,7 @@ class StudyShortCourseSessionController extends Controller
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName']       = 'study/' . StudyShortCourseSession::$path['url'];
+        $data['formName']       = 'study/' . StudyShortCourseSession::path('url');
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -106,15 +106,15 @@ class StudyShortCourseSessionController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyShortCourseSession::$path['view'],
+            'parent'     => StudyShortCourseSession::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyShortCourseSession::rulesField(),
-            'attributes'  =>  FormStudyShortCourseSession::attributeField(),
-            'messages'    =>  FormStudyShortCourseSession::customMessages(),
-            'questions'   =>  FormStudyShortCourseSession::questionField(),
+            'rules'       =>  FormStudyShortCourseSession::rules(),
+            'attributes'  =>  FormStudyShortCourseSession::attributes(),
+            'messages'    =>  FormStudyShortCourseSession::messages(),
+            'questions'   =>  FormStudyShortCourseSession::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -124,7 +124,7 @@ class StudyShortCourseSessionController extends Controller
 
     public function list($data, $param1)
     {
-        $data['view']     = StudyShortCourseSession::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyShortCourseSession::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Short Course Session');
         return $data;
     }
@@ -136,7 +136,7 @@ class StudyShortCourseSessionController extends Controller
         $data['communes']            = Communes::getData('null', 'null');
         $data['villages']            = Villages::getData('null', 'null');
 
-        $data['view']       = StudyShortCourseSession::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyShortCourseSession::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Short Course Session');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

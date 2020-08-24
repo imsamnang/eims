@@ -11,11 +11,20 @@ use App\Http\Controllers\Quiz\QuizQuestionController;
 
 class QuizQuestion extends Model
 {
-    public static $path = [
-        'image'  => 'question',
-        'url'    => 'question',
-        'view'   => 'QuizQuestion'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
 
@@ -25,9 +34,9 @@ class QuizQuestion extends Model
         $response           = array();
         $validator          = Validator::make(
             request()->all(),
-            FormQuizQuestion::rulesField() + FormQuizAnswer::rulesField('.*'),
-            FormQuizQuestion::customMessages() + FormQuizAnswer::customMessages(),
-            FormQuizQuestion::attributeField() + FormQuizAnswer::attributeField('.*')
+            FormQuizQuestion::rules() + FormQuizAnswer::rules('.*'),
+            FormQuizQuestion::messages() + FormQuizAnswer::messages(),
+            FormQuizQuestion::attributes() + FormQuizAnswer::attributes('.*')
         );
 
         if ($validator->fails()) {
@@ -51,7 +60,7 @@ class QuizQuestion extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(QuizQuestion::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(QuizQuestion::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -74,9 +83,9 @@ class QuizQuestion extends Model
         $response           = array();
         $validator          = Validator::make(
             request()->all(),
-            FormQuizQuestion::rulesField() + FormQuizAnswer::rulesField('.*'),
-            FormQuizQuestion::customMessages() + FormQuizAnswer::customMessages(),
-            FormQuizQuestion::attributeField() + FormQuizAnswer::attributeField('.*')
+            FormQuizQuestion::rules() + FormQuizAnswer::rules('.*'),
+            FormQuizQuestion::messages() + FormQuizAnswer::messages(),
+            FormQuizQuestion::attributes() + FormQuizAnswer::attributes('.*')
         );
 
         if ($validator->fails()) {
@@ -107,7 +116,7 @@ class QuizQuestion extends Model
                             ]
 
                         ],
-                        'html'      => view(QuizQuestion::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(QuizQuestion::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   => __('Update Successfully'),
                     );
                 }
@@ -128,7 +137,7 @@ class QuizQuestion extends Model
                     try {
                         $delete    = QuizQuestion::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -142,7 +151,7 @@ class QuizQuestion extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

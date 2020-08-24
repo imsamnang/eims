@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Auth;
 
 class StudyCourseSchedule extends Model
 {
-    public static $path = [
-        'image'  => 'study-course-schedules',
-        'url'    => 'course-schedule',
-        'view'   => 'StudyCourseSchedule'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/add/'),
             ),
         );
         $data = array();
@@ -47,7 +56,7 @@ class StudyCourseSchedule extends Model
         if ($id) {
             $get = $get->whereIn('id', $id);
         } else {
-            if (request('ref') == StudyCourseSession::$path['url']) {
+            if (request('ref') == StudyCourseSession::path('url')) {
                 $get = $get->whereNotIn('id', StudyCourseSession::select('study_course_schedule_id')->get());
             }
             if (request('instituteId')) {
@@ -84,8 +93,8 @@ class StudyCourseSchedule extends Model
                     'study_semester'   => StudySemesters::getData($row['study_semester_id'])['data'][0],
 
                     'action'                   => [
-                        'edit'   => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/edit/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/delete/' . $row['id']),
+                        'edit'   => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/edit/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $data[$key]['name']  = $data[$key]['study_course']['name'] . ' - (' . $data[$key]['study_generation']['name'] . ', ' . $data[$key]['study_academic_year']['name'] . ', ' . $data[$key]['study_semester']['name'] . ') ' . $data[$key]['study_program']['name'];
@@ -143,9 +152,9 @@ class StudyCourseSchedule extends Model
                     'study_academic_year'   => StudyAcademicYears::getData($row['study_academic_year_id'])['data'][0],
                     'study_semester'   => StudySemesters::getData($row['study_semester_id'])['data'][0],
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -218,7 +227,7 @@ class StudyCourseSchedule extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseSchedule::rulesField(), FormStudyCourseSchedule::customMessages(), FormStudyCourseSchedule::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourseSchedule::rules(), FormStudyCourseSchedule::messages(), FormStudyCourseSchedule::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -272,7 +281,7 @@ class StudyCourseSchedule extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseSchedule::rulesField(), FormStudyCourseSchedule::customMessages(), FormStudyCourseSchedule::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourseSchedule::rules(), FormStudyCourseSchedule::messages(), FormStudyCourseSchedule::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -332,7 +341,7 @@ class StudyCourseSchedule extends Model
                     try {
                         $delete    = StudyCourseSchedule::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -346,7 +355,7 @@ class StudyCourseSchedule extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

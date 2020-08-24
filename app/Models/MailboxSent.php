@@ -73,8 +73,8 @@ class MailboxSent
                     'subject' => $row['subject'],
                     'created_at' => $row['created_at'],
                     'action'    => [
-                        'view'  => url(Mailbox::$path['url'] . '/' . MailboxSent::$path['url'] . '/view/' . $id),
-                        'move_trash'  => url(Mailbox::$path['url'] . '/' . MailboxSent::$path['url'] . '/move-trash/' . $id),
+                        'view'  => url(Mailbox::path('url') . '/' . MailboxSent::path('url') . '/view/' . $id),
+                        'move_trash'  => url(Mailbox::path('url') . '/' . MailboxSent::path('url') . '/move-trash/' . $id),
                     ]
                 ];
 

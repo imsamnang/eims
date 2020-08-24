@@ -8,16 +8,25 @@ use App\Helpers\DateHelper;
 use App\Helpers\Encryption;
 use App\Helpers\ImageHelper;
 
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentsAttendances extends Model
 {
-    public static $path = [
-        'image' =>  'attendance',
-        'url'   =>  'attendance',
-        'view'  =>  'StudentsAttendance',
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function getData($year = null, $month = null, $date = null, $student_study_course_id = null, $paginate = null)
@@ -25,7 +34,7 @@ class StudentsAttendances extends Model
 
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . StudentsAttendances::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . StudentsAttendances::path('url') . '/add/'),
             ),
         );
 
@@ -131,7 +140,7 @@ class StudentsAttendances extends Model
                     'total_all'    => $attenType['total_all'],
                     'schedule'     => $schedule,
                     'action'                   => [
-                        'edit' => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsAttendances::$path['url'] . '/edit/' . $generateId), //?id
+                        'edit' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsAttendances::path('url') . '/edit/' . $generateId), //?id
                     ],
                 );
             }
@@ -263,7 +272,7 @@ class StudentsAttendances extends Model
             $adsent = 0;
 
             foreach ($get as $key => $row) {
-                $atten = AttendancesType::getData($row['attendance_type_id'])['data'][0];
+                $atten = AttendanceTypes::getData($row['attendance_type_id'])['data'][0];
                 $date[$row['date']] = array(
                     'date' => $row['date'],
                     'attendance'  => $atten,
@@ -301,7 +310,7 @@ class StudentsAttendances extends Model
             if ($get) {
 
                 foreach ($get as $row) {
-                    $atten = AttendancesType::getData($row['attendance_type_id'])['data'][0];
+                    $atten = AttendanceTypes::getData($row['attendance_type_id'])['data'][0];
                     $count += $atten['credit_absent'];
                 }
             }
@@ -326,13 +335,13 @@ class StudentsAttendances extends Model
 
             $student    = Students::where('id', $student_request['student_id'])->first()->toArray();
             $atten = StudentsAttendances::getAtten(request('year'), request('month'), $student_study_course_id, request('date'));
-            $photo = $student_study_course['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $student_study_course['photo'])) :  ImageHelper::site(Students::$path['image'], $student['photo']);
+            $photo = $student_study_course['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsStudyCourse::path('image'), $student_study_course['photo'])) :  ImageHelper::site(Students::path('image'), $student['photo']);
             $data[] = [
-                'id'                      => $student_study_course['id'],
+                'id'  => $student_study_course['id'],
                 'fullname'                => (array_key_exists('first_name_' . app()->getLocale(), $student) ? $student['first_name_' . app()->getLocale()] : $student['first_name_en']) . ' ' . (array_key_exists('last_name_' . app()->getLocale(), $student) ? $student['last_name_' . app()->getLocale()] : $student['last_name_en']),
                 'photo'                   => $photo,
                 'study_course_session'    => StudyCourseSession::getData($student_study_course['study_course_session_id'])['data'][0]['name'],
-                'date'                    => $atten['date'],
+                'date' => $atten['date'],
                 'total_p'                 => $atten['total_p'],
                 'total_a'                 => $atten['total_a'],
                 'total_all'               => $atten['total_p'] + $atten['total_a'],
@@ -361,9 +370,9 @@ class StudentsAttendances extends Model
             );
         } else {
             $add = StudentsAttendances::insertGetId([
-                'year'                      => $year,
-                'month'                     => $month,
-                'date'                      => $date,
+                'year'  => $year,
+                'month' => $month,
+                'date'  => $date,
                 'student_study_course_id'   => $student_study_course_id,
                 'attendance_type_id'        => $attendance_type_id
             ]);
@@ -408,7 +417,7 @@ class StudentsAttendances extends Model
                             'data'      => StudentsAttendances::getData1($student_study_course_id),
                             'type'      => 'update',
                             'sound'     => asset('assets/sounds/' . app()->getLocale() . '/thank_you.mp3'),
-                            'message'   => $absent . PHP_EOL . ' ' . AttendancesType::getData($attendance_type_id)['data'][0]['name'],
+                            'message'   => $absent . PHP_EOL . ' ' . AttendanceTypes::getData($attendance_type_id)['data'][0]['name'],
                         );
                     }
                 } catch (\Exception $e) {

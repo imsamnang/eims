@@ -37,7 +37,7 @@ class ProvinceController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'general/' . Provinces::$path['url'];
+        $data['formName'] = 'general/' . Provinces::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -96,14 +96,14 @@ class ProvinceController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Provinces::$path['view'],
+            'parent'     => Provinces::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormProvince::rulesField(),
-            'attributes'  =>  FormProvince::attributeField(),
-            'messages'    =>  FormProvince::customMessages(),
-            'questions'   =>  FormProvince::questionField(),
+            'rules'       =>  FormProvince::rules(),
+            'attributes'  =>  FormProvince::attributes(),
+            'messages'    =>  FormProvince::messages(),
+            'questions'   =>  FormProvince::questions(),
         ];
 
 
@@ -117,32 +117,32 @@ class ProvinceController extends Controller
         $table = Provinces::orderBy('id', 'DESC');
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Provinces::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Provinces::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Provinces::$path['view'] . '.includes.list.index';
+        $data['view']     = Provinces::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Province');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Provinces::$path['view'] . '.includes.form.province.index';
+        $data['view']       = Provinces::path('view') . '.includes.form.province.index';
         if ($id) {
 
             $response           = Provinces::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Provinces::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Provinces::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -152,7 +152,7 @@ class ProvinceController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'general/' . Provinces::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'general/' . Provinces::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -172,13 +172,13 @@ class ProvinceController extends Controller
         ]);
 
         config()->set('app.title', __('List Province'));
-        config()->set('pages.parent', Provinces::$path['view']);
+        config()->set('pages.parent', Provinces::path('view'));
 
         $table = new Provinces;
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(Provinces::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Provinces::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -214,10 +214,10 @@ class ProvinceController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Province'));
-        return view(Provinces::$path['view'] . '.includes.report.index', $data);
+        return view(Provinces::path('view') . '.includes.report.index', $data);
     }
 }

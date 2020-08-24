@@ -15,16 +15,25 @@ use Illuminate\Support\Facades\Validator;
 
 class Holidays extends Model
 {
-    public static $path = [
-        'image'  => 'holiday',
-        'url'    => 'holiday',
-        'view'   => 'Holiday'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Holidays::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . Holidays::path('url') . '/add/'),
             ),
         );
 
@@ -89,11 +98,11 @@ class Holidays extends Model
                         'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                         'date'          => $row['date'] . '-' . Months::getData($row['month'])['data'][0]['name'] . '-' . $row['year'],
                         'description'   => $row['description'],
-                        'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                        'image'         => $row['image'] ? (ImageHelper::site(Holidays::path('image'), $row['image'])) : ImageHelper::prefix(),
                         'action'        => [
-                            'edit' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
-                            'view' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/view/' . $row['id']),
-                            'delete' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/delete/' . $row['id']),
+                            'edit' => url(Users::role() . '/general/' . Holidays::path('url') . '/edit/' . $row['id']),
+                            'view' => url(Users::role() . '/general/' . Holidays::path('url') . '/view/' . $row['id']),
+                            'delete' => url(Users::role() . '/general/' . Holidays::path('url') . '/delete/' . $row['id']),
                         ]
                     );
                     $pages['listData'][] = array(
@@ -149,11 +158,11 @@ class Holidays extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'date'          => DateHelper::convert($row['date'] . '-' . $row['month'] . '-' . $row['year'], 'd-M-Y'),
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Holidays::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Holidays::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Holidays::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Holidays::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Holidays::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Holidays::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -273,7 +282,7 @@ class Holidays extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormHoliday::rulesField(), FormHoliday::customMessages(), FormHoliday::attributeField());
+        $validator          = Validator::make(request()->all(), FormHoliday::rules(), FormHoliday::messages(), FormHoliday::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -301,9 +310,9 @@ class Holidays extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Holidays::updateImageToTable($add, ImageHelper::uploadImage($image, Holidays::$path['image']));
+                        Holidays::updateImageToTable($add, ImageHelper::uploadImage($image, Holidays::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Holidays::$path['image'], Holidays::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Holidays::path('image'), Holidays::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -324,7 +333,7 @@ class Holidays extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormHoliday::rulesField(), FormHoliday::customMessages(), FormHoliday::attributeField());
+        $validator          = Validator::make(request()->all(), FormHoliday::rules(), FormHoliday::messages(), FormHoliday::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -349,7 +358,7 @@ class Holidays extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Holidays::updateImageToTable($id, ImageHelper::uploadImage($image, Holidays::$path['image']));
+                        Holidays::updateImageToTable($id, ImageHelper::uploadImage($image, Holidays::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -401,7 +410,7 @@ class Holidays extends Model
                     try {
                         $delete    = Holidays::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -415,7 +424,7 @@ class Holidays extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

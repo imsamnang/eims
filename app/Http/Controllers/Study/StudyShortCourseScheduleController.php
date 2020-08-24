@@ -38,7 +38,7 @@ class StudyShortCourseScheduleController extends Controller
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName']       = 'study/' . StudyShortCourseSchedule::$path['url'];
+        $data['formName']       = 'study/' . StudyShortCourseSchedule::path('url');
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -101,15 +101,15 @@ class StudyShortCourseScheduleController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyShortCourseSchedule::$path['view'],
+            'parent'     => StudyShortCourseSchedule::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyShortCourseSchedule::rulesField(),
-            'attributes'  =>  FormStudyShortCourseSchedule::attributeField(),
-            'messages'    =>  FormStudyShortCourseSchedule::customMessages(),
-            'questions'   =>  FormStudyShortCourseSchedule::questionField(),
+            'rules'       =>  FormStudyShortCourseSchedule::rules(),
+            'attributes'  =>  FormStudyShortCourseSchedule::attributes(),
+            'messages'    =>  FormStudyShortCourseSchedule::messages(),
+            'questions'   =>  FormStudyShortCourseSchedule::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -119,7 +119,7 @@ class StudyShortCourseScheduleController extends Controller
 
     public function list($data, $param1)
     {
-        $data['view']     = StudyShortCourseSchedule::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyShortCourseSchedule::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Short Course Schedule');
         return $data;
     }
@@ -135,7 +135,7 @@ class StudyShortCourseScheduleController extends Controller
         }
 
 
-        $data['view']       = StudyShortCourseSchedule::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyShortCourseSchedule::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Short Course Schedule');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

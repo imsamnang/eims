@@ -10,22 +10,32 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuth extends Model
 {
-    public static $path = [
-        'url'    => 'auth',
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id, $user_id = null)
     {
-        if($id){
+        if ($id) {
             $get =  SocialAuth::where('id', $id)->first();
-        }elseif($user_id){
+        } elseif ($user_id) {
             $get = SocialAuth::where('user_id', $user_id)->first();
         }
 
-        if($get){
+        if ($get) {
             return $get->toArray();
         }
-
     }
 
     public static function checkUser($provider)

@@ -45,26 +45,26 @@ class StaffTeachSubjectController extends Controller
             [
                 'title' => __('Staff & Teacher'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+                'link'  => url(Users::role() . '/' . Staff::path('url')),
             ],
             [
                 'title' => __('List Staff teach subject'),
                 'status' => false,
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/list'),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/list'),
             ]
         ];
 
         $data['formData'] = array(
             ['year' => Years::now(),]
         );
-        $data['formName'] = Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'];
+        $data['formName'] = Staff::path('url') . '/' . StaffTeachSubject::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
             $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 request()->merge([
-                    'ref'   => StudySubjectLesson::$path['url']
+                    'ref'   => StudySubjectLesson::path('url')
                 ]);
                 return StaffTeachSubject::getData();
             } else {
@@ -76,7 +76,7 @@ class StaffTeachSubjectController extends Controller
             $breadcrumb[]  = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/' . $param1),
             ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::addToTable();
@@ -88,7 +88,7 @@ class StaffTeachSubjectController extends Controller
             $breadcrumb[]  = [
                 'title' => __('Edit Staff teach subject'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffTeachSubject::updateToTable($id);
@@ -100,7 +100,7 @@ class StaffTeachSubjectController extends Controller
             $breadcrumb[]  = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff teach subjects') . __($param1);
@@ -133,29 +133,29 @@ class StaffTeachSubjectController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StaffTeachSubject::$path['view'],
+            'parent'     => StaffTeachSubject::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStaffTeachSubject::rulesField(),
-            'attributes'  =>  FormStaffTeachSubject::attributeField(),
-            'messages'    =>  FormStaffTeachSubject::customMessages(),
-            'questions'   =>  FormStaffTeachSubject::questionField(),
+            'rules'       =>  (new FormStaffTeachSubject)->rules(),
+            'attributes'  =>  (new FormStaffTeachSubject)->attributes(),
+            'messages'    =>  (new FormStaffTeachSubject)->messages(),
+            'questions'   =>  (new FormStaffTeachSubject)->questions(),
         ];
 
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['subjectsFilter']['data']           = StudySubjects::whereIn('id', StaffTeachSubject::groupBy('study_subject_id')->pluck('study_subject_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             });
         $data['yearFilter']['data']           = StaffTeachSubject::groupBy('year')->pluck('year');
@@ -166,7 +166,7 @@ class StaffTeachSubjectController extends Controller
                 'name'   => $row['first_name_km'] . ' ' . $row['last_name_km'] . ' - '
                     . $row['first_name_en'] . ' ' . $row['last_name_en'] . ' - '
                     . $row['phone'],
-                'photo' => ImageHelper::site(Staff::$path['image'], $row['photo'])
+                'photo' => ImageHelper::site(Staff::path('image'), $row['photo'])
 
             ];
         })->toArray();
@@ -175,7 +175,7 @@ class StaffTeachSubjectController extends Controller
             return [
                 'id'    => $row['id'],
                 'name'   => $row[app()->getLocale()],
-                'image' => $row['image'] ? ImageHelper::site(StudySubjects::$path['image'], $row['image']) : ImageHelper::prefix()
+                'image' => $row['image'] ? ImageHelper::site(StudySubjects::path('image'), $row['image']) : ImageHelper::prefix()
             ];
         })->toArray();
 
@@ -225,9 +225,9 @@ class StaffTeachSubjectController extends Controller
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
             $row['subjects'] = StudySubjects::where('id', $row->study_subject_id)->pluck(app()->getLocale())->first();
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/delete/' . $row['id']),
             ];
             return $row;
         });
@@ -235,7 +235,7 @@ class StaffTeachSubjectController extends Controller
             return $response;
         }
         $data['response']['data'] = $response;
-        $data['view']     = StaffTeachSubject::$path['view'] . '.includes.list.index';
+        $data['view']     = StaffTeachSubject::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Staff teach subject');
         return $data;
     }
@@ -243,14 +243,14 @@ class StaffTeachSubjectController extends Controller
     {
         $data['response'] = StaffTeachSubject::getTeachSubjects(null, null, null, 10);
 
-        $data['view']     = StaffTeachSubject::$path['view'] . '.includes.grid.index';
+        $data['view']     = StaffTeachSubject::path('view') . '.includes.grid.index';
         $data['title']               = Users::role(app()->getLocale()) . ' | ' . __('Grid Staff teach subject');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view'] = StaffTeachSubject::$path['view'] . '.includes.form.index';
+        $data['view'] = StaffTeachSubject::path('view') . '.includes.form.index';
         if ($id) {
 
             $response = StaffTeachSubject::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new StaffTeachSubject)->getTable() . '.staff_id')
@@ -270,12 +270,12 @@ class StaffTeachSubjectController extends Controller
                     (new StaffTeachSubject)->getTable() . '.updated_at',
                 ])->map(function ($row) {
                     $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
-                    $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::$path['image'], $row['photo']) : ImageHelper::site(Staff::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                    $row['photo'] = $row['photo'] ? ImageHelper::site(Staff::path('image'), $row['photo']) : ImageHelper::site(Staff::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                     $row['subjects'] = StudySubjects::where('id', $row->study_subject_id)->pluck(app()->getLocale())->first();
                     $row['action']  = [
-                        'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
-                        'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/delete/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/edit/' . $row['id']),
+                        'view'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/delete/' . $row['id']),
                     ];
                     return $row;
                 });
@@ -285,7 +285,7 @@ class StaffTeachSubjectController extends Controller
                     'name'  => $row->name . ' - ' . $row->subjects . ' (' . $row->year . ')',
                     'image'  => $row->photo,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffTeachSubject::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffTeachSubject::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -305,16 +305,16 @@ class StaffTeachSubjectController extends Controller
         ]);
 
         config()->set('app.title', __('List Staff teach subject'));
-        config()->set('pages.parent', StaffTeachSubject::$path['view']);
+        config()->set('pages.parent', StaffTeachSubject::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffInstitutes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['subjectsFilter']['data']           = StudySubjects::whereIn('id', StaffTeachSubject::groupBy('study_subject_id')->pluck('study_subject_id'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             });
         $data['yearFilter']['data']           = StaffTeachSubject::groupBy('year')->pluck('year');
@@ -374,13 +374,13 @@ class StaffTeachSubjectController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
 
         $data['subjects']  = StudySubjects::where('id', request('subjectsId'))
             ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = $row->image ?  ImageHelper::site(Institute::$path['image'], $row->image) : ImageHelper::prefix();
+                $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
                 return $row;
             })->first();
 
@@ -393,6 +393,6 @@ class StaffTeachSubjectController extends Controller
         }
         config()->set('pages.title', $pTitle);
 
-        return view(StaffTeachSubject::$path['view'] . '.includes.report.index', $data);
+        return view(StaffTeachSubject::path('view') . '.includes.report.index', $data);
     }
 }

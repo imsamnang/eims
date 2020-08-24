@@ -14,8 +14,8 @@ class CertificateHelper
     {
         $certificate       = Session::get('certificate');
         $certificateframe = CertificateFrames::where('status', 1)->get()->map(function ($row) {
-            $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
-            $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+            $row['foreground'] = ImageHelper::site(CertificateFrames::path('image'), $row->foreground, 'original');
+            $row['background'] = ImageHelper::site(CertificateFrames::path('image'), $row->background, 'original');
             return $row;
         })->first();
         $certificate_foreground = Session::has('certificate_foreground') ? (Session::get('certificate_foreground')) : $certificateframe["foreground"];

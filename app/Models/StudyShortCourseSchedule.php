@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Auth;
 
 class StudyShortCourseSchedule extends Model
 {
-    public static $path = [
-        'image'  => 'study-short-course-schedules',
-        'url'    => 'short-course-schedule',
-        'view'   => 'StudyShortCourseSchedule'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/add/'),
             ),
         );
         $data = array();
@@ -47,7 +56,7 @@ class StudyShortCourseSchedule extends Model
         if ($id) {
             $get = $get->whereIn('id', $id);
         } else {
-            if (request('ref') == StudyCourseSession::$path['url']) {
+            if (request('ref') == StudyCourseSession::path('url')) {
                 $get = $get->whereNotIn('id', StudyCourseSession::select('stu_sh_c_schedule_id')->get());
             }
             if (request('instituteId')) {
@@ -78,9 +87,9 @@ class StudyShortCourseSchedule extends Model
                     'study_generation'   => StudyGeneration::getData($row['study_generation_id'])['data'][0],
                     'study_subject'   => StudySubjects::getData($row['study_subject_id'])['data'][0],
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $data[$key]['name']  = $data[$key]['study_subject']['name'] . ' - (' . $data[$key]['study_generation']['name']  . ') ';
@@ -132,9 +141,9 @@ class StudyShortCourseSchedule extends Model
                     'study_generation'   => StudyGeneration::getData($row['study_generation_id'])['data'][0],
                     'study_subject'   => StudySubjects::getData($row['study_subject_id'])['data'][0],
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -186,7 +195,7 @@ class StudyShortCourseSchedule extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rulesField(), FormStudyShortCourseSchedule::customMessages(), FormStudyShortCourseSchedule::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rules(), FormStudyShortCourseSchedule::messages(), FormStudyShortCourseSchedule::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -237,7 +246,7 @@ class StudyShortCourseSchedule extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rulesField(), FormStudyShortCourseSchedule::customMessages(), FormStudyShortCourseSchedule::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rules(), FormStudyShortCourseSchedule::messages(), FormStudyShortCourseSchedule::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -292,7 +301,7 @@ class StudyShortCourseSchedule extends Model
                     try {
                         $delete    = StudyShortCourseSchedule::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -306,7 +315,7 @@ class StudyShortCourseSchedule extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

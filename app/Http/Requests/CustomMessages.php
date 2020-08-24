@@ -3,8 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Translator;
-class CustomMessages extends FormRequest
+class messages extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +22,7 @@ class CustomMessages extends FormRequest
      */
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
         return [

@@ -20,8 +20,8 @@ class MentionHelper
                 $data[$value] = [
                     'id'        => $user['id'],
                     'name'      => $user['name'],
-                    'profile'   => ImageHelper::site(Users::$path['image'], $user['profile']),
-                    'link'      => url(ActivityFeed::$path['url'].'/profile?id='.$user['id']),
+                    'profile'   => ImageHelper::site(Users::path('image'), $user['profile']),
+                    'link'      => url(ActivityFeed::path('url').'/profile?id='.$user['id']),
                     'bio'       => $user['address'],
                     'website'   => '',
                     'email' => $user['email'],

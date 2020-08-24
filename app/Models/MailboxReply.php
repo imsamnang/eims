@@ -31,10 +31,10 @@ class MailboxReply extends Model
                     'created_at' => $row['created_at'],
                     'attachment_images'  =>  Mailbox::getAttachmentImages($dom->find('img')),
                     'action'    => [
-                        'view'  => url(Mailbox::$path['url'] . '/reply/view/' . $id),
-                        'mark_read'  => url(Mailbox::$path['url'] . '/reply/' . MailboxRead::$path['url'] . '/' . $id),
-                        'mark_important'  => url(Mailbox::$path['url'] . '/reply/mark-important/' . $id),
-                        'move_trash'  => url(Mailbox::$path['url'] . '/reply/move-trash/' . $id),
+                        'view'  => url(Mailbox::path('url') . '/reply/view/' . $id),
+                        'mark_read'  => url(Mailbox::path('url') . '/reply/' . MailboxRead::path('url') . '/' . $id),
+                        'mark_important'  => url(Mailbox::path('url') . '/reply/mark-important/' . $id),
+                        'move_trash'  => url(Mailbox::path('url') . '/reply/move-trash/' . $id),
                     ]
                 ];
             }
@@ -46,7 +46,7 @@ class MailboxReply extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMailboxReply::rulesField('.*'), FormMailboxReply::customMessages(), FormMailboxReply::attributeField());
+        $validator          = Validator::make(request()->all(), FormMailboxReply::rules('.*'), FormMailboxReply::messages(), FormMailboxReply::attributes());
 
         if ($validator->fails()) {
             $response       = array(

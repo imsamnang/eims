@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class MotherTong extends Model
 {
-    public static $path = [
-        'image'  => 'mother-tong',
-        'url'    => 'mother-tong',
-        'view'   => 'MotherTong'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/' . MotherTong::path('url') . '/add/'),
             ),
         );
 
@@ -76,11 +85,11 @@ class MotherTong extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(MotherTong::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(MotherTong::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . MotherTong::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . MotherTong::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . MotherTong::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -129,11 +138,11 @@ class MotherTong extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(MotherTong::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(MotherTong::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . MotherTong::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . MotherTong::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . MotherTong::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . MotherTong::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -178,7 +187,7 @@ class MotherTong extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMotherTong::rulesField(), FormMotherTong::customMessages(), FormMotherTong::attributeField());
+        $validator          = Validator::make(request()->all(), FormMotherTong::rules(), FormMotherTong::messages(), FormMotherTong::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -202,9 +211,9 @@ class MotherTong extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        MotherTong::updateImageToTable($add, ImageHelper::uploadImage($image, MotherTong::$path['image']));
+                        MotherTong::updateImageToTable($add, ImageHelper::uploadImage($image, MotherTong::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, MotherTong::$path['image'], MotherTong::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, MotherTong::path('image'), MotherTong::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -225,7 +234,7 @@ class MotherTong extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMotherTong::rulesField(), FormMotherTong::customMessages(), FormMotherTong::attributeField());
+        $validator          = Validator::make(request()->all(), FormMotherTong::rules(), FormMotherTong::messages(), FormMotherTong::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -247,7 +256,7 @@ class MotherTong extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        MotherTong::updateImageToTable($id, ImageHelper::uploadImage($image, MotherTong::$path['image']));
+                        MotherTong::updateImageToTable($id, ImageHelper::uploadImage($image, MotherTong::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -299,7 +308,7 @@ class MotherTong extends Model
                     try {
                         $delete    = MotherTong::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -313,7 +322,7 @@ class MotherTong extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

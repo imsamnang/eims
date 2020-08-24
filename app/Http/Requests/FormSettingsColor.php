@@ -23,7 +23,7 @@ class FormSettingsColor extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
             'id'         => 'required',
@@ -32,7 +32,7 @@ class FormSettingsColor extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
             'id'         => __('Id'),
@@ -40,12 +40,11 @@ class FormSettingsColor extends FormRequest
          ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

@@ -3,26 +3,17 @@
 namespace App\Models;
 
 use DateTime;
-use Carbon\Carbon;
 use DomainException;
-use App\Models\Communes;
-use App\Models\Villages;
 use App\Helpers\QRHelper;
-use App\Models\Districts;
-use App\Models\Provinces;
-
 use App\Helpers\DateHelper;
-
 use App\Helpers\ImageHelper;
 use App\Models\StaffGuardians;
 use App\Models\StaffInstitutes;
 use App\Http\Requests\FormStaff;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Facades\Validator;
 
 class Staff extends Model
@@ -30,13 +21,23 @@ class Staff extends Model
 
 
 
-    public static $path = [
-        'image'   => 'staff',
-        'url'     => 'staff',
-        'view'    => 'Staff',
-        'role'    => 'staff',
-        'roleId'  => 5,
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $role = Roles::find(5)->first();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table))),
+            'role'   => $role->name,
+            'roleId'   => $role->id,
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public function institute()
     {
@@ -130,9 +131,9 @@ class Staff extends Model
 
                         if (strpos($query->toSql(), 'institute_id') > 0) {
                             $value = $query->getBindings();
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::$path['url'] . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::path('url') . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
                         } else {
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::$path['url'] . '/list/?statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::path('url') . '/list/?statusId=' . $status['id']);
                         }
                     }
                 }
@@ -203,9 +204,9 @@ class Staff extends Model
         // }
 
 
-        $rules += FormStaff::rulesField();
+        $rules += FormStaff::rules();
 
-        $validator          = Validator::make(request()->all(), $rules, FormStaff::customMessages(), FormStaff::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormStaff::messages(), FormStaff::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -264,9 +265,9 @@ class Staff extends Model
                     }
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::$path['image']));
+                        Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Staff::$path['image'], (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')));
+                        ImageHelper::uploadImage(false, Staff::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')));
                     }
 
 
@@ -287,7 +288,7 @@ class Staff extends Model
     public static function register()
     {
 
-        $rules = FormStaff::rulesField();
+        $rules = FormStaff::rules();
 
         unset($rules['pob_province']);
         unset($rules['pob_district']);
@@ -308,7 +309,7 @@ class Staff extends Model
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
         $rules['email'] = 'required|email|unique:staff,email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStaff::customMessages(), FormStaff::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormStaff::messages(), FormStaff::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -347,7 +348,7 @@ class Staff extends Model
 
                 if (request()->hasFile('photo')) {
                     $photo      = request()->file('photo');
-                    Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::$path['image']));
+                    Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::path('image')));
                 }
 
                 $response       = array(
@@ -372,7 +373,7 @@ class Staff extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaff::rulesField(), FormStaff::customMessages(), FormStaff::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaff::rules(), FormStaff::messages(), FormStaff::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -424,7 +425,7 @@ class Staff extends Model
 
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Staff::updateImageToTable($id, ImageHelper::uploadImage($photo, Staff::$path['image']));
+                        Staff::updateImageToTable($id, ImageHelper::uploadImage($photo, Staff::path('image')));
                     }
 
 
@@ -495,8 +496,8 @@ class Staff extends Model
             foreach ($make['data'] as $row) {
                 $oldQrcode = $row['qrcode']['image'];
                 if ($oldQrcode) {
-                    if (file_exists(storage_path(ImageHelper::$path['image'] . '/' . Staff::$path['image'] . '/' . QRHelper::$path['image'] . '/' . $oldQrcode))) {
-                        unlink(storage_path(ImageHelper::$path['image'] . '/' . Staff::$path['image'] . '/' . QRHelper::$path['image'] . '/' . $oldQrcode));
+                    if (file_exists(storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode))) {
+                        unlink(storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode));
                     }
                 }
 
@@ -512,13 +513,13 @@ class Staff extends Model
 
                 if ($options && $options['image'] > 0) {
                     $q['center']  = array(
-                        'image' => $row['photo'] . '?type=larg', //ImageHelper::getImage($row['photoName'], Staff::$path['image'], true), //storage_path(ImageHelper::$path['image'] . '/' . Staff::$path['image'] . '/' . ImageHelper::$path['resize'][0] . '/' . $row['photoName']),
+                        'image' => $row['photo'] . '?type=larg', //ImageHelper::getImage($row['photoName'], Staff::path('image'), true), //storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . ImageHelper::$path['resize'][0] . '/' . $row['photoName']),
                         'percentage' => $options && $options['image'] ? $options['image'] / $options['code']  : .19
                     );
                 }
 
                 $qrCode  = QRHelper::make($q, true);
-                $qrCode_image = ImageHelper::uploadImage($qrCode, ImageHelper::$path['image'] . '/' . Staff::$path['image'] . '/' . QRHelper::$path['image']);
+                $qrCode_image = ImageHelper::uploadImage($qrCode, ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image'));
                 if ($qrCode_image) {
 
                     try {
@@ -530,7 +531,7 @@ class Staff extends Model
                         return $e;
                     }
 
-                    $data[] = ImageHelper::site(QRHelper::$path['image'], $qrCode_image);
+                    $data[] = ImageHelper::site(QRHelper::path('image'), $qrCode_image);
                 }
             }
 
@@ -601,7 +602,7 @@ class Staff extends Model
                     //$response['errors'][$row->id] = $response['errors']->getMessages();
                 } else {
                     try {
-                        $folder  = 'public/' . ImageHelper::$path['image'] . '/' . Staff::$path['image'];
+                        $folder  = 'public/' . ImageHelper::path('image') . '/' . Staff::path('image');
                         $filePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
 
                         $first_name = array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row->first_name_en;
@@ -620,7 +621,7 @@ class Staff extends Model
                         if ($create) {
 
                             if ($row->photo && File::exists($filePath . '/original/' . $row->photo)) {
-                                $profile = ImageHelper::uploadImage(null, Users::$path['image'], null, $filePath  . '/original/' . $row->photo);
+                                $profile = ImageHelper::uploadImage(null, Users::path('image'), null, $filePath  . '/original/' . $row->photo);
                                 Users::updateImageToTable($create, $profile);
                             } else {
                                 $profile = ($row->gender_id == 1) ? 'male.jpg' : 'female.jpg';
@@ -712,7 +713,7 @@ class Staff extends Model
                     'class' => [
                         'id'    => $class->id,
                         'name'    => $class->name,
-                        'image'    => $class->image ? ImageHelper::site(StudyClass::$path['image'], $class->image) : ImageHelper::prefix(),
+                        'image'    => $class->image ? ImageHelper::site(StudyClass::path('image'), $class->image) : ImageHelper::prefix(),
                     ],
                     'subjects' => Staff::getSubjectsTeaching($teacher_id, $row['study_class_id']),
                 ];
@@ -734,7 +735,7 @@ class Staff extends Model
                 $data[] =   [
                     'id'    => $subject->id,
                     'name'    => $subject->name,
-                    'image'    => $subject->image ? ImageHelper::site(StudySubjects::$path['image'], $subject->image) : ImageHelper::prefix(),
+                    'image'    => $subject->image ? ImageHelper::site(StudySubjects::path('image'), $subject->image) : ImageHelper::prefix(),
                 ];
             }
             return $data;

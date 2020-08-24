@@ -107,10 +107,10 @@ class FrontController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  strtolower($param1) == 'contact' ? FormContact::rulesField() : [],
-            'attributes'  =>  strtolower($param1) == 'contact' ? FormContact::attributeField() : [],
-            'messages'    =>  strtolower($param1) == 'contact' ? FormContact::customMessages() : [],
-            'questions'   =>  strtolower($param1) == 'contact' ? FormContact::questionField() : [],
+            'rules'       =>  strtolower($param1) == 'contact' ? (new FormContact)->rules() : [],
+            'attributes'  =>  strtolower($param1) == 'contact' ? (new FormContact)->attributes() : [],
+            'messages'    =>  strtolower($param1) == 'contact' ? (new FormContact)->messages() : [],
+            'questions'   =>  strtolower($param1) == 'contact' ? (new FormContact)->questions() : [],
         ];
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

@@ -21,7 +21,7 @@ use App\Models\StudyModality;
 use App\Models\StudyPrograms;
 use App\Models\StudySubjects;
 use App\Models\StudySemesters;
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use App\Models\StudyGeneration;
 use App\Models\CurriculumAuthor;
 use App\Models\StudyOverallFund;
@@ -60,7 +60,9 @@ class StudyController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -84,47 +86,47 @@ class StudyController extends Controller
                     'children' => [
                         [
                             'name'  => __('List Institute'),
-                            'link'  => url(Users::role() . '/study/' . Institute::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . Institute::path('url') . '/list'),
                             'icon'  => 'fas fa-school',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Study program'),
-                            'link'  => url(Users::role() . '/study/' . StudyPrograms::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyPrograms::path('url') . '/list'),
                             'icon'  => 'fas fa-graduation-cap',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study course'),
-                            'link'  => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourse::path('url') . '/list'),
                             'icon'  => 'fas fa-user-hard-hat',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Course type'),
-                            'link'  => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . CourseTypes::path('url') . '/list'),
                             'icon'  => 'fas fa-hard-hat',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Study generation'),
-                            'link'  => url(Users::role() . '/study/' . StudyGeneration::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyGeneration::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Study generation'),
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study academic year'),
-                            'link'  => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Study academic year'),
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study semester'),
-                            'link'  => url(Users::role() . '/study/' . StudySemesters::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudySemesters::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Study semester'),
                             'image' => null,
@@ -137,14 +139,14 @@ class StudyController extends Controller
                     'children'  => [
                         [
                             'name'  => __('List Study session'),
-                            'link'  => url(Users::role() . '/study/' . StudySession::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudySession::path('url') . '/list'),
                             'icon'  => 'fas fa-hourglass-start',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List study class'),
-                            'link'  => url(Users::role() . '/study/' . StudyClass::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyClass::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Study class'),
                             'image' => null,
@@ -158,20 +160,20 @@ class StudyController extends Controller
                     'children'  => [
                         [
                             'name'  => __('List Study course schedule'),
-                            'link'  => url(Users::role() . '/study/' . StudyCourseSchedule::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/list'),
                             'icon'  => 'fas fa-calendar-alt',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Study course session'),
-                            'link'  => url(Users::role() . '/study/' . StudyCourseSession::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseSession::path('url') . '/list'),
                             'icon'  => 'fas fa-table',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study course routine'),
-                            'link'  => url(Users::role() . '/study/' . StudyCourseRoutine::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyCourseRoutine::path('url') . '/list'),
                             'icon'  => 'fal fa-table',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
@@ -183,21 +185,21 @@ class StudyController extends Controller
                     'children'  => [
                         [
                             'name'  => __('List Short course schedule'),
-                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSchedule::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/list'),
                             'icon'  => 'fas fa-calendar-alt',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Short course session'),
-                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/list'),
                             'icon'  => 'fas fa-table',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('list.short_course_routine'),
-                            'link'  => url(Users::role() . '/study/' . StudyShortCourseRoutine::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyShortCourseRoutine::path('url') . '/list'),
                             'icon'  => 'fal fa-table',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
@@ -209,14 +211,14 @@ class StudyController extends Controller
                     'children'  => [
                         [
                             'name'  => __('List Study subject'),
-                            'link'  => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudySubjects::path('url') . '/list'),
                             'icon'  => 'fas fa-books',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Study subject lesson'),
-                            'link'  => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudySubjectLesson::path('url') . '/list'),
                             'icon'  => 'fas fa-book-alt',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
@@ -228,51 +230,51 @@ class StudyController extends Controller
                     'children'  => [
                         [
                             'name'  => __('List Study modality'),
-                            'link'  => url(Users::role() . '/study/' . StudyModality::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyModality::path('url') . '/list'),
                             'icon'  => 'fas fa-chalkboard',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study overall fund'),
-                            'link'  => url(Users::role() . '/study/' . StudyOverallFund::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyOverallFund::path('url') . '/list'),
                             'icon'  => 'fas fa-donate',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study faculty'),
-                            'link'  => url(Users::role() . '/study/' . StudyFaculty::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyFaculty::path('url') . '/list'),
                             'icon'  => 'fas fa-industry-alt',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Study status'),
-                            'link'  => url(Users::role() . '/study/' . StudyStatus::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyStatus::path('url') . '/list'),
                             'icon'  => 'fas fa-question-square',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],  [
                             'name'  => __('List Curriculum Author'),
-                            'link'  => url(Users::role() . '/study/' . CurriculumAuthor::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . CurriculumAuthor::path('url') . '/list'),
                             'icon'  => 'fas fa-book-user',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ], [
                             'name'  => __('List Curriculum Endorsement'),
-                            'link'  => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/list'),
                             'icon'  => 'fas fa-people-carry',
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
                             'name'  => __('List Study grade'),
-                            'link'  => url(Users::role() . '/study/' . StudyGrade::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . StudyGrade::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Study grade'),
                             'image' => null,
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],  [
                             'name'  => __('List Attendance type'),
-                            'link'  => url(Users::role() . '/study/' . AttendancesType::$path['url'] . '/list'),
+                            'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url') . '/list'),
                             'icon'  => null,
                             'text'  => __('Attendance type'),
                             'image' => null,
@@ -290,79 +292,79 @@ class StudyController extends Controller
 
             $data['view']  = 'Study.includes.dashboard.index';
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study');
-        } elseif (strtolower($param1) == StudyPrograms::$path['url']) {
+        } elseif (strtolower($param1) == StudyPrograms::path('url')) {
             $view = new StudyProgramController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == Institute::$path['url'] && Auth::user()->role_id == 1) {
+        } elseif (strtolower($param1) == Institute::path('url') && Auth::user()->role_id == 1) {
             $view = new InstituteController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyCourse::$path['url']) {
+        } elseif (strtolower($param1) == StudyCourse::path('url')) {
             $view = new StudyCourseController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == CourseTypes::$path['url']) {
+        } elseif (strtolower($param1) == CourseTypes::path('url')) {
             $view = new CourseTypeController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyCourseSchedule::$path['url']) {
+        } elseif (strtolower($param1) == StudyCourseSchedule::path('url')) {
             $view = new StudyCourseScheduleController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyCourseSession::$path['url']) {
+        } elseif (strtolower($param1) == StudyCourseSession::path('url')) {
             $view = new StudyCourseSessionController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyCourseRoutine::$path['url']) {
+        } elseif (strtolower($param1) == StudyCourseRoutine::path('url')) {
             $view = new StudyCourseRoutineController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyModality::$path['url']) {
+        } elseif (strtolower($param1) == StudyModality::path('url')) {
             $view = new StudyModalityController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyOverallFund::$path['url']) {
+        } elseif (strtolower($param1) == StudyOverallFund::path('url')) {
             $view = new StudyOverallFundController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyFaculty::$path['url']) {
+        } elseif (strtolower($param1) == StudyFaculty::path('url')) {
             $view = new StudyFacultyController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyGeneration::$path['url']) {
+        } elseif (strtolower($param1) == StudyGeneration::path('url')) {
             $view = new StudyGenerationController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyAcademicYears::$path['url']) {
+        } elseif (strtolower($param1) == StudyAcademicYears::path('url')) {
             $view = new StudyAcademicYearController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudySemesters::$path['url']) {
+        } elseif (strtolower($param1) == StudySemesters::path('url')) {
             $view = new StudySemesterController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyStatus::$path['url']) {
+        } elseif (strtolower($param1) == StudyStatus::path('url')) {
             $view = new StudyStatusController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudySession::$path['url']) {
+        } elseif (strtolower($param1) == StudySession::path('url')) {
             $view = new StudySessionController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == CurriculumAuthor::$path['url']) {
+        } elseif (strtolower($param1) == CurriculumAuthor::path('url')) {
             $view = new CurriculumAuthorController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == CurriculumEndorsement::$path['url']) {
+        } elseif (strtolower($param1) == CurriculumEndorsement::path('url')) {
             $view = new CurriculumEndorsementController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudySubjects::$path['url']) {
+        } elseif (strtolower($param1) == StudySubjects::path('url')) {
             $view = new StudySubjectController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudySubjectLesson::$path['url']) {
+        } elseif (strtolower($param1) == StudySubjectLesson::path('url')) {
             $view = new StudySubjectLessonController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyClass::$path['url']) {
+        } elseif (strtolower($param1) == StudyClass::path('url')) {
             $view = new StudyClassController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == AttendancesType::$path['url']) {
-            $view = new AttendanceTypeController();
+        } elseif (strtolower($param1) == AttendanceTypes::path('url')) {
+            $view = new AttendanceTypesController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyGrade::$path['url']) {
+        } elseif (strtolower($param1) == StudyGrade::path('url')) {
             $view = new StudyGradeController();
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyShortCourseSchedule::$path['url']) {
+        } elseif (strtolower($param1) == StudyShortCourseSchedule::path('url')) {
             $view = new StudyShortCourseScheduleController;
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyShortCourseSession::$path['url']) {
+        } elseif (strtolower($param1) == StudyShortCourseSession::path('url')) {
             $view = new StudyShortCourseSessionController;
             return $view->index($param2, $param3);
-        } elseif (strtolower($param1) == StudyShortCourseRoutine::$path['url']) {
+        } elseif (strtolower($param1) == StudyShortCourseRoutine::path('url')) {
             $view = new StudyShortCourseRoutineController;
             return $view->index($param2, $param3);
         } else {

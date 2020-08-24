@@ -15,17 +15,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Quiz extends Model
 {
-    public static $path = [
-        'image'  => 'quiz',
-        'url'    => 'quiz',
-        'view'   => 'Quiz'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Quiz::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . Quiz::path('url') . '/add/'),
             ),
         );
 
@@ -92,12 +101,12 @@ class Quiz extends Model
                     'institute'     => Institute::getData($row['institute_id'])['data'][0],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Quiz::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/delete/' . $row['id']),
-                        'question_answer'  => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizQuestion::$path['url'] . '/list/?quizId=' . $row['id']),
+                        'edit' => url(Users::role() . '/' . Quiz::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . Quiz::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Quiz::path('url') . '/delete/' . $row['id']),
+                        'question_answer'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestion::path('url') . '/list/?quizId=' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -138,9 +147,9 @@ class Quiz extends Model
     public static function addToTable()
     {
         $response           = array();
-        $rules = FormQuiz::rulesField();
+        $rules = FormQuiz::rules();
         $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name';
-        $validator          = Validator::make(request()->all(), $rules, FormQuiz::customMessages(), FormQuiz::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormQuiz::messages(), FormQuiz::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -162,14 +171,14 @@ class Quiz extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Quiz::updateImageToTable($add, ImageHelper::uploadImage($image, Quiz::$path['image']));
+                        Quiz::updateImageToTable($add, ImageHelper::uploadImage($image, Quiz::path('image')));
                     }
                     $controller = new QuizController;
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(Quiz::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(Quiz::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -184,9 +193,9 @@ class Quiz extends Model
     {
 
         $response           = array();
-        $rules = FormQuiz::rulesField();
+        $rules = FormQuiz::rules();
         $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormQuiz::customMessages(), FormQuiz::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, FormQuiz::messages(), FormQuiz::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -207,7 +216,7 @@ class Quiz extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Quiz::updateImageToTable($id, ImageHelper::uploadImage($image, Quiz::$path['image']));
+                        Quiz::updateImageToTable($id, ImageHelper::uploadImage($image, Quiz::path('image')));
                     }
                     $controller = new QuizController;
                     $response       = array(
@@ -219,7 +228,7 @@ class Quiz extends Model
                             ]
 
                         ],
-                        'html'      => view(Quiz::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(Quiz::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -265,7 +274,7 @@ class Quiz extends Model
                     try {
                         $delete    = Quiz::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -279,7 +288,7 @@ class Quiz extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

@@ -75,9 +75,9 @@ class MailboxImportant extends Model
                     'subject' => $row['subject'],
                     'created_at' => $row['created_at'],
                     'action'    => [
-                        'view'  => url(Mailbox::$path['url'] . '/' . MailboxImportant::$path['url'] . '/view/' . $id),
-                        'move_trash'  => url(Mailbox::$path['url'] . '/' . MailboxImportant::$path['url'] . '/move-trash/' . $id),
-                        'delete'  => url(Mailbox::$path['url'] . '/' . MailboxImportant::$path['url'] . '/delete/' . $id),
+                        'view'  => url(Mailbox::path('url') . '/' . MailboxImportant::path('url') . '/view/' . $id),
+                        'move_trash'  => url(Mailbox::path('url') . '/' . MailboxImportant::path('url') . '/move-trash/' . $id),
+                        'delete'  => url(Mailbox::path('url') . '/' . MailboxImportant::path('url') . '/delete/' . $id),
                     ]
                 ];
 

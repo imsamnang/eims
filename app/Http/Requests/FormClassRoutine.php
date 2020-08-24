@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Translator;
 class FormClassRoutine extends FormRequest
 {
     /**
@@ -22,12 +21,12 @@ class FormClassRoutine extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
                 'class'                  => 'required',
                 'subject'                => 'required',
-                'day'                    => 'required',
+                'day'=> 'required',
                 'start_time_hour'        => 'required',
                 'start_time_minutes'     => 'required',
                 'start_time_meridiem'    => 'required',
@@ -37,12 +36,12 @@ class FormClassRoutine extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
             'class'                  => __('Class'),
             'subject'                => __('subjects'),
-            'day'                    => __('Day'),
+            'day'=> __('Day'),
             'start_time_hour'        => __('Start time hour'),
             'start_time_minutes'     => __('start time minutes'),
             'start_time_meridiem'    => __('start time meridiem'),
@@ -54,14 +53,13 @@ class FormClassRoutine extends FormRequest
         ];
     }
 
-    public static function questionField(){
+    public function questions(){
         return [];
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
 

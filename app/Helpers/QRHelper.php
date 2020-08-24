@@ -7,11 +7,20 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QRHelper
 {
-    public static $path = [
-        "image"  => "qrcode",
-        "url"    => "qrcode",
-        "view"   => "Qrcode",
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key)
+    {
+        $path = [
+            "image"  => "qrcode",
+            "url"    => "qrcode",
+            "view"   => "Qrcode",
+        ];
+        return $key ? @$path[$key] : $path;
+    }
+
     public static function make(array $object, $encode = null)
     {
         $defaults = array(
@@ -69,7 +78,7 @@ class QRHelper
     public static function encrypt($code, $query_string = "?fc")
     {
         $encrypt        = Encryption::encode($code);
-        $qrCodeWithUrl  = url(QRHelper::$path['url'] . $query_string . '=' . $encrypt);
+        $qrCodeWithUrl  = url(QRHelper::path('url') . $query_string . '=' . $encrypt);
         return $qrCodeWithUrl;
     }
 

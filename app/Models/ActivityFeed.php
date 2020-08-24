@@ -12,13 +12,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityFeed extends Model
 {
-    public static $path = [
-        'image'  => 'activity-feed',
-        'video'  => 'activity-feed',
-        'url'    => 'feed',
-        'view'   => 'ActivityFeed'
-    ];
-
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'video'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function getData($id = null, $paginate = 10)
     {
 
@@ -51,12 +59,12 @@ class ActivityFeed extends Model
                 $feed = array(
                     'id'            => $row['id'],
                     'user'          => Users::where('id', $row['user_id'])->get()->map(function ($row) {
-                        $row['profile'] = ImageHelper::site(Users::$path['image'], $row['profile']);
+                        $row['profile'] = ImageHelper::site(Users::path('image'), $row['profile']);
                         $row['role'] = Roles::where('id', $row->role_id)->pluck(app()->getLocale())->first();
                         $row['action']  = [
-                            'edit'   => url(Users::role() . '/' . Users::$path['url'] . '/edit/' . $row['id']),
-                            'view'   => url(Users::role() . '/' . Users::$path['url'] . '/view/' . $row['id']),
-                            'delete' => url(Users::role() . '/' . Users::$path['url'] . '/delete/' . $row['id']),
+                            'edit'   => url(Users::role() . '/' . Users::path('url') . '/edit/' . $row['id']),
+                            'view'   => url(Users::role() . '/' . Users::path('url') . '/view/' . $row['id']),
+                            'delete' => url(Users::role() . '/' . Users::path('url') . '/delete/' . $row['id']),
                         ];
 
                         return $row;
@@ -74,9 +82,9 @@ class ActivityFeed extends Model
                     'created_at'    => $row['created_at'],
                     'updated_at'    => $row['updated_at'],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . ActivityFeed::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . ActivityFeed::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . ActivityFeed::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . ActivityFeed::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . ActivityFeed::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . ActivityFeed::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 if ($row['who_see'] == 'only_me') {

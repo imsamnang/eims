@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Sponsored extends Model
 {
-    public static $path = [
-        'image'  => 'donate',
-        'url'    => 'sponsored',
-        'view'   => 'Sponsored'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $paginate = null, $random = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/add/'),
             ),
         );
 
@@ -75,12 +84,12 @@ class Sponsored extends Model
                     'name'          => $row['name'],
                     'link'          => $row['link'],
                     'description'   => $row['description'],
-                    'image'         => ImageHelper::site(Sponsored::$path['image'], $row['image']),
+                    'image'         => ImageHelper::site(Sponsored::path('image'), $row['image']),
                     'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -120,11 +129,11 @@ class Sponsored extends Model
                     'name'          => $row['name'],
                     'link'          => $row['link'],
                     'description'   => $row['description'],
-                    'image'         => ImageHelper::site(Sponsored::$path['image'], $row['image']),
+                    'image'         => ImageHelper::site(Sponsored::path('image'), $row['image']),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Sponsored::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -165,7 +174,7 @@ class Sponsored extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormSponsored::rulesField(), FormSponsored::customMessages(), FormSponsored::attributeField());
+        $validator          = Validator::make(request()->all(), FormSponsored::rules(), FormSponsored::messages(), FormSponsored::attributes());
 
         if (!request()->hasFile('image')) {
             return array(
@@ -202,7 +211,7 @@ class Sponsored extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Sponsored::updateImageToTable($add, ImageHelper::uploadImage($image, Sponsored::$path['image']));
+                        Sponsored::updateImageToTable($add, ImageHelper::uploadImage($image, Sponsored::path('image')));
                     }
 
                     $response       = array(
@@ -223,7 +232,7 @@ class Sponsored extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormSponsored::rulesField(), FormSponsored::customMessages(), FormSponsored::attributeField());
+        $validator          = Validator::make(request()->all(), FormSponsored::rules(), FormSponsored::messages(), FormSponsored::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -241,7 +250,7 @@ class Sponsored extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Sponsored::updateImageToTable($id, ImageHelper::uploadImage($image, Sponsored::$path['image']));
+                        Sponsored::updateImageToTable($id, ImageHelper::uploadImage($image, Sponsored::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -293,7 +302,7 @@ class Sponsored extends Model
                     try {
                         $delete    = Sponsored::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -307,7 +316,7 @@ class Sponsored extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

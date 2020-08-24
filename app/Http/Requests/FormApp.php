@@ -25,17 +25,17 @@ class FormApp extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         $rules = [
-                'name'                                            => 'required',
-                'phone'                                           => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
-                'email'                                           => 'required|email|min:10|max:50',
-                'address'                                         => 'required',
-                'website'                                         => 'required',
-                //'logo'                                          => 'required',
-                //'favicon'                                       => 'required',
-            ];
+            'name'                        => 'required',
+            'phone'                       => 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9',
+            'email'                       => 'required|email|min:10|max:50',
+            'address'                     => 'required',
+            'website'                     => 'required',
+            //'logo'                      => 'required',
+            //'favicon'                   => 'required',
+        ];
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
                 $rules[$lang['code_name']] =  'required';
@@ -44,17 +44,17 @@ class FormApp extends FormRequest
         return $rules;
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         $attributes = [
-                'name'                                            => __('App Name'),
-                'phone'                                           => __('Phone'),
-                'email'                                           => __('Email'),
-                'address'                                         => __('Address'),
-                'website'                                         => __('Website'),
-                'logo'                                            => __('Logo'),
-                'favicon'                                         => __('Favicon'),
-            ];
+            'name'                        => __('App Name'),
+            'phone'                       => __('Phone'),
+            'email'                       => __('Email'),
+            'address'                     => __('Address'),
+            'website'                     => __('Website'),
+            'logo'                        => __('Logo'),
+            'favicon'                     => __('Favicon'),
+        ];
 
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
@@ -64,13 +64,12 @@ class FormApp extends FormRequest
         return $attributes;
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

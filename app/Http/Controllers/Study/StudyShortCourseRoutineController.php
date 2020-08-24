@@ -41,7 +41,7 @@ class StudyShortCourseRoutineController extends Controller
         $data['days'] = Days::getData();
 
         $data['formData']       = [];
-        $data['formName']       = 'study/' . StudyShortCourseRoutine::$path['url'];
+        $data['formName']       = 'study/' . StudyShortCourseRoutine::path('url');
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -100,15 +100,15 @@ class StudyShortCourseRoutineController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyShortCourseRoutine::$path['view'],
+            'parent'     => StudyShortCourseRoutine::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyShortCourseRoutine::rulesField(),
-            'attributes'  =>  FormStudyShortCourseRoutine::attributeField(),
-            'messages'    =>  FormStudyShortCourseRoutine::customMessages(),
-            'questions'   =>  FormStudyShortCourseRoutine::questionField(),
+            'rules'       =>  FormStudyShortCourseRoutine::rules(),
+            'attributes'  =>  FormStudyShortCourseRoutine::attributes(),
+            'messages'    =>  FormStudyShortCourseRoutine::messages(),
+            'questions'   =>  FormStudyShortCourseRoutine::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -119,14 +119,14 @@ class StudyShortCourseRoutineController extends Controller
     public function list($data, $param1)
     {
         $data['response'] = StudyShortCourseRoutine::getData(null, 10);
-        $data['view']     = StudyShortCourseRoutine::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyShortCourseRoutine::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Short Course Routine');
         return $data;
     }
 
     public function add($data)
     {
-        $data['view']      = StudyShortCourseRoutine::$path['view'] . '.includes.form.index';
+        $data['view']      = StudyShortCourseRoutine::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Short Course Routine');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -137,7 +137,7 @@ class StudyShortCourseRoutineController extends Controller
     {
 
         $response = StudyShortCourseRoutine::getData(Encryption::decode($id)['stu_sh_c_session_id']);
-        $data['view']       = StudyShortCourseRoutine::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyShortCourseRoutine::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Edit Study Short Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/edit/' . $id);
@@ -150,7 +150,7 @@ class StudyShortCourseRoutineController extends Controller
     public function view($data, $id)
     {
         $response = StudyShortCourseRoutine::getData(Encryption::decode($id)['stu_sh_c_session_id'], true);
-        $data['view']       = StudyShortCourseRoutine::$path['view'] . '.includes.view.index';
+        $data['view']       = StudyShortCourseRoutine::path('view') . '.includes.view.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('View Study Short Course Routine');
         $data['metaImage']  = asset('assets/img/icons/register.png');
         $data['metaLink']   = url(Users::role() . '/view/' . $id);

@@ -9,15 +9,24 @@ use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\FormStudentsStudyCourse;
-use App\Http\Controllers\Student\StudentsStudyCourseController;
+use App\Http\Controllers\Students\StudentsStudyCourseController;
 
 class StudentsStudyCourse extends Model
 {
-    public static $path = [
-        'image'  => 'study-course',
-        'url'    => 'study-course',
-        'view'   => 'StudentsStudyCourse'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function studyStatus($query)
@@ -41,15 +50,15 @@ class StudentsStudyCourse extends Model
                         if (strpos($query->toSql(), 'institute_id') > 0) {
                             $value = $query->getBindings();
                             if ($value) {
-                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
+                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::path('url') . '/' . self::path('url') . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
                             }
                         } elseif (strpos($query->toSql(), 'study_program_id') > 0) {
                             $value = $query->getBindings();
                             if ($value) {
-                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?programId=' . $value[0] . '&statusId=' . $status['id']);
+                                $data[$status['id']]['link'] = url(Users::role() . '/' . Students::path('url') . '/' . self::path('url') . '/list/?programId=' . $value[0] . '&statusId=' . $status['id']);
                             }
                         } else {
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Students::$path['url'] . '/' . self::$path['url'] . '/list/?statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . Students::path('url') . '/' . self::path('url') . '/list/?statusId=' . $status['id']);
                         }
                     }
                 }
@@ -76,7 +85,7 @@ class StudentsStudyCourse extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rulesField('.*'), FormStudentsStudyCourse::customMessages(), FormStudentsStudyCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rules('.*'), FormStudentsStudyCourse::messages(), FormStudentsStudyCourse::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -104,7 +113,7 @@ class StudentsStudyCourse extends Model
                     $controller = new StudentsStudyCourseController;
                     $html = '';
                     foreach ($controller->list([], $sid) as  $row) {
-                        $html .= view(self::$path['view'] . '.includes.tpl.tr', ['row' => $row])->render();
+                        $html .= view(self::path('view') . '.includes.tpl.tr', ['row' => $row])->render();
                     }
 
                     $response       = array(
@@ -129,7 +138,7 @@ class StudentsStudyCourse extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rulesField('.*'), FormStudentsStudyCourse::customMessages(), FormStudentsStudyCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rules('.*'), FormStudentsStudyCourse::messages(), FormStudentsStudyCourse::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -167,7 +176,7 @@ class StudentsStudyCourse extends Model
                                 ]
 
                             ],
-                            'html'      => view(self::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                             'message'   =>  __('Update Successfully')
                         );
                     }
@@ -231,9 +240,9 @@ class StudentsStudyCourse extends Model
                 foreach ($get as $key => $row) {
                     if ($row['photo']) {
                         $data[] = array(
-                            'id'                      => $row['id'],
+                            'id'  => $row['id'],
                             'study_course_session'    => ($row['study_course_session_id'] == null ? null : StudyCourseSession::getData($row['study_course_session_id'])['data'][0]),
-                            'photo'                   => (ImageHelper::site(Students::$path['image'] . '/' . self::$path['image'], $row['photo'])),
+                            'photo'                   => (ImageHelper::site(Students::path('image') . '/' . self::path('image'), $row['photo'])),
                         );
                     }
                 }
@@ -264,7 +273,7 @@ class StudentsStudyCourse extends Model
 
             $photo = ImageHelper::uploadImage(
                 $photo,
-                Students::$path['image'] . '/' . self::$path['image'],
+                Students::path('image') . '/' . self::path('image'),
                 null,
                 request('photo')
             );
@@ -277,7 +286,7 @@ class StudentsStudyCourse extends Model
                         $response       = array(
                             'success'   => true,
                             'type'      => 'makePhoto',
-                            'data'      => ImageHelper::site(Students::$path['image'] . '/' . self::$path['image'], $photo),
+                            'data'      => ImageHelper::site(Students::path('image') . '/' . self::path('image'), $photo),
                             'message'   =>  __('Update Successfully'),
                         );
                     }
@@ -313,14 +322,14 @@ class StudentsStudyCourse extends Model
                         );
                     }
 
-                    $qrCode = ImageHelper::uploadImage(null,  Students::$path['image'] . '/' . QRHelper::$path['image'], null, QRHelper::make($q, true));
+                    $qrCode = ImageHelper::uploadImage(null,  Students::path('image') . '/' . QRHelper::path('image'), null, QRHelper::make($q, true));
 
                     if ($qrCode) {
                         try {
                             $table = self::where('id', $row['id']);
                             $exists = $table->pluck('qrcode');
                             if ($exists) {
-                                ImageHelper::delete(Students::$path['image'] . '/' . QRHelper::$path['image'], $exists->first());
+                                ImageHelper::delete(Students::path('image') . '/' . QRHelper::path('image'), $exists->first());
                             }
                             $table->update([
                                 'qrcode'  => $qrCode,
@@ -328,7 +337,7 @@ class StudentsStudyCourse extends Model
                         } catch (DomainException $e) {
                             return $e;
                         }
-                        return ImageHelper::site(Students::$path['image'] . '/' . QRHelper::$path['image'], $qrCode);
+                        return ImageHelper::site(Students::path('image') . '/' . QRHelper::path('image'), $qrCode);
                     }
                 })
             ];
@@ -357,14 +366,14 @@ class StudentsStudyCourse extends Model
                     $id .= $card['id'] . ',';
                 }
 
-                $image =  ImageHelper::uploadImage($card['image'], Students::$path['image'] . '/' . CardFrames::$path['image']);
+                $image =  ImageHelper::uploadImage($card['image'], Students::path('image') . '/' . CardFrames::path('image'));
                 if ($image) {
 
                     try {
                         $table = self::where('id', $card['id']);
                         $exists = $table->pluck('card');
                         if ($exists) {
-                            ImageHelper::delete(Students::$path['image'] . '/' . CardFrames::$path['image'], $exists->first());
+                            ImageHelper::delete(Students::path('image') . '/' . CardFrames::path('image'), $exists->first());
                         }
                         $table->update([
                             'card'  => $image,
@@ -400,7 +409,7 @@ class StudentsStudyCourse extends Model
                     $id .= $certificate['id'] . ',';
                 }
 
-                $image =  ImageHelper::uploadImage($certificate['image'], Students::$path['image'] . '/' . CertificateFrames::$path['image']);
+                $image =  ImageHelper::uploadImage($certificate['image'], Students::path('image') . '/' . CertificateFrames::path('image'));
                 if ($image) {
                     $table = self::where('id', $certificate['id']);
                     $exists = $table->get();

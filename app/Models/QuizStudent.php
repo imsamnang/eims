@@ -14,16 +14,26 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizStudent extends Model
 {
-    public static $path = [
-        'url'    => 'student',
-        'view'   => 'QuizStudent'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/add/'),
             ),
         );
 
@@ -84,7 +94,7 @@ class QuizStudent extends Model
                     'first_name'         => array_key_exists('first_name_' . app()->getLocale(), $student) ? $student['first_name_' . app()->getLocale()] : $student['first_name_en'],
                     'last_name'          => array_key_exists('last_name_' . app()->getLocale(), $student) ? $student['last_name_' . app()->getLocale()] : $student['last_name_en'],
                     'gender'    => $student['gender_id'] ? (Gender::getData($student['gender_id'])['data'][0]) : null,
-                    'photo'     => ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo'     => ImageHelper::site(Students::path('image'), $student['photo']),
                     'email' => $student['email'],
                     'phone' => $student['phone'],
                 ];
@@ -98,13 +108,13 @@ class QuizStudent extends Model
                     'student'      => [
                         'id'        =>  $student_study_course['id'],
                         'name'      =>  $node['first_name'] . ' ' . $node['last_name'],
-                        'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $student_study_course['photo'])) : $node['photo'],
+                        'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsStudyCourse::path('image'), $student_study_course['photo'])) : $node['photo'],
                         'node'      =>  $node,
                     ],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -152,7 +162,7 @@ class QuizStudent extends Model
                     'first_name'         => array_key_exists('first_name_' . app()->getLocale(), $student) ? $student['first_name_' . app()->getLocale()] : $student['first_name_en'],
                     'last_name'          => array_key_exists('last_name_' . app()->getLocale(), $student) ? $student['last_name_' . app()->getLocale()] : $student['last_name_en'],
                     'gender'    => $student['gender_id'] ? (Gender::getData($student['gender_id'])['data'][0]) : null,
-                    'photo'     => ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo'     => ImageHelper::site(Students::path('image'), $student['photo']),
                 ];
                 $quiz_answered = QuizStudentAnswer::getData($row['id']);
 
@@ -164,13 +174,13 @@ class QuizStudent extends Model
                     'student'      => [
                         'id'        =>  $student_study_course['id'],
                         'name'      =>  $student['first_name_km'] . ' ' . $student['last_name_km'] . ' - ' . $student['first_name_en'] . ' ' . $student['last_name_en'],
-                        'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsStudyCourse::$path['image'], $student_study_course['photo'])) : $node['photo'],
+                        'photo'     =>  $student_study_course['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsStudyCourse::path('image'), $student_study_course['photo'])) : $node['photo'],
                         'node'      =>  $node,
                     ],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
             })
@@ -216,7 +226,7 @@ class QuizStudent extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudent::rulesField(), FormQuizStudent::customMessages(), FormQuizStudent::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizStudent::rules(), FormQuizStudent::messages(), FormQuizStudent::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -290,7 +300,7 @@ class QuizStudent extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudent::rulesField(), FormQuizStudent::customMessages(), FormQuizStudent::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizStudent::rules(), FormQuizStudent::messages(), FormQuizStudent::attributes());
 
         if ($validator->fails()) {
             $response       = array(

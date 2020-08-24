@@ -36,7 +36,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FormQuizStudent;
 use App\Http\Requests\FormQuizStudentAnswerMarks;
 
-class QuizStudentController extends Controller
+class QuizStudentsController extends Controller
 {
 
 
@@ -58,7 +58,7 @@ class QuizStudentController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = Quiz::$path['url'] . '/' . QuizStudent::$path['url'];
+        $data['formName'] = Quiz::path('url') . '/' . QuizStudent::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -134,11 +134,11 @@ class QuizStudentController extends Controller
 
 
             $data = $this->show($data, $id, $param1);
-            $data['view']       = QuizStudent::$path['view'] . '.includes.form.index';
+            $data['view']       = QuizStudent::path('view') . '.includes.form.index';
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
-            $data['view']    = QuizStudent::$path['view'] . '.includes.view.index';
+            $data['view']    = QuizStudent::path('view') . '.includes.view.index';
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
             return QuizStudent::deleteFromTable($id);
@@ -173,26 +173,26 @@ class QuizStudentController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => QuizStudent::$path['view'],
+            'parent'     => QuizStudent::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormQuizStudent::rulesField(),
-            'attributes'  =>  FormQuizStudent::attributeField(),
-            'messages'    =>  FormQuizStudent::customMessages(),
-            'questions'   =>  FormQuizStudent::questionField(),
+            'rules'       =>  FormQuizStudent::rules(),
+            'attributes'  =>  FormQuizStudent::attributes(),
+            'messages'    =>  FormQuizStudent::messages(),
+            'questions'   =>  FormQuizStudent::questions(),
         ];
         $pages['form2']['validate'] = [
-            'rules'       =>  FormQuizStudentAnswerMarks::rulesField(),
-            'attributes'  =>  FormQuizStudentAnswerMarks::attributeField(),
-            'messages'    =>  FormQuizStudentAnswerMarks::customMessages(),
-            'questions'   =>  FormQuizStudentAnswerMarks::questionField(),
+            'rules'       =>  FormQuizStudentAnswerMarks::rules(),
+            'attributes'  =>  FormQuizStudentAnswerMarks::attributes(),
+            'messages'    =>  FormQuizStudentAnswerMarks::messages(),
+            'questions'   =>  FormQuizStudentAnswerMarks::questions(),
         ];
 
         //Select Option
         $data['instituteFilter']['data'] = Institute::whereIn('id', Quiz::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['quizFilter']['data'] = Quiz::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new Quiz)->getTable() . '.staff_id')
@@ -208,7 +208,7 @@ class QuizStudentController extends Controller
             ])
             ->map(function ($row) {
                 $row['name'] = $row->name . ' ( ' .  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en . ')';
-                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
                 return $row;
             });
 
@@ -225,7 +225,7 @@ class QuizStudentController extends Controller
             ])
             ->map(function ($row) {
                 $row['name'] = $row->quiz . ' ( ' .  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en . ')';
-                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
                 return $row;
             });
         $data['study_course_session']['data'] = StudyCourseSession::join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
@@ -275,7 +275,7 @@ class QuizStudentController extends Controller
 
                 $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Students::path('image'), $row['photo']) : ImageHelper::site(Students::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
 
                 $row['account'] = Users::where('email', $row->email)->where('node_id', $row->student_id)->exists();
                 $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
@@ -328,7 +328,7 @@ class QuizStudentController extends Controller
         ])->map(function ($row) {
             $row['name'] =  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
-            $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
             $row['total_score'] = QuizStudentAnswer::where('quiz_student_id', $row->id)->sum('score') . ' ' . __('score');
             $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
             $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
@@ -340,10 +340,10 @@ class QuizStudentController extends Controller
             $row['study'] = $row['study_program'] . ' (' . $row['study_course'] . ' - ' . $row['study_generation'] . ', ' . $row['study_academic_year'] . ', ' . $row['study_semester'] . ', ' . $row['study_session'] . ')';
 
             $row['action']   = [
-                'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/edit/' . $row['id']),
-                'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/view/' . $row['id']),
-                'auto-score' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/auto-score/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/delete/' . $row['id']),
+                'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
+                'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
+                'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/auto-score/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
             ];
             return $row;
         });
@@ -353,7 +353,7 @@ class QuizStudentController extends Controller
             'gender'    => Students::gender($table),
         ];
 
-        $data['view']     = QuizStudent::$path['view'] . '.includes.list.index';
+        $data['view']     = QuizStudent::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student');
         return $data;
     }
@@ -382,9 +382,9 @@ class QuizStudentController extends Controller
             ])->map(function ($row) {
                 $row['name'] =  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
-                $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+                $row['photo'] = $row['photo'] ? ImageHelper::site(Students::path('image'), $row['photo']) : ImageHelper::site(Students::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
 
-                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['total_score'] = QuizStudentAnswer::where('quiz_student_id', $row->id)->sum('score');
                 $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
                 $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
@@ -441,10 +441,10 @@ class QuizStudentController extends Controller
 
 
                 $row['action']   = [
-                    'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/edit/' . $row['id']),
-                    'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/view/' . $row['id']),
-                    'auto-score' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/auto-score/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/delete/' . $row['id']),
+                    'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
+                    'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
+                    'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/auto-score/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -458,7 +458,7 @@ class QuizStudentController extends Controller
                 'name'  => $row->name,
                 'image'  => $row->photo,
                 'action'  => [
-                    'edit'   => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizStudent::$path['url'] . '/edit/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
                 ],
             ];
         });
@@ -476,12 +476,12 @@ class QuizStudentController extends Controller
         ]);
 
         config()->set('app.title', __('List Quiz'));
-        config()->set('pages.parent', QuizStudent::$path['view']);
+        config()->set('pages.parent', QuizStudent::path('view'));
 
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', Quiz::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
         $data['quizFilter']['data'] = Quiz::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new Quiz)->getTable() . '.staff_id')
@@ -497,7 +497,7 @@ class QuizStudentController extends Controller
             ])
             ->map(function ($row) {
                 $row['name'] = $row->name . ' ( ' .  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en . ')';
-                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
                 return $row;
             });
 
@@ -532,9 +532,9 @@ class QuizStudentController extends Controller
         ])->map(function ($row) use ($questions) {
             $row['name'] =  $row->first_name . ' ' . $row->last_name;
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
-            $row['photo'] = $row['photo'] ? ImageHelper::site(Students::$path['image'], $row['photo']) : ImageHelper::site(Students::$path['image'], ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
+            $row['photo'] = $row['photo'] ? ImageHelper::site(Students::path('image'), $row['photo']) : ImageHelper::site(Students::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
 
-            $row['image'] = $row['image'] ? ImageHelper::site(Quiz::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Quiz::path('image'), $row['image']) : ImageHelper::prefix();
             $row['total_score'] = QuizStudentAnswer::where('quiz_student_id', $row->id)->sum('score');
             $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
             $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
@@ -601,10 +601,10 @@ class QuizStudentController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Quiz'));
-        return view(QuizStudent::$path['view'] . '.includes.report.index', $data);
+        return view(QuizStudent::path('view') . '.includes.report.index', $data);
     }
 }

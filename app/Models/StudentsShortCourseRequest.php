@@ -14,17 +14,26 @@ use App\Http\Requests\FormStudentsShortCourseRequest;
 
 class StudentsShortCourseRequest extends Model
 {
-    public static $path = [
-        'image'  => 'short-course-request',
-        'url'    => 'short-course-request',
-        'view'   => 'StudentsShortCourseRequest'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $student_id = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . Students::$path['url'] . '/'  . StudentsShortCourseRequest::$path['url'] . '/add?ref=' . request('ref')),
+                'add'    => url(Users::role() . '/' . Students::path('url') . '/'  . StudentsShortCourseRequest::path('url') . '/add?ref=' . request('ref')),
             ),
         );
 
@@ -50,7 +59,7 @@ class StudentsShortCourseRequest extends Model
         if ($id) {
             $get = $get->whereIn((new StudentsShortCourseRequest())->getTable() . '.id', $id);
         } else {
-            if (request('ref') == StudentsStudyShortCourse::$path['url']) {
+            if (request('ref') == StudentsStudyShortCourse::path('url')) {
                 $get = $get->where('status', '0');
             }
             if ($student_id) {
@@ -87,15 +96,15 @@ class StudentsShortCourseRequest extends Model
                 $student = Students::where('id', $row['student_id'])->first(['first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'email', 'phone', 'photo'])->toArray();
 
                 $action = [
-                    'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/edit/' . $row['id']),
-                    'view'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/view/' . $row['id']),
-                    'approve'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/add?studRequestId=' . $row['id']),
-                    'delete'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/delete/' . $row['id']),
+                    'edit'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/edit/' . $row['id']),
+                    'view'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/view/' . $row['id']),
+                    'approve'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/add?studRequestId=' . $row['id']),
+                    'delete'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/delete/' . $row['id']),
                 ];
-                if (request('ref') == Students::$path['url'] . '-' . StudentsShortCourseRequest::$path['url']) {
-                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['view']);
-                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['edit']);
-                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' . StudentsShortCourseRequest::$path['url'], $action['delete']);
+                if (request('ref') == Students::path('url') . '-' . StudentsShortCourseRequest::path('url')) {
+                    $action['view'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' . StudentsShortCourseRequest::path('url'), $action['view']);
+                    $action['edit'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' . StudentsShortCourseRequest::path('url'), $action['edit']);
+                    $action['delete'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' . StudentsShortCourseRequest::path('url'), $action['delete']);
                 }
 
                 $data[$key]         = array(
@@ -108,11 +117,11 @@ class StudentsShortCourseRequest extends Model
                     'study_session'       => StudySession::getData($row['study_session_id'])['data'][0],
                     'description'   => $row['description'],
                     'status'        => $status ? __('Approved') : __('Requesting'),
-                    'photo'         => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsShortCourseRequest::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo'         => $row['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsShortCourseRequest::path('image'), $row['photo'])) : ImageHelper::site(Students::path('image'), $student['photo']),
                     'action'        => $action
                 );
 
-                if (request('ref') == StudentsStudyShortCourse::$path['url']) {
+                if (request('ref') == StudentsStudyShortCourse::path('url')) {
                     $data[$key]['name'] .= ' - (' . $data[$key]['study_subject']['name'] . ')';
                     $data[$key]['name'] .= ' (' . $data[$key]['study_session']['name'] . ')';
                 }
@@ -181,15 +190,15 @@ class StudentsShortCourseRequest extends Model
                 $student = Students::where('id', $row['student_id'])->first(['first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'email', 'phone', 'photo'])->toArray();
 
                 $action = [
-                    'edit'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/edit/' . $row['id']),
-                    'view'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/view/' . $row['id']),
-                    'approve'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/add?studRequestId=' . $row['id']),
-                    'delete'           => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'] . '/delete/' . $row['id']),
+                    'edit'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/edit/' . $row['id']),
+                    'view'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/view/' . $row['id']),
+                    'approve'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/add?studRequestId=' . $row['id']),
+                    'delete'           => url(Users::role() . '/' . Students::path('url') . '/' . StudentsShortCourseRequest::path('url') . '/delete/' . $row['id']),
                 ];
-                if (request('ref') == Students::$path['url'] . '-' . StudentsShortCourseRequest::$path['url']) {
-                    $action['view'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['view']);
-                    $action['edit'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['edit']);
-                    $action['delete'] = str_replace(Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['url'], 'study' . '/' .  StudentsShortCourseRequest::$path['url'], $action['delete']);
+                if (request('ref') == Students::path('url') . '-' . StudentsShortCourseRequest::path('url')) {
+                    $action['view'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' .  StudentsShortCourseRequest::path('url'), $action['view']);
+                    $action['edit'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' .  StudentsShortCourseRequest::path('url'), $action['edit']);
+                    $action['delete'] = str_replace(Students::path('url') . '/' . StudentsShortCourseRequest::path('url'), 'study' . '/' .  StudentsShortCourseRequest::path('url'), $action['delete']);
                 }
 
                 return [
@@ -202,7 +211,7 @@ class StudentsShortCourseRequest extends Model
                     'study_session'       => StudySession::getData($row['study_session_id'])['data'][0],
                     'description'   => $row['description'],
                     'status'        => $status ? __('Approved') : __('Requesting'),
-                    'photo'         => $row['photo'] ? (ImageHelper::site(Students::$path['image'] . '/' . StudentsShortCourseRequest::$path['image'], $row['photo'])) : ImageHelper::site(Students::$path['image'], $student['photo']),
+                    'photo'         => $row['photo'] ? (ImageHelper::site(Students::path('image') . '/' . StudentsShortCourseRequest::path('image'), $row['photo'])) : ImageHelper::site(Students::path('image'), $student['photo']),
                     'action'        => $action
                 ];
             })
@@ -223,7 +232,7 @@ class StudentsShortCourseRequest extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsShortCourseRequest::rulesField('.*'), FormStudentsShortCourseRequest::customMessages('.*'), FormStudentsShortCourseRequest::attributeField('.*'));
+        $validator          = Validator::make(request()->all(), FormStudentsShortCourseRequest::rules('.*'), FormStudentsShortCourseRequest::messages('.*'), FormStudentsShortCourseRequest::attributes('.*'));
 
         if ($validator->fails()) {
             $response       = array(
@@ -251,7 +260,7 @@ class StudentsShortCourseRequest extends Model
                         if ($add) {
                             if (count(request('student')) == 1 && request()->hasFile('photo')) {
                                 $image      = request()->file('photo');
-                                StudentsShortCourseRequest::updateImageToTable($add, ImageHelper::uploadImage($image, Students::$path['image'] . '/' . StudentsShortCourseRequest::$path['image']));
+                                StudentsShortCourseRequest::updateImageToTable($add, ImageHelper::uploadImage($image, Students::path('image') . '/' . StudentsShortCourseRequest::path('image')));
                             }
                             $sid  .= $add . ',';
                         }
@@ -283,7 +292,7 @@ class StudentsShortCourseRequest extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsShortCourseRequest::rulesField('.*'), FormStudentsShortCourseRequest::customMessages('.*'), FormStudentsShortCourseRequest::attributeField('.*'));
+        $validator          = Validator::make(request()->all(), FormStudentsShortCourseRequest::rules('.*'), FormStudentsShortCourseRequest::messages('.*'), FormStudentsShortCourseRequest::attributes('.*'));
 
         if ($validator->fails()) {
             $response       = array(
@@ -319,7 +328,7 @@ class StudentsShortCourseRequest extends Model
                         if ($update) {
                             if (request()->hasFile('photo')) {
                                 $image      = request()->file('photo');
-                                StudentsShortCourseRequest::updateImageToTable($id, ImageHelper::uploadImage($image, Students::$path['url'] . '/' . StudentsShortCourseRequest::$path['image']));
+                                StudentsShortCourseRequest::updateImageToTable($id, ImageHelper::uploadImage($image, Students::path('url') . '/' . StudentsShortCourseRequest::path('image')));
                             }
                             $response       = array(
                                 'success'   => true,

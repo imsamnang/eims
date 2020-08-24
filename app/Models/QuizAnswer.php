@@ -11,17 +11,26 @@ use Illuminate\Support\Facades\Validator;
 
 class QuizAnswer extends Model
 {
-    public static $path = [
-        'image'  => 'question',
-        'url'    => 'question',
-        'view'   => 'QuizAnswer'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($quiz_question_id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . QuizAnswer::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . QuizAnswer::path('url') . '/add/'),
             ),
         );
 
@@ -63,9 +72,9 @@ class QuizAnswer extends Model
                     'answer'        => $row['answer'],
                     'correct_answer' => $row['correct_answer'],
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswer::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswer::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Quiz::$path['url'] . '/' . QuizAnswer::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswer::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswer::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswer::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -98,7 +107,7 @@ class QuizAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizAnswer::rulesField('.*'), FormQuizAnswer::customMessages(), FormQuizAnswer::attributeField('.*'));
+        $validator          = Validator::make(request()->all(), FormQuizAnswer::rules('.*'), FormQuizAnswer::messages(), FormQuizAnswer::attributes('.*'));
 
         if ($validator->fails()) {
             $response       = array(
@@ -135,7 +144,7 @@ class QuizAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizAnswer::rulesField('.*'), FormQuizAnswer::customMessages(), FormQuizAnswer::attributeField('.*'));
+        $validator          = Validator::make(request()->all(), FormQuizAnswer::rules('.*'), FormQuizAnswer::messages(), FormQuizAnswer::attributes('.*'));
 
         if ($validator->fails()) {
             $response       = array(
@@ -193,7 +202,7 @@ class QuizAnswer extends Model
                     try {
                         $delete    = QuizAnswer::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -207,7 +216,7 @@ class QuizAnswer extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

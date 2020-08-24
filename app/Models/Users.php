@@ -20,11 +20,20 @@ use Laravolt\Avatar\Avatar;
 
 class Users extends Model
 {
-    public static $path = [
-        'image'  => 'profile',
-        'url'    => 'user',
-        'view'   => 'Users'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public function institute()
     {
@@ -66,7 +75,7 @@ class Users extends Model
                 );
             }
         }
-        $validator          = Validator::make(request()->all(), FormUsers::rulesField(), FormUsers::customMessages(), FormUsers::attributeField());
+        $validator          = Validator::make(request()->all(), FormUsers::rules(), FormUsers::messages(), FormUsers::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -109,7 +118,7 @@ class Users extends Model
 
                         if (request()->hasFile('profile')) {
                             $image      = request()->file('profile');
-                            Users::updateImageToTable($add, ImageHelper::uploadImage($image, Users::$path['image']));
+                            Users::updateImageToTable($add, ImageHelper::uploadImage($image, Users::path('image')));
                         }
 
                         $response       = array(
@@ -140,13 +149,13 @@ class Users extends Model
         $response           = array();
 
         $rule = [];
-        foreach (FormUsers::rulesField() as $key => $value) {
+        foreach (FormUsers::rules() as $key => $value) {
             if ($key != 'password')
                 $rule[$key] = $value;
         }
 
 
-        $validator          = Validator::make(request()->all(), $rule, FormUsers::customMessages(), FormUsers::attributeField());
+        $validator          = Validator::make(request()->all(), $rule, FormUsers::messages(), FormUsers::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -173,7 +182,7 @@ class Users extends Model
                 if ($update) {
                     if (request()->hasFile('profile')) {
                         $image      = request()->file('profile');
-                        Users::updateImageToTable($id, ImageHelper::uploadImage($image, Users::$path['image']));
+                        Users::updateImageToTable($id, ImageHelper::uploadImage($image, Users::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -225,7 +234,7 @@ class Users extends Model
                     try {
                         $delete    = Users::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -239,7 +248,7 @@ class Users extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [
@@ -301,7 +310,7 @@ class Users extends Model
     }
     public static function register()
     {
-        $validator          = Validator::make(request()->all(), FormUsers::rulesField2(), FormStaff::customMessages(), FormStaff::attributeField());
+        $validator          = Validator::make(request()->all(), FormUsers::rules2(), FormStaff::messages(), FormStaff::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -332,7 +341,7 @@ class Users extends Model
                     'institute_id' => request('institute'),
                     'role_id' => Students::$path['roleId'],
                 ]);
-                //ImageHelper::uploadImage(false, Students::$path['image'], (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
+                //ImageHelper::uploadImage(false, Students::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
             }
             // if (request('teacher_or_student') == 6) {
             // } else {
@@ -360,7 +369,7 @@ class Users extends Model
             //             'node_id' => $add,
             //             'role_id' => 8,
             //         ]);
-            //         //ImageHelper::uploadImage(false, Staff::$path['image'], (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
+            //         //ImageHelper::uploadImage(false, Staff::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
             //     }
             // }
 

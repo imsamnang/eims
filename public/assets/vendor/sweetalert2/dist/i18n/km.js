@@ -13,6 +13,6 @@ window.sweetalert2_i18n = {
     "Deleted": "បានលុប",
     "Saving data": "កំពុងរក្សាទុកទិន្នន័យ...",
     "Updating data": "កំពុងធ្វើការកែប្រែទិន្នន័យ...",
-    "Adjusting" : "កំពុងធ្វើការកំណត់...",
+    "Customizing" : "កំពុងធ្វើការកំណត់...",
     "Results" : "លទ្ធផល",
 };

@@ -14,12 +14,20 @@ use Illuminate\Support\Facades\Validator;
 
 class StudySubjects extends Model
 {
-    public static $path = [
-        'image'  => 'study-subject',
-        'file'  => 'study-subject',
-        'url'    => 'subject',
-        'view'   => 'StudySubject'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     protected $fillable = [
         'name', 'image',
@@ -30,7 +38,7 @@ class StudySubjects extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudySubjects::path('url') . '/add/'),
             ),
         );
 
@@ -84,8 +92,8 @@ class StudySubjects extends Model
 
             foreach ($get as $key => $row) {
                 $data[$key]                       = array(
-                    'id'                       => $row['id'],
-                    'name'                     => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    'id'   => $row['id'],
+                    'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'course_type'              => CourseTypes::getData($row['course_type_id'])['data'][0],
                     'full_mark_theory'         => $row['full_mark_theory'],
                     'pass_mark_theory'         => $row['pass_mark_theory'],
@@ -93,12 +101,12 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
-                    'file'                     => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
-                    'image'                    =>  $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'file' => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
+                    'image' =>  $row['image'] ? (ImageHelper::site(StudySubjects::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'                   => [
-                        'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/delete/' . $row['id']), //?id
                     ]
                 );
                 $pages['listData'][] = array(
@@ -145,8 +153,8 @@ class StudySubjects extends Model
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
                 return [
-                    'id'                       => $row['id'],
-                    'name'                     => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    'id'   => $row['id'],
+                    'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'course_type'              => CourseTypes::getData($row['course_type_id'])['data'][0],
                     'full_mark_theory'         => $row['full_mark_theory'],
                     'pass_mark_theory'         => $row['pass_mark_theory'],
@@ -154,12 +162,12 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
-                    'image'                    => $row['image'] ? (ImageHelper::site(StudySubjects::$path['image'], $row['image'])) : ImageHelper::prefix(),
-                    'file'                     => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
+                    'image' => $row['image'] ? (ImageHelper::site(StudySubjects::path('image'), $row['image'])) : ImageHelper::prefix(),
+                    'file' => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
                     'action'                   => [
-                        'edit' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudySubjects::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/delete/' . $row['id']), //?id
                     ]
 
                 ];
@@ -207,7 +215,7 @@ class StudySubjects extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjects::rulesField(), FormStudySubjects::customMessages(), FormStudySubjects::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudySubjects::rules(), FormStudySubjects::messages(), FormStudySubjects::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -241,9 +249,9 @@ class StudySubjects extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudySubjects::updateImageToTable($add, ImageHelper::uploadImage($image, StudySubjects::$path['image']));
+                        StudySubjects::updateImageToTable($add, ImageHelper::uploadImage($image, StudySubjects::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudySubjects::$path['image'], null, public_path('/assets/img/icons/image.jpg'));
+                        ImageHelper::uploadImage(false, StudySubjects::path('image'), null, public_path('/assets/img/icons/image.jpg'));
                     }
 
 
@@ -267,7 +275,7 @@ class StudySubjects extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjects::rulesField(), FormStudySubjects::customMessages(), FormStudySubjects::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudySubjects::rules(), FormStudySubjects::messages(), FormStudySubjects::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -300,7 +308,7 @@ class StudySubjects extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudySubjects::updateImageToTable($id, ImageHelper::uploadImage($image, StudySubjects::$path['image']));
+                        StudySubjects::updateImageToTable($id, ImageHelper::uploadImage($image, StudySubjects::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -351,7 +359,7 @@ class StudySubjects extends Model
                     try {
                         $delete    = StudySubjects::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -365,7 +373,7 @@ class StudySubjects extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

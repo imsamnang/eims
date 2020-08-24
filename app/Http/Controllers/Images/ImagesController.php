@@ -32,20 +32,20 @@ class ImagesController extends Controller
 
         if (strtolower($param1) == 'manager') {
            return ImageHelper::generate();
-        } elseif (strtolower($param1) == Staff::$path['image']) {
-            $this->response = ImageHelper::getImage($param2, Staff::$path['image'], request('type'), request('w'), request('h'), request('q'));
-        } else if (strtolower($param1) == Students::$path['image']) {
+        } elseif (strtolower($param1) == Staff::path('image')) {
+            $this->response = ImageHelper::getImage($param2, Staff::path('image'), request('type'), request('w'), request('h'), request('q'));
+        } else if (strtolower($param1) == Students::path('image')) {
             if (in_array($param2, [
-                StudentsStudyCourse::$path['image'],
-                QRHelper::$path['image'],
-                CardFrames::$path['image'],
-                CertificateFrames::$path['image'],
-                StudentsRequest::$path['image'],
-                StudentsShortCourseRequest::$path['image'],
+                StudentsStudyCourse::path('image'),
+                QRHelper::path('image'),
+                CardFrames::path('image'),
+                CertificateFrames::path('image'),
+                StudentsRequest::path('image'),
+                StudentsShortCourseRequest::path('image'),
             ])) {
-                $this->response = ImageHelper::getImage($param3, Students::$path['image'] . '/' . $param2, request('type'));
+                $this->response = ImageHelper::getImage($param3, Students::path('image') . '/' . $param2, request('type'));
             } else {
-                $this->response = ImageHelper::getImage($param2, Students::$path['image'], request('type'), request('w'), request('h'), request('q'));
+                $this->response = ImageHelper::getImage($param2, Students::path('image'), request('type'), request('w'), request('h'), request('q'));
             }
         } else {
             $this->response = ImageHelper::getImage($param2, $param1, request('type'), request('w'), request('h'), request('q'));

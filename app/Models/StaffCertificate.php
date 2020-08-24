@@ -7,23 +7,32 @@ use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\FormStaffCertificate;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Staff\StaffCertificateController;
+use App\Http\Controllers\Staff\StaffCertificateFramesController;
 use Illuminate\Support\Facades\Auth;
 
 class StaffCertificate extends Model
 {
-    public static $path = [
-        'image'  => 'staff-certificate',
-        'url'    => 'certificate',
-        'view'   => 'StaffCertificate'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffCertificate::rulesField(), FormStaffCertificate::customMessages(), FormStaffCertificate::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffCertificate::rules(), FormStaffCertificate::messages(), FormStaffCertificate::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -49,15 +58,15 @@ class StaffCertificate extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffCertificate::updateImageToTable($add, ImageHelper::uploadImage($image, StaffCertificate::$path['image']));
+                        StaffCertificate::updateImageToTable($add, ImageHelper::uploadImage($image, StaffCertificate::path('image')));
                     }
 
-                    $controller = new StaffCertificateController;
+                    $controller = new StaffCertificateFramesController;
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(StaffCertificate::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(StaffCertificate::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -72,7 +81,7 @@ class StaffCertificate extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffCertificate::rulesField(), FormStaffCertificate::customMessages(), FormStaffCertificate::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffCertificate::rules(), FormStaffCertificate::messages(), FormStaffCertificate::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -96,9 +105,9 @@ class StaffCertificate extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffCertificate::updateImageToTable($id, ImageHelper::uploadImage($image, StaffCertificate::$path['image']));
+                        StaffCertificate::updateImageToTable($id, ImageHelper::uploadImage($image, StaffCertificate::path('image')));
                     }
-                    $controller = new StaffCertificateController;
+                    $controller = new StaffCertificateFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
@@ -108,7 +117,7 @@ class StaffCertificate extends Model
                             ]
 
                         ],
-                        'html'      => view(StaffCertificate::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(StaffCertificate::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -154,7 +163,7 @@ class StaffCertificate extends Model
                     try {
                         $delete    = StaffCertificate::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -168,7 +177,7 @@ class StaffCertificate extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

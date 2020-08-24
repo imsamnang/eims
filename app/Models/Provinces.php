@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Provinces extends Model
 {
-    public static $path = [
-        'image'         => 'province',
-        'url'           => 'province',
-        'view'          => 'Cambodia'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/'  . Provinces::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/general/'  . Provinces::path('url') . '/add/'),
             ),
         );
 
@@ -79,12 +88,12 @@ class Provinces extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Provinces::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Provinces::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
 
-                        'edit'      => url(Users::role() . '/general/' . Provinces::$path['url'] . '/edit/' . $row['id']),
-                        'view'      => url(Users::role() . '/general/' . Provinces::$path['url'] . '/view/' . $row['id']),
-                        'delete'    => url(Users::role() . '/general/' . Provinces::$path['url'] . '/delete/' . $row['id']),
+                        'edit'      => url(Users::role() . '/general/' . Provinces::path('url') . '/edit/' . $row['id']),
+                        'view'      => url(Users::role() . '/general/' . Provinces::path('url') . '/view/' . $row['id']),
+                        'delete'    => url(Users::role() . '/general/' . Provinces::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -131,11 +140,11 @@ class Provinces extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Provinces::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Provinces::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Provinces::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Provinces::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Provinces::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . Provinces::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . Provinces::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . Provinces::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -180,7 +189,7 @@ class Provinces extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormProvince::rulesField(), FormProvince::customMessages(), FormProvince::attributeField());
+        $validator          = Validator::make(request()->all(), FormProvince::rules(), FormProvince::messages(), FormProvince::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -207,9 +216,9 @@ class Provinces extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Provinces::updateImageToTable($add, ImageHelper::uploadImage($image, Provinces::$path['image']));
+                        Provinces::updateImageToTable($add, ImageHelper::uploadImage($image, Provinces::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Provinces::$path['image'], Provinces::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Provinces::path('image'), Provinces::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -230,7 +239,7 @@ class Provinces extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormProvince::rulesField(), FormProvince::customMessages(), FormProvince::attributeField());
+        $validator          = Validator::make(request()->all(), FormProvince::rules(), FormProvince::messages(), FormProvince::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -254,7 +263,7 @@ class Provinces extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Provinces::updateImageToTable($id, ImageHelper::uploadImage($image, Provinces::$path['image']));
+                        Provinces::updateImageToTable($id, ImageHelper::uploadImage($image, Provinces::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -306,7 +315,7 @@ class Provinces extends Model
                     try {
                         $delete    = Provinces::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -320,7 +329,7 @@ class Provinces extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

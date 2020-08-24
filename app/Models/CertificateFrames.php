@@ -4,18 +4,27 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\ImageHelper;
-use App\Http\Controllers\Certificate\CertificateController;
-use App\Http\Requests\FormCertificate;
+use App\Http\Controllers\CertificateFrames\CertificateFramesController;
+use App\Http\Requests\FormCertificateFrames;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 class CertificateFrames extends Model
 {
-    public static $path = [
-        'image'  => 'certificate',
-        'url'    => 'certificate',
-        'view'   => 'Certificate'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function addToTable()
@@ -30,10 +39,10 @@ class CertificateFrames extends Model
             );
         }
         $response           = array();
-        $rules = FormCertificate::rulesField();
+        $rules = (new FormCertificateFrames)->rules();
         $rules['name'] = 'required|unique:' . (new CertificateFrames)->getTable() . ',name';
 
-        $validator          = Validator::make(request()->all(), $rules, FormCertificate::customMessages(), FormCertificate::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, (new FormCertificateFrames)->messages(), (new FormCertificateFrames)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -56,14 +65,14 @@ class CertificateFrames extends Model
 
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'foreground');
+                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::path('image')), 'foreground');
                     }
 
-                    $controller = new CertificateController;
+                    $controller = new CertificateFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(CertificateFrames::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(CertificateFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -78,9 +87,9 @@ class CertificateFrames extends Model
     {
 
         $response           = array();
-        $rules = FormCertificate::rulesField();
+        $rules = (new FormCertificateFrames)->rules();
         $rules['name'] = 'required|unique:' . (new CertificateFrames)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormCertificate::customMessages(), FormCertificate::attributeField());
+        $validator          = Validator::make(request()->all(), $rules, (new FormCertificateFrames)->messages(), (new FormCertificateFrames)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -100,13 +109,13 @@ class CertificateFrames extends Model
                 if ($update) {
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::$path['image']), 'foreground');
+                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::path('image')), 'foreground');
                     }
-                    $controller = new CertificateController;
+                    $controller = new CertificateFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'html'      => view(CertificateFrames::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(CertificateFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -199,8 +208,8 @@ class CertificateFrames extends Model
                         $response       = array(
                             'success'   => true,
                             'data'      => CertificateFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
-                                $row['foreground'] = ImageHelper::site(CertificateFrames::$path['image'], $row->foreground, 'original');
-                                $row['background'] = ImageHelper::site(CertificateFrames::$path['image'], $row->background, 'original');
+                                $row['foreground'] = ImageHelper::site(CertificateFrames::path('image'), $row->foreground, 'original');
+                                $row['background'] = ImageHelper::site(CertificateFrames::path('image'), $row->background, 'original');
                                 return $row;
                             })->first(),
                             'message'   => __('Set as default successfully'),
@@ -245,6 +254,6 @@ class CertificateFrames extends Model
 
             ];
         }
-        return $response;
+        
     }
 }

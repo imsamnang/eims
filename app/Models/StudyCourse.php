@@ -14,11 +14,20 @@ use Illuminate\Support\Facades\Validator;
 
 class StudyCourse extends Model
 {
-    public static $path = [
-        'image'  => 'study-course',
-        'url'    => 'course',
-        'view'   => 'StudyCourse'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
 
@@ -26,7 +35,7 @@ class StudyCourse extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyCourse::path('url') . '/add/'),
             ),
         );
         $data = array();
@@ -91,15 +100,15 @@ class StudyCourse extends Model
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 foreach ($get as $key => $row) {
                     $data[$key] = [
-                        'id'                      => $row['id'],
+                        'id'  => $row['id'],
                         '_name'                   => $row['en'],
-                        'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                        'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                         'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
                         'study_generation'        => $row['study_generation_id'] == null ? null : StudyGeneration::getData($row['study_generation_id'])['data'][0],
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
                     ];
 
-                    if (request('ref') != StudentsStudyCourse::$path['image'] . '-certificate') {
+                    if (request('ref') != StudentsStudyCourse::path('image') . '-certificate') {
                         if ($data[$key]['study_program']) {
                             $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
                         }
@@ -111,8 +120,8 @@ class StudyCourse extends Model
 
                 foreach ($get as $key => $row) {
                     $data[$key]                   = array(
-                        'id'                      => $row['id'],
-                        'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                        'id'  => $row['id'],
+                        'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                         '_name'                   => $row['en'],
                         'description'             => $row['description'],
                         'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
@@ -124,20 +133,20 @@ class StudyCourse extends Model
                         'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
                         'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
 
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
                         'action'                   => [
-                            'edit' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']), //?id
-                            'view' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/view/' . $row['id']), //?id
-                            'delete' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/delete/' . $row['id']), //?id
+                            'edit' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/edit/' . $row['id']), //?id
+                            'view' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/view/' . $row['id']), //?id
+                            'delete' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/delete/' . $row['id']), //?id
                         ]
                     );
 
-                    if (request('ref') != StudentsStudyCourse::$path['image'] . '-certificate') {
+                    if (request('ref') != StudentsStudyCourse::path('image') . '-certificate') {
                         if ($data[$key]['study_program']) {
                             $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
                         }
                     }
-                    if (request('ref') == Students::$path['url'] . '-' . StudentsRequest::$path['url']) {
+                    if (request('ref') == Students::path('url') . '-' . StudentsRequest::path('url')) {
                         $data[$key]['name'] = $data[$key]['_name'];
                     }
 
@@ -182,8 +191,8 @@ class StudyCourse extends Model
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
                 return [
-                    'id'                      => $row['id'],
-                    'name'                    => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                    'id'  => $row['id'],
+                    'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     '_name'                   => $row['en'],
                     'description'             => $row['description'],
                     'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
@@ -195,11 +204,11 @@ class StudyCourse extends Model
                     'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
                     'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
 
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'                   => [
-                        'edit' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudyCourse::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/delete/' . $row['id']), //?id
                     ]
 
                 ];
@@ -248,7 +257,7 @@ class StudyCourse extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourse::rulesField(), FormStudyCourse::customMessages(), FormStudyCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourse::rules(), FormStudyCourse::messages(), FormStudyCourse::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -279,9 +288,9 @@ class StudyCourse extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyCourse::updateImageToTable($add, ImageHelper::uploadImage($image, StudyCourse::$path['image']));
+                        StudyCourse::updateImageToTable($add, ImageHelper::uploadImage($image, StudyCourse::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyCourse::$path['image'], StudyCourse::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, StudyCourse::path('image'), StudyCourse::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
 
                     $response       = array(
@@ -303,7 +312,7 @@ class StudyCourse extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourse::rulesField(), FormStudyCourse::customMessages(), FormStudyCourse::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyCourse::rules(), FormStudyCourse::messages(), FormStudyCourse::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -333,7 +342,7 @@ class StudyCourse extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyCourse::updateImageToTable($id, ImageHelper::uploadImage($image, StudyCourse::$path['image']));
+                        StudyCourse::updateImageToTable($id, ImageHelper::uploadImage($image, StudyCourse::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -394,7 +403,7 @@ class StudyCourse extends Model
                     try {
                         $delete    = StudyCourse::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -408,7 +417,7 @@ class StudyCourse extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

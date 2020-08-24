@@ -13,17 +13,26 @@ use App\Http\Requests\FormStudyAcademicYears;
 
 class StudyAcademicYears extends Model
 {
-    public static $path = [
-        'image'  => 'study-academic-year',
-        'url'    => 'academic-year',
-        'view'   => 'StudyAcademicYear'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/add/'),
             ),
         );
 
@@ -78,11 +87,11 @@ class StudyAcademicYears extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyAcademicYears::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyAcademicYears::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -131,11 +140,11 @@ class StudyAcademicYears extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyAcademicYears::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyAcademicYears::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyAcademicYears::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyAcademicYears::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -185,7 +194,7 @@ class StudyAcademicYears extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyAcademicYears::rulesField(), FormStudyAcademicYears::customMessages(), FormStudyAcademicYears::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyAcademicYears::rules(), FormStudyAcademicYears::messages(), FormStudyAcademicYears::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -210,9 +219,9 @@ class StudyAcademicYears extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyAcademicYears::updateImageToTable($add, ImageHelper::uploadImage($image, StudyAcademicYears::$path['image']));
+                        StudyAcademicYears::updateImageToTable($add, ImageHelper::uploadImage($image, StudyAcademicYears::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, StudyAcademicYears::$path['image'], StudyAcademicYears::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, StudyAcademicYears::path('image'), StudyAcademicYears::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
 
                     $response       = array(
@@ -233,7 +242,7 @@ class StudyAcademicYears extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyAcademicYears::rulesField(), FormStudyAcademicYears::customMessages(), FormStudyAcademicYears::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyAcademicYears::rules(), FormStudyAcademicYears::messages(), FormStudyAcademicYears::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -255,7 +264,7 @@ class StudyAcademicYears extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyAcademicYears::updateImageToTable($id, ImageHelper::uploadImage($image, StudyAcademicYears::$path['image']));
+                        StudyAcademicYears::updateImageToTable($id, ImageHelper::uploadImage($image, StudyAcademicYears::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -308,7 +317,7 @@ class StudyAcademicYears extends Model
                     try {
                         $delete    = StudyAcademicYears::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -322,7 +331,7 @@ class StudyAcademicYears extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

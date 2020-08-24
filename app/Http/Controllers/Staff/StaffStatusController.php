@@ -37,19 +37,19 @@ class StaffStatusController extends Controller
             [
                 'title' => __('Staff & Teacher'),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url']),
+                'link'  => url(Users::role() . '/' . Staff::path('url')),
             ],
             [
                 'title' => __('List Staff status'),
                 'status' => false,
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/list'),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/list'),
             ]
         ];
 
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = Staff::$path['url'] . '/' . StaffStatus::$path['url'];
+        $data['formName'] = Staff::path('url') . '/' . StaffStatus::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -70,7 +70,7 @@ class StaffStatusController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/' . $param1),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/' . $param1),
             ];
             if (request()->method() === 'POST') {
                 return StaffStatus::addToTable();
@@ -81,7 +81,7 @@ class StaffStatusController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
                 return StaffStatus::updateToTable($id);
@@ -92,10 +92,10 @@ class StaffStatusController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
-            $data['view']     = StaffStatus::$path['view'] . '.includes.view.index';
+            $data['view']     = StaffStatus::path('view') . '.includes.view.index';
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff status') . ' | '  . __('View');
         } elseif ($param1 == 'delete') {
             return StaffStatus::deleteFromTable($id);
@@ -126,24 +126,24 @@ class StaffStatusController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StaffStatus::$path['view'],
+            'parent'     => StaffStatus::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStaffStatus::rulesField(),
-            'attributes'  =>  FormStaffStatus::attributeField(),
-            'messages'    =>  FormStaffStatus::customMessages(),
-            'questions'   =>  FormStaffStatus::questionField(),
+            'rules'       =>  (new FormStaffStatus)->rules(),
+            'attributes'  =>  (new FormStaffStatus)->attributes(),
+            'messages'    =>  (new FormStaffStatus)->messages(),
+            'questions'   =>  (new FormStaffStatus)->questions(),
         ];
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffStatus::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -166,11 +166,11 @@ class StaffStatusController extends Controller
         $response = $table->get()->map(function ($row, $nid) use ($count) {
             $row['nid'] = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(StaffStatus::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(StaffStatus::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -179,22 +179,22 @@ class StaffStatusController extends Controller
             return  $response;
         }
         $data['response']['data'] = $response;
-        $data['view']     = StaffStatus::$path['view'] . '.includes.list.index';
+        $data['view']     = StaffStatus::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Staff status') . ' | '  . __('List');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = StaffStatus::$path['view'] . '.includes.form.index';
+        $data['view']       = StaffStatus::path('view') . '.includes.form.index';
         if ($id) {
 
             $response           = StaffStatus::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(StaffStatus::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(StaffStatus::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -204,7 +204,7 @@ class StaffStatusController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . Staff::$path['url'] . '/' . StaffStatus::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Staff::path('url') . '/' . StaffStatus::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -224,11 +224,11 @@ class StaffStatusController extends Controller
         ]);
 
         config()->set('app.title', __('Report') . ' | ' . __('Staff status'));
-        config()->set('pages.parent', StaffStatus::$path['view']);
+        config()->set('pages.parent', StaffStatus::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StaffStatus::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::$path['image'], $row->logo);
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -240,7 +240,7 @@ class StaffStatusController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(StaffStatus::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(StaffStatus::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -276,10 +276,10 @@ class StaffStatusController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Staff status'));
-        return view(StaffStatus::$path['view'] . '.includes.report.index', $data);
+        return view(StaffStatus::path('view') . '.includes.report.index', $data);
     }
 }

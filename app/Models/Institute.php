@@ -3,190 +3,33 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use App\Http\Requests\FormInstitute;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class Institute extends Model
 {
-    public static $path = [
-        'image'  => 'institute',
-        'url'    => 'institute',
-        'view'   => 'Institute'
-    ];
-
-    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
     {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/study/' . Institute::$path['url'] . '/add/'),
-            ),
-        );
-
-
-        $data = array();
-        $orderBy = 'DESC';
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-        $get = Institute::orderBy('id', $orderBy);
-
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'short_name'    => $row['short_name'],
-                    'website'       => $row['website'],
-                    'phone'         => $row['phone'],
-                    'address'       => $row['address'],
-                    'location'      => $row['location'],
-                    'description'   => $row['description'],
-                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
-                    ]
-                );
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-                if ($edit) {
-                    $data[$key]['name'] =  $row['name'];
-                    if (config('app.languages')) {
-                        foreach (config('app.languages') as $lang) {
-                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                        }
-                    }
-                }
-            }
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-    public static function getDataTable()
-    {
-        $model = Institute::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'short_name'    => $row['short_name'],
-                    'website'       => $row['website'],
-                    'phone'         => $row['phone'],
-                    'address'       => $row['address'],
-                    'location'      => $row['location'],
-                    'description'   => $row['description'],
-                    'image'         => $row['logo'] ? (ImageHelper::site(Institute::$path['image'], $row['logo'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . Institute::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . Institute::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . Institute::$path['url'] . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
     }
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormInstitute::rulesField(), FormInstitute::customMessages(), FormInstitute::attributeField());
+        $validator          = Validator::make(request()->all(), (new FormInstitute)->rules(), (new FormInstitute)->messages(), (new FormInstitute)->attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -212,21 +55,21 @@ class Institute extends Model
                     }
                 }
 
-                $add = Institute::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Institute::updateImageToTable($add, ImageHelper::uploadImage($image, Institute::$path['image']));
+                        self::updateImageToTable($add, ImageHelper::uploadImage($image, self::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Institute::$path['image'], Institute::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, self::path('image'), self::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => Institute::getData($add)['data'],
+                        'data'      => self::getData($add)['data'],
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -241,7 +84,7 @@ class Institute extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormInstitute::rulesField(), FormInstitute::customMessages(), FormInstitute::attributeField());
+        $validator          = Validator::make(request()->all(), (new FormInstitute)->rules(), (new FormInstitute)->messages(), (new FormInstitute)->attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -264,17 +107,17 @@ class Institute extends Model
                     }
                 }
 
-                $update = Institute::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
 
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Institute::updateImageToTable($id, ImageHelper::uploadImage($image, Institute::$path['image']));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => Institute::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => __('Update Successfully'),
                     );
                 }
@@ -293,7 +136,7 @@ class Institute extends Model
         );
         if ($image) {
             try {
-                $update =  Institute::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'logo'    => $image,
                 ]);
 
@@ -316,12 +159,12 @@ class Institute extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (Institute::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = Institute::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -335,7 +178,7 @@ class Institute extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [
@@ -344,6 +187,5 @@ class Institute extends Model
 
             ];
         }
-        return $response;
     }
 }

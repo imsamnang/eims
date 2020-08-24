@@ -22,7 +22,7 @@ use App\Http\Controllers\Study\StudyController;
 use App\Http\Controllers\users\usersController;
 use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Settings\SettingsController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
 use App\Http\Controllers\Mailbox\MailboxController;
@@ -49,17 +49,17 @@ class AdministratorController extends Controller
     {
         if (strtolower($param1) == null || strtolower($param1) == 'dashboard') {
             return $this->dashboard();
-        } elseif (strtolower($param1) == ActivityFeed::$path['url']) {
+        } elseif (strtolower($param1) == ActivityFeed::path('url')) {
             $view = new ActivityFeedController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Mailbox::$path['url']) {
+        } elseif (strtolower($param1) == Mailbox::path('url')) {
             $view = new MailboxController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Staff::$path['url']) {
+        } elseif (strtolower($param1) == Staff::path('url')) {
             $view = new StaffController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Students::$path['url']) {
-            $view = new StudentController();
+        } elseif (strtolower($param1) == Students::path('url')) {
+            $view = new StudentsController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == 'study') {
             $view = new StudyController();
@@ -67,16 +67,16 @@ class AdministratorController extends Controller
         } elseif (strtolower($param1) == 'general') {
             $view = new GeneralController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Users::$path['url']) {
+        } elseif (strtolower($param1) == Users::path('url')) {
             $view = new UsersController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == App::$path['url']) {
+        } elseif (strtolower($param1) == App::path('url')) {
             $view = new SettingsController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == 'profile') {
             $view = new ProfileController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Quiz::$path['url']) {
+        } elseif (strtolower($param1) == Quiz::path('url')) {
             $view = new QuizController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } else {
@@ -127,7 +127,7 @@ class AdministratorController extends Controller
         $data['staff'] = array(
             [
                 'title'   => __('Staff & Teacher'),
-                'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list'),
+                'link'    => url(Users::role() . '/' . Staff::path('url') . '/list'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
                 'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])),
@@ -140,10 +140,10 @@ class AdministratorController extends Controller
             foreach ($institutes as $row) {
                 $data['staff'][] = [
                     'title'   => $row->{app()->getLocale()},
-                    'link'    => url(Users::role() . '/' . Staff::$path['url'] . '/list?instituteId=' . $row->id),
+                    'link'    => url(Users::role() . '/' . Staff::path('url') . '/list?instituteId=' . $row->id),
                     'text'    => __('Staff & Teacher'),
                     'icon'    => 'fas fa-chalkboard-teacher',
-                    'image'   => ImageHelper::site(Institute::$path['url'], $row->image),
+                    'image'   => ImageHelper::site(Institute::path('url'), $row->image),
                     'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('institute_id', $row->id)),
                     'status'  => [], //Staff::staffStatus(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable().'.id', (new StaffInstitutes())->getTable().'.staff_id')->where('institute_id',$row['id'])),
                     'color'   => 'blue',
@@ -154,7 +154,7 @@ class AdministratorController extends Controller
         $data['student'] = array(
             [
                 'title'       => __('Students'),
-                'link'        => url(Users::role() . '/' . Students::$path['url'] . '/list'),
+                'link'        => url(Users::role() . '/' . Students::path('url') . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
                 'gender'      => Students::gender(new Students),
@@ -163,7 +163,7 @@ class AdministratorController extends Controller
             ],
             [
                 'title'       => __('Student study course'),
-                'link'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list'),
+                'link'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list'),
                 'icon'        => 'fas fa-user-graduate',
                 'image'       => null,
                 'gender'      => Students::gender(StudentsStudyCourse::join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
@@ -177,10 +177,10 @@ class AdministratorController extends Controller
             foreach ($institutes as $row) {
                 $data['student'][] = [
                     'title'   => $row->{app()->getLocale()},
-                    'link'    => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list?instituteId=' . $row->id),
+                    'link'    => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list?instituteId=' . $row->id),
                     'text'    => __('Student study course'),
                     'icon'    => 'fas fa-user-graduate',
-                    'image'   => $row->image ? ImageHelper::site(Institute::$path['url'], $row->image) : ImageHelper::prefix(),
+                    'image'   => $row->image ? ImageHelper::site(Institute::path('url'), $row->image) : ImageHelper::prefix(),
                     'gender'  => Students::gender(
                         StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
                             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
@@ -200,9 +200,9 @@ class AdministratorController extends Controller
             foreach ($studyPrograms as $row) {
                 $data['studyProgram'][] = [
                     'title'   => $row->{app()->getLocale()},
-                    'link'    => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/list?programId=' . $row->id),
+                    'link'    => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list?programId=' . $row->id),
                     'icon'    => null,
-                    'image'   => $row->image ? ImageHelper::site(StudyPrograms::$path['url'], $row->image) : ImageHelper::prefix(),
+                    'image'   => $row->image ? ImageHelper::site(StudyPrograms::path('url'), $row->image) : ImageHelper::prefix(),
                     'gender'  => Students::gender(
                         StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
                             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')

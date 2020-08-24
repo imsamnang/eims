@@ -23,7 +23,7 @@ class FormStudyShortCourseSession extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         return [
             'study_short_course_schedule'  => 'required',
@@ -33,7 +33,7 @@ class FormStudyShortCourseSession extends FormRequest
         ];
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         return [
             'study_short_course_schedule'      => __('Short course schedule'),
@@ -44,15 +44,14 @@ class FormStudyShortCourseSession extends FormRequest
         ];
     }
 
-    public static function questionField()
+    public function questions()
     {
         return array();
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return array();
     }

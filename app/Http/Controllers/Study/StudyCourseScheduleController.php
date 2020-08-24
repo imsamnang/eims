@@ -44,7 +44,7 @@ class StudyCourseScheduleController extends Controller
         $data['formData']       = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName']       = 'study/' . StudyCourseSchedule::$path['url'];
+        $data['formName']       = 'study/' . StudyCourseSchedule::path('url');
         $data['formAction']     = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -107,15 +107,15 @@ class StudyCourseScheduleController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudyCourseSchedule::$path['view'],
+            'parent'     => StudyCourseSchedule::path('view'),
             'view'       => $data['view'],
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudyCourseSchedule::rulesField(),
-            'attributes'  =>  FormStudyCourseSchedule::attributeField(),
-            'messages'    =>  FormStudyCourseSchedule::customMessages(),
-            'questions'   =>  FormStudyCourseSchedule::questionField(),
+            'rules'       =>  FormStudyCourseSchedule::rules(),
+            'attributes'  =>  FormStudyCourseSchedule::attributes(),
+            'messages'    =>  FormStudyCourseSchedule::messages(),
+            'questions'   =>  FormStudyCourseSchedule::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -125,14 +125,14 @@ class StudyCourseScheduleController extends Controller
 
     public function list($data, $param1)
     {
-        $data['view']     = StudyCourseSchedule::$path['view'] . '.includes.list.index';
+        $data['view']     = StudyCourseSchedule::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Course Schedule');
         return $data;
     }
 
     public function add($data)
     {
-        $data['view']      = StudyCourseSchedule::$path['view'] . '.includes.form.index';
+        $data['view']      = StudyCourseSchedule::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Course Schedule');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -142,7 +142,7 @@ class StudyCourseScheduleController extends Controller
     public function show($data, $id, $type)
     {
         $response = StudyCourseSchedule::getData($id, true);
-        $data['view']       = StudyCourseSchedule::$path['view'] . '.includes.form.index';
+        $data['view']       = StudyCourseSchedule::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Course Schedule');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

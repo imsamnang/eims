@@ -12,16 +12,26 @@ use App\Http\Controllers\Staff\StaffTeachSubjectController;
 
 class StaffTeachSubject extends Model
 {
-    public static $path = [
-        'url'    => 'teach-subject',
-        'view'   => 'StaffTeachSubject'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getTeachSubjects($id = null, $staff_id = null, $study_subject_id = null, $paginate = null, $groupByYear = true, $year = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/teaching/' . StaffTeachSubject::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/teaching/' . StaffTeachSubject::path('url') . '/add/'),
             ),
         );
 
@@ -78,7 +88,7 @@ class StaffTeachSubject extends Model
                         'study_subject' => $study_subject,
                         'lesson_count'    => StudySubjectLesson::where('staff_teach_subject_id', $row['id'])->count(),
                         'action'        => [
-                            'link' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/list?t-subjectId=' . $row['id']), //?id
+                            'link' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/list?t-subjectId=' . $row['id']), //?id
                         ],
                     ];
                     if (class_basename($getCallMethods['class']) == class_basename('StaffTeachSubjectController')) {
@@ -116,7 +126,7 @@ class StaffTeachSubject extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffTeachSubject::rulesField(), FormStaffTeachSubject::customMessages(), FormStaffTeachSubject::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffTeachSubject::rules(), FormStaffTeachSubject::messages(), FormStaffTeachSubject::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -153,7 +163,7 @@ class StaffTeachSubject extends Model
                         $response       = array(
                             'success'   => true,
                             'type'      => 'add',
-                            'html'      => view(StaffTeachSubject::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'html'      => view(StaffTeachSubject::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                             'message'   => __('Add Successfully'),
                         );
                     }
@@ -169,7 +179,7 @@ class StaffTeachSubject extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffTeachSubject::rulesField(), FormStaffTeachSubject::customMessages(), FormStaffTeachSubject::attributeField());
+        $validator          = Validator::make(request()->all(), FormStaffTeachSubject::rules(), FormStaffTeachSubject::messages(), FormStaffTeachSubject::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -214,7 +224,7 @@ class StaffTeachSubject extends Model
                                 ]
 
                             ],
-                            'html'      => view(StaffTeachSubject::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'html'      => view(StaffTeachSubject::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                             'message'   =>  __('Update Successfully')
                         );
                     }
@@ -243,7 +253,7 @@ class StaffTeachSubject extends Model
                     try {
                         $delete    = StaffTeachSubject::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -257,7 +267,7 @@ class StaffTeachSubject extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

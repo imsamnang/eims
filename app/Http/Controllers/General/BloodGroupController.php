@@ -37,7 +37,7 @@ class BloodGroupController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'general/' . BloodGroup::$path['url'];
+        $data['formName'] = 'general/' . BloodGroup::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -97,14 +97,14 @@ class BloodGroupController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => BloodGroup::$path['view'],
+            'parent'     => BloodGroup::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormBloodGroup::rulesField(),
-            'attributes'  =>  FormBloodGroup::attributeField(),
-            'messages'    =>  FormBloodGroup::customMessages(),
-            'questions'   =>  FormBloodGroup::questionField(),
+            'rules'       =>  FormBloodGroup::rules(),
+            'attributes'  =>  FormBloodGroup::attributes(),
+            'messages'    =>  FormBloodGroup::messages(),
+            'questions'   =>  FormBloodGroup::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -118,31 +118,31 @@ class BloodGroupController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->{app()->getLocale()};
-            $row['image'] = ImageHelper::site(BloodGroup::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(BloodGroup::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = BloodGroup::$path['view'] . '.includes.list.index';
+        $data['view']     = BloodGroup::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Blood group');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = BloodGroup::$path['view'] . '.includes.form.index';
+        $data['view']       = BloodGroup::path('view') . '.includes.form.index';
         if ($id) {
             $response           = BloodGroup::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -152,7 +152,7 @@ class BloodGroupController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'general/' . BloodGroup::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -172,7 +172,7 @@ class BloodGroupController extends Controller
         ]);
 
         config()->set('app.title', __('List Blood group'));
-        config()->set('pages.parent', BloodGroup::$path['view']);
+        config()->set('pages.parent', BloodGroup::path('view'));
 
 
         $table = new BloodGroup;
@@ -180,7 +180,7 @@ class BloodGroupController extends Controller
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->{app()->getLocale()};
-            $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(BloodGroup::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -216,10 +216,10 @@ class BloodGroupController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List Blood group'));
-        return view(BloodGroup::$path['view'] . '.includes.report.index', $data);
+        return view(BloodGroup::path('view') . '.includes.report.index', $data);
     }
 }

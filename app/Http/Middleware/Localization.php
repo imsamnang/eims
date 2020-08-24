@@ -23,15 +23,8 @@ class Localization
         foreach ($language  as $lang) {
             $locale[] = substr($lang, 0, 2);
         }
-        if (Cookie::has('locale')) {
-            $locale = Cookie::get('locale');
-            try {
-                $decrypted = Crypt::decryptString($locale);
-                App::setLocale($decrypted);
-            } catch (DecryptException $e) {
-                //
-            }
-
+        if (session('locale')) {
+                App::setLocale(session('locale'));
         } else {
             if (in_array('km', $locale, true)) {
                 App::setLocale('km');

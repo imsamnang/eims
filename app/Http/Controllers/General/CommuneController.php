@@ -38,7 +38,7 @@ class CommuneController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = 'general/' . Communes::$path['url'];
+        $data['formName'] = 'general/' . Communes::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -96,27 +96,27 @@ class CommuneController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => Communes::$path['view'],
+            'parent'     => Communes::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormDistrict::rulesField(),
-            'attributes'  =>  FormDistrict::attributeField(),
-            'messages'    =>  FormDistrict::customMessages(),
-            'questions'   =>  FormDistrict::questionField(),
+            'rules'       =>  FormDistrict::rules(),
+            'attributes'  =>  FormDistrict::attributes(),
+            'messages'    =>  FormDistrict::messages(),
+            'questions'   =>  FormDistrict::questions(),
         ];
         //Select Options
         $data['provinces'] = [
             'data'  => Provinces::get(['id', app()->getLocale() . ' as name']),
             'action' => [
-                'list'  => url(Users::role() . '/general/' . Provinces::$path['url'] . '/list/'),
+                'list'  => url(Users::role() . '/general/' . Provinces::path('url') . '/list/'),
             ]
         ];
 
         $data['districts'] = [
             'data'  => [],
             'action' => [
-                'list'  => url(Users::role() . '/general/' . Districts::$path['url'] . '/list/'),
+                'list'  => url(Users::role() . '/general/' . Districts::path('url') . '/list/'),
             ]
         ];
 
@@ -135,35 +135,35 @@ class CommuneController extends Controller
         $response = $table->get()->map(function ($row) {
 
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(Communes::$path['image'], $row['image']);
+            $row['image'] = ImageHelper::site(Communes::path('image'), $row['image']);
             $district = Districts::where('id', $row->district_id)->get()->first();
             $row['district'] = $district->{app()->getLocale()};
             $row['province'] = Provinces::where('id', $district->province_id)->pluck(app()->getLocale())->first();
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
         });
         $data['response']['data'] = $response;
-        $data['view']     = Communes::$path['view'] . '.includes.list.index';
+        $data['view']     = Communes::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List District');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = Communes::$path['view'] . '.includes.form.commune.index';
+        $data['view']       = Communes::path('view') . '.includes.form.commune.index';
         if ($id) {
 
             $response           = Communes::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(Communes::$path['image'], $row['image']) : ImageHelper::prefix();
+                $row['image'] = $row['image'] ? ImageHelper::site(Communes::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -173,7 +173,7 @@ class CommuneController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . 'general/' . Communes::$path['url'] . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . 'general/' . Communes::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -193,13 +193,13 @@ class CommuneController extends Controller
         ]);
 
         config()->set('app.title', __('List District'));
-        config()->set('pages.parent', Communes::$path['view']);
+        config()->set('pages.parent', Communes::path('view'));
 
         $table = new Communes;
 
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(Communes::$path['image'], $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(Communes::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -235,10 +235,10 @@ class CommuneController extends Controller
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
             ->map(function ($row) {
-                $row['logo'] = ImageHelper::site(Institute::$path['image'], $row['logo']);
+                $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
         config()->set('pages.title', __('List District'));
-        return view(Communes::$path['view'] . '.includes.report.index', $data);
+        return view(Communes::path('view') . '.includes.report.index', $data);
     }
 }

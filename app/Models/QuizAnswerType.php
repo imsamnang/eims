@@ -11,18 +11,27 @@ use App\Http\Controllers\Quiz\QuizAnswerTypeController;
 
 class QuizAnswerType extends Model
 {
-    public static $path = [
-        'image'  => 'quiz-answer-type',
-        'url'    => 'answer-type',
-        'view'   => 'QuizAnswerType'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizAnswerType::rulesField(), FormQuizAnswerType::customMessages(), FormQuizAnswerType::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizAnswerType::rules(), FormQuizAnswerType::messages(), FormQuizAnswerType::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -49,7 +58,7 @@ class QuizAnswerType extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        QuizAnswerType::updateImageToTable($add, ImageHelper::uploadImage($image, QuizAnswerType::$path['image']));
+                        QuizAnswerType::updateImageToTable($add, ImageHelper::uploadImage($image, QuizAnswerType::path('image')));
                     }
 
                     $controller = new QuizAnswerTypeController;
@@ -57,7 +66,7 @@ class QuizAnswerType extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(QuizAnswerType::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(QuizAnswerType::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -72,7 +81,7 @@ class QuizAnswerType extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizAnswerType::rulesField(), FormQuizAnswerType::customMessages(), FormQuizAnswerType::attributeField());
+        $validator          = Validator::make(request()->all(), FormQuizAnswerType::rules(), FormQuizAnswerType::messages(), FormQuizAnswerType::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -96,7 +105,7 @@ class QuizAnswerType extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        QuizAnswerType::updateImageToTable($id, ImageHelper::uploadImage($image, QuizAnswerType::$path['image']));
+                        QuizAnswerType::updateImageToTable($id, ImageHelper::uploadImage($image, QuizAnswerType::path('image')));
                     }
                     $controller = new QuizAnswerTypeController;
                     $response       = array(
@@ -108,7 +117,7 @@ class QuizAnswerType extends Model
                             ]
 
                         ],
-                        'html'      => view(QuizAnswerType::$path['view'] . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(QuizAnswerType::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -154,7 +163,7 @@ class QuizAnswerType extends Model
                     try {
                         $delete    = QuizAnswerType::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -168,7 +177,7 @@ class QuizAnswerType extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

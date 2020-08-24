@@ -30,7 +30,7 @@ class PhotoController extends Controller
         $data['formData'] = array(
             'photo' => asset('/assets/img/user/male.jpg'),
         );
-        $data['formName']     = Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'];
+        $data['formName']     = Students::path('url') . '/' . StudentsStudyCourse::path('url');
         $data['formAction']   = '/photo/crop';
         $data['listData']     = array();
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');

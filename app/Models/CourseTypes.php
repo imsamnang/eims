@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class CourseTypes extends Model
 {
-    public static $path = [
-        'image'  => 'course-type',
-        'url'    => 'course-type',
-        'view'   => 'CourseType'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . CourseTypes::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . CourseTypes::path('url') . '/add/'),
             ),
         );
 
@@ -74,11 +83,11 @@ class CourseTypes extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -127,11 +136,11 @@ class CourseTypes extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CourseTypes::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . CourseTypes::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . CourseTypes::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -176,7 +185,7 @@ class CourseTypes extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCourseTypes::rulesField(), FormCourseTypes::customMessages(), FormCourseTypes::attributeField());
+        $validator          = Validator::make(request()->all(), FormCourseTypes::rules(), FormCourseTypes::messages(), FormCourseTypes::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -200,9 +209,9 @@ class CourseTypes extends Model
                 if ($add) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CourseTypes::updateImageToTable($add, ImageHelper::uploadImage($image, CourseTypes::$path['image']));
+                        CourseTypes::updateImageToTable($add, ImageHelper::uploadImage($image, CourseTypes::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, CourseTypes::$path['image'], CourseTypes::$path['image'], public_path('/assets/img/icons/image.jpg', null, true));
+                        ImageHelper::uploadImage(false, CourseTypes::path('image'), CourseTypes::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
                     }
 
                     $response       = array(
@@ -222,7 +231,7 @@ class CourseTypes extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCourseTypes::rulesField(), FormCourseTypes::customMessages(), FormCourseTypes::attributeField());
+        $validator          = Validator::make(request()->all(), FormCourseTypes::rules(), FormCourseTypes::messages(), FormCourseTypes::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -244,7 +253,7 @@ class CourseTypes extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CourseTypes::updateImageToTable($id, ImageHelper::uploadImage($image, CourseTypes::$path['image']));
+                        CourseTypes::updateImageToTable($id, ImageHelper::uploadImage($image, CourseTypes::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -297,7 +306,7 @@ class CourseTypes extends Model
                     try {
                         $delete    = CourseTypes::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -311,7 +320,7 @@ class CourseTypes extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

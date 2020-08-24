@@ -23,7 +23,7 @@ class FormLanguages extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         $rules =  [
             'name'  => 'required',
@@ -41,7 +41,7 @@ class FormLanguages extends FormRequest
         return $rules;
     }
 
-    public static function attributeField()
+    public function attributes()
     {
 
         $attributes =  [
@@ -59,13 +59,12 @@ class FormLanguages extends FormRequest
         return $attributes;
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

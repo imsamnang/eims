@@ -13,17 +13,26 @@ use App\Http\Requests\FormCurriculumEndorsement;
 
 class CurriculumEndorsement extends Model
 {
-    public static $path = [
-        'image'  => 'curriculum-endorsement',
-        'url'    => 'curriculum-endorsement',
-        'view'   => 'CurriculumEndorsement'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null, $search = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/add/'),
             ),
         );
 
@@ -74,11 +83,11 @@ class CurriculumEndorsement extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -128,11 +137,11 @@ class CurriculumEndorsement extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(CurriculumEndorsement::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . CurriculumEndorsement::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . CurriculumEndorsement::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -177,7 +186,7 @@ class CurriculumEndorsement extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCurriculumEndorsement::rulesField(), FormCurriculumEndorsement::customMessages(), FormCurriculumEndorsement::attributeField());
+        $validator          = Validator::make(request()->all(), FormCurriculumEndorsement::rules(), FormCurriculumEndorsement::messages(), FormCurriculumEndorsement::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -202,9 +211,9 @@ class CurriculumEndorsement extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CurriculumEndorsement::updateImageToTable($add, ImageHelper::uploadImage($image, CurriculumEndorsement::$path['image']));
+                        CurriculumEndorsement::updateImageToTable($add, ImageHelper::uploadImage($image, CurriculumEndorsement::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, CurriculumEndorsement::$path['image'], CurriculumEndorsement::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, CurriculumEndorsement::path('image'), CurriculumEndorsement::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -225,7 +234,7 @@ class CurriculumEndorsement extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormCurriculumEndorsement::rulesField(), FormCurriculumEndorsement::customMessages(), FormCurriculumEndorsement::attributeField());
+        $validator          = Validator::make(request()->all(), FormCurriculumEndorsement::rules(), FormCurriculumEndorsement::messages(), FormCurriculumEndorsement::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -248,7 +257,7 @@ class CurriculumEndorsement extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        CurriculumEndorsement::updateImageToTable($id, ImageHelper::uploadImage($image, CurriculumEndorsement::$path['image']));
+                        CurriculumEndorsement::updateImageToTable($id, ImageHelper::uploadImage($image, CurriculumEndorsement::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -300,7 +309,7 @@ class CurriculumEndorsement extends Model
                     try {
                         $delete    = CurriculumEndorsement::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -314,7 +323,7 @@ class CurriculumEndorsement extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

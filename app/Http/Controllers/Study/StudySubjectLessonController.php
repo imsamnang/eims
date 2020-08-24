@@ -37,14 +37,14 @@ class StudySubjectLessonController extends Controller
 
 
         request()->merge([
-            'ref'   => StudySubjectLesson::$path['url']
+            'ref'   => StudySubjectLesson::path('url')
         ]);
 
         $data['staff_teach_subject'] = StaffTeachSubject::getData();
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/pdf.png'),
         );
-        $data['formName'] = 'study/' . StudySubjectLesson::$path['url'];
+        $data['formName'] = 'study/' . StudySubjectLesson::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
@@ -103,14 +103,14 @@ class StudySubjectLessonController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => StudySubjectLesson::$path['view'],
+            'parent'     => StudySubjectLesson::path('view'),
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudySubjectLesson::rulesField(),
-            'attributes'  =>  FormStudySubjectLesson::attributeField(),
-            'messages'    =>  FormStudySubjectLesson::customMessages(),
-            'questions'   =>  FormStudySubjectLesson::questionField(),
+            'rules'       =>  FormStudySubjectLesson::rules(),
+            'attributes'  =>  FormStudySubjectLesson::attributes(),
+            'messages'    =>  FormStudySubjectLesson::messages(),
+            'questions'   =>  FormStudySubjectLesson::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -121,14 +121,14 @@ class StudySubjectLessonController extends Controller
 
     public function list($data, $id = null)
     {
-        $data['view']     = StudySubjectLesson::$path['view'] . '.includes.list.index';
+        $data['view']     = StudySubjectLesson::path('view') . '.includes.list.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('List Study Lesson');
         return $data;
     }
     public function grid($data)
     {
         $data['response'] =  StudySubjectLesson::getData(null, null, 10);
-        $data['view']     = StudySubjectLesson::$path['view'] . '.includes.grid.index';
+        $data['view']     = StudySubjectLesson::path('view') . '.includes.grid.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Grid Study Lesson');
         return $data;
     }
@@ -136,7 +136,7 @@ class StudySubjectLessonController extends Controller
 
     public function add($data)
     {
-        $data['view']      = StudySubjectLesson::$path['view'] . '.includes.form.index';
+        $data['view']      = StudySubjectLesson::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Add Study Lesson');
         $data['metaImage'] = asset('assets/img/icons/register.png');
         $data['metaLink']  = url(Users::role() . '/add/');
@@ -148,7 +148,7 @@ class StudySubjectLessonController extends Controller
     public function show($data, $id, $type)
     {
         $response = StudySubjectLesson::getData($id, true);
-        $data['view']       = StudySubjectLesson::$path['view'] . '.includes.form.index';
+        $data['view']       = StudySubjectLesson::path('view') . '.includes.form.index';
         $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Study Lesson');
         $data['metaImage']  = asset('assets/img/icons/' . $type . '.png');
         $data['metaLink']   = url(Users::role() . '/' . $type . '/' . $id);

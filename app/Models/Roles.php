@@ -13,17 +13,26 @@ use Illuminate\Support\Facades\Validator;
 
 class Roles extends Model
 {
-    public static $path = [
-        'image'  => 'role',
-        'url'    => 'role',
-        'view'   => 'Roles'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/add/'),
             ),
         );
         $orderBy = 'DESC';
@@ -72,11 +81,11 @@ class Roles extends Model
                     'view_path'     => $row['view_path'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         =>  $row['image'] ? (ImageHelper::site(Roles::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . Roles::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . Roles::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . Roles::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -123,11 +132,11 @@ class Roles extends Model
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'view_path'     => $row['view_path'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Roles::$path['image'], $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(Roles::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::$path['url'] . '/' . Roles::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
 
                     ]
                 ];
@@ -174,7 +183,7 @@ class Roles extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormRoles::rulesField(), FormRoles::customMessages(), FormRoles::attributeField());
+        $validator          = Validator::make(request()->all(), FormRoles::rules(), FormRoles::messages(), FormRoles::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -196,9 +205,9 @@ class Roles extends Model
 
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Roles::updateImageToTable($add, ImageHelper::uploadImage($image, Roles::$path['image']));
+                        Roles::updateImageToTable($add, ImageHelper::uploadImage($image, Roles::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Roles::$path['image'], Roles::$path['image'], public_path('/assets/img/icons/image.jpg'), null, true);
+                        ImageHelper::uploadImage(false, Roles::path('image'), Roles::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
                     }
 
                     $response       = array(
@@ -219,7 +228,7 @@ class Roles extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormRoles::rulesField(), FormRoles::customMessages(), FormRoles::attributeField());
+        $validator          = Validator::make(request()->all(), FormRoles::rules(), FormRoles::messages(), FormRoles::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -239,7 +248,7 @@ class Roles extends Model
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Roles::updateImageToTable($id, ImageHelper::uploadImage($image, Roles::$path['image']));
+                        Roles::updateImageToTable($id, ImageHelper::uploadImage($image, Roles::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -290,7 +299,7 @@ class Roles extends Model
                     try {
                         $delete    = Roles::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -304,7 +313,7 @@ class Roles extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

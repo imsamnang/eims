@@ -14,23 +14,32 @@ use App\Http\Requests\FormStudyShortCourseSession;
 
 class StudyShortCourseSession extends Model
 {
-    public static $path = [
-        'image'  => 'study-short-course-sessions',
-        'url'    => 'short-course-session',
-        'view'   => 'StudyShortCourseSession'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $edit = null, $paginate = null)
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/add/'),
+                'add'    => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/add/'),
             ),
         );
         if (Auth::user()->role_id == 8) {
             $pages['form']['action']['add'] = str_replace('study', 'teaching', $pages['form']['action']['add']);
         } elseif (Auth::user()->role_id == 6) {
-            $pages['form']['action']['add'] = str_replace(StudyShortCourseSession::$path['url'], 'approved', $pages['form']['action']['add']);
+            $pages['form']['action']['add'] = str_replace(StudyShortCourseSession::path('url'), 'approved', $pages['form']['action']['add']);
         }
         $data = array();
         $orderBy = 'DESC';
@@ -96,8 +105,8 @@ class StudyShortCourseSession extends Model
                     'study_start'   => DateHelper::convert($row['study_start'], $edit ? 'd-m-Y' : 'd-M-Y'),
                     'study_end'    => DateHelper::convert($row['study_end'],  $edit ? 'd-m-Y' : 'd-M-Y'),
                     'action'     => [
-                        'edit'   => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/edit/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/delete/' . $row['id']),
+                        'edit'   => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/edit/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $data[$key]['name']  = $data[$key]['study_short_course_schedule']['name'] . ' (' . $data[$key]['study_session']['name'] . ')';
@@ -150,16 +159,16 @@ class StudyShortCourseSession extends Model
                     'study_end'    => DateHelper::convert($row['study_end'],  'd-M-Y'),
                     'student'       => [
                         'total'  => __('student') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
-                        'link_view'  => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyShortCourse::$path['url'] . '/list?stu_sh_c_sessionId=' . $row['id']),
+                        'link_view'  => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/list?stu_sh_c_sessionId=' . $row['id']),
                     ],
                     'province'      => $row['province_id'],
                     'district'      => $row['district_id'],
                     'commune'      => $row['commune_id'],
                     'village'      => $row['village_id'],
                     'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSession::$path['url'] . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];
@@ -187,7 +196,7 @@ class StudyShortCourseSession extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rulesField(), FormStudyShortCourseSession::customMessages(), FormStudyShortCourseSession::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rules(), FormStudyShortCourseSession::messages(), FormStudyShortCourseSession::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -243,7 +252,7 @@ class StudyShortCourseSession extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rulesField(), FormStudyShortCourseSession::customMessages(), FormStudyShortCourseSession::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rules(), FormStudyShortCourseSession::messages(), FormStudyShortCourseSession::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -303,7 +312,7 @@ class StudyShortCourseSession extends Model
                     try {
                         $delete    = StudyShortCourseSession::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -317,7 +326,7 @@ class StudyShortCourseSession extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

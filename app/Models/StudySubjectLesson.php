@@ -15,12 +15,20 @@ use App\Http\Requests\FormStudySubjectLesson;
 
 class StudySubjectLesson extends Model
 {
-    public static $path = [
-        'image'   => 'study-subject-lesson',
-        'file'   => 'study-subject-lesson',
-        'url'    => 'subject-lesson',
-        'view'   => 'StudySubjectLesson'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+        ];
+        return $key ? @$path[$key] : $path;
+    }
 
     public static function getData($id = null, $staff_teach_subject_id = null, $paginate = null, $groupByStaffTeachSubjectId = true)
     {
@@ -71,17 +79,17 @@ class StudySubjectLesson extends Model
 
 
                 $data[$key]                       = array(
-                    'id'                       => $row['id'],
+                    'id'   => $row['id'],
                     'staff_teach_subject'      => StaffTeachSubject::getData($row['staff_teach_subject_id'])['data'][0],
-                    'title'                    => $row['title'],
+                    'title' => $row['title'],
                     'source_file'              => FileHelper::site(StudySubjectLesson::$path['file'], $row['source_file']),
                     'source_file_info'         => FileHelper::getFileInfo(StudySubjectLesson::$path['file'], $row['source_file']),
                     'source_link'              => $row['source_link'] ? json_decode($row['source_link'], true) : [],
-                    'image'                   => $row['image'] ? (ImageHelper::site(StudySubjectLesson::$path['image'], $row['image'])) : asset('/assets/img/icons/pdf.png'),
+                    'image'                   => $row['image'] ? (ImageHelper::site(StudySubjectLesson::path('image'), $row['image'])) : asset('/assets/img/icons/pdf.png'),
                     'action'                   => [
-                        'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/delete/' . $row['id']), //?id
                     ]
                 );
                 if ($data[$key]['source_link']['facebook']) {
@@ -101,11 +109,11 @@ class StudySubjectLesson extends Model
                 }
 
 
-                if (request('ref') == StudySubjectLesson::$path['url']) {
+                if (request('ref') == StudySubjectLesson::path('url')) {
                     $data[$key]['action'] = [
-                        'edit' => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudySubjectLesson::$path['url'] . '/delete/' . $row['id']), //?id
+                        'edit' => url(Users::role() . '/study/' . StudySubjectLesson::path('url') . '/edit/' . $row['id']), //?id
+                        'view' => url(Users::role() . '/study/' . StudySubjectLesson::path('url') . '/view/' . $row['id']), //?id
+                        'delete' => url(Users::role() . '/study/' . StudySubjectLesson::path('url') . '/delete/' . $row['id']), //?id
                     ];
                 }
                 $pages['listData'][] = array(
@@ -145,24 +153,24 @@ class StudySubjectLesson extends Model
             ->setTransformer(function ($row) {
                 $row = $row->toArray();
                 $action = [
-                    'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/edit/' . $row['id']), //?id
-                    'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/view/' . $row['id']), //?id
-                    'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::$path['url'] . '/delete/' . $row['id']), //?id
+                    'edit' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/edit/' . $row['id']), //?id
+                    'view' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/view/' . $row['id']), //?id
+                    'delete' => url(Users::role() . '/teaching/' . StudySubjectLesson::path('url') . '/delete/' . $row['id']), //?id
                 ];
 
-                if (request('ref') == StudySubjectLesson::$path['url']) {
+                if (request('ref') == StudySubjectLesson::path('url')) {
                     $action['edit'] = str_replace('teaching', 'study', $action['edit']);
                     $action['view'] = str_replace('teaching', 'study', $action['view']);
                     $action['delete'] = str_replace('teaching', 'study', $action['delete']);
                 }
                 return [
-                    'id'                       => $row['id'],
+                    'id'   => $row['id'],
                     'staff_teach_subject'      => StaffTeachSubject::getData($row['staff_teach_subject_id'])['data'][0],
-                    'title'                    => $row['title'],
+                    'title' => $row['title'],
                     'source_file'              => FileHelper::site(StudySubjectLesson::$path['file'], $row['source_file']),
                     'source_file_info'         => FileHelper::getFileInfo(StudySubjectLesson::$path['file'], $row['source_file']),
                     'source_link'              => $row['source_link'] ? json_decode($row['source_link'], true) : [],
-                    'image'                   => $row['image'] ? (ImageHelper::site(StudySubjectLesson::$path['image'], $row['image'])) : asset('/assets/img/icons/pdf.png'),
+                    'image'                   => $row['image'] ? (ImageHelper::site(StudySubjectLesson::path('image'), $row['image'])) : asset('/assets/img/icons/pdf.png'),
                     'action'                   => $action,
 
                 ];
@@ -227,7 +235,7 @@ class StudySubjectLesson extends Model
         }
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjectLesson::rulesField(), FormStudySubjectLesson::customMessages(), FormStudySubjectLesson::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudySubjectLesson::rules(), FormStudySubjectLesson::messages(), FormStudySubjectLesson::attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -252,7 +260,7 @@ class StudySubjectLesson extends Model
                     }
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudySubjectLesson::updateImageToTable($add, ImageHelper::uploadImage($image, StudySubjectLesson::$path['image']));
+                        StudySubjectLesson::updateImageToTable($add, ImageHelper::uploadImage($image, StudySubjectLesson::path('image')));
                     }
 
                     $response       = array(
@@ -274,7 +282,7 @@ class StudySubjectLesson extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjectLesson::rulesField(), FormStudySubjectLesson::customMessages(), FormStudySubjectLesson::attributeField());
+        $validator          = Validator::make(request()->all(), FormStudySubjectLesson::rules(), FormStudySubjectLesson::messages(), FormStudySubjectLesson::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -298,7 +306,7 @@ class StudySubjectLesson extends Model
                     }
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudySubjectLesson::updateImageToTable($id, ImageHelper::uploadImage($image, StudySubjectLesson::$path['image']));
+                        StudySubjectLesson::updateImageToTable($id, ImageHelper::uploadImage($image, StudySubjectLesson::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
@@ -376,7 +384,7 @@ class StudySubjectLesson extends Model
                     try {
                         $delete    = StudySubjectLesson::whereIn('id', $id)->delete();
                         if ($delete) {
-                           return [
+                            return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
@@ -390,7 +398,7 @@ class StudySubjectLesson extends Model
                     'success'   => false,
                     'message'   =>   __('No Data'),
 
-            ];
+                ];
             }
         } else {
             return [

@@ -23,7 +23,7 @@ class FormStudySubjectLesson extends FormRequest
      * @return array
      */
 
-    public static function rulesField()
+    public function rules()
     {
         $rules['title']                  = 'required';
         $rules['staff_teach_subject']    = 'required';
@@ -32,7 +32,7 @@ class FormStudySubjectLesson extends FormRequest
         return $rules;
     }
 
-    public static function attributeField()
+    public function attributes()
     {
         $attributes['title']               = __('Title');
         $attributes['staff_teach_subject']      = __('Subjects');
@@ -41,15 +41,14 @@ class FormStudySubjectLesson extends FormRequest
         return $attributes;
     }
 
-    public static function questionField()
+    public function questions()
     {
         return [];
     }
 
 
 
-    // validation.php // view/lang/en/validation.php
-    public static function customMessages()
+    public function messages()
     {
         return [];
     }

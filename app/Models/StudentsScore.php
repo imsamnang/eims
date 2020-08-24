@@ -25,7 +25,7 @@ class StudentsScore extends Model
                         'study_subject' => $row['subject'],
                         'score'         => $score[0]['subject_score'],
                         'pass_or_fail'  => ($score[0]['subject_score'] >= $row['subject']['pass_mark_theory']) ? 'pass' : 'fail',
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/subject/edit/' . $score[0]['id']),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/subject/edit/' . $score[0]['id']),
                     );
                 } else {
                     $data[$row['subject']['id']] = array(
@@ -33,7 +33,7 @@ class StudentsScore extends Model
                         'study_subject' => $row['subject'],
                         'score'         => 0,
                         'pass_or_fail'  => 'fail',
-                        'action'        => url(Users::role() . '/' . Students::$path['url'] . '/' . StudentsStudyCourse::$path['url'] . '/' . StudentsStudyCourseScore::$path['url'] . '/subject/add/'),
+                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/subject/add/'),
                     );
                 }
             }

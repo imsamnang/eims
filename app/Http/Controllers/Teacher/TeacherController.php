@@ -27,7 +27,7 @@ use App\Models\Nationality;
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
 use App\Models\StudentsScore;
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
@@ -44,8 +44,8 @@ use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizController;
-use App\Http\Controllers\Student\StudentsAttendanceController;
-use App\Http\Controllers\Student\StudentsStudyCourseController;
+use App\Http\Controllers\Students\StudentsAttendanceController;
+use App\Http\Controllers\Students\StudentsStudyCourseController;
 use App\Http\Requests\FormStudySubjectLesson;
 use App\Models\Quiz;
 use App\Models\StaffTeachSubject;
@@ -58,7 +58,9 @@ class TeacherController extends Controller
     {
         $this->middleware('auth');
         App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        Languages::setConfig();
+        App::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
     public function index($param1 = null, $param2 = null, $param3 = null, $param4 = null, $param5 = null)
@@ -87,7 +89,7 @@ class TeacherController extends Controller
         ]);
 
         $data['formAction']          = '/add';
-        $data['formName']            = Students::$path['url'];
+        $data['formName']            = Students::path('url');
         $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('Teacher');
         $data['metaImage']           = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']            = url(Users::role() . '/' . $param1);
@@ -129,7 +131,7 @@ class TeacherController extends Controller
             return Students::deleteFromTable($id);
         } elseif (strtolower($param1)  == 'dashboard') {
             $data = $this->dashboard($data);
-        } elseif (strtolower($param1) == Quiz::$path['url']) {
+        } elseif (strtolower($param1) == Quiz::path('url')) {
             $view = new QuizController();
             return $view->index($param2, $param3, $param4);
         } elseif (strtolower($param1)  == 'teaching') {
@@ -173,14 +175,14 @@ class TeacherController extends Controller
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
             'parent'     => 'Teacher',
-            'modal'      => Students::$path['view'] . '.includes.modal.index',
+            'modal'      => Students::path('view') . '.includes.modal.index',
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStaff::rulesField(),
-            'attributes'  =>  FormStaff::attributeField(),
-            'messages'    =>  FormStaff::customMessages(),
-            'questions'   =>  FormStaff::questionField(),
+            'rules'       =>  FormStaff::rules(),
+            'attributes'  =>  FormStaff::attributes(),
+            'messages'    =>  FormStaff::messages(),
+            'questions'   =>  FormStaff::questions(),
         ];
 
         config()->set('app.title', $data['title']);
@@ -241,9 +243,9 @@ class TeacherController extends Controller
 
     {
         $data['months']               = Months::getData();
-        $data['attendances_type']     = AttendancesType::getData();
+        $data['attendances_type']     = AttendanceTypes::getData();
         $data['formAction']          = '/add';
-        $data['formName']            = Staff::$path['url'];
+        $data['formName']            = Staff::path('url');
         $data['metaImage']           = asset('assets/img/icons/add.png');
         $data['metaLink']            = url(Users::role() . '/add');
         $data['formData']            = array(
@@ -300,7 +302,7 @@ class TeacherController extends Controller
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('Subject'),
-                    'link'  => url(Users::role() . '/teaching/' . StaffTeachSubject::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/teaching/' . StaffTeachSubject::path('url') . '/list'),
                     'icon'  => 'fas fa-books',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -313,13 +315,13 @@ class TeacherController extends Controller
                 ],
                 [
                     'name'  => __('List Attendance'),
-                    'link'  => url(Users::role() . '/teaching/' . StudentsAttendances::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/teaching/' . StudentsAttendances::path('url') . '/list'),
                     'icon'  => 'fas fa-calendar-edit',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ], [
                     'name'  => __('List Score'),
-                    'link'  => url(Users::role() . '/teaching/' . StudentsStudyCourseScore::$path['url'] . '/list'),
+                    'link'  => url(Users::role() . '/teaching/' . StudentsStudyCourseScore::path('url') . '/list'),
                     'icon'  => 'fas fa-trophy-alt',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
@@ -362,7 +364,7 @@ class TeacherController extends Controller
             $data = $view->show($data, Auth::user()->node_id, 'edit');
             $data['view']       = 'Teacher.includes.form.includes.edit.index';
             $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('Edit');
-        } elseif (strtolower($param1) == StaffTeachSubject::$path['url']) {
+        } elseif (strtolower($param1) == StaffTeachSubject::path('url')) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 return StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id, null, 10, false);
             } else {
@@ -370,17 +372,17 @@ class TeacherController extends Controller
                 $data['response'] = StaffTeachSubject::getTeachSubjects(null, Auth::user()->node_id);
                 $data['view']    = 'Teacher.includes.teaching.includes.subject.index';
             }
-        } elseif (strtolower($param1) == StudySubjectLesson::$path['url']) {
+        } elseif (strtolower($param1) == StudySubjectLesson::path('url')) {
             $data['staff_teach_subject']['data'] = StaffTeachSubject::where('staff_id', Auth::user()->node_id)->get(['id', 'study_subject_id'])->map(function ($row) {
                 $study_subject = StudySubjects::where('id', $row['study_subject_id'])->first([app()->getLocale() . ' as name', 'image']);
                 return [
                     'id'    => $row['id'],
                     'name'  => $study_subject->name,
-                    'image'  => $study_subject->image ? ImageHelper::site(StudySubjects::$path['image'], $study_subject->image) : ImageHelper::prefix(),
+                    'image'  => $study_subject->image ? ImageHelper::site(StudySubjects::path('image'), $study_subject->image) : ImageHelper::prefix(),
                 ];
             })->toArray();
 
-            $data['formName']            = 'teaching/' . StudySubjectLesson::$path['url'];
+            $data['formName']            = 'teaching/' . StudySubjectLesson::path('url');
             $data['formData'] = array(
                 'image' => asset('/assets/img/icons/pdf.png'),
             );
@@ -446,10 +448,10 @@ class TeacherController extends Controller
             }
             $data['title']   = Users::role(app()->getLocale()) . ' | ' . __('List Schedule');
             $data['view']    = 'Teacher.includes.teaching.includes.schedule.index';
-        } elseif (strtolower($param1) == StudentsAttendances::$path['url']) {
+        } elseif (strtolower($param1) == StudentsAttendances::path('url')) {
 
             $data['months']               = Months::getData();
-            $data['attendances_type']     = AttendancesType::getData();
+            $data['attendances_type']     = AttendanceTypes::getData();
             $course_routine = StudyCourseRoutine::where('teacher_id', Auth::user()->node_id)->groupBy('study_course_session_id')->get()->toArray();
             $study_course_session_id = [];
             foreach ($course_routine as $key => $value) {
@@ -467,7 +469,7 @@ class TeacherController extends Controller
             $view = new StudentsAttendanceController();
             $data =  $view->list($data);
             $data['view']    = 'Teacher.includes.teaching.includes.attendance.index';
-        } elseif (strtolower($param1) == StudentsStudyCourseScore::$path['url']) {
+        } elseif (strtolower($param1) == StudentsStudyCourseScore::path('url')) {
             $data['student'] = StudentsStudyCourse::getData('null');
             $id = request('id', $param3);
             $data['metaImage']  = asset('assets/img/icons/register.png');
@@ -499,16 +501,16 @@ class TeacherController extends Controller
                     $data['view']    = 'Teacher.includes.form.includes.score.index';
                 }
             }
-        } elseif (strtolower($param1) == Institute::$path['url']) {
+        } elseif (strtolower($param1) == Institute::path('url')) {
             if (request()->ajax() && request()->method() == 'GET') {
                 return Institute::getData(null, null, 10);
             }
-        } elseif (strtolower($param1) == Quiz::$path['url']) {
+        } elseif (strtolower($param1) == Quiz::path('url')) {
 
             if (request()->ajax() && request()->method() == 'GET') {
                 return Quiz::getData(null, null, 10);
             }
-        } elseif (strtolower($param1) == StudyCourseSession::$path['url']) {
+        } elseif (strtolower($param1) == StudyCourseSession::path('url')) {
             if (request()->ajax() && request()->method() == 'GET') {
                 $course_routine = StudyCourseRoutine::where('teacher_id', Auth::user()->node_id)->groupBy('study_course_session_id')->get()->toArray();
                 if ($course_routine) {
@@ -520,8 +522,8 @@ class TeacherController extends Controller
                 }
                 return StudyCourseSession::getData(null, null, 10);
             }
-        } elseif (strtolower($param1) == Students::$path['url']) {
-            if (strtolower($param2)  == StudentsStudyCourse::$path['url']) {
+        } elseif (strtolower($param1) == Students::path('url')) {
+            if (strtolower($param2)  == StudentsStudyCourse::path('url')) {
                 $student = new StudentsStudyCourseController();
                 return $student->index($param3);
             } else {
@@ -555,15 +557,15 @@ class TeacherController extends Controller
 
         if ($param1 == 'score') {
             $pages['form']['validate'] = [
-                'rules'       =>  FormStudentsScore::rulesField('.*'), 'attributes'  =>  FormStudentsScore::attributeField('.*'), 'messages'    =>  FormStudentsScore::customMessages(), 'questions'   =>  FormStudentsScore::questionField(),
+                'rules'       =>  FormStudentsScore::rules('.*'), 'attributes'  =>  FormStudentsScore::attributes('.*'), 'messages'    =>  FormStudentsScore::messages(), 'questions'   =>  FormStudentsScore::questions(),
             ];
-        } elseif ($param1 == StudySubjectLesson::$path['url']) {
+        } elseif ($param1 == StudySubjectLesson::path('url')) {
             $pages['form']['validate'] = [
-                'rules'       =>  FormStudySubjectLesson::rulesField('.*'), 'attributes'  =>  FormStudySubjectLesson::attributeField('.*'), 'messages'    =>  FormStudySubjectLesson::customMessages(), 'questions'   =>  FormStudySubjectLesson::questionField(),
+                'rules'       =>  FormStudySubjectLesson::rules('.*'), 'attributes'  =>  FormStudySubjectLesson::attributes('.*'), 'messages'    =>  FormStudySubjectLesson::messages(), 'questions'   =>  FormStudySubjectLesson::questions(),
             ];
         } else {
             $pages['form']['validate'] = [
-                'rules'       =>  FormStudents::rulesField(), 'attributes'  =>  FormStudents::attributeField(), 'messages'    =>  FormStudents::customMessages(), 'questions'   =>  FormStudents::questionField(),
+                'rules'       =>  FormStudents::rules(), 'attributes'  =>  FormStudents::attributes(), 'messages'    =>  FormStudents::messages(), 'questions'   =>  FormStudents::questions(),
             ];
         }
         config()->set('app.title', $data['title']);
