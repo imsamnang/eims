@@ -7,10 +7,20 @@ use Illuminate\Support\Facades\Storage;
 
 class FileManager
 {
+
     public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
     }
+
+    protected static $filesIconClass = [
+        'pdf'   => 'fas fa-file-pdf',
+        'jpg'   => 'fas fa-image',
+        'jpeg'  => 'fas fa-image',
+        'png'   => 'fas fa-image',
+        'svg'   => 'fas fa-image',
+        'weba'  => 'fas fa-image',
+    ];
 
     public static function get()
     {
@@ -23,9 +33,9 @@ class FileManager
                 'sub_directories'   => self::directory($directory),
                 'link'              => route('file-manager.directory', [$directory]),
                 'type'              => 'directory'
-
             ];
-            $directories[$directory] += self::files($directory);
+            $files = self::files($directory);
+            $directories[$directory] += $files;
         }
 
         return $directories;
@@ -42,12 +52,11 @@ class FileManager
             $directories[$directory] = [
                 'name'    =>  str_replace($path . '/', '', $directory),
                 'icon_class' =>  'fas fa-folder',
-                'sub_directories'   => self::directory($directory, $directory),
+                'sub_directories'   => self::directory($directory),
                 'link'              => route('file-manager.directory', [$directory]),
                 'type'              => 'directory'
             ];
         }
-
 
         return array_merge($directories, self::files($path));
     }
@@ -59,19 +68,18 @@ class FileManager
     {
         $files = [];
         foreach (File::files(storage_path('app/public/' . $path)) as $file) {
-
             $files[] = [
                 'name'    =>  $file->getFilename(),
-                'icon_class' =>  'fas fa-file-' . $file->getExtension(),
+                'icon_class' =>  @self::$filesIconClass[$file->getExtension()],
                 'icon_url' => route('file-manager.file', [$path . '/' . $file->getFilename()]),
                 'sub_directories'   => [],
                 'link'              => route('file-manager.file', [$path . '/' . $file->getFilename()]),
-                'type'              => 'file',
+                'type'              => $file->getType(),
                 'file_info'         => [
                     'name'  => $file->getFilename(),
                     'extension'  => $file->getExtension(),
                     'size'  => self::byteconvert($file->getSize()),
-                    'date'  => DateHelper::convert($file->getCTime(),'d-F-Y'),
+                    'date'  => DateHelper::convert($file->getCTime(), 'd-F-Y'),
                 ]
             ];
         }
