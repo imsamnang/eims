@@ -219,7 +219,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    min-width: 400px;
+    width: 380px;
     height: 100%;
     backface-visibility: hidden;
     -webkit-transform: translateX(-100%);
@@ -259,7 +259,7 @@ body {
     }
 
     .side-menu.open.pinned~.content {
-        left: 450px;
+        left: 380px;
     }
 }
 
@@ -331,10 +331,6 @@ body {
 
 .dot:last-child {
     margin-bottom: 10px;
-}
-
-.ol-flex {
-    /* display: flex; */
 }
 
 .ol-flex li {

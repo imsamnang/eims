@@ -101,10 +101,10 @@ class GenderController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormGender::rules(),
-            'attributes'  =>  FormGender::attributes(),
-            'messages'    =>  FormGender::messages(),
-            'questions'   =>  FormGender::questions(),
+            'rules'       =>  (new FormGender)->rules(),
+            'attributes'  =>  (new FormGender)->attributes(),
+            'messages'    =>  (new FormGender)->messages(),
+            'questions'   =>  (new FormGender)->questions(),
         ];
 
         config()->set('app.title', $data['title']);

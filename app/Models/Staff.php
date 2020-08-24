@@ -13,14 +13,10 @@ use App\Http\Requests\FormStaff;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class Staff extends Model
 {
-
-
-
     /**
      *  @param string $key
      *  @param string|array $key
@@ -28,15 +24,34 @@ class Staff extends Model
     public static function path($key = null)
     {
         $table = (new self)->getTable();
+        $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
         $role = Roles::find(5)->first();
         $path = [
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
-            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table))),
+            'view'   => $tableUcwords,
             'role'   => $role->name,
             'roleId'   => $role->id,
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords
         ];
         return $key ? @$path[$key] : $path;
+    }
+    /**
+     *  @param string $key
+     *  @param string $flag
+     *  @return array
+     */
+    public static function validate($key = null, $flag = '[]')
+    {
+        $class = self::path('requests');
+        $formRequests = new $class;
+        $validate =  [
+            'rules'       =>  $formRequests->rules($flag),
+            'attributes'  =>  $formRequests->attributes($flag),
+            'messages'    =>  $formRequests->messages($flag),
+            'questions'   =>  $formRequests->questions($flag),
+        ];
+        return $key? @$validate[$key] : $validate;
     }
 
     public function institute()
@@ -203,10 +218,10 @@ class Staff extends Model
         //     ];
         // }
 
+        $validate = Staff::path('requests');
+        $rules += $validate('rules');
 
-        $rules += FormStaff::rules();
-
-        $validator          = Validator::make(request()->all(), $rules, FormStaff::messages(), FormStaff::attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -506,7 +521,7 @@ class Staff extends Model
                 $q['size'] = $options && $options['code'] ? $options['code'] : 100;
                 $q['code']  = Qrcode::encryptQrcode([
                     'id'    => $row['id'],
-                    'type'  => Staff::$path['role'],
+                    'type'  => Staff::path('role'),
                     'aYear'  =>  $row['study_academic_year_id']['id'],
                     'exp'  =>  $date->format('Y-m-d'),
                 ]);
@@ -603,7 +618,7 @@ class Staff extends Model
                 } else {
                     try {
                         $folder  = 'public/' . ImageHelper::path('image') . '/' . Staff::path('image');
-                        $filePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+                        $filePath = storage_path('app/'. $folder);
 
                         $first_name = array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row->first_name_en;
                         $last_name  = array_key_exists('last_name_' . app()->getLocale(), $row) ? $row['last_name_' . app()->getLocale()] : $row->last_name_en;
@@ -613,7 +628,7 @@ class Staff extends Model
                             'password'      => Hash::make(request('password')),
                             'phone'         => $row->phone,
                             'address'       => $row->permanent_address,
-                            'role_id'       => request('role', Staff::$path['roleId']),
+                            'role_id'       => request('role', Staff::path('roleId')),
                             'node_id'       => $row->id,
                             'institute_id'  => StaffInstitutes::where('staff_id', $row->id)->pluck('institute_id')->first(),
                         ]);
@@ -682,7 +697,6 @@ class Staff extends Model
 
             ];
         }
-        return $response;
     }
 
     public static function getTeaching($teacher_id)

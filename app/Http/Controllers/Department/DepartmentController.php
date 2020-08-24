@@ -149,10 +149,10 @@ class DepartmentController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormStaff::rules(),
-            'attributes'  =>  FormStaff::attributes(),
-            'messages'    =>  FormStaff::messages(),
-            'questions'   =>  FormStaff::questions(),
+            'rules'       =>  (new FormStaff)->rules(),
+            'attributes'  =>  (new FormStaff)->attributes(),
+            'messages'    =>  (new FormStaff)->messages(),
+            'questions'   =>  (new FormStaff)->questions(),
         ];
 
         config()->set('app.title', $data['title']);

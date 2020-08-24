@@ -38,7 +38,7 @@
                     <i class="fas fa-edit"></i>
                     {{__("Edit")}}
                 </a>
-                <a data-toggle="modal-ajax" data-target="#modal" class="dropdown-item"
+                <a target="_blank" class="dropdown-item"
                     href="{{$row["action"]["approve"]}}">
                     <i class="fas fa-check-circle"></i>
                     {{__('Approve')}}

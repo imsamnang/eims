@@ -48,21 +48,17 @@ use App\Models\StudyAcademicYears;
 use App\Models\StudyCourseRoutine;
 use App\Models\StudyCourseSession;
 use Illuminate\Support\Collection;
-use App\Http\Requests\FormStudents;
 use App\Models\StudentsAttendances;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\StudentsStudyCourseScore;
 use App\Models\StudentsStudyShortCourse;
-use App\Http\Requests\FormStudentsRequest;
 use App\Models\StudentsShortCourseRequest;
-use App\Http\Requests\FormQuizStudentAnswer;
 use App\Http\Controllers\CardFrames\CardFramesController;
 use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Mailbox\MailboxController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Requests\FormStudentsShortCourseRequest;
 use App\Http\Controllers\Quiz\QuizStudentAnswerController;
 use App\Http\Controllers\CertificateFrames\CertificateFramesController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
@@ -376,20 +372,10 @@ class StudentsController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStudents)->rules(),
-            'attributes'  =>  (new FormStudents)->attributes(),
-            'messages'    =>  (new FormStudents)->messages(),
-            'questions'   =>  (new FormStudents)->questions(),
-        ];
+        $pages['form']['validate'] = Students::path('requests');
 
         if (Auth::user()->role_id && $param1 == 'dashboard' || $param1 == null) {
-            $pages['form']['validate'] = [
-                'rules'       =>  (new FormQuizStudentAnswer)->rules(),
-                'attributes'  =>  (new FormQuizStudentAnswer)->attributes(),
-                'messages'    =>  (new FormQuizStudentAnswer)->messages(),
-                'questions'   =>  (new FormQuizStudentAnswer)->questions(),
-            ];
+            $pages['form']['validate'] = QuizStudentAnswer::path('requests');
         }
 
         if (Auth::user()->role_id != 6) {
@@ -1096,26 +1082,11 @@ class StudentsController extends Controller
         );
 
         if ($param1 == StudentsRequest::path('url')) {
-            $pages['form']['validate'] = [
-                'rules'       =>  (new FormStudentsRequest)->rules(),
-                'attributes'  =>  (new FormStudentsRequest)->attributes(),
-                'messages'    =>  (new FormStudentsRequest)->messages(),
-                'questions'   =>  (new FormStudentsRequest)->questions(),
-            ];
+            $pages['form']['validate'] = StudentsRequest::path('requests');
         } elseif ($param1 == StudentsShortCourseRequest::path('url')) {
-            $pages['form']['validate'] = [
-                'rules'       =>  (new FormStudentsShortCourseRequest)->rules(),
-                'attributes'  =>  (new FormStudentsShortCourseRequest)->attributes(),
-                'messages'    =>  (new FormStudentsShortCourseRequest)->messages(),
-                'questions'   =>  (new FormStudentsShortCourseRequest)->questions(),
-            ];
+            $pages['form']['validate'] = StudentsShortCourseRequest::path('requests');
         } else {
-            $pages['form']['validate'] = [
-                'rules'       =>  (new FormStudents)->rules(),
-                'attributes'  =>  (new FormStudents)->attributes(),
-                'messages'    =>  (new FormStudents)->messages(),
-                'questions'   =>  (new FormStudents)->questions(),
-            ];
+            $pages['form']['validate'] = Students::path('requests');
         }
 
         config()->set('app.title', $data['title']);

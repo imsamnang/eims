@@ -22,15 +22,34 @@ class Students extends Model
     public static function path($key = null)
     {
         $table = (new self)->getTable();
-        $role = Roles::find(5)->first();
+        $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+        $role = Roles::find(6)->first();
         $path = [
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
-            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table))),
+            'view'   => $tableUcwords,
             'role'   => $role->name,
             'roleId'   => $role->id,
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords
         ];
         return $key ? @$path[$key] : $path;
+    }
+    /**
+     *  @param string $key
+     *  @param string $flag
+     *  @return array
+     */
+    public static function validate($key = null, $flag = '[]')
+    {
+        $class = self::path('requests');
+        $formRequests = new $class;
+        $validate =  [
+            'rules'       =>  $formRequests->rules($flag),
+            'attributes'  =>  $formRequests->attributes($flag),
+            'messages'    =>  $formRequests->messages($flag),
+            'questions'   =>  $formRequests->questions($flag),
+        ];
+        return $key? @$validate[$key] : $validate;
     }
 
     public function institute()
@@ -516,6 +535,5 @@ class Students extends Model
 
             ];
         }
-        return $response;
     }
 }

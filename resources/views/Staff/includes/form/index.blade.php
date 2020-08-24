@@ -83,8 +83,8 @@
                                                 </div>
 
                                             </div>
-                                            @if (!request()->ajax())
-                                            @if (!request()->ajax())
+                                           @if (config('pages.parameters.param1') == 'add')
+@if (!request()->ajax())
                                             <div class="card-footer">
                                                 <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"
                                                     class="btn btn-default" type="button">

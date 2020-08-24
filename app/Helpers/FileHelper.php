@@ -15,7 +15,7 @@ class FileHelper
     {
         $folder = 'public/' . FileHelper::$path['file'] . '/' . $destination;
         Storage::makeDirectory($folder);
-        $destinationPath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+        $destinationPath = storage_path('app/'. $folder);
         $newFilenameNoExtension =  FileHelper::num_random(8) . '_' . FileHelper::num_random(15) . '_' . FileHelper::num_random(19) . '_n.';
 
         if ($file) {
@@ -32,7 +32,8 @@ class FileHelper
     {
 
         if ($filename && $path) {
-            $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . 'public/' . (FileHelper::$path['file'] . '/' . $path);
+            $folder = 'public/' . (FileHelper::$path['file'] . '/' . $path);
+            $dir = storage_path('app/'. $folder);
 
             $file = $dir . '/' . $filename;
 

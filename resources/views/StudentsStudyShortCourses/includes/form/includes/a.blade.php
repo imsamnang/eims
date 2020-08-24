@@ -19,17 +19,17 @@
 
                 <select class="form-control" data-toggle="select" id="study_short_course_session" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-placeholder="" name="study_short_course_session"
-                    data-select-value="{{config("pages.form.data.study_short_course_session.id")}}">
+                    data-select-value="{{config("pages.form.data.".$key.".stu_sh_c_session_id")}}">
                     @foreach($study_short_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-md-8 mb-3">
-                <label class="form-control-label" for="student">
+                <label class="form-control-label" for="students">
                     {{ __("Students request study") }}
 
-                    @if(config("pages.form.validate.rules.student[]"))
+                    @if(config("pages.form.validate.rules.students[]"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i
                             class="fas fa-asterisk fa-xs"></i></span>
                     @endif
@@ -37,11 +37,11 @@
                 </label>
 
                 <select {{config("pages.form.role") == "add" ? "multiple" : ""}} class="form-control"
-                    data-toggle="select" id="student" title="Simple select" data-text="{{ __("Add new option") }}"
-                    data-placeholder="" name="student[]"
-                    data-select-value="{{config("pages.form.data.request_id",request("studRequestId"))}}"
-                    {{config("pages.form.validate.rules.student[]") ? "required" : ""}}>
-                    @foreach($student["data"] as $o)
+                    data-toggle="select" id="students" title="Simple select" data-text="{{ __("Add new option") }}"
+                    data-placeholder="" name="students[]"
+                    data-select-value="{{config("pages.form.data.".$key.".stu_sh_c_request_id",request("studRequestId"))}}"
+                    {{config("pages.form.validate.rules.students[]") ? "required" : ""}}>
+                    @foreach($students["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach

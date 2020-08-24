@@ -100,10 +100,10 @@ class CommuneController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormDistrict::rules(),
-            'attributes'  =>  FormDistrict::attributes(),
-            'messages'    =>  FormDistrict::messages(),
-            'questions'   =>  FormDistrict::questions(),
+            'rules'       =>  (new FormDistrict)->rules(),
+            'attributes'  =>  (new FormDistrict)->attributes(),
+            'messages'    =>  (new FormDistrict)->messages(),
+            'questions'   =>  (new FormDistrict)->questions(),
         ];
         //Select Options
         $data['provinces'] = [

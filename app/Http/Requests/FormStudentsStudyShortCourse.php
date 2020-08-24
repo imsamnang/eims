@@ -26,16 +26,16 @@ class FormStudentsStudyShortCourse extends FormRequest
     public function rules($flag = '[]')
     {
         return [
-            'student' . $flag               => 'required',
+            'students' . $flag               => 'required',
             'study_short_course_session'        => 'required',
 
         ];
     }
 
-    public static function attributes($flag  = '[]')
+    public function attributes($flag  = '[]')
     {
         return [
-            'student' . $flag    => __('Students'),
+            'students' . $flag    => __('Students'),
             'study_short_course_session' => __('Short course session'),
 
         ];

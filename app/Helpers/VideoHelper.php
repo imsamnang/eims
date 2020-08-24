@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use DomainException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,7 @@ class VideoHelper
     {
         $folder = 'public/'.VideoHelper::$path['video'] . '/' . $destination;
         Storage::makeDirectory($folder);
-        $destinationPath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+        $destinationPath = storage_path('app/'. $folder);
         $newFilenameNoExtension =  VideoHelper::num_random(8) . '_' . VideoHelper::num_random(15) . '_' . VideoHelper::num_random(19) . '_n.';
 
         if ($video) {
@@ -43,8 +44,8 @@ class VideoHelper
         }
 
         if ($filename && $path) {
-
-            $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() .'public/'. (VideoHelper::$path['video'] . '/' . $path);
+            $folder = 'public/'. (VideoHelper::$path['video'] . '/' . $path);
+            $dir = storage_path('app/'. $folder);
 
             $file = $dir . '/' . $filename;
             if (File::exists($file)) {
@@ -60,7 +61,7 @@ class VideoHelper
                     try {
                         $stream = fopen($file, 'r');
                         fpassthru($stream);
-                    } catch (Exception $e) {
+                    } catch (DomainException $e) {
                         Log::error($e);
                     }
                 }, 200, $headers);

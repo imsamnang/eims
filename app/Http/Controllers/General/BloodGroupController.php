@@ -101,10 +101,10 @@ class BloodGroupController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormBloodGroup::rules(),
-            'attributes'  =>  FormBloodGroup::attributes(),
-            'messages'    =>  FormBloodGroup::messages(),
-            'questions'   =>  FormBloodGroup::questions(),
+            'rules'       =>  (new FormBloodGroup)->rules(),
+            'attributes'  =>  (new FormBloodGroup)->attributes(),
+            'messages'    =>  (new FormBloodGroup)->messages(),
+            'questions'   =>  (new FormBloodGroup)->questions(),
         ];
 
         config()->set('app.title', $data['title']);

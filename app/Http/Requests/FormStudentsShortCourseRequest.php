@@ -27,7 +27,7 @@ class FormStudentsShortCourseRequest extends FormRequest
     {
         return [
             'institute'           => 'required',
-            'student'.$flag       => 'required',
+            'students'.$flag       => 'required',
             'study_subject'       => 'required',
             'study_session'       => 'required',
 
@@ -38,7 +38,7 @@ class FormStudentsShortCourseRequest extends FormRequest
     {
         return [
             'institute'   => __('Institute'),
-            'student'.$flag   => __('Students'),
+            'students'.$flag   => __('Students'),
             'study_subject' => __('Study subjects'),
             'study_session' => __('Study session'),
 

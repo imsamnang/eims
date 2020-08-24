@@ -32,7 +32,7 @@ class FormStudentsRequest extends FormRequest
         $rules['study_academic_year'] = 'required';
         $rules['study_semester']      = 'required';
         $rules['study_session']       = 'required';
-        $rules['student' . $flag]       = 'required';
+        $rules['students' . $flag]       = 'required';
         return  $rules;
     }
 
@@ -47,7 +47,7 @@ class FormStudentsRequest extends FormRequest
         $attributes['study_semester']     = __('Study semester');
         $attributes['study_session']      = __('Study session');
         $attributes['photo']              = __('Photo');
-        $attributes['student' . $flag]    = __('Students');
+        $attributes['students' . $flag]    = __('Students');
 
         return $attributes;
     }

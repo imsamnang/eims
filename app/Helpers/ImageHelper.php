@@ -47,7 +47,7 @@ class ImageHelper
         $folder = 'public/' . self::path('image') . '/' . $destination;
         Storage::makeDirectory($folder);
 
-        $destinationPath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folder;
+        $destinationPath =  storage_path('app/'. $folder);
         $newFilenameNoExtension =  self::num_random(8) . '_' . self::num_random(15) . '_' . self::num_random(19) . '_n.';
         $imageEx  = pathinfo($file, PATHINFO_EXTENSION);
         $name  =  $rename ? ($rename . '.' . pathinfo($file, PATHINFO_EXTENSION)) : ($newFilenameNoExtension . pathinfo($file, PATHINFO_EXTENSION));
@@ -125,7 +125,7 @@ class ImageHelper
 
 
 
-        $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . $folderSize;
+        $dir = storage_path('app/'. $folderSize);
         $file = $dir . '/' . $filename;
         $response = [
             'success' => false,
@@ -146,7 +146,8 @@ class ImageHelper
     public static function getImageNoType($filename, $path, $encode = null)
     {
         if ($filename && $path) {
-            $dir = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix() . 'public/' . (self::path('image') . '/' . $path);
+            $folder = 'public/' . (self::path('image') . '/' . $path);
+            $dir = storage_path('app/'. $folder);
 
             $file = $dir . '/' . $filename;
             if ($encode) {
@@ -194,11 +195,8 @@ class ImageHelper
 
     public static function delete($path, $filename)
     {
-        $dir = Storage::disk('local')
-            ->getDriver()
-            ->getAdapter()
-            ->getPathPrefix() . 'public/' . self::path('image') . '/' . $path;
-
+        $folder = 'public/' . self::path('image') . '/' . $path;
+        $dir = storage_path('app/'.$folder);
         if (File::exists($dir . '/original/' . $filename)) {
             File::delete($dir . '/original/' . $filename);
         }

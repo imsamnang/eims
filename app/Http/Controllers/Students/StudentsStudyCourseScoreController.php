@@ -53,7 +53,7 @@ class StudentsStudyCourseScoreController extends Controller
             }
         } elseif (strtolower($param1) == 'add') {
             if (request()->method() === 'POST') {
-                return StudentsStudyCourseScore::addToTable();
+               // return StudentsStudyCourseScore::addToTable();
             }
             $data  = $this->add($data);
         } elseif (strtolower($param1) == 'view') {
@@ -116,10 +116,10 @@ class StudentsStudyCourseScoreController extends Controller
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudentsStudyCourseScore::rules('.*'),
-            'attributes'  =>  FormStudentsStudyCourseScore::attributes('.*'),
-            'messages'    =>  FormStudentsStudyCourseScore::messages(),
-            'questions'   =>  FormStudentsStudyCourseScore::questions(),
+            'rules'       =>  (new FormStudentsStudyCourseScore)->rules('.*'),
+            'attributes'  =>  (new FormStudentsStudyCourseScore)->attributes('.*'),
+            'messages'    =>  (new FormStudentsStudyCourseScore)->messages(),
+            'questions'   =>  (new FormStudentsStudyCourseScore)->questions(),
         ];
         $data[''] = StudyCourseSession::getData();
         $data['student']    = StudentsStudyCourse::getData();

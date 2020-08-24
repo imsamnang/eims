@@ -27,7 +27,7 @@ class FormStudentsStudyCourse extends FormRequest
     {
         $rules = [
             'study_course_session' => 'required',
-            'student'.$flag       => 'required',
+            'students'.$flag       => 'required',
         ];
 
         return  $rules;
@@ -37,7 +37,7 @@ class FormStudentsStudyCourse extends FormRequest
     {
         return [
             'study_course_session' => __('Study course session'),
-            'student'.$flag      => __('Students'),
+            'students'.$flag      => __('Students'),
         ];
 
     }

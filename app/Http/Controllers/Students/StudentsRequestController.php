@@ -171,10 +171,10 @@ class StudentsRequestController extends Controller
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudentsRequest::rules(),
-            'attributes'  =>  FormStudentsRequest::attributes(),
-            'messages'    =>  FormStudentsRequest::messages(),
-            'questions'   =>  FormStudentsRequest::questions(),
+            'rules'       =>  (new FormStudentsRequest)->rules(),
+            'attributes'  =>  (new FormStudentsRequest)->attributes(),
+            'messages'    =>  (new FormStudentsRequest)->messages(),
+            'questions'   =>  (new FormStudentsRequest)->questions(),
         ];
 
         //Select Option
@@ -219,7 +219,7 @@ class StudentsRequestController extends Controller
             $row['image']   = $row->image ? ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
-        $data['student']['data']       = Students::get()->map(function ($row) {
+        $data['students']['data']       = Students::get()->map(function ($row) {
             $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['photo']   = $row->photo ? ImageHelper::site(Students::path('image'), $row->photo) : ImageHelper::prefix();
             return $row;

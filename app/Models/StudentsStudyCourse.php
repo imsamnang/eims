@@ -20,12 +20,33 @@ class StudentsStudyCourse extends Model
     public static function path($key = null)
     {
         $table = (new self)->getTable();
+        $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+
         $path = [
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
-            'view'   => str_replace(' ', '', ucwords(str_replace('_', ' ', $table)))
+            'view'   => $tableUcwords,
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
         ];
         return $key ? @$path[$key] : $path;
+    }
+
+     /**
+     *  @param string $key
+     *  @param string $flag
+     *  @return array
+     */
+    public static function validate($key = null, $flag = '[]')
+    {
+        $class = self::path('requests');
+        $formRequests = new $class;
+        $validate =  [
+            'rules'       =>  $formRequests->rules($flag),
+            'attributes'  =>  $formRequests->attributes($flag),
+            'messages'    =>  $formRequests->messages($flag),
+            'questions'   =>  $formRequests->questions($flag),
+        ];
+        return $key? @$validate[$key] : $validate;
     }
 
 
@@ -85,7 +106,7 @@ class StudentsStudyCourse extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rules('.*'), FormStudentsStudyCourse::messages(), FormStudentsStudyCourse::attributes());
+        $validator          = Validator::make(request()->all(), (new FormStudentsStudyCourse)->rules('.*'), (new FormStudentsStudyCourse)->messages(), (new FormStudentsStudyCourse)->attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -94,7 +115,7 @@ class StudentsStudyCourse extends Model
         } else {
             try {
                 $sid = '';
-                foreach (request('student') as $student_request_id) {
+                foreach (request('students') as $student_request_id) {
 
                     if (!self::existsToTable($student_request_id, request('study_course_session'))) {
 
@@ -138,7 +159,7 @@ class StudentsStudyCourse extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourse::rules('.*'), FormStudentsStudyCourse::messages(), FormStudentsStudyCourse::attributes());
+        $validator          = Validator::make(request()->all(), (new FormStudentsStudyCourse)->rules('.*'), (new FormStudentsStudyCourse)->messages(), (new FormStudentsStudyCourse)->attributes());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -146,7 +167,7 @@ class StudentsStudyCourse extends Model
             );
         } else {
             try {
-                $exists =  self::existsToTable(request('student')[0], request('study_course_session'));
+                $exists =  self::existsToTable(request('students')[0], request('study_course_session'));
                 if ($exists) {
                     $response       = array(
                         'success'   => false,
@@ -155,13 +176,13 @@ class StudentsStudyCourse extends Model
                     );
                     if ($exists->study_status_id  !== request('study_status')) {
                         $exists = null;
-                    } elseif ($exists->student_request_id  !== request('student')[0]) {
+                    } elseif ($exists->student_request_id  !== request('students')[0]) {
                         $exists = null;
                     }
                 }
                 if (!$exists) {
                     $update = self::where('id', $id)->update([
-                        'student_request_id'  =>    request('student')[0],
+                        'student_request_id'  =>    request('students')[0],
                         'study_course_session_id'  => request('study_course_session'),
                         'study_status_id'  => request('study_status'),
                     ]);
@@ -312,7 +333,7 @@ class StudentsStudyCourse extends Model
                     $q['code']  = QRHelper::encrypt([
                         'stuId'  => $row->student_request_id,
                         'id'     => $row->id,
-                        'type'   => Students::$path['role'],
+                        'type'   => Students::path('role'),
                         'exp'    => $date->format('Y-m-d'),
                     ], '?fc');
                     if (request('qrcode_image_size')) {

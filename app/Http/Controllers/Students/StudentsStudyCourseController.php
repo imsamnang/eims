@@ -553,7 +553,7 @@ class StudentsStudyCourseController extends Controller
                     $row['image']   = $row->image ? ImageHelper::site(StudyStatus::path('image'), $row->image) : ImageHelper::prefix();
                     return $row;
                 });
-            $data['student']['data'] = StudentsRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            $data['students']['data'] = StudentsRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                 ->where('status', '0')
                 ->get([
                     (new StudentsRequest)->getTable() . '.*',
@@ -735,7 +735,7 @@ class StudentsStudyCourseController extends Controller
             $data['formAction'] = '/' . $type . '/' . $id;
 
 
-            $data['student']['data'] = StudentsRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+            $data['students']['data'] = StudentsRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                 ->whereIn((new StudentsRequest())->getTable() . '.id', StudentsStudyCourse::whereIn('id', explode(',', $id))->pluck('student_request_id'))
                 ->get()->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;

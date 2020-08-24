@@ -19,17 +19,13 @@ use App\Models\CardFrames;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\StudyStatus;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
-use App\Models\StudyPrograms;
 use App\Models\StudySubjects;
-use App\Models\StudySemesters;
 use App\Models\StudyGeneration;
 use App\Models\CertificateFrames;
-use App\Models\StudyAcademicYears;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\StudyShortCourseSession;
@@ -57,8 +53,6 @@ class StudentsStudyShortCourseController extends Controller
 
         request()->merge(['ref' => request('ref', StudentsStudyShortCourse::path('url'))]);
 
-
-
         $data['formAction']           = '/add';
         $data['formName']             = Students::path('url') . '/' . StudentsStudyShortCourse::path('url');
         $data['title']              = Users::role(app()->getLocale()) . ' | ' . __('List Students study course');
@@ -66,7 +60,7 @@ class StudentsStudyShortCourseController extends Controller
         $data['metaLink']             = url(Users::role() . '/' . $param1);
 
         $data['formData']       = array(
-            'photo' => asset('/assets/img/user/male.jpg'),
+            ['photo' => asset('/assets/img/user/male.jpg'),]
         );
         $data['listData']       = array();
         $id = $param2 ? $param2 : request('id');
@@ -74,13 +68,6 @@ class StudentsStudyShortCourseController extends Controller
         if ($param1 == null || $param1 == 'list') {
             request()->merge(['id' => $id]);
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudentsStudyShortCourse::getData(null, null, 10);
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif ($param1 == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StudentsStudyShortCourse::getDataTable();
             } else {
                 $data = $this->list($data);
             }
@@ -195,10 +182,10 @@ class StudentsStudyShortCourseController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       => ($param1 == 'account') ? ['password' => 'required'] :  (new FormStudentsStudyShortCourse)->rules(),
-            'attributes'  => ($param1 == 'account') ? ['password' => __('Password')] :  (new FormStudentsStudyShortCourse)->attributes(),
-            'messages'    => ($param1 == 'account') ? [] :  (new FormStudentsStudyShortCourse)->messages(),
-            'questions'   => ($param1 == 'account') ? [] :  (new FormStudentsStudyShortCourse)->questions(),
+            'rules'       => ($param1 == 'account') ? ['password' => 'required'] : (new FormStudentsStudyShortCourse)->rules(),
+            'attributes'  => ($param1 == 'account') ? ['password' => __('Password')] : (new FormStudentsStudyShortCourse)->attributes(),
+            'messages'    => ($param1 == 'account') ? [] : (new FormStudentsStudyShortCourse)->messages(),
+            'questions'   => ($param1 == 'account') ? [] : (new FormStudentsStudyShortCourse)->questions(),
         ];
 
         //Select Option
@@ -272,7 +259,7 @@ class StudentsStudyShortCourseController extends Controller
                     $row['image']   = $row->image ? ImageHelper::site(StudyStatus::path('image'), $row->image) : ImageHelper::prefix();
                     return $row;
                 });
-            $data['student']['data'] = StudentsShortCourseRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+            $data['students']['data'] = StudentsShortCourseRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
                 ->where('status', '0')
                 ->get()->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
@@ -419,7 +406,7 @@ class StudentsStudyShortCourseController extends Controller
             $data['formAction'] = '/' . $type . '/' . $id;
 
 
-            $data['student']['data'] = StudentsShortCourseRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
+            $data['students']['data'] = StudentsShortCourseRequest::join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsShortCourseRequest())->getTable() . '.student_id')
                 ->whereIn((new StudentsShortCourseRequest())->getTable() . '.id', StudentsStudyShortCourse::whereIn('id', explode(',', $id))->pluck('stu_sh_c_request_id'))
                 ->get()->map(function ($row) {
                     $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;

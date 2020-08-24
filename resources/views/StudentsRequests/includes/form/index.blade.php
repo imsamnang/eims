@@ -67,15 +67,17 @@
                                             action="{{ config('pages.form.data.' . $key . '.action.edit', config('pages.form.action.detect')) }}"
                                             id="form-{{ config('pages.form.name') }}" enctype="multipart/form-data"
                                             data-validate="{{ json_encode(config('pages.form.validate')) }}">
+                                            @csrf
                                             <div class="card m-0">
                                                 <div class="card-body p-0">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            @csrf
                                                             @include(config("pages.parent").".includes.form.includes.a",['key'=>$key])
+                                                            @include(config("pages.parent").".includes.form.includes.b",['key'=>$key])
                                                         </div>
                                                     </div>
                                                     <a href="" name="scrollTo"></a>
+
                                                 </div>
                                                 @if (config('pages.parameters.param1') == 'add')
                                                     @if (!request()->ajax())
@@ -88,6 +90,12 @@
                                                             <input class="btn btn-primary float-right" type="submit"
                                                                 value="{{ __('Save') }}" id="submit">
                                                         </div>
+                                                    @else
+                                                    <div class="card-footer">
+
+                                                        <input class="btn btn-primary float-right" type="submit"
+                                                            value="{{ __('Save') }}" id="submit">
+                                                    </div>
                                                     @endif
                                                 @elseif(config('pages.parameters.param1') == 'edit')
                                                     @if (!request()->ajax())

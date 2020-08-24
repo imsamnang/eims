@@ -254,6 +254,7 @@
                                 class: "invalid-feedback",
                                 id: "has-error-for-" + error.replace(/\[/g, "").replace(/\]/g, "")
                             }).css("display", "block").text(fields[error]);
+
                             if ($('[name="' + error + '"]').length) {
                                 if ($('[name="' + error + '"]').parent().hasClass("dz-preview")) {
                                     $(form).find('[name="' + error + '"]').parent().find(".input-group-text").addClass("has-error");

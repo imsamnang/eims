@@ -140,10 +140,10 @@ class StudentsShortCourseRequestController extends Controller
         );
 
         $pages['form']['validate'] = [
-            'rules'       =>  FormStudentsShortCourseRequest::rules(),
-            'attributes'  =>  FormStudentsShortCourseRequest::attributes(),
-            'messages'    =>  FormStudentsShortCourseRequest::messages(),
-            'questions'   =>  FormStudentsShortCourseRequest::questions(),
+            'rules'       =>  (new FormStudentsShortCourseRequest)->rules(),
+            'attributes'  =>  (new FormStudentsShortCourseRequest)->attributes(),
+            'messages'    =>  (new FormStudentsShortCourseRequest)->messages(),
+            'questions'   =>  (new FormStudentsShortCourseRequest)->questions(),
         ];
 
         //Select Option
@@ -174,7 +174,7 @@ class StudentsShortCourseRequestController extends Controller
             return $row;
         });
 
-        $data['student']['data']       = Students::get()->map(function ($row) {
+        $data['students']['data']       = Students::get()->map(function ($row) {
             $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['photo']   = $row->photo ? ImageHelper::site(Students::path('image'), $row->photo) : ImageHelper::prefix();
             return $row;
