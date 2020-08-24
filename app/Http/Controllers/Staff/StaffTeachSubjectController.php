@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Years;
@@ -31,9 +31,9 @@ class StaffTeachSubjectController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -136,12 +136,7 @@ class StaffTeachSubjectController extends Controller
             'parent'     => StaffTeachSubject::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStaffTeachSubject)->rules(),
-            'attributes'  =>  (new FormStaffTeachSubject)->attributes(),
-            'messages'    =>  (new FormStaffTeachSubject)->messages(),
-            'questions'   =>  (new FormStaffTeachSubject)->questions(),
-        ];
+        $pages['form']['validate'] = StaffTeachSubject::validate();
 
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {

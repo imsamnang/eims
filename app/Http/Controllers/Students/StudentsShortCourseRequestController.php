@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Students;
 
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Students;
@@ -31,9 +31,9 @@ class StudentsShortCourseRequestController extends Controller
 
     public function __construct()
     {
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }

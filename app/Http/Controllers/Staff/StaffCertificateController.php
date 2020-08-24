@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
@@ -15,17 +15,16 @@ use App\Models\SocailsMedia;
 use App\Models\StaffCertificate;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStaffCertificate;
 use App\Models\Staff;
 
-class StaffCertificateFramesController extends Controller
+class StaffCertificateController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -129,12 +128,7 @@ class StaffCertificateFramesController extends Controller
             'parent'     => StaffCertificate::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStaffCertificate)->rules(),
-            'attributes'  =>  (new FormStaffCertificate)->attributes(),
-            'messages'    =>  (new FormStaffCertificate)->messages(),
-            'questions'   =>  (new FormStaffCertificate)->questions(),
-        ];
+        $pages['form']['validate'] = StaffCertificate::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\CardFrames;
 
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Students;
 use App\Models\Institute;
@@ -26,7 +26,7 @@ class CardFramesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
@@ -203,12 +203,7 @@ class CardFramesController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormCard)->rules(),
-            'attributes'  =>  (new FormCard)->attributes(),
-            'messages'    =>  (new FormCard)->messages(),
-            'questions'   =>  (new FormCard)->questions(),
-        ];
+        $pages['form']['validate'] =CardFrames::validate();
 
 
         //Select Option

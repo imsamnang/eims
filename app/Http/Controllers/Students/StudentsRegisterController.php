@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Students;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Marital;
@@ -28,9 +28,9 @@ class StudentsRegisterController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -155,8 +155,8 @@ class StudentsRegisterController extends Controller
         );
 
 
-
-        $rules = (new FormStudents)->rules();
+        $validate = Students::validate();
+        $rules = $validate['rules'];
 
         unset($rules['pob_province']);
         unset($rules['pob_district']);
@@ -177,15 +177,13 @@ class StudentsRegisterController extends Controller
 
         $pages['form']['validate'] = [
             'rules'       => $param1 == 'excel' ? ['file' => 'required'] : $rules,
-            'attributes'  => $param1 == 'excel' ? ['file' => 'File Excel'] : (new FormStudents)->attributes(),
-            'messages'    => $param1 == 'excel' ? [] : (new FormStudents)->messages(),
-            'questions'   => $param1 == 'excel' ? [] : (new FormStudents)->questions(),
+            'attributes'  => $param1 == 'excel' ? ['file' => __('File Excel')] : $validate['attributes'],
+            'messages'    => $param1 == 'excel' ? [] : $validate['messages'],
+            'questions'   => $param1 == 'excel' ? [] : $validate['questions'],
         ];
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
-
-
         return view('StudentsRegister.index', $data);
     }
 

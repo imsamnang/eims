@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Languages;
 use App\Models\Sponsored;
@@ -28,8 +28,8 @@ class FrontController extends Controller
      */
     public function __construct()
     {
-        App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        AppModel::setConfig();
+       Languages::setConfig(); AppModel::setConfig();  SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
     public function index($param1 = null, $param2 = null, $param3 = null)

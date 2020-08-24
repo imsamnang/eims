@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Staff;
 
-use App\Models\App;
-use App\Models\Roles;
+use App\Models\App as AppModel;
 use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Marital;
-use App\Models\Communes;
-use App\Models\Students;
-use App\Models\Villages;
-use App\Models\Districts;
 use App\Models\Institute;
 use App\Models\Languages;
 use App\Models\Provinces;
@@ -28,13 +23,9 @@ use App\Imports\StaffsImport;
 use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
-use App\Models\StaffTeachSubject;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StaffsReqisterTemplateExport;
-use App\Http\Controllers\Staff\StaffCertificateFramesController;
-use App\Http\Controllers\Staff\StaffDesignationController;
 
 class StaffRegisterController extends Controller
 {
@@ -43,8 +34,10 @@ class StaffRegisterController extends Controller
     public function __construct()
     {
 
-        App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        AppModel::setConfig();
+       Languages::setConfig();
+       AppModel::setConfig();
+        SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 
@@ -179,8 +172,8 @@ class StaffRegisterController extends Controller
             return $row;
         });
 
-
-        $rules = (new FormStaff)->rules();
+        $validate = Staff::validate();
+        $rules = $validate['rules'];
         unset($rules['pob_province']);
         unset($rules['pob_district']);
         unset($rules['pob_commune']);
@@ -201,9 +194,9 @@ class StaffRegisterController extends Controller
 
         $pages['form']['validate'] = [
             'rules'       => $rules,
-            'attributes'  => (new FormStaff)->attributes(),
-            'messages'    => (new FormStaff)->messages(),
-            'questions'   => (new FormStaff)->questions(),
+            'attributes'  => $validate['attributes'],
+            'messages'    => $validate['messages'],
+            'questions'   => $validate['questions'],
         ];
 
 

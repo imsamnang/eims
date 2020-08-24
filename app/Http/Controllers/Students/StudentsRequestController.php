@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Students;
 
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Gender;
 use App\Models\Students;
@@ -33,9 +33,9 @@ class StudentsRequestController extends Controller
 
     public function __construct()
     {
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -170,12 +170,7 @@ class StudentsRequestController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStudentsRequest)->rules(),
-            'attributes'  =>  (new FormStudentsRequest)->attributes(),
-            'messages'    =>  (new FormStudentsRequest)->messages(),
-            'questions'   =>  (new FormStudentsRequest)->questions(),
-        ];
+        $pages['form']['validate'] = StudentsRequest::validate();
 
         //Select Option
 

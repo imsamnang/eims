@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Days;
 use App\Models\Quiz;
 use App\Models\Roles;
@@ -70,7 +70,7 @@ class StudentsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
@@ -372,10 +372,10 @@ class StudentsController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = Students::path('requests');
+        $pages['form']['validate'] = Students::validate();
 
         if (Auth::user()->role_id && $param1 == 'dashboard' || $param1 == null) {
-            $pages['form']['validate'] = QuizStudentAnswer::path('requests');
+            $pages['form']['validate'] = QuizStudentAnswer::validate();
         }
 
         if (Auth::user()->role_id != 6) {
@@ -1082,11 +1082,11 @@ class StudentsController extends Controller
         );
 
         if ($param1 == StudentsRequest::path('url')) {
-            $pages['form']['validate'] = StudentsRequest::path('requests');
+            $pages['form']['validate'] = StudentsRequest::validate();
         } elseif ($param1 == StudentsShortCourseRequest::path('url')) {
-            $pages['form']['validate'] = StudentsShortCourseRequest::path('requests');
+            $pages['form']['validate'] = StudentsShortCourseRequest::validate();
         } else {
-            $pages['form']['validate'] = Students::path('requests');
+            $pages['form']['validate'] = Students::validate();
         }
 
         config()->set('app.title', $data['title']);

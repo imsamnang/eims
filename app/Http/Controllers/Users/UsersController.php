@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\users;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Roles;
 use App\Models\Staff;
 use App\Models\Users;
@@ -36,9 +36,9 @@ class usersController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }

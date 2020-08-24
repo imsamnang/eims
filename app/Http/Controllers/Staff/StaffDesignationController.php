@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Institute;
 use App\Models\Languages;
@@ -23,9 +23,9 @@ class StaffDesignationController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -129,12 +129,7 @@ class StaffDesignationController extends Controller
             'parent'     => StaffDesignations::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStaffDesignations)->rules(),
-            'attributes'  =>  (new FormStaffDesignations)->attributes(),
-            'messages'    =>  (new FormStaffDesignations)->messages(),
-            'questions'   =>  (new FormStaffDesignations)->questions(),
-        ];
+        $pages['form']['validate'] = StaffDesignations::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

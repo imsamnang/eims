@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Carbon\Carbon;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Years;
@@ -51,9 +51,9 @@ class StudentsStudyCourseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
@@ -483,12 +483,7 @@ class StudentsStudyCourseController extends Controller
             'parent'     => StudentsStudyCourse::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       => ($param1 == 'account') ? ['password' => 'required'] :  (new FormStudentsStudyCourse)->rules(),
-            'attributes'  => ($param1 == 'account') ? ['password' => __('Password')] :  (new FormStudentsStudyCourse)->attributes(),
-            'messages'    => ($param1 == 'account') ? [] :  (new FormStudentsStudyCourse)->messages(),
-            'questions'   => ($param1 == 'account') ? [] :  (new FormStudentsStudyCourse)->questions(),
-        ];
+        $pages['form']['validate'] = StudentsStudyCourse::validate();
 
         //Select Option
 

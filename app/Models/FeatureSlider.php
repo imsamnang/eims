@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use DomainException;
 
 

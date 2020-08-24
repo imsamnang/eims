@@ -27,7 +27,6 @@ use App\Models\SocailsMedia;
 use App\Models\StaffGuardians;
 use App\Models\StaffExperience;
 use App\Models\StaffInstitutes;
-use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
 use App\Models\StaffTeachSubject;
@@ -36,7 +35,7 @@ use App\Models\StaffQualifications;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StaffsReportTemplateExport;
-use App\Http\Controllers\Staff\StaffCertificateFramesController;
+use App\Http\Controllers\Staff\StaffCertificateController;
 use App\Http\Controllers\Staff\StaffDesignationController;
 
 class StaffController extends Controller
@@ -230,7 +229,7 @@ class StaffController extends Controller
             $view = new StaffStatusController();
             return $view->index($param2, $param3, $param4);
         } elseif (($param1) == StaffCertificate::path('url')) {
-            $view = new StaffCertificateFramesController();
+            $view = new StaffCertificateController();
             return $view->index($param2, $param3, $param4);
         } elseif (($param1) == StaffTeachSubject::path('url')) {
             $view = new StaffTeachSubjectController();
@@ -267,12 +266,12 @@ class StaffController extends Controller
             'modal'      => Staff::path('view') . '.includes.modal.index',
             'view'       => $data['view'],
         );
-
+        $validate = Staff::validate();
         $pages['form']['validate'] = [
-            'rules'       => ($param1) == 'account' ? [] : (new FormStaff)->rules(),
-            'attributes'  => ($param1) == 'account' ? [] : (new FormStaff)->attributes(),
-            'messages'    => ($param1) == 'account' ? [] : (new FormStaff)->messages(),
-            'questions'   => ($param1) == 'account' ? [] : (new FormStaff)->questions(),
+            'rules'       => ($param1) == 'account' ? [] : $validate['rules'],
+            'attributes'  => ($param1) == 'account' ? [] : $validate['attributes'],
+            'messages'    => ($param1) == 'account' ? [] : $validate['messages'],
+            'questions'   => ($param1) == 'account' ? [] : $validate['questions'],
         ];
 
 
@@ -357,8 +356,6 @@ class StaffController extends Controller
 
     public function list($data, $id = null)
     {
-
-
         $table = Staff::whereHas('institute', function ($query) {
             $query->where('institute_id', request('instituteId'));
 

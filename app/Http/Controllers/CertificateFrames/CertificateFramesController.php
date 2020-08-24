@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\CertificateFrames;
 
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Students;
 use App\Models\Institute;
@@ -27,7 +27,7 @@ class CertificateFramesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
@@ -211,12 +211,7 @@ class CertificateFramesController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormCertificateFrames)->rules(),
-            'attributes'  =>  (new FormCertificateFrames)->attributes(),
-            'messages'    =>  (new FormCertificateFrames)->messages(),
-            'questions'   =>  (new FormCertificateFrames)->questions(),
-        ];
+        $pages['form']['validate'] = CertificateFrames::validate();
 
 
         //Select Option

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\General;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Days;
 use App\Models\Users;
 use App\Models\Years;
@@ -44,8 +44,8 @@ class GeneralController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        AppModel::setConfig();
+       Languages::setConfig(); AppModel::setConfig();  SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 

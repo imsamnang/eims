@@ -7,7 +7,7 @@ use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\FormStaffCertificate;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Staff\StaffCertificateFramesController;
+use App\Http\Controllers\Staff\StaffCertificateController;
 use Illuminate\Support\Facades\Auth;
 
 class StaffCertificate extends Model
@@ -82,7 +82,7 @@ class StaffCertificate extends Model
                         StaffCertificate::updateImageToTable($add, ImageHelper::uploadImage($image, StaffCertificate::path('image')));
                     }
 
-                    $controller = new StaffCertificateFramesController;
+                    $controller = new StaffCertificateController;
 
                     $response       = array(
                         'success'   => true,
@@ -128,7 +128,7 @@ class StaffCertificate extends Model
                         $image      = request()->file('image');
                         StaffCertificate::updateImageToTable($id, ImageHelper::uploadImage($image, StaffCertificate::path('image')));
                     }
-                    $controller = new StaffCertificateFramesController;
+                    $controller = new StaffCertificateController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Languages;
 use App\Models\SocailsMedia;
@@ -39,8 +39,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        AppModel::setConfig();
+       Languages::setConfig(); AppModel::setConfig();  SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
         $this->middleware('guest')->except('logout');
     }

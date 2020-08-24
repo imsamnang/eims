@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Students;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Students;
 use App\Models\Languages;
@@ -24,9 +24,9 @@ class StudentsStudyCourseScoreController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
+        AppModel::setConfig();
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }

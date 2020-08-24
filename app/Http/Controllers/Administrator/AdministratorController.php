@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Administrator;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Staff;
 use App\Models\Users;
 use App\Models\Students;
@@ -40,7 +40,7 @@ class AdministratorController extends Controller
     {
         $this->middleware('auth');
         Languages::setConfig();
-        App::setConfig();
+        AppModel::setConfig();
         SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }

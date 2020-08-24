@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\ActivityFeed;
 
 use Embed\Embed;
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
@@ -29,8 +29,8 @@ class ActivityFeedController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        App::setConfig();
-       Languages::setConfig(); App::setConfig();  SocailsMedia::setConfig();
+        AppModel::setConfig();
+       Languages::setConfig(); AppModel::setConfig();  SocailsMedia::setConfig();
         view()->share('breadcrumb', []);
     }
 

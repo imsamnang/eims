@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\App;
+use App\Models\App as AppModel;
 use App\Models\ThemesColor;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
