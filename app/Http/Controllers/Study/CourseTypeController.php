@@ -99,12 +99,7 @@ class CourseTypeController extends Controller
             'parent'     => CourseTypes::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormCourseTypes::rules(),
-            'attributes'  =>  FormCourseTypes::attributes(),
-            'messages'    =>  FormCourseTypes::messages(),
-            'questions'   =>  FormCourseTypes::questions(),
-        ];
+        $pages['form']['validate'] = CourseTypes::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

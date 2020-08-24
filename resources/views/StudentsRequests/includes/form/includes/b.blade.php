@@ -8,20 +8,20 @@
         <div class="form-row">
             <div class="col-md-12 mb-3">
                 <label data-toggle="tooltip" rel="tooltip" data-placement="top"
-                    title="{{config("pages.form.validate.questions.student")}}" class="form-control-label"
-                    for="student">
+                    title="{{config("pages.form.validate.questions.students")}}" class="form-control-label"
+                    for="students">
                     {{ __("Students") }}
-                    @if(config("pages.form.validate.rules.student[]"))
+                    @if(config("pages.form.validate.rules.students[]"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">
                         <i class="fas fa-asterisk fa-xs"></i>
                     </span>
                     @endif
                 </label>
 
-                <select {{config("pages.form.data.".$key.".student_id")? '' : 'multiple'}} class="form-control" data-toggle="select" id="student" title="Simple select"
-                    data-placeholder="" name="student[]"
-                    data-select-value="{{config("pages.form.data.".$key.".student_id",request("studentId"))}}">
-                    @foreach($student["data"] as $o)
+                <select {{config("pages.form.data.".$key.".student_id")? '' : 'multiple'}} class="form-control" data-toggle="select" id="students" title="Simple select"
+                    data-placeholder="" name="students[]"
+                    data-select-value="{{config("pages.form.data.".$key.".student_id",request("studentsId"))}}">
+                    @foreach($students["data"] as $o)
                     <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
                     @endforeach

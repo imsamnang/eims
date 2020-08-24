@@ -52,7 +52,7 @@ class TranslateController extends Controller
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
-        $data['formName'] = App::path('url') . '/' . Translates::path('url');
+        $data['formName'] = AppModel::path('url') . '/' . Translates::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {

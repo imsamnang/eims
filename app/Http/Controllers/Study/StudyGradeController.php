@@ -99,12 +99,7 @@ class StudyGradeController extends Controller
             'parent'     => StudyGrade::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyGrade::rules(),
-            'attributes'  =>  FormStudyGrade::attributes(),
-            'messages'    =>  FormStudyGrade::messages(),
-            'questions'   =>  FormStudyGrade::questions(),
-        ];
+        $pages['form']['validate'] = StudyGrade::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

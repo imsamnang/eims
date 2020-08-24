@@ -99,12 +99,7 @@ class HolidayController extends Controller
             'parent'     => Holidays::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormHoliday::rules(),
-            'attributes'  =>  FormHoliday::attributes(),
-            'messages'    =>  FormHoliday::messages(),
-            'questions'   =>  FormHoliday::questions(),
-        ];
+        $pages['form']['validate'] = Holidays::validate();
 
         //Select Option
 

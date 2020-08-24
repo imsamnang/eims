@@ -75,7 +75,7 @@ class FormUsers extends FormRequest
     {
         return [];
     }
-    public static function messages()
+    public function messages()
     {
         return [];
     }

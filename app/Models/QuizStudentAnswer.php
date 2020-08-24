@@ -4,8 +4,8 @@ namespace App\Models;
 
 
 
-use App\Http\Requests\FormQuizStudentAnswer;
-use App\Http\Requests\FormQuizStudentAnswerMarks;
+use App\Http\Requests\FormQuizzesStudentAnswers;
+use App\Http\Requests\FormQuizStudentAnswersMarks;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -77,7 +77,7 @@ class QuizStudentAnswer extends Model
                 foreach ($get  as $key => $row) {
                     $data[$key] = [
                         'id'        => $row['id'],
-                        'question'  => QuizQuestion::getData($row['quiz_question_id'])['data'][0],
+                        'question'  => QuizQuestions::getData($row['quiz_question_id'])['data'][0],
                         'answered'  => $row['answered'],
                         'correct'   => false,
                         'correct_marks' => 0,
@@ -85,7 +85,7 @@ class QuizStudentAnswer extends Model
                     ];
 
                     if ($data[$key]['question']['quiz_answer_type']['id'] == 1) {
-                        $quizAnswer = QuizAnswer::find($data[$key]['answered']);
+                        $quizAnswer = QuizAnswers::find($data[$key]['answered']);
                         if ($quizAnswer->correct_answer) {
                             $data[$key]['correct'] = true;
                             $data[$key]['correct_marks'] = $data[$key]['question']['score'];
@@ -93,9 +93,9 @@ class QuizStudentAnswer extends Model
                     } elseif ($data[$key]['question']['quiz_answer_type']['id'] == 2) {
                         $correct = [];
                         $correct_marks = 0;
-                        $quizAnswerCorrect = QuizAnswer::where('quiz_question_id', $data[$key]['question']['id'])->where('correct_answer', 1)->count();
+                        $quizAnswerCorrect = QuizAnswers::where('quiz_question_id', $data[$key]['question']['id'])->where('correct_answer', 1)->count();
                         foreach (explode(',', $data[$key]['answered']) as $answer) {
-                            $quizAnswer = QuizAnswer::find($answer);
+                            $quizAnswer = QuizAnswers::find($answer);
                             if ($quizAnswer->correct_answer) {
                                 $correct[] = $quizAnswer->correct_answer;
                                 $correct_marks += $data[$key]['question']['score'] / $quizAnswerCorrect;
@@ -152,7 +152,7 @@ class QuizStudentAnswer extends Model
         $get = $get->get()->toArray();
         if ($get) {
             foreach ($get as $qstu) {
-                $countQ = QuizQuestion::where('quiz_id', $qstu['quiz_id'])->count();
+                $countQ = QuizQuestions::where('quiz_id', $qstu['quiz_id'])->count();
                 $countA = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->count();
 
                 if ($countQ != $countA) {
@@ -164,18 +164,18 @@ class QuizStudentAnswer extends Model
                         'quiz_student'    => $qstu['id'],
                         'children'  => &$b[$qstu['quiz_id']]
                     ];
-                    $quizQuestion = QuizQuestion::where('quiz_id', $qstu['quiz_id'])->paginate(5)->toArray();
+                    $quizQuestion = QuizQuestions::where('quiz_id', $qstu['quiz_id'])->paginate(5)->toArray();
 
                     if ($quizQuestion) {
                         foreach ($quizQuestion['data'] as $question) {
                             $answered = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->where('quiz_question_id', $question['id'])->get()->toArray();
                             $b[$qstu['quiz_id']][] = [
                                 'id'    => $question['id'],
-                                'quiz_type'    => QuizQuestionType::getData($question['quiz_question_type_id'])['data'][0],
-                                'quiz_answer_type'    => QuizAnswerType::getData($question['quiz_answer_type_id'])['data'][0],
+                                'quiz_type'    => QuizQuestionTypes::getData($question['quiz_question_type_id'])['data'][0],
+                                'quiz_answer_type'    => QuizAnswerTypes::getData($question['quiz_answer_type_id'])['data'][0],
                                 'question'    => $question['question'],
-                                'answer_limit'  => QuizAnswer::where('quiz_question_id', $question['id'])->where('correct_answer', 1)->count(),
-                                'answer'      => QuizAnswer::getData($question['id'])['data'],
+                                'answer_limit'  => QuizAnswers::where('quiz_question_id', $question['id'])->where('correct_answer', 1)->count(),
+                                'answer'      => QuizAnswers::getData($question['id'])['data'],
                                 'answered'    => $answered ? [
                                     'id'          => $answered[0]['id'],
                                     'answered'    => $answered[0]['answered'],
@@ -229,7 +229,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rules('.*'), FormQuizStudentAnswer::messages(), FormQuizStudentAnswer::attributes());
+        $validator          = Validator::make(request()->all(), FormQuizzesStudentAnswers::rules('.*'), FormQuizzesStudentAnswers::messages(), FormQuizzesStudentAnswers::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -245,7 +245,7 @@ class QuizStudentAnswer extends Model
                 );
             }
             try {
-                $quiz_question = QuizQuestion::find(request('quiz_question'));
+                $quiz_question = QuizQuestions::find(request('quiz_question'));
                 $answer = null;
                 if ($quiz_question->quiz_answer_type_id == 1) {
                     $answer = request('answer')[0];
@@ -283,7 +283,7 @@ class QuizStudentAnswer extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudentAnswer::rules('.*'), FormQuizStudentAnswer::messages(), FormQuizStudentAnswer::attributes());
+        $validator          = Validator::make(request()->all(), FormQuizzesStudentAnswers::rules('.*'), FormQuizzesStudentAnswers::messages(), FormQuizzesStudentAnswers::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -300,7 +300,7 @@ class QuizStudentAnswer extends Model
                         'type'      => 'update',
                         'data'      => [
                             'id'       => $id,
-                            'question'    => QuizQuestion::getData($quiz_student->quiz_question_id),
+                            'question'    => QuizQuestions::getData($quiz_student->quiz_question_id),
                         ],
                         'message'   => array(
                             'title' => __('Error'),
@@ -313,7 +313,7 @@ class QuizStudentAnswer extends Model
                     );
                 } else {
 
-                    $quiz_question = QuizQuestion::find($quiz_student->quiz_question_id);
+                    $quiz_question = QuizQuestions::find($quiz_student->quiz_question_id);
                     $answer = null;
                     if ($quiz_question->quiz_answer_type_id == 1) {
                         $answer = request('answer')[0];
@@ -389,7 +389,7 @@ class QuizStudentAnswer extends Model
     {
         if ($id) {
             $response           = array();
-            $validator          = Validator::make(request()->all(), FormQuizStudentAnswerMarks::rules(), FormQuizStudentAnswerMarks::messages(), FormQuizStudentAnswerMarks::attributes());
+            $validator          = Validator::make(request()->all(), FormQuizStudentAnswersMarks::rules(), FormQuizStudentAnswersMarks::messages(), FormQuizStudentAnswersMarks::attributes());
 
             if ($validator->fails()) {
                 $response       = array(

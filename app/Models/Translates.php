@@ -98,9 +98,9 @@ class Translates extends Model
 
                 $data[$key] = $row;
                 $data[$key]['action'] = [
-                    'edit'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
-                    'view'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
-                    'delete'  => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
+                    'edit'    => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
+                    'view'    => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
+                    'delete'  => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
                 ];
                 $pages['listData'][] = array(
                     'id'     => $data[$key]['id'],
@@ -136,9 +136,9 @@ class Translates extends Model
                 $row = $row->toArray();
                 return $row + [
                     'action'        => [
-                        'edit'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
-                        'view'    => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
-                        'delete'  => url(Users::role() . '/' . App::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
+                        'edit'    => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/edit/' . $row['id']),
+                        'view'    => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/view/' . $row['id']),
+                        'delete'  => url(Users::role() . '/' . AppModel::path('url') . '/' . Translates::path('url') . '/delete/' . $row['id']),
                     ]
                 ];
             })

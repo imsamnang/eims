@@ -19,7 +19,7 @@ use App\Models\Provinces;
 use App\Models\BloodGroup;
 use App\Models\CardFrames;
 use App\Models\MotherTong;
-use App\Models\QuizAnswer;
+use App\Models\QuizAnswers;
 use App\Models\SocialAuth;
 use App\Models\StudyClass;
 use App\Models\CourseTypes;
@@ -33,7 +33,7 @@ use App\Models\ThemesColor;
 use App\Models\ActivityFeed;
 use App\Models\MailboxReply;
 use App\Models\MailboxTrash;
-use App\Models\QuizQuestion;
+use App\Models\QuizQuestions;
 use App\Models\SocailsMedia;
 use App\Models\StudyFaculty;
 use App\Models\StudySession;
@@ -42,7 +42,7 @@ use App\Models\StudentsScore;
 use App\Models\StudyModality;
 use App\Models\StudyPrograms;
 use App\Models\StudySubjects;
-use App\Models\QuizAnswerType;
+use App\Models\QuizAnswerTypes;
 use App\Models\StaffGuardians;
 use App\Models\StudySemesters;
 use App\Models\AttendancesType;
@@ -53,7 +53,7 @@ use App\Models\StudyGeneration;
 use App\Models\ActivityFeedLink;
 use App\Models\CurriculumAuthor;
 use App\Models\MailboxImportant;
-use App\Models\QuizQuestionType;
+use App\Models\QuizQuestionTypes;
 use App\Models\StaffCertificate;
 use App\Models\StudyOverallFund;
 use App\Models\ActivityFeedMedia;
@@ -331,14 +331,14 @@ class ForeignKey extends Migration
             $table->foreign('institute_id')->references('id')->on((new Institute())->getTable())->onDelete('cascade');
         });
 
-        Schema::table((new QuizQuestion())->getTable(), function (Blueprint $table) {
+        Schema::table((new QuizQuestions())->getTable(), function (Blueprint $table) {
             $table->foreign('quiz_id')->references('id')->on((new Quiz())->getTable())->onDelete('cascade');
-            $table->foreign('quiz_answer_type_id')->references('id')->on((new QuizAnswerType())->getTable())->onDelete('cascade');
-            $table->foreign('quiz_question_type_id')->references('id')->on((new QuizQuestionType())->getTable())->onDelete('cascade');
+            $table->foreign('quiz_answer_type_id')->references('id')->on((new QuizAnswerTypes())->getTable())->onDelete('cascade');
+            $table->foreign('quiz_question_type_id')->references('id')->on((new QuizQuestionTypes())->getTable())->onDelete('cascade');
         });
 
-        Schema::table((new QuizAnswer())->getTable(), function (Blueprint $table) {
-            $table->foreign('quiz_question_id')->references('id')->on((new QuizQuestion())->getTable())->onDelete('cascade');
+        Schema::table((new QuizAnswers())->getTable(), function (Blueprint $table) {
+            $table->foreign('quiz_question_id')->references('id')->on((new QuizQuestions())->getTable())->onDelete('cascade');
         });
         Schema::table((new QuizStudent())->getTable(), function (Blueprint $table) {
             $table->foreign('quiz_id')->references('id')->on((new Quiz())->getTable())->onDelete('cascade');

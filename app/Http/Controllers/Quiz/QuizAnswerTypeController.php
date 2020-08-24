@@ -12,13 +12,13 @@ use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Models\QuizAnswerType;
+use App\Models\QuizAnswerTypes;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormQuizAnswerType;
+use App\Http\Requests\FormQuizAnswerTypes;
 use App\Models\Quiz;
 
-class QuizAnswerTypeController extends Controller
+class QuizAnswerTypesController extends Controller
 {
     public function __construct()
     {
@@ -42,27 +42,27 @@ class QuizAnswerTypeController extends Controller
             [
                 'title' => __('List Quiz answer type'),
                 'status' => false,
-                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/list'),
+                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/list'),
             ]
         ];
 
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = Quiz::path('url') . '/' . QuizAnswerType::path('url');
+        $data['formName'] = Quiz::path('url') . '/' . QuizAnswerTypes::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
             $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return QuizAnswerType::getData(null, null, 10);
+                return QuizAnswerTypes::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  QuizAnswerType::getDataTable();
+                return  QuizAnswerTypes::getDataTable();
             } else {
                 $data = $this->list($data);
             }
@@ -70,10 +70,10 @@ class QuizAnswerTypeController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/' . $param1),
+                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/' . $param1),
             ];
             if (request()->method() === 'POST') {
-                return QuizAnswerType::addToTable();
+                return QuizAnswerTypes::addToTable();
             }
             $data = $this->show($data, null, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | ' . __('Add');
@@ -81,10 +81,10 @@ class QuizAnswerTypeController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/' . $param1 . '/' . $id),
             ];
             if (request()->method() === 'POST') {
-                return QuizAnswerType::updateToTable($id);
+                return QuizAnswerTypes::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('Edit');
@@ -92,13 +92,13 @@ class QuizAnswerTypeController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('View');
-            $data['view']     = QuizAnswerType::path('view') . '.includes.view.index';
+            $data['view']     = QuizAnswerTypes::path('view') . '.includes.view.index';
         } elseif ($param1 == 'delete') {
-            return QuizAnswerType::deleteFromTable($id);
+            return QuizAnswerTypes::deleteFromTable($id);
         } elseif ($param1 == 'report') {
             return $this->report();
         } else {
@@ -126,16 +126,10 @@ class QuizAnswerTypeController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => QuizAnswerType::path('view'),
+            'parent'     => QuizAnswerTypes::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormQuizAnswerType::rules(),
-            'attributes'  =>  FormQuizAnswerType::attributes(),
-            'messages'    =>  FormQuizAnswerType::messages(),
-            'questions'   =>  FormQuizAnswerType::questions(),
-        ];
-
+        $pages['form']['validate'] = QuizAnswerTypes::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
@@ -144,7 +138,7 @@ class QuizAnswerTypeController extends Controller
 
     public function list($data, $id = null)
     {
-        $table = QuizAnswerType::orderBy('id', 'DESC');
+        $table = QuizAnswerTypes::orderBy('id', 'DESC');
         $count = $table->count();
         if ($id) {
             $table->whereIn('id', explode(',', $id));
@@ -152,11 +146,11 @@ class QuizAnswerTypeController extends Controller
         $response = $table->get()->map(function ($row, $nid) use ($count) {
             $row['nid'] = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(QuizAnswerType::path('image'), $row['image']);
+            $row['image'] = ImageHelper::site(QuizAnswerTypes::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -165,22 +159,22 @@ class QuizAnswerTypeController extends Controller
             return  $response;
         }
         $data['response']['data'] = $response;
-        $data['view']     = QuizAnswerType::path('view') . '.includes.list.index';
+        $data['view']     = QuizAnswerTypes::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Question type') . ' | '  . __('List');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
-        $data['view']       = QuizAnswerType::path('view') . '.includes.form.index';
+        $data['view']       = QuizAnswerTypes::path('view') . '.includes.form.index';
         if ($id) {
 
-            $response           = QuizAnswerType::whereIn('id', explode(',', $id))->get()->map(function ($row) {
-                $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerType::path('image'), $row['image']) : ImageHelper::prefix();
+            $response           = QuizAnswerTypes::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+                $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerTypes::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -190,7 +184,7 @@ class QuizAnswerTypeController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });
@@ -210,12 +204,12 @@ class QuizAnswerTypeController extends Controller
         ]);
 
         config()->set('app.title', __('Report') . ' | ' . __('Quiz Question type'));
-        config()->set('pages.parent', QuizAnswerType::path('view'));
+        config()->set('pages.parent', QuizAnswerTypes::path('view'));
 
-        $table = new QuizAnswerType;
+        $table = new QuizAnswerTypes;
         $response = $table->get()->map(function ($row) {
             $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerType::path('image'), $row['image']) : ImageHelper::prefix();
+            $row['image'] = $row['image'] ? ImageHelper::site(QuizAnswerTypes::path('image'), $row['image']) : ImageHelper::prefix();
             return $row;
         })->toArray();
 
@@ -249,6 +243,6 @@ class QuizAnswerTypeController extends Controller
         ];
 
         config()->set('pages.title', __('List Quiz answer type'));
-        return view(QuizAnswerType::path('view') . '.includes.report.index', $data);
+        return view(QuizAnswerTypes::path('view') . '.includes.report.index', $data);
     }
 }

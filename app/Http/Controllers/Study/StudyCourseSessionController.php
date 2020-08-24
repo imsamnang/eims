@@ -106,12 +106,7 @@ class StudyCourseSessionController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyCourseSession::rules(),
-            'attributes'  =>  FormStudyCourseSession::attributes(),
-            'messages'    =>  FormStudyCourseSession::messages(),
-            'questions'   =>  FormStudyCourseSession::questions(),
-        ];
+        $pages['form']['validate'] = StudyCourseSession::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

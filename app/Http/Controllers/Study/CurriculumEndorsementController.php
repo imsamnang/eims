@@ -99,12 +99,7 @@ class CurriculumEndorsementController extends Controller
             'parent'     => CurriculumEndorsement::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormCurriculumEndorsement::rules(),
-            'attributes'  =>  FormCurriculumEndorsement::attributes(),
-            'messages'    =>  FormCurriculumEndorsement::messages(),
-            'questions'   =>  FormCurriculumEndorsement::questions(),
-        ];
+        $pages['form']['validate'] = CurriculumEndorsement::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

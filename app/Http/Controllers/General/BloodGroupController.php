@@ -100,12 +100,7 @@ class BloodGroupController extends Controller
             'parent'     => BloodGroup::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormBloodGroup)->rules(),
-            'attributes'  =>  (new FormBloodGroup)->attributes(),
-            'messages'    =>  (new FormBloodGroup)->messages(),
-            'questions'   =>  (new FormBloodGroup)->questions(),
-        ];
+        $pages['form']['validate'] = BloodGroup::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

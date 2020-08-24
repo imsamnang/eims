@@ -7,7 +7,7 @@ use DomainException;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Quiz\QuizController;
-use App\Http\Requests\FormQuiz;
+use App\Http\Requests\FormQuizzes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -127,7 +127,7 @@ class Quiz extends Model
                         'edit' => url(Users::role() . '/' . Quiz::path('url') . '/edit/' . $row['id']),
                         'view' => url(Users::role() . '/' . Quiz::path('url') . '/view/' . $row['id']),
                         'delete' => url(Users::role() . '/' . Quiz::path('url') . '/delete/' . $row['id']),
-                        'question_answer'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestion::path('url') . '/list/?quizId=' . $row['id']),
+                        'question_answer'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestions::path('url') . '/list/?quizId=' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -168,9 +168,9 @@ class Quiz extends Model
     public static function addToTable()
     {
         $response           = array();
-        $rules = FormQuiz::rules();
+        $rules = FormQuizzes::rules();
         $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name';
-        $validator          = Validator::make(request()->all(), $rules, FormQuiz::messages(), FormQuiz::attributes());
+        $validator          = Validator::make(request()->all(), $rules, FormQuizzes::messages(), FormQuizzes::attributes());
 
         if ($validator->fails()) {
             $response       = array(
@@ -214,9 +214,9 @@ class Quiz extends Model
     {
 
         $response           = array();
-        $rules = FormQuiz::rules();
+        $rules = FormQuizzes::rules();
         $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormQuiz::messages(), FormQuiz::attributes());
+        $validator          = Validator::make(request()->all(), $rules, FormQuizzes::messages(), FormQuizzes::attributes());
 
         if ($validator->fails()) {
             $response       = array(

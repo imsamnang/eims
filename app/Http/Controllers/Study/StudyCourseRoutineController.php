@@ -105,12 +105,7 @@ class StudyCourseRoutineController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyCourseRoutine::rules(),
-            'attributes'  =>  FormStudyCourseRoutine::attributes(),
-            'messages'    =>  FormStudyCourseRoutine::messages(),
-            'questions'   =>  FormStudyCourseRoutine::questions(),
-        ];
+        $pages['form']['validate'] = StudyCourseRoutine::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

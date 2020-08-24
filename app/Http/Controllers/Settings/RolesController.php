@@ -33,7 +33,7 @@ class RolesController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::path('url') . '/' . Roles::path('url');
+        $data['formName'] = AppModel::path('url') . '/' . Roles::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -114,9 +114,9 @@ class RolesController extends Controller
             $row['name'] = $row->km;
             $row['image'] = ImageHelper::site(Roles::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -135,9 +135,9 @@ class RolesController extends Controller
 
                 $row['image'] = $row['image'] ? ImageHelper::site(Roles::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -147,7 +147,7 @@ class RolesController extends Controller
                     'name'  => $row->{app()->getLocale()},
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Roles::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

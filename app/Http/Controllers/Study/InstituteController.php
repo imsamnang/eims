@@ -99,12 +99,7 @@ class InstituteController extends Controller
             'parent'     => Institute::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormInstitute::rules(),
-            'attributes'  =>  FormInstitute::attributes(),
-            'messages'    =>  FormInstitute::messages(),
-            'questions'   =>  FormInstitute::questions(),
-        ];
+        $pages['form']['validate'] = Institute::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

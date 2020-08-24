@@ -99,12 +99,7 @@ class CurriculumAuthorController extends Controller
             'parent'     => CurriculumAuthor::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormCurriculumAuthor::rules(),
-            'attributes'  =>  FormCurriculumAuthor::attributes(),
-            'messages'    =>  FormCurriculumAuthor::messages(),
-            'questions'   =>  FormCurriculumAuthor::questions(),
-        ];
+        $pages['form']['validate'] = CurriculumAuthor::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

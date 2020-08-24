@@ -393,12 +393,7 @@ class StudyController extends Controller
             'parent'     => 'Study',
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  [],
-            'attributes'  =>  [],
-            'messages'    =>  [],
-            'questions'   =>  [],
-        ];
+        $pages['form']['validate'] = [];
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

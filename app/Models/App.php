@@ -12,16 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class App extends Model
 {
-    /**
+     /**
      *  @param string $key
      *  @param string|array $key
      */
     public static function path($key = null)
     {
+        $table = (new self)->getTable();
+        $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+
         $path = [
-            'image'  => (new self)->getTable(),
+            'image'  => $table,
             'url'    => 'settings',
-            'view'   => (new self)->getTable()
+            'view'   => 'Settings',
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
         ];
         return $key ? @$path[$key] : $path;
     }

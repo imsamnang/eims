@@ -142,33 +142,33 @@ class StaffRegisterController extends Controller
             return $row;
         });
         $data['status']['data']   = StaffStatus::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(StaffStatus::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['designation']['data']  = StaffDesignations::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(StaffDesignations::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
 
         $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(MotherTong::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
 
         $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Nationality::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(Marital::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(BloodGroup::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
         $data['staff_certificate']['data']   = StaffCertificate::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
+            $row['image']   = $row->image ?  ImageHelper::site(StaffCertificate::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
 

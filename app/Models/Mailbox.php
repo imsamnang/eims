@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Helpers\Encryption;
 
-use App\Http\Requests\FormMailbox;
+use App\Http\Requests\FormMailboxes;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +13,23 @@ use PHPHtmlParser\Dom;
 
 class Mailbox extends Model
 {
-    public static $path = [
-        'image'  => 'mailbox',
-        'url'    => 'mailbox',
-        'view'   => 'Mailbox'
-    ];
+    /**
+     *  @param string $key
+     *  @param string|array $key
+     */
+    public static function path($key = null)
+    {
+        $table = (new self)->getTable();
+        $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+
+        $path = [
+            'image'  => $table,
+            'url'    => str_replace('_', '-', $table),
+            'view'   => $tableUcwords,
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+        ];
+        return $key ? @$path[$key] : $path;
+    }
     public static function getData($id = null, $type = 'list', $paginate = null, $search = null)
     {
         $pages = [];
@@ -134,7 +146,7 @@ class Mailbox extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMailbox::rules('.*'), FormMailbox::messages(), FormMailbox::attributes());
+        $validator          = Validator::make(request()->all(), FormMailboxes::rules('.*'), FormMailboxes::messages(), FormMailboxes::attributes());
 
         if ($validator->fails()) {
             $response       = array(

@@ -110,12 +110,7 @@ class StudyShortCourseSessionController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyShortCourseSession::rules(),
-            'attributes'  =>  FormStudyShortCourseSession::attributes(),
-            'messages'    =>  FormStudyShortCourseSession::messages(),
-            'questions'   =>  FormStudyShortCourseSession::questions(),
-        ];
+        $pages['form']['validate'] = StudyShortCourseSession::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

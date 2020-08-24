@@ -100,12 +100,7 @@ class VillageController extends Controller
             'parent'     => Villages::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormDistrict::rules(),
-            'attributes'  =>  FormDistrict::attributes(),
-            'messages'    =>  FormDistrict::messages(),
-            'questions'   =>  FormDistrict::questions(),
-        ];
+        $pages['form']['validate'] = Villages::validate();
         //Select Options
         $data['provinces'] = [
             'data'  => Provinces::get(['id', app()->getLocale() . ' as name']),

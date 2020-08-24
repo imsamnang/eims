@@ -99,12 +99,7 @@ class StudyAcademicYearController extends Controller
             'parent'     => StudyAcademicYears::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyAcademicYears::rules(),
-            'attributes'  =>  FormStudyAcademicYears::attributes(),
-            'messages'    =>  FormStudyAcademicYears::messages(),
-            'questions'   =>  FormStudyAcademicYears::questions(),
-        ];
+        $pages['form']['validate'] = StudyAcademicYears::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

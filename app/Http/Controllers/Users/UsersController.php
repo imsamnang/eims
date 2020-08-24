@@ -65,7 +65,7 @@ class usersController extends Controller
                 abort(404);
             }
         } else {
-            $data['role']      = Roles::getData(request('roleId'));
+            $data['role']['data'] = Roles::get();
             $data['formData']  = array(
                 ['profile' => asset('/assets/img/icons/image.jpg'),]
             );
@@ -132,19 +132,9 @@ class usersController extends Controller
             'view'       => $data['view'],
         );
         if (Auth::user()->role_id == 9) {
-            $pages['form']['validate'] = [
-                'rules'       =>  FormUsers::rules2(),
-                'attributes'  =>  FormStaff::attributes() + ['teacher_or_student' => __('Teacher or Student')],
-                'messages'    =>  FormStaff::messages(),
-                'questions'   =>  FormStaff::questions(),
-            ];
+            $pages['form']['validate'] = [];
         } else {
-            $pages['form']['validate'] = [
-                'rules'       =>  FormUsers::rules(),
-                'attributes'  =>  FormUsers::attributes(),
-                'messages'    =>  FormUsers::messages(),
-                'questions'   =>  FormUsers::questions(),
-            ];
+            $pages['form']['validate'] = Users::validate();
         }
 
         if ($param1 == 'edit') {
@@ -181,7 +171,7 @@ class usersController extends Controller
         $data['student']['data'] = Students::whereHas('institute', function ($query) {
             $query->where('id', request('instituteId'));
         })
-            ->whereNotIn('id', Users::whereNotNull('node_id')->where('role_id', Students::$path['roleId'])->pluck('node_id'))
+            ->whereNotIn('id', Users::whereNotNull('node_id')->where('role_id', Students::path('roleId'))->pluck('node_id'))
             ->get(['id', 'first_name_km', 'last_name_km', 'first_name_en', 'last_name_en', 'photo'])->map(function ($row) {
                 $row['name']  = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['photo']  = ImageHelper::site(Students::path('image'), $row['photo']);

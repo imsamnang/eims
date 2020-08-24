@@ -14,13 +14,12 @@ use App\Models\Languages;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-use App\Models\QuizStudent;
+use App\Models\QuizStudents;
 use App\Helpers\ImageHelper;
-use App\Models\QuizQuestion;
+use App\Models\QuizQuestions;
 use App\Models\SocailsMedia;
-use App\Models\QuizAnswerType;
-use App\Http\Requests\FormQuiz;
-use App\Models\QuizQuestionType;
+use App\Models\QuizAnswerTypes;
+use App\Models\QuizQuestionTypes;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Quiz\QuizQuestionController;
@@ -68,21 +67,21 @@ class QuizController extends Controller
                 ],
                 [
                     'name'  => __('List Quiz question'),
-                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestion::path('url') . '/list'),
+                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestions::path('url') . '/list'),
                     'icon'  => 'fas fa-question',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
                     'name'  => __('List Quiz student'),
-                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/list'),
+                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/list'),
                     'icon'  => 'fas fa-users-class',
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ],
                 [
                     'name'  => __('List Quiz answer type'),
-                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerType::path('url') . '/list'),
+                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizAnswerTypes::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Quiz answer type'),
                     'image' => null,
@@ -90,14 +89,14 @@ class QuizController extends Controller
                 ],
                 [
                     'name'  => __('List Quiz question type'),
-                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestionType::path('url') . '/list'),
+                    'link'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestionTypes::path('url') . '/list'),
                     'icon'  => null,
                     'text'  => __('Quiz question type'),
                     'image' => null,
                     'color' => 'bg-' . config('app.theme_color.name'),
                 ]
             ];
-            $data['view']  = 'Quiz.includes.dashboard.index';
+            $data['view']  = Quiz::path('view').'.includes.dashboard.index';
             $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Quiz');
         } elseif ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
@@ -136,16 +135,16 @@ class QuizController extends Controller
 
             $id = request('id', $param2);
             return Quiz::deleteFromTable($id);
-        } elseif ($param1 == QuizQuestionType::path('url')) {
-            $view = new QuizQuestionTypeController();
+        } elseif ($param1 == QuizQuestionTypes::path('url')) {
+            $view = new QuizQuestionTypesController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == QuizAnswerType::path('url')) {
-            $view = new QuizAnswerTypeController();
+        } elseif ($param1 == QuizAnswerTypes::path('url')) {
+            $view = new QuizAnswerTypesController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == QuizQuestion::path('url')) {
+        } elseif ($param1 == QuizQuestions::path('url')) {
             $view = new QuizQuestionController();
             return $view->index($param2, $param3);
-        } elseif ($param1 == QuizStudent::path('url')) {
+        } elseif ($param1 == QuizStudents::path('url')) {
             $view = new QuizStudentsController();
             return $view->index($param2, $param3);
         } else {
@@ -174,12 +173,7 @@ class QuizController extends Controller
             'parent'     => Quiz::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormQuiz::rules(),
-            'attributes'  =>  FormQuiz::attributes(),
-            'messages'    =>  FormQuiz::messages(),
-            'questions'   =>  FormQuiz::questions(),
-        ];
+        $pages['form']['validate'] = Quiz::validate();
 
         //Select Option
 
@@ -225,18 +219,18 @@ class QuizController extends Controller
             $row['name']   = $row->{app()->getLocale()};
             $row['image']   = $row->image ? ImageHelper::site(Quiz::path('image'), $row->image) : ImageHelper::prefix();
             $row['questions'] = [
-                'total' =>  QuizQuestion::where('quiz_id', $row->id)->count() . __('Questions'),
-                'link_view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestion::path('url') . '/list/?quizId=' . $row['id']),
+                'total' =>  QuizQuestions::where('quiz_id', $row->id)->count() . __('Questions'),
+                'link_view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestions::path('url') . '/list/?quizId=' . $row['id']),
             ];
             $row['students'] = [
-                'total'  => __('Students') . '(' . QuizStudent::where('quiz_id', $row->id)->count() . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
-                'link_view'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/list?quizId=' . $row['id']),
+                'total'  => __('Students') . '(' . QuizStudents::where('quiz_id', $row->id)->count() . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
+                'link_view'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/list?quizId=' . $row['id']),
             ];
             $row['action']        = [
                 'edit' => url(Users::role() . '/' . Quiz::path('url') . '/edit/' . $row['id']),
                 'view' => url(Users::role() . '/' . Quiz::path('url') . '/view/' . $row['id']),
                 'delete' => url(Users::role() . '/' . Quiz::path('url') . '/delete/' . $row['id']),
-                'question_answer'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestion::path('url') . '/list/?quizId=' . $row['id']),
+                'question_answer'  => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizQuestions::path('url') . '/list/?quizId=' . $row['id']),
             ];
 
             return $row;

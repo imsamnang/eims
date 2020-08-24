@@ -99,12 +99,7 @@ class AttendanceTypesController extends Controller
             'parent'     => AttendanceTypes::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       => (new FormAttendanceTypes)->rules(),
-            'attributes'  => (new FormAttendanceTypes)->attributes(),
-            'messages'    => (new FormAttendanceTypes)->messages(),
-            'questions'   => (new FormAttendanceTypes)->questions(),
-        ];
+        $pages['form']['validate'] = AttendanceTypes::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

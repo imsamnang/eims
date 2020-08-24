@@ -98,12 +98,7 @@ class StudyStatusController extends Controller
             'parent'     => StudyStatus::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyStatus::rules(),
-            'attributes'  =>  FormStudyStatus::attributes(),
-            'messages'    =>  FormStudyStatus::messages(),
-            'questions'   =>  FormStudyStatus::questions(),
-        ];
+        $pages['form']['validate'] = StudyStatus::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

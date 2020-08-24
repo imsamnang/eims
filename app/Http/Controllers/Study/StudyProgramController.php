@@ -99,12 +99,7 @@ class StudyProgramController extends Controller
             'parent'     => StudyPrograms::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyPrograms::rules(),
-            'attributes'  =>  FormStudyPrograms::attributes(),
-            'messages'    =>  FormStudyPrograms::messages(),
-            'questions'   =>  FormStudyPrograms::questions(),
-        ];
+        $pages['form']['validate'] = StudyPrograms::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

@@ -47,7 +47,7 @@
                     </li>
                     <li class="nav-item">
                         <a data-toggle="navbar"
-                            class="nav-link {{ request()->segment(2) == 'student' ? 'active text-blue' : '' }}"
+                            class="nav-link {{ request()->segment(2) == 'students' ? 'active text-blue' : '' }}"
                             href="{{ URL::to(config('pages.host') . config('pages.path') . '/students') }}">
                             <i class="fas fa-user-graduate"></i>
                             <span class="nav-link-text">{{ __('Student') }}</span>
@@ -62,8 +62,8 @@
                     </li>
                     <li class="nav-item">
                         <a data-toggle="navbar"
-                            class="nav-link {{ request()->segment(2) == 'quiz' ? 'active text-blue' : '' }}"
-                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/quiz') }}">
+                            class="nav-link {{ request()->segment(2) == 'quizzes' ? 'active text-blue' : '' }}"
+                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/quizzes') }}">
                             <i class="fas fa-question-circle"></i>
                             <span class="nav-link-text">{{ __('Quiz') }}</span>
                         </a>

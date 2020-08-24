@@ -100,12 +100,7 @@ class DayController extends Controller
             'parent'     => Days::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormDay)->rules(),
-            'attributes'  =>  (new FormDay)->attributes(),
-            'messages'    =>  (new FormDay)->messages(),
-            'questions'   =>  (new FormDay)->questions(),
-        ];
+        $pages['form']['validate'] = Days::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

@@ -38,8 +38,5 @@ class LoginRequests extends FormRequest
         ];
     }
 
-    public static function messages()
-    {
-        return [];
-    }
+   
 }

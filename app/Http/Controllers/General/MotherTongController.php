@@ -100,13 +100,7 @@ class MotherTongController extends Controller
             'parent'     => MotherTong::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormMotherTong::rules(),
-            'attributes'  =>  FormMotherTong::attributes(),
-            'messages'    =>  FormMotherTong::messages(),
-            'questions'   =>  FormMotherTong::questions(),
-        ];
-
+        $pages['form']['validate'] = MotherTong::validate();
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);

@@ -2,7 +2,7 @@
     <div class="col-xl-12 col-lg-12  col-md-12 col-sm-12 col-xs-12">
         <div class="card-wrapper">
             <form role="{{config("pages.form.role")}}" class="needs-validation" novalidate="" method="POST"
-                action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
+                action="{{config("pages.form.action.detect")}}"
                 id="form-lesson" enctype="multipart/form-data"
                 data-validate="{{json_encode(config("pages.form.validate"))}}">
                 <div class="card p-0">

@@ -99,12 +99,7 @@ class MaritalController extends Controller
             'parent'     => Marital::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormMarital::rules(),
-            'attributes'  =>  FormMarital::attributes(),
-            'messages'    =>  FormMarital::messages(),
-            'questions'   =>  FormMarital::questions(),
-        ];
+        $pages['form']['validate'] = Marital::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

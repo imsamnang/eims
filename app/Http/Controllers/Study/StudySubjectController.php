@@ -16,7 +16,6 @@ use App\Models\SocailsMedia;
 use App\Models\StudySubjects;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStudySubjects;
 use App\Models\CourseTypes;
 
 class StudySubjectController extends Controller
@@ -41,16 +40,11 @@ class StudySubjectController extends Controller
         $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudySubjects::getData(null, null, 10);
+
             } else {
                 $data = $this->list($data);
             }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StudySubjects::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
+       
         } elseif ($param1 == 'add') {
 
             if (request()->method() === 'POST') {
@@ -97,12 +91,7 @@ class StudySubjectController extends Controller
             'parent'     => StudySubjects::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudySubjects::rules(),
-            'attributes'  =>  FormStudySubjects::attributes(),
-            'messages'    =>  FormStudySubjects::messages(),
-            'questions'   =>  FormStudySubjects::questions(),
-        ];
+        $pages['form']['validate'] = StudySubjects::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

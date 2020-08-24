@@ -99,12 +99,7 @@ class StudyOverallFundController extends Controller
             'parent'     => StudyOverallFund::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyOverallFund::rules(),
-            'attributes'  =>  FormStudyOverallFund::attributes(),
-            'messages'    =>  FormStudyOverallFund::messages(),
-            'questions'   =>  FormStudyOverallFund::questions(),
-        ];
+        $pages['form']['validate'] = StudyOverallFund::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

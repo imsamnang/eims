@@ -54,7 +54,7 @@ class FeatureSlider extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::path('url') . '/' .  FeatureSlider::path('url') . '/add/'),
+                'add'    => url(Users::role() . '/' . AppModel::path('url') . '/' .  FeatureSlider::path('url') . '/add/'),
             ),
         );
 
@@ -109,9 +109,9 @@ class FeatureSlider extends Model
                     'description'   => $row['description'],
                     'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::path('image'), $row['image'])) : ImageHelper::prefix(),                    'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -153,9 +153,9 @@ class FeatureSlider extends Model
                     'description'   => $row['description'],
                     'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
 
                     ]
                 ];

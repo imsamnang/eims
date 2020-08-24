@@ -40,21 +40,16 @@ class StudySubjectLessonController extends Controller
             'ref'   => StudySubjectLesson::path('url')
         ]);
 
-        $data['staff_teach_subject'] = StaffTeachSubject::getData();
+        $data['staff_teach_subject']['data'] = StaffTeachSubject::get();
         $data['formData'] = array(
-            'image' => asset('/assets/img/icons/pdf.png'),
+            ['image' => asset('/assets/img/icons/pdf.png'),]
         );
         $data['formName'] = 'study/' . StudySubjectLesson::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
             $data = $this->list($data);
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudySubjectLesson::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
+
         } elseif ($param1 == 'grid') {
             $data = $this->grid($data);
         } elseif ($param1 == 'add') {
@@ -106,12 +101,7 @@ class StudySubjectLessonController extends Controller
             'parent'     => StudySubjectLesson::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudySubjectLesson::rules(),
-            'attributes'  =>  FormStudySubjectLesson::attributes(),
-            'messages'    =>  FormStudySubjectLesson::messages(),
-            'questions'   =>  FormStudySubjectLesson::questions(),
-        ];
+        $pages['form']['validate'] = StudySubjectLesson::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

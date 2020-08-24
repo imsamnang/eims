@@ -11,7 +11,7 @@ use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormMailbox;
+use App\Http\Requests\FormMailboxes;
 use App\Models\Mailbox;
 use App\Models\MailboxImportant;
 use App\Models\MailboxTrash;
@@ -95,10 +95,10 @@ class MailboxImportantController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = [
-            'rules'       =>  FormMailbox::rules(),
-            'attributes'  =>  FormMailbox::attributes(),
-            'messages'    =>  FormMailbox::messages(),
-            'questions'   =>  FormMailbox::questions(),
+            'rules'       =>  FormMailboxes::rules(),
+            'attributes'  =>  FormMailboxes::attributes(),
+            'messages'    =>  FormMailboxes::messages(),
+            'questions'   =>  FormMailboxes::questions(),
         ];
 
         config()->set('app.title', $data['title']);

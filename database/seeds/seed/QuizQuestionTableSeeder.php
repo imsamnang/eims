@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\QuizAnswer;
-use App\Models\QuizQuestion;
+use App\Models\QuizAnswers;
+use App\Models\QuizQuestions;
 use Illuminate\Database\Seeder;
 
 class QuizQuestionTableSeeder extends Seeder
@@ -13,7 +13,7 @@ class QuizQuestionTableSeeder extends Seeder
      */
     public function run()
     {
-        QuizQuestion::insert([
+        QuizQuestions::insert([
             [
                 'id'                    => 1,
                 'quiz_id'               => 1,
@@ -40,7 +40,7 @@ class QuizQuestionTableSeeder extends Seeder
             ]
         ]);
 
-        QuizAnswer::insert([
+        QuizAnswers::insert([
             [
                 'quiz_question_id'      => 1,
                 'answer'                => 1,

@@ -53,7 +53,7 @@ class Sponsored extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/add/'),
+                'add'    => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/add/'),
             ),
         );
 
@@ -108,9 +108,9 @@ class Sponsored extends Model
                     'image'         => ImageHelper::site(Sponsored::path('image'), $row['image']),
                     'status'        => $key == 0 ? 'active' : '',
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -152,9 +152,9 @@ class Sponsored extends Model
                     'description'   => $row['description'],
                     'image'         => ImageHelper::site(Sponsored::path('image'), $row['image']),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
                     ]
 
                 ];

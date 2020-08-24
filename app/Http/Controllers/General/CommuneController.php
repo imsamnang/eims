@@ -99,12 +99,7 @@ class CommuneController extends Controller
             'parent'     => Communes::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormDistrict)->rules(),
-            'attributes'  =>  (new FormDistrict)->attributes(),
-            'messages'    =>  (new FormDistrict)->messages(),
-            'questions'   =>  (new FormDistrict)->questions(),
-        ];
+        $pages['form']['validate'] = Communes::validate();
         //Select Options
         $data['provinces'] = [
             'data'  => Provinces::get(['id', app()->getLocale() . ' as name']),

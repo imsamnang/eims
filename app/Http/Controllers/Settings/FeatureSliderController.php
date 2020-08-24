@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Settings;
 use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Institute;
-
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
@@ -13,7 +12,6 @@ use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormFeatureSlider;
 
 
 class FeatureSliderController extends Controller
@@ -34,7 +32,7 @@ class FeatureSliderController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::path('url') . '/' . FeatureSlider::path('url');
+        $data['formName'] = AppModel::path('url') . '/' . FeatureSlider::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -95,12 +93,7 @@ class FeatureSliderController extends Controller
             'parent'     => FeatureSlider::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormFeatureSlider::rules(),
-            'attributes'  =>  FormFeatureSlider::attributes(),
-            'messages'    =>  FormFeatureSlider::messages(),
-            'questions'   =>  FormFeatureSlider::questions(),
-        ];
+        $pages['form']['validate'] = FeatureSlider::validate();
         //Select Option
 
         $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
@@ -129,9 +122,9 @@ class FeatureSliderController extends Controller
             $row['name']  = $row->title;
             $row['image'] = ImageHelper::site(FeatureSlider::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -150,9 +143,9 @@ class FeatureSliderController extends Controller
                 $row['name']  = $row->title;
                 $row['image'] = $row['image'] ? ImageHelper::site(FeatureSlider::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -162,7 +155,7 @@ class FeatureSliderController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

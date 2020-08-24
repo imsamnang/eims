@@ -99,12 +99,7 @@ class StudyModalityController extends Controller
             'parent'     => StudyModality::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyModality::rules(),
-            'attributes'  =>  FormStudyModality::attributes(),
-            'messages'    =>  FormStudyModality::messages(),
-            'questions'   =>  FormStudyModality::questions(),
-        ];
+        $pages['form']['validate'] = StudyModality::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

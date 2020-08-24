@@ -57,30 +57,30 @@ class StudentsRegisterController extends Controller
             } else {
                 $data = $this->add($data);
             }
-            // Select Option
+                // Select Option
 
-        $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
-            return $row;
-        });
+            $data['institute']['data']  = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
+                return $row;
+            });
 
-        $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
-            return $row;
-        });
+            $data['mother_tong']['data']         = MotherTong::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(MotherTong::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });
 
-        $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
-            return $row;
-        });
-        $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
-            return $row;
-        });
-        $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ?  ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
-            return $row;
-        });
+            $data['nationality']['data']         = Nationality::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Nationality::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });
+            $data['marital']['data']             = Marital::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(Marital::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });
+            $data['blood_group']['data']         = BloodGroup::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image ?  ImageHelper::site(BloodGroup::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });
         } elseif ($param1 == 'excel') {
             if ($param2 == 'import') {
                 if (request()->method() == 'POST') {

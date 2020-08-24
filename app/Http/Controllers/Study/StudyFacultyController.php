@@ -99,12 +99,7 @@ class StudyFacultyController extends Controller
             'parent'     => StudyFaculty::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyFaculty::rules(),
-            'attributes'  =>  FormStudyFaculty::attributes(),
-            'messages'    =>  FormStudyFaculty::messages(),
-            'questions'   =>  FormStudyFaculty::questions(),
-        ];
+        $pages['form']['validate'] = StudyFaculty::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

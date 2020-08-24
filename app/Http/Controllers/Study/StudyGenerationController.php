@@ -99,12 +99,7 @@ class StudyGenerationController extends Controller
             'parent'     => StudyGeneration::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyGeneration::rules(),
-            'attributes'  =>  FormStudyGeneration::attributes(),
-            'messages'    =>  FormStudyGeneration::messages(),
-            'questions'   =>  FormStudyGeneration::questions(),
-        ];
+        $pages['form']['validate'] = StudyGeneration::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

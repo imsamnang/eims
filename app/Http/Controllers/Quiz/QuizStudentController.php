@@ -12,14 +12,14 @@ use App\Models\Students;
 use App\Models\Institute;
 use App\Models\Languages;
 
-use App\Models\QuizAnswer;
+use App\Models\QuizAnswers;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Models\QuizStudent;
 use App\Models\StudyCourse;
 use App\Helpers\ImageHelper;
-use App\Models\QuizQuestion;
+use App\Models\QuizQuestions;
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
 use App\Models\StudyPrograms;
@@ -33,8 +33,8 @@ use Illuminate\Support\Collection;
 use App\Models\StudentsStudyCourse;
 use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormQuizStudent;
-use App\Http\Requests\FormQuizStudentAnswerMarks;
+use App\Http\Requests\FormQuizStudentAnswersMarks;
+use App\Models\QuizStudents;
 
 class QuizStudentsController extends Controller
 {
@@ -58,18 +58,18 @@ class QuizStudentsController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = Quiz::path('url') . '/' . QuizStudent::path('url');
+        $data['formName'] = Quiz::path('url') . '/' . QuizStudents::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return QuizStudent::getData(null, null, 10);
+                return QuizStudents::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
         } elseif (strtolower($param1) == 'list-datatable') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  QuizStudent::getDataTable();
+                return  QuizStudents::getDataTable();
             } else {
                 $data = $this->list($data);
             }
@@ -77,19 +77,19 @@ class QuizStudentsController extends Controller
             return $this->report();
         } elseif ($param1 == 'auto-score') {
             $id = request('id', $param2);
-            QuizStudent::join((new QuizStudentAnswer)->getTable(), (new QuizStudentAnswer)->getTable() . '.quiz_student_id', (new QuizStudent)->getTable() . '.id')
-                ->whereIn((new QuizStudent)->getTable() . '.id', explode(',', $id))
+            QuizStudents::join((new QuizStudentAnswer)->getTable(), (new QuizStudentAnswer)->getTable() . '.quiz_student_id', (new QuizStudents)->getTable() . '.id')
+                ->whereIn((new QuizStudents)->getTable() . '.id', explode(',', $id))
                 ->get([
                     (new QuizStudentAnswer)->getTable() . '.*',
                 ])->map(function ($r) {
-                    $r['questions'] = QuizQuestion::where('id', $r->quiz_question_id)->get()->first();
-                    $r['answers'] = QuizAnswer::where('quiz_question_id', $r->quiz_question_id)->get();
+                    $r['questions'] = QuizQuestions::where('id', $r->quiz_question_id)->get()->first();
+                    $r['answers'] = QuizAnswers::where('quiz_question_id', $r->quiz_question_id)->get();
 
                     $correct_marks = 0;
 
 
                     if ($r['questions']['quiz_answer_type_id'] == 1) {
-                        $quizAnswer = QuizAnswer::where('id', $r->answered)->get()->first();
+                        $quizAnswer = QuizAnswers::where('id', $r->answered)->get()->first();
                         if ($quizAnswer->correct_answer) {
                             $correct_marks = $r['questions']['score'];
                         };
@@ -97,7 +97,7 @@ class QuizStudentsController extends Controller
                         $correct = [];
                         foreach (explode(',', $r->answered) as $answerId) {
 
-                            $quizAnswer = QuizAnswer::where('id', $answerId)->get()->first();
+                            $quizAnswer = QuizAnswers::where('id', $answerId)->get()->first();
                             if ($quizAnswer->correct_answer) {
                                 $correct[] = $quizAnswer->correct_answer;
                                 $correct_marks += $r['questions']['score'] / $r['answer_limit'];
@@ -120,7 +120,7 @@ class QuizStudentsController extends Controller
             return back();
         } elseif ($param1 == 'add') {
             if (request()->method() === 'POST') {
-                return QuizStudent::addToTable();
+                return QuizStudents::addToTable();
             }
 
 
@@ -129,19 +129,19 @@ class QuizStudentsController extends Controller
             $id = request('id', $param2);
 
             if (request()->method() === 'POST') {
-                return QuizStudent::updateToTable($id);
+                return QuizStudents::updateToTable($id);
             }
 
 
             $data = $this->show($data, $id, $param1);
-            $data['view']       = QuizStudent::path('view') . '.includes.form.index';
+            $data['view']       = QuizStudents::path('view') . '.includes.form.index';
         } elseif ($param1 == 'view') {
             $id = request('id', $param2);
             $data = $this->show($data, $id, $param1);
-            $data['view']    = QuizStudent::path('view') . '.includes.view.index';
+            $data['view']    = QuizStudents::path('view') . '.includes.view.index';
         } elseif ($param1 == 'delete') {
             $id = request('id', $param2);
-            return QuizStudent::deleteFromTable($id);
+            return QuizStudents::deleteFromTable($id);
         } elseif ($param1 == 'answer_again') {
             $id = $param2 ? $param2 : request('id');
             return QuizStudentAnswer::updateAnswerAgainToTable($id);
@@ -173,21 +173,11 @@ class QuizStudentsController extends Controller
             ),
             'search'     => parse_url(request()->getUri(), PHP_URL_QUERY) ? '?' . parse_url(request()->getUri(), PHP_URL_QUERY) : '',
             'form'       => FormHelper::form($data['formData'], $data['formName'], $data['formAction']),
-            'parent'     => QuizStudent::path('view'),
+            'parent'     => QuizStudents::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormQuizStudent::rules(),
-            'attributes'  =>  FormQuizStudent::attributes(),
-            'messages'    =>  FormQuizStudent::messages(),
-            'questions'   =>  FormQuizStudent::questions(),
-        ];
-        $pages['form2']['validate'] = [
-            'rules'       =>  FormQuizStudentAnswerMarks::rules(),
-            'attributes'  =>  FormQuizStudentAnswerMarks::attributes(),
-            'messages'    =>  FormQuizStudentAnswerMarks::messages(),
-            'questions'   =>  FormQuizStudentAnswerMarks::questions(),
-        ];
+        $pages['form']['validate'] = QuizStudents::validate();
+        $pages['form2']['validate'] = [];
 
         //Select Option
         $data['instituteFilter']['data'] = Institute::whereIn('id', Quiz::groupBy('institute_id')->pluck('institute_id'))
@@ -196,7 +186,7 @@ class QuizStudentsController extends Controller
                 return $row;
             });
         $data['quizFilter']['data'] = Quiz::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new Quiz)->getTable() . '.staff_id')
-            ->whereIn((new Quiz)->getTable() . '.id', QuizQuestion::groupBy('quiz_id')->pluck('quiz_id'))
+            ->whereIn((new Quiz)->getTable() . '.id', QuizQuestions::groupBy('quiz_id')->pluck('quiz_id'))
             ->get([
                 (new Quiz)->getTable() . '.id',
                 (new Quiz)->getTable() . '.' . app()->getLocale() . ' as name',
@@ -299,20 +289,20 @@ class QuizStudentsController extends Controller
 
     public function list($data, $id = null)
     {
-        $table = QuizStudent::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudent())->getTable() . '.quiz_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudent())->getTable() . '.student_study_course_id')
+        $table = QuizStudents::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudents())->getTable() . '.quiz_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudents())->getTable() . '.student_study_course_id')
             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
-            ->orderBy((new QuizStudent())->getTable() . '.id', 'DESC');
+            ->orderBy((new QuizStudents())->getTable() . '.id', 'DESC');
 
 
         if (request('instituteId')) {
             $table->where((new Quiz())->getTable() . '.institute_id', request('instituteId'));
         }
         if (request('quizId')) {
-            $table->where((new QuizStudent())->getTable() . '.quiz_id', request('quizId'));
+            $table->where((new QuizStudents())->getTable() . '.quiz_id', request('quizId'));
         }
 
         $response = $table->get([
@@ -324,7 +314,7 @@ class QuizStudentsController extends Controller
             (new Students)->getTable() . '.first_name_en',
             (new Students)->getTable() . '.last_name_en',
             (new Students)->getTable() . '.gender_id',
-            (new QuizStudent)->getTable() . '.*',
+            (new QuizStudents)->getTable() . '.*',
         ])->map(function ($row) {
             $row['name'] =  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
@@ -340,10 +330,10 @@ class QuizStudentsController extends Controller
             $row['study'] = $row['study_program'] . ' (' . $row['study_course'] . ' - ' . $row['study_generation'] . ', ' . $row['study_academic_year'] . ', ' . $row['study_semester'] . ', ' . $row['study_session'] . ')';
 
             $row['action']   = [
-                'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
-                'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
-                'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/auto-score/' . $row['id']),
-                'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
+                'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/edit/' . $row['id']),
+                'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/view/' . $row['id']),
+                'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/auto-score/' . $row['id']),
+                'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/delete/' . $row['id']),
             ];
             return $row;
         });
@@ -353,7 +343,7 @@ class QuizStudentsController extends Controller
             'gender'    => Students::gender($table),
         ];
 
-        $data['view']     = QuizStudent::path('view') . '.includes.list.index';
+        $data['view']     = QuizStudents::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Quiz Student');
         return $data;
     }
@@ -361,13 +351,13 @@ class QuizStudentsController extends Controller
     public function show($data, $id, $type)
     {
 
-        $response = QuizStudent::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudent())->getTable() . '.quiz_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudent())->getTable() . '.student_study_course_id')
+        $response = QuizStudents::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudents())->getTable() . '.quiz_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudents())->getTable() . '.student_study_course_id')
             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
-            ->whereIn((new QuizStudent)->getTable() . '.id', explode(',', $id))
+            ->whereIn((new QuizStudents)->getTable() . '.id', explode(',', $id))
             ->get([
                 (new StudyCourseSchedule())->getTable() . '.*',
                 (new StudyCourseSession())->getTable() . '.study_session_id',
@@ -378,7 +368,7 @@ class QuizStudentsController extends Controller
                 (new Students)->getTable() . '.last_name_en',
                 (new Students)->getTable() . '.gender_id',
                 (new Students)->getTable() . '.photo',
-                (new QuizStudent)->getTable() . '.*',
+                (new QuizStudents)->getTable() . '.*',
             ])->map(function ($row) {
                 $row['name'] =  $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
@@ -397,15 +387,15 @@ class QuizStudentsController extends Controller
 
                 $row['quiz_answered'] = QuizStudentAnswer::where('quiz_student_id', $row->id)
                     ->get()->map(function ($row) {
-                        $row['answer_limit'] = QuizAnswer::where('quiz_question_id', $row->quiz_question_id)
+                        $row['answer_limit'] = QuizAnswers::where('quiz_question_id', $row->quiz_question_id)
                             ->where('correct_answer', 1)->count();
-                        $row['questions'] = QuizQuestion::where('id', $row->quiz_question_id)->get()->first();
-                        $row['answers'] = QuizAnswer::where('quiz_question_id', $row->quiz_question_id)->get();
+                        $row['questions'] = QuizQuestions::where('id', $row->quiz_question_id)->get()->first();
+                        $row['answers'] = QuizAnswers::where('quiz_question_id', $row->quiz_question_id)->get();
                         $row['correct'] = false;
                         $row['correct_marks'] = 0;
 
                         if ($row['questions']['quiz_answer_type_id'] == 1) {
-                            $quizAnswer = QuizAnswer::where('id', $row->answered)->get()->first();
+                            $quizAnswer = QuizAnswers::where('id', $row->answered)->get()->first();
 
                             if ($quizAnswer->correct_answer) {
                                 $row['correct'] = true;
@@ -416,7 +406,7 @@ class QuizStudentsController extends Controller
                             $correct_marks = 0;
                             foreach (explode(',', $row->answered) as $answer) {
 
-                                $quizAnswer = QuizAnswer::where('id', $answer)->get()->first();
+                                $quizAnswer = QuizAnswers::where('id', $answer)->get()->first();
                                 if ($quizAnswer->correct_answer) {
                                     $correct[] = $quizAnswer->correct_answer;
                                     $correct_marks += $row['questions']['score'] / $row['answer_limit'];
@@ -441,10 +431,10 @@ class QuizStudentsController extends Controller
 
 
                 $row['action']   = [
-                    'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
-                    'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/view/' . $row['id']),
-                    'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/auto-score/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/delete/' . $row['id']),
+                    'edit' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/edit/' . $row['id']),
+                    'view' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/view/' . $row['id']),
+                    'auto-score' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/auto-score/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -458,7 +448,7 @@ class QuizStudentsController extends Controller
                 'name'  => $row->name,
                 'image'  => $row->photo,
                 'action'  => [
-                    'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudent::path('url') . '/edit/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . Quiz::path('url') . '/' . QuizStudents::path('url') . '/edit/' . $row['id']),
                 ],
             ];
         });
@@ -476,7 +466,7 @@ class QuizStudentsController extends Controller
         ]);
 
         config()->set('app.title', __('List Quiz'));
-        config()->set('pages.parent', QuizStudent::path('view'));
+        config()->set('pages.parent', QuizStudents::path('view'));
 
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', Quiz::groupBy('institute_id')->pluck('institute_id'))
@@ -485,7 +475,7 @@ class QuizStudentsController extends Controller
                 return $row;
             });
         $data['quizFilter']['data'] = Quiz::join((new Staff)->getTable(), (new Staff)->getTable() . '.id', (new Quiz)->getTable() . '.staff_id')
-            ->whereIn((new Quiz)->getTable() . '.id', QuizQuestion::groupBy('quiz_id')->pluck('quiz_id'))
+            ->whereIn((new Quiz)->getTable() . '.id', QuizQuestions::groupBy('quiz_id')->pluck('quiz_id'))
             ->get([
                 (new Quiz)->getTable() . '.id',
                 (new Quiz)->getTable() . '.' . app()->getLocale() . ' as name',
@@ -501,14 +491,14 @@ class QuizStudentsController extends Controller
                 return $row;
             });
 
-        $table = QuizStudent::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudent())->getTable() . '.quiz_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudent())->getTable() . '.student_study_course_id')
+        $table = QuizStudents::join((new Quiz())->getTable(), (new Quiz())->getTable() . '.id', (new QuizStudents())->getTable() . '.quiz_id')
+            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new QuizStudents())->getTable() . '.student_study_course_id')
             ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
             ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
             ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
             ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id');
 
-        $questions = QuizQuestion::join((new Quiz)->getTable(), (new Quiz)->getTable() . '.id', (new QuizQuestion)->getTable() . '.quiz_id');
+        $questions = QuizQuestions::join((new Quiz)->getTable(), (new Quiz)->getTable() . '.id', (new QuizQuestions)->getTable() . '.quiz_id');
 
 
         if (request('instituteId')) {
@@ -516,7 +506,7 @@ class QuizStudentsController extends Controller
         }
 
         if (request('quizId')) {
-            $table->where((new QuizStudent())->getTable() . '.quiz_id', request('quizId'));
+            $table->where((new QuizStudents())->getTable() . '.quiz_id', request('quizId'));
             $questions->where('quiz_id', request('quizId'));
         }
 
@@ -528,7 +518,7 @@ class QuizStudentsController extends Controller
             (new Students)->getTable() . '.last_name_' . app()->getLocale() . ' as last_name',
             (new Students)->getTable() . '.gender_id',
             (new Students)->getTable() . '.photo',
-            (new QuizStudent)->getTable() . '.*',
+            (new QuizStudents)->getTable() . '.*',
         ])->map(function ($row) use ($questions) {
             $row['name'] =  $row->first_name . ' ' . $row->last_name;
             $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
@@ -546,7 +536,7 @@ class QuizStudentsController extends Controller
             $row['study'] = $row['study_program'] . ' (' . $row['study_course'] . ' - ' . $row['study_generation'] . ', ' . $row['study_academic_year'] . ', ' . $row['study_semester'] . ', ' . $row['study_session'] . ')';
 
             $row['questions'] = $questions->get([
-                (new QuizQuestion)->getTable() . '.*',
+                (new QuizQuestions)->getTable() . '.*',
             ])->map(function ($r) use ($row) {
                 $r['points'] = QuizStudentAnswer::where('quiz_student_id', $row->id)
                     ->where('quiz_question_id', $r->id)->pluck('score')->first();
@@ -559,7 +549,7 @@ class QuizStudentsController extends Controller
                 return $r;
             });
 
-            $row['total_score'] = QuizStudentAnswer::join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.id', (new QuizStudentAnswer())->getTable() . '.quiz_student_id')
+            $row['total_score'] = QuizStudentAnswer::join((new QuizStudents())->getTable(), (new QuizStudents())->getTable() . '.id', (new QuizStudentAnswer())->getTable() . '.quiz_student_id')
                 ->where('quiz_student_id', $row->id)
                 ->where('quiz_id', request('quizId'))
                 ->sum('score') . ' ' . __('score');
@@ -605,6 +595,6 @@ class QuizStudentsController extends Controller
                 return $row;
             })->first();
         config()->set('pages.title', __('List Quiz'));
-        return view(QuizStudent::path('view') . '.includes.report.index', $data);
+        return view(QuizStudents::path('view') . '.includes.report.index', $data);
     }
 }

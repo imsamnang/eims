@@ -99,12 +99,7 @@ class StudyCourseController extends Controller
             'parent'     => StudyCourse::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyCourse::rules(),
-            'attributes'  =>  FormStudyCourse::attributes(),
-            'messages'    =>  FormStudyCourse::messages(),
-            'questions'   =>  FormStudyCourse::questions(),
-        ];
+        $pages['form']['validate'] = StudyCourse::validate();
         //Select Option
         $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
             $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);

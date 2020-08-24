@@ -35,6 +35,8 @@ class ProfileController extends Controller
 
     public function index($param1 = 'general', $param2 = null, $param3 = null)
     {
+        $general_validate = new FormProfile;
+        $password_validate = new FormPassword;
         $data['formData'] = array(
             'image' => asset('/assets/img/icons/image.jpg'),
         );
@@ -44,7 +46,7 @@ class ProfileController extends Controller
 
         if (strtolower($param1) == null || strtolower($param1) == 'general') {
             if (request()->method() == "POST") {
-                $validator          = Validator::make(request()->all(), FormProfile::rules(), FormProfile::messages(), FormProfile::attributes());
+                $validator          = Validator::make(request()->all(),$general_validate->rules(),$general_validate->messages(),$general_validate->attributes());
                 if ($validator->fails()) {
                     $response       = array(
                         'success'   => false,
@@ -78,7 +80,7 @@ class ProfileController extends Controller
             $data = $this->general($data);
         } elseif (strtolower($param1) == 'password') {
             if (request()->method() == "POST") {
-                $validator          = Validator::make(request()->all(), FormPassword::rules(), FormPassword::messages(), FormPassword::attributes());
+                $validator          = Validator::make(request()->all(), $password_validate->rules(), $password_validate->messages(), $password_validate->attributes());
                 if ($validator->fails()) {
                     $response       = array(
                         'success'   => false,
@@ -178,10 +180,10 @@ class ProfileController extends Controller
         );
 
         $pages['form']['validate'] = [
-            'rules'       => (strtolower($param1) == 'password') ? FormPassword::rules() :  FormProfile::rules(),
-            'attributes'  => (strtolower($param1) == 'password') ? FormPassword::attributes() :  FormProfile::attributes(),
-            'messages'    => (strtolower($param1) == 'password') ? FormPassword::messages() :  FormProfile::messages(),
-            'questions'   => (strtolower($param1) == 'password') ? FormPassword::questions() :  FormProfile::questions(),
+            'rules'       => (strtolower($param1) == 'password') ? $password_validate->rules() :  $general_validate->rules(),
+            'attributes'  => (strtolower($param1) == 'password') ? $password_validate->attributes() : $general_validate->attributes(),
+            'messages'    => (strtolower($param1) == 'password') ? $password_validate->messages() : $general_validate->messages(),
+            'questions'   => (strtolower($param1) == 'password') ? $password_validate->questions() : $general_validate->questions(),
         ];
 
         config()->set('app.title', $data['title']);

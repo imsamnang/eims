@@ -33,7 +33,7 @@ class ThemeBackgroundController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::path('url') . '/' . ThemeBackground::path('url');
+        $data['formName'] = AppModel::path('url') . '/' . ThemeBackground::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -114,9 +114,9 @@ class ThemeBackgroundController extends Controller
             $row['name']  = $row->km . ' - ' . $row->en;
             $row['image'] = ImageHelper::site(ThemeBackground::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -134,9 +134,9 @@ class ThemeBackgroundController extends Controller
             $response           = ThemeBackground::whereIn('id', explode(',', $id))->get()->map(function ($row) {
                 $row['image'] = $row['image'] ? ImageHelper::site(ThemeBackground::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -146,7 +146,7 @@ class ThemeBackgroundController extends Controller
                     'name'  => $row->km . '-' . $row->en,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . ThemeBackground::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

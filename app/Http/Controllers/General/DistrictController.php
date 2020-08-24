@@ -99,12 +99,7 @@ class DistrictController extends Controller
             'parent'     => Districts::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormDistrict)->rules(),
-            'attributes'  =>  (new FormDistrict)->attributes(),
-            'messages'    =>  (new FormDistrict)->messages(),
-            'questions'   =>  (new FormDistrict)->questions(),
-        ];
+        $pages['form']['validate'] = Districts::validate();
         //Select Options
 
         $data['provinces'] = [

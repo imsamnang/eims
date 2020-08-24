@@ -70,7 +70,7 @@ class AdministratorController extends Controller
         } elseif (strtolower($param1) == Users::path('url')) {
             $view = new UsersController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == App::path('url')) {
+        } elseif (strtolower($param1) == AppModel::path('url')) {
             $view = new SettingsController();
             return $view->index($param2, $param3, $param4, $param5, $param6);
         } elseif (strtolower($param1) == 'profile') {

@@ -49,7 +49,7 @@
                     </li>
                     <li class="nav-item">
                         <a data-toggle="navbar"
-                            class="nav-link {{ request()->segment(2) == 'student' ? 'active text-blue' : '' }}"
+                            class="nav-link {{ request()->segment(2) == 'students' ? 'active text-blue' : '' }}"
                             href="{{ URL::to(config('pages.host') . config('pages.path') . '/students') }}">
                             <i class="fas fa-user-graduate"></i>
                             <span class="nav-link-text">{{ __('Students') }}</span>
@@ -58,8 +58,8 @@
 
                     <li class="nav-item">
                         <a data-toggle="navbar"
-                            class="nav-link {{ request()->segment(2) == 'quiz' ? 'active text-blue' : '' }}"
-                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/quiz') }}">
+                            class="nav-link {{ request()->segment(2) == 'quizzes' ? 'active text-blue' : '' }}"
+                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/quizzes') }}">
                             <i class="fas fa-question-circle"></i>
                             <span class="nav-link-text">{{ __('Quiz') }}</span>
                         </a>
@@ -88,8 +88,8 @@
                     <li class="nav-item">
                         <a data-toggle="navbar"
                             data-loadscript='["{{ asset('/assets/vendor/list.js/dist/list.min.js') }}","{{ asset('/assets/vendor/pagination/simplePagination.js') }}"]'
-                            class="nav-link {{ request()->segment(2) == 'user' ? 'active text-blue' : '' }}"
-                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/user/list') }}">
+                            class="nav-link {{ request()->segment(2) == 'users' ? 'active text-blue' : '' }}"
+                            href="{{ URL::to(config('pages.host') . config('pages.path') . '/users/list') }}">
                             <i class="fas fa-users"></i>
                             <span class="nav-link-text">{{ __('Users') }}</span>
                         </a>

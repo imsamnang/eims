@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\User;
-use Carbon\Carbon;
 use DomainException;
 
 use App\Helpers\DateHelper;
@@ -359,7 +357,7 @@ class Users extends Model
                 Users::where('id', Auth::user()->id)->update([
                     'node_id' => $add,
                     'institute_id' => request('institute'),
-                    'role_id' => Students::$path['roleId'],
+                    'role_id' => Students::path('roleId'),
                 ]);
                 //ImageHelper::uploadImage(false, Students::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
             }

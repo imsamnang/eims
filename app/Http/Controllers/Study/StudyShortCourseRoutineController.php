@@ -104,12 +104,7 @@ class StudyShortCourseRoutineController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStudyShortCourseRoutine::rules(),
-            'attributes'  =>  FormStudyShortCourseRoutine::attributes(),
-            'messages'    =>  FormStudyShortCourseRoutine::messages(),
-            'questions'   =>  FormStudyShortCourseRoutine::questions(),
-        ];
+        $pages['form']['validate'] = StudyShortCourseRoutine::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

@@ -99,12 +99,7 @@ class ProvinceController extends Controller
             'parent'     => Provinces::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormProvince::rules(),
-            'attributes'  =>  FormProvince::attributes(),
-            'messages'    =>  FormProvince::messages(),
-            'questions'   =>  FormProvince::questions(),
-        ];
+        $pages['form']['validate'] = Provinces::validate();
 
 
         config()->set('app.title', $data['title']);

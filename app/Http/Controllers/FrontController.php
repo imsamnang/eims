@@ -7,6 +7,7 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Models\Sponsored;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 
 use App\Models\StudyCourse;
@@ -49,8 +50,14 @@ class FrontController extends Controller
         $data['formAction'] = null;
         $data['title']    = config('app.name');
         $data['view']     = 'Front.includes.home.index';
-        $data['sliders']  =  FeatureSlider::getData(null, 10, true);
-        $data['sponsored'] = Sponsored::getData();
+        $data['sliders']['data']  = FeatureSlider::get(['id', 'image'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(FeatureSlider::path('image'), $row->image);
+            return $row;
+        });
+        $data['sponsored']['data'] = Sponsored::get(['id', 'image'])->map(function ($row) {
+            $row['image']   = ImageHelper::site(Sponsored::path('image'), $row->image);
+            return $row;
+        });
 
         if (strtolower($param1) == null) {
             $data['title']  = config('app.name');

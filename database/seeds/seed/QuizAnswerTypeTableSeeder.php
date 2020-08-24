@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\QuizAnswerType;
+use App\Models\QuizAnswerTypes;
 use Illuminate\Database\Seeder;
 
-class QuizAnswerTypeTableSeeder extends Seeder
+class QuizAnswerTypesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class QuizAnswerTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        QuizAnswerType::insert([
+        QuizAnswerTypes::insert([
             [
                 'id' => 1,
                 'name' => 'Signle Answer',

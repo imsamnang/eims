@@ -33,7 +33,7 @@ class SponsoredController extends Controller
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
-        $data['formName'] = App::path('url') . '/' . Sponsored::path('url');
+        $data['formName'] = AppModel::path('url') . '/' . Sponsored::path('url');
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
@@ -113,9 +113,9 @@ class SponsoredController extends Controller
         $response = $table->get()->map(function ($row) {
             $row['image'] = ImageHelper::site(Sponsored::path('image'), $row['image']);
             $row['action']  = [
-                'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
+                'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
             ];
 
             return $row;
@@ -134,9 +134,9 @@ class SponsoredController extends Controller
 
                 $row['image'] = $row['image'] ? ImageHelper::site(Sponsored::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
-                    'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
-                    'view'   => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
-                    'delete' => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
+                    'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                    'view'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/view/' . $row['id']),
+                    'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/delete/' . $row['id']),
                 ];
                 return $row;
             });
@@ -146,7 +146,7 @@ class SponsoredController extends Controller
                     'name'  => $row->name,
                     'image'  => $row->image,
                     'action'  => [
-                        'edit'   => url(Users::role() . '/' . App::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
+                        'edit'   => url(Users::role() . '/' . AppModel::path('url') . '/' . Sponsored::path('url') . '/edit/' . $row['id']),
                     ],
                 ];
             });

@@ -100,13 +100,7 @@ class NationalityController extends Controller
             'parent'     => Nationality::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormNationality::rules(),
-            'attributes'  =>  FormNationality::attributes(),
-            'messages'    =>  FormNationality::messages(),
-            'questions'   =>  FormNationality::questions(),
-        ];
-
+        $pages['form']['validate'] = Nationality::validate();
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);

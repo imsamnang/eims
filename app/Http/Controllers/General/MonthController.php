@@ -100,12 +100,7 @@ class MonthController extends Controller
             'parent'     => Months::path('view'),
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormMonth::rules(),
-            'attributes'  =>  FormMonth::attributes(),
-            'messages'    =>  FormMonth::messages(),
-            'questions'   =>  FormMonth::questions(),
-        ];
+        $pages['form']['validate'] = Months::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

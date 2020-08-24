@@ -70,9 +70,9 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
 
             //ActivityFeedTableSeeder::class,
-            QuizQuestionTypeTableSeeder::class,
+            QuizQuestionTypesTableSeeder::class,
             QuizTableSeeder::class,
-            QuizAnswerTypeTableSeeder::class,
+            QuizAnswerTypesTableSeeder::class,
             QuizQuestionTableSeeder::class,
             QuizStudentTableSeeder::class,
         ]);
