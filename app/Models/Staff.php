@@ -462,8 +462,6 @@ class Staff extends Model
         return $response;
     }
 
-
-
     public static function updateImageToTable($add, $image)
     {
         $response = array(
