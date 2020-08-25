@@ -9,11 +9,11 @@ use App\Helpers\DateHelper;
 use App\Helpers\ImageHelper;
 use App\Models\StaffGuardians;
 use App\Models\StaffInstitutes;
-use App\Http\Requests\FormStaff;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Staff\StaffController;
 
 class Staff extends Model
 {
@@ -218,9 +218,10 @@ class Staff extends Model
         //     ];
         // }
 
-        $validate = Staff::path('requests');
-        $rules += $validate('rules');
-
+        $validate = Staff::validate();
+        $rules += $validate['rules'];
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
+        $rules['email'] = 'required|email|unique:staff,email';
         $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
@@ -285,12 +286,12 @@ class Staff extends Model
                         ImageHelper::uploadImage(false, Staff::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')));
                     }
 
-
+                    $controller = new StaffController;
                     $response       = array(
                         'success'   => true,
-                        'data'      => Staff::getData($add)['data'][0],
                         'type'      => 'add',
-                        'message'   => __('Add Successfully'),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   =>  __('Add Successfully')
                     );
                 }
             } catch (DomainException $e) {
@@ -302,9 +303,8 @@ class Staff extends Model
 
     public static function register()
     {
-
-        $rules = FormStaff::rules();
-
+        $validate = Staff::validate();
+        $rules = $validate['rules'];
         unset($rules['pob_province']);
         unset($rules['pob_district']);
         unset($rules['pob_commune']);
@@ -324,7 +324,7 @@ class Staff extends Model
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
         $rules['email'] = 'required|email|unique:staff,email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStaff::messages(), FormStaff::attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -369,14 +369,7 @@ class Staff extends Model
                 $response       = array(
                     'success'   => true,
                     'type'      => 'add',
-                    'message'   => array(
-                        'title' => __('Success'),
-                        'text'  => __('Register successfully'),
-                        'button'   => array(
-                            'confirm' => __('Ok'),
-                            'cancel'  => __('Cancel'),
-                        ),
-                    ),
+                    'message'   => __('Register successfully'),
                 );
             }
         }
@@ -386,9 +379,12 @@ class Staff extends Model
 
     public static function updateToTable($id)
     {
-
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaff::rules(), FormStaff::messages(), FormStaff::attributes());
+        $validate = Staff::validate();
+        $rules = $validate['rules'];
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone,'.$id;
+        $rules['email'] = 'required|email|unique:staff,email,'.$id;
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -440,7 +436,8 @@ class Staff extends Model
 
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Staff::updateImageToTable($id, ImageHelper::uploadImage($photo, Staff::path('image')));
+                        $photo = ImageHelper::uploadImage($photo, Staff::path('image'));
+                        Staff::updateImageToTable($id, $photo);
                     }
 
 
@@ -448,11 +445,12 @@ class Staff extends Model
                         Staff::updatestaffStatus($id, request('status'));
                     }
 
+                    $controller = new StaffController;
                     $response       = array(
                         'success'   => true,
-                        //'data'      => Staff::getData($id)['data'][0],
                         'type'      => 'update',
-                        'message'   => __('Update Successfully'),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   =>  __('Update Successfully')
                     );
                 }
             } catch (DomainException $e) {

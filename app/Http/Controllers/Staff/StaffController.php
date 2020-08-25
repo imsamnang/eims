@@ -356,16 +356,21 @@ class StaffController extends Controller
 
     public function list($data, $id = null)
     {
-        $table = Staff::whereHas('institute', function ($query) {
-            $query->where('institute_id', request('instituteId'));
-
-            if (request('designationId')) {
-                $query->where('designation_id', request('designationId'));
+        $table = Staff::whereHas('institute', function ($query) use($id){
+            if(!$id){
+                $query->where('institute_id', request('instituteId'));
+                if (request('designationId')) {
+                    $query->where('designation_id', request('designationId'));
+                }
             }
         })->join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
-
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn((new Staff)->getTable().'.id', explode(',', $id));
+        }
         $response = $table->orderBy((new Staff)->getTable() . '.id', 'DESC')
-            ->get()->map(function ($row) {
+            ->get()->map(function ($row ,$nid) use($count) {
+                $row['nid'] = $count - $nid;
                 $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
                 $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
                 $row['date_of_birth'] = DateHelper::convert($row->date_of_birth, 'd-M-Y');
@@ -382,7 +387,9 @@ class StaffController extends Controller
 
                 return $row;
             })->toArray();
-
+            if ($id) {
+                return $response;
+            }
 
         $data['response'] = [
             'data'      => $response,

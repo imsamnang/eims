@@ -16,7 +16,7 @@ class DateHelper
     {
         if ($date) {
             $date = str_replace('/', '-', $date);
-            $dt = new Carbon(DateTime::createFromFormat($format, $date));
+            $dt = new Carbon( $date);
             if ($translate) {
                 $date = $dt->translatedFormat($format);
             } else {
