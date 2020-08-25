@@ -22,23 +22,19 @@ use App\Models\MotherTong;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\Nationality;
 use App\Models\StaffStatus;
 use App\Models\SocailsMedia;
 use App\Models\StudentsScore;
 use App\Models\AttendanceTypes;
-use App\Http\Requests\FormStaff;
 use App\Models\StaffCertificate;
 use App\Models\StaffDesignations;
 use App\Models\StudyCourseRoutine;
 use App\Models\StudyCourseSession;
-use App\Http\Requests\FormStudents;
 use App\Models\StudentsAttendances;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\FormStudentsScore;
 use App\Models\StudentsStudyCourseScore;
 use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\General\GeneralController;
@@ -46,7 +42,6 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Controllers\Students\StudentsAttendanceController;
 use App\Http\Controllers\Students\StudentsStudyCourseController;
-use App\Http\Requests\FormStudySubjectLesson;
 use App\Models\Quiz;
 use App\Models\StaffTeachSubject;
 use App\Models\StudySubjectLesson;
@@ -178,12 +173,7 @@ class TeacherController extends Controller
             'modal'      => Students::path('view') . '.includes.modal.index',
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  FormStaff::rules(),
-            'attributes'  =>  FormStaff::attributes(),
-            'messages'    =>  FormStaff::messages(),
-            'questions'   =>  FormStaff::questions(),
-        ];
+        $pages['form']['validate'] = Staff::validate();
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
@@ -256,10 +246,10 @@ class TeacherController extends Controller
         $data['listData']            = array();
 
         request()->merge([
-            'year'  => request('year', Years::now()),
+            'year'  => request('year', date('Y')),
             'month' => request('month', Months::now()),
         ]);
-        $data['current_subjects'] = StaffTeachSubject::getTeachSubjects(request('t-subjectId'), Auth::user()->node_id, null, 10, true, Years::now());
+        $data['current_subjects'] = StaffTeachSubject::getTeachSubjects(request('t-subjectId'), Auth::user()->node_id, null, 10, true, date('Y'));
         //dd($data['current_subjects']);
         $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('Dashboard');
         $data['view']    = 'Teacher.includes.dashboard.index';
@@ -461,7 +451,7 @@ class TeacherController extends Controller
 
             $monthYear =  request('month_year') ? explode('-', request('month_year')) : null;
             request()->merge([
-                'year'           => $monthYear ? $monthYear[1] : Years::now(), 'month'          => $monthYear ? $monthYear[0] : Months::now(), 'date'           => request('date') ? request('date') : date('d'),
+                'year'           => $monthYear ? $monthYear[1] : date('Y'), 'month'          => $monthYear ? $monthYear[0] : Months::now(), 'date'           => request('date') ? request('date') : date('d'),
             ]);
 
 
@@ -556,17 +546,11 @@ class TeacherController extends Controller
 
 
         if ($param1 == 'score') {
-            $pages['form']['validate'] = [
-                'rules'       =>  FormStudentsScore::rules('.*'), 'attributes'  =>  FormStudentsScore::attributes('.*'), 'messages'    =>  FormStudentsScore::messages(), 'questions'   =>  FormStudentsScore::questions(),
-            ];
+            $pages['form']['validate'] = StudentsScore::validate();
         } elseif ($param1 == StudySubjectLesson::path('url')) {
-            $pages['form']['validate'] = [
-                'rules'       =>  FormStudySubjectLesson::rules('.*'), 'attributes'  =>  FormStudySubjectLesson::attributes('.*'), 'messages'    =>  FormStudySubjectLesson::messages(), 'questions'   =>  FormStudySubjectLesson::questions(),
-            ];
+            $pages['form']['validate'] = StudySubjectLesson::validate();
         } else {
-            $pages['form']['validate'] = [
-                'rules'       =>  FormStudents::rules(), 'attributes'  =>  FormStudents::attributes(), 'messages'    =>  FormStudents::messages(), 'questions'   =>  FormStudents::questions(),
-            ];
+            $pages['form']['validate'] = Staff::validate();
         }
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

@@ -184,7 +184,9 @@ class StudySubjectLesson extends Model
         }
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), Formself::ules(), Formself::essages(), Formself::ttributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -231,7 +233,9 @@ class StudySubjectLesson extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), Formself::ules(), Formself::essages(), Formself::ttributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

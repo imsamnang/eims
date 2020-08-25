@@ -29,8 +29,6 @@ class StaffQualifications extends Model
                 return $e;
             }
         }
-
-        return $response;
     }
 
 

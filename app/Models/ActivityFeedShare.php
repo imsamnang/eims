@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Models;
-
-
 use App\Helpers\ImageHelper;
-use App\Helpers\VideoHelper;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class ActivityFeedShare extends Model
 {

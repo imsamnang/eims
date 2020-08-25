@@ -82,6 +82,17 @@
                             <span class="nav-link-text">{{ __('General') }}</span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a data-toggle="navbar"
+                            class="nav-link"
+                            target="_blank"
+                            href="{{ route('filemanager') }}">
+                            <i class="fas fa-folders text-yellow"></i>
+                            <span class="nav-link-text">{{ __('File Manager') }}</span>
+                            <span class="badge badge-danger">{{__('New')}}</span>
+                        </a>
+                    </li>
                 </ul>
                 <hr class="my-3">
                 <ul class="navbar-nav mb-md-3">

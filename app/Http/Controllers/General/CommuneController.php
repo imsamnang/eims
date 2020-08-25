@@ -8,7 +8,6 @@ use App\Models\Users;
 use App\Models\Communes;
 use App\Models\Districts;
 use App\Models\Institute;
-
 use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\DateHelper;
@@ -17,7 +16,6 @@ use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use Illuminate\Support\Collection;
-use App\Http\Requests\FormDistrict;
 use App\Http\Controllers\Controller;
 
 class CommuneController extends Controller

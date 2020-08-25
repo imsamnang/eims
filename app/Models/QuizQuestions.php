@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use DomainException;
-use App\Http\Requests\FormQuizAnswers;
-use App\Http\Requests\FormQuizQuestions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Quiz\QuizQuestionController;
@@ -15,16 +13,18 @@ class QuizQuestions extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -53,11 +53,13 @@ class QuizQuestions extends Model
     {
 
         $response           = array();
+        $validate_q = self::validate();
+        $validate_a = QuizAnswers::validate('.*');
         $validator          = Validator::make(
             request()->all(),
-            FormQuizQuestions::rules() + FormQuizAnswers::rules('.*'),
-            FormQuizQuestions::messages() + FormQuizAnswers::messages(),
-            FormQuizQuestions::attributes() + FormQuizAnswers::attributes('.*')
+            $validate_q['rules'] + $validate_a['rules'],
+            $validate_q['messages'] + $validate_a['messages'],
+            $validate_q['attributes'] + $validate_a['attributes']
         );
 
         if ($validator->fails()) {
@@ -102,11 +104,13 @@ class QuizQuestions extends Model
         }
         request()->merge(['answer' => $newAnswer]);
         $response           = array();
+        $validate_q = QuizAnswers::validate();
+        $validate_a = QuizAnswers::validate('.*');
         $validator          = Validator::make(
             request()->all(),
-            FormQuizQuestions::rules() + FormQuizAnswers::rules('.*'),
-            FormQuizQuestions::messages() + FormQuizAnswers::messages(),
-            FormQuizQuestions::attributes() + FormQuizAnswers::attributes('.*')
+            $validate_q['rules'] + $validate_a['rules'],
+            $validate_q['messages'] + $validate_a['messages'],
+            $validate_q['attributes'] + $validate_a['attributes']
         );
 
         if ($validator->fails()) {

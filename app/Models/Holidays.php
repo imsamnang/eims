@@ -4,13 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use DomainException;
-
 use App\Helpers\DateHelper;
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormHoliday;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class Holidays extends Model
@@ -19,16 +15,18 @@ class Holidays extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -168,65 +166,7 @@ class Holidays extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = Holidays::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'date'          => DateHelper::convert($row['date'] . '-' . $row['month'] . '-' . $row['year'], 'd-M-Y'),
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Holidays::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Holidays::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Holidays::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Holidays::path('url') . '/delete/' . $row['id']),
-                    ]
 
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function getHoliday($year = null, $month = null, $study_course_session_id = null)
     {
@@ -240,7 +180,7 @@ class Holidays extends Model
         if ($year && $month) {
             $get = Holidays::where('year', $year)->where('month', $month)->get()->toArray();
         } else {
-            $year = Years::now();
+            $year = date('Y');
             $month = Months::now();
             $get = Holidays::where('year', $year)->where('month', $month)->get()->toArray();
         }
@@ -303,7 +243,8 @@ class Holidays extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormHoliday::rules(), FormHoliday::messages(), FormHoliday::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -354,7 +295,8 @@ class Holidays extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormHoliday::rules(), FormHoliday::messages(), FormHoliday::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

@@ -4,13 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use DomainException;
-
 use App\Helpers\Encryption;
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormStudyShortCourseRoutine;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class StudyShortCourseRoutine extends Model
@@ -19,16 +15,18 @@ class StudyShortCourseRoutine extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -158,62 +156,6 @@ class StudyShortCourseRoutine extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = self::select((new self())->getTable() . '.*')
-            ->join((new StudyShortCourseSession())->getTable(), (new StudyShortCourseSession())->getTable() . '.id', (new self())->getTable() . '.stu_sh_c_session_id')
-            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
-            ->groupBy('stu_sh_c_session_id');
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $study_course_session = StudyShortCourseSession::getData($row['stu_sh_c_session_id'])['data'][0];
-                $generateId = Encryption::encode([
-                    'stu_sh_c_session_id' => $row['stu_sh_c_session_id'],
-                ]);
-                return [
-                    'id'    => $row['id'],
-                    'study_course_session' => $study_course_session,
-                    'action' => [
-                        'view'    => url(users::role() . '/study/' . self::path('url') . '/view/' . $generateId),
-                        'edit'    => url(users::role() . '/study/' . self::path('url') . '/edit/' . $generateId),
-                        'delete'  => url(users::role() . '/study/' . self::path('url') . '/delete/' . $generateId),
-                    ]
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-
-                // if (request('search.value')) {
-                //     foreach (request('columns') as $i => $value) {
-                //         if ($value['searchable']) {
-                //             if ($value['data'] == 'name') {
-                //                 $query =  $query->where(function ($q) {
-                //                     $q->where('study_course_session.name', 'LIKE', '%' . request('search.value') . '%');
-                //                 });
-                //             }
-                //         }
-                //     }
-                // }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
 
 
@@ -221,7 +163,9 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rules('.*'), FormStudyShortCourseRoutine::messages(), FormStudyShortCourseRoutine::attributes());
+        $validate = self::validate('.*');
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'](), $validate['attributes']());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -284,7 +228,9 @@ class StudyShortCourseRoutine extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseRoutine::rules('.*'), FormStudyShortCourseRoutine::messages(), FormStudyShortCourseRoutine::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'](), $validate['attributes']());
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

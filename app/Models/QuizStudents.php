@@ -7,9 +7,7 @@ use DomainException;
 
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\FormQuizStudents;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class QuizStudents extends Model
@@ -18,16 +16,18 @@ class QuizStudents extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -163,7 +163,7 @@ class QuizStudents extends Model
         return $response;
     }
 
-  
+
 
 
 
@@ -171,7 +171,9 @@ class QuizStudents extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudents::rules(), FormQuizStudents::messages(), FormQuizStudents::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -245,7 +247,9 @@ class QuizStudents extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormQuizStudents::rules(), FormQuizStudents::messages(), FormQuizStudents::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

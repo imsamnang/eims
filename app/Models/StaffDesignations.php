@@ -5,10 +5,8 @@ namespace App\Models;
 use DomainException;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\FormStaffDesignations;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Staff\StaffDesignationController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Staff\StaffDesignationsController;
 
 class StaffDesignations extends Model
 {
@@ -25,12 +23,13 @@ class StaffDesignations extends Model
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
-            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'requests'   => 'App\Http\Requests\Form' . $tableUcwords,
+            'controller' => 'App\Http\Controllers\\' . $tableUcwords . 'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
 
-     /**
+    /**
      *  @param string $key
      *  @param string $flag
      *  @return array
@@ -45,7 +44,7 @@ class StaffDesignations extends Model
             'messages'    =>  $formRequests->messages($flag),
             'questions'   =>  $formRequests->questions($flag),
         ];
-        return $key? @$validate[$key] : $validate;
+        return $key ? @$validate[$key] : $validate;
     }
 
 
@@ -53,7 +52,8 @@ class StaffDesignations extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffDesignations::rules(), FormStaffDesignations::messages(), FormStaffDesignations::attributes());
+        $validate           = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -61,9 +61,8 @@ class StaffDesignations extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-
             try {
-                $values['institute_id'] = Auth::user()->institute_id;
+                $values['institute_id']        = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -73,21 +72,21 @@ class StaffDesignations extends Model
                     }
                 }
 
-                $add = StaffDesignations::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
 
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        StaffDesignations::updateImageToTable($add, ImageHelper::uploadImage($image, StaffDesignations::path('image')));
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
 
-                    $controller = new StaffDesignationController;
-
+                    $controller = new StaffDesignationsController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(StaffDesignations::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
@@ -102,7 +101,8 @@ class StaffDesignations extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffDesignations::rules(), FormStaffDesignations::messages(), FormStaffDesignations::attributes());
+        $validate           = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -110,9 +110,8 @@ class StaffDesignations extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-
             try {
-                $values['institute_id'] = Auth::user()->institute_id;
+                $values['institute_id']        = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -122,13 +121,13 @@ class StaffDesignations extends Model
                     }
                 }
 
-                $update = StaffDesignations::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffDesignations::updateImageToTable($id, ImageHelper::uploadImage($image, StaffDesignations::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
-                    $controller = new StaffDesignationController;
+                    $controller = new StaffDesignationsController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
@@ -138,7 +137,7 @@ class StaffDesignations extends Model
                             ]
 
                         ],
-                        'html'      => view(StaffDesignations::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
@@ -157,7 +156,7 @@ class StaffDesignations extends Model
         );
         if ($image) {
             try {
-                $update =  StaffDesignations::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -179,10 +178,10 @@ class StaffDesignations extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (StaffDesignations::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StaffDesignations::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,

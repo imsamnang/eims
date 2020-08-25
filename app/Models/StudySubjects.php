@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use DomainException;
-
 use App\Helpers\FileHelper;
-
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\FormStudySubjects;
-
 use Illuminate\Support\Facades\Validator;
 
 class StudySubjects extends Model
@@ -18,16 +14,18 @@ class StudySubjects extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -122,7 +120,7 @@ class StudySubjects extends Model
                     'pass_mark_practical'      => $row['pass_mark_practical'],
                     'credit_hour'              => $row['credit_hour'],
                     'description'              => $row['description'],
-                    'file' => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
+                    'file' => $row['file'] ? FileHelper::site(StudySubjects::path('file'), $row['file']) : $row['file'],
                     'image' =>  $row['image'] ? (ImageHelper::site(StudySubjects::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'                   => [
                         'edit' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/edit/' . $row['id']), //?id
@@ -167,76 +165,15 @@ class StudySubjects extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudySubjects::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'   => $row['id'],
-                    'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'course_type'              => CourseTypes::getData($row['course_type_id'])['data'][0],
-                    'full_mark_theory'         => $row['full_mark_theory'],
-                    'pass_mark_theory'         => $row['pass_mark_theory'],
-                    'full_mark_practical'      => $row['full_mark_practical'],
-                    'pass_mark_practical'      => $row['pass_mark_practical'],
-                    'credit_hour'              => $row['credit_hour'],
-                    'description'              => $row['description'],
-                    'image' => $row['image'] ? (ImageHelper::site(StudySubjects::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'file' => $row['file'] ? FileHelper::site(StudySubjects::$path['file'], $row['file']) : $row['file'],
-                    'action'                   => [
-                        'edit' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudySubjects::path('url') . '/delete/' . $row['id']), //?id
-                    ]
 
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjects::rules(), FormStudySubjects::messages(), FormStudySubjects::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -263,7 +200,7 @@ class StudySubjects extends Model
                 }
                 if (request()->hasFile('file')) {
                     $file      = request()->file('file');
-                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::$path['file']);
+                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::path('file'));
                 }
                 $add = StudySubjects::insertGetId($values);
                 if ($add) {
@@ -296,7 +233,9 @@ class StudySubjects extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudySubjects::rules(), FormStudySubjects::messages(), FormStudySubjects::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -323,7 +262,7 @@ class StudySubjects extends Model
                 }
                 if (request()->hasFile('file')) {
                     $file      = request()->file('file');
-                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::$path['file']);
+                    $values['file'] = FileHelper::uploadFile($file, StudySubjects::path('file'));
                 }
                 $update = StudySubjects::where('id', $id)->update($values);
                 if ($update) {

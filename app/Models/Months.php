@@ -3,12 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormMonth;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class Months extends Model
@@ -17,16 +13,18 @@ class Months extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -57,7 +55,8 @@ class Months extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormMonth)->rules(), (new FormMonth)->messages(), (new FormMonth)->attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -104,7 +103,8 @@ class Months extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormMonth)->rules(), (new FormMonth)->messages(), (new FormMonth)->attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

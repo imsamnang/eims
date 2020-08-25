@@ -15,7 +15,6 @@ use App\Models\SocailsMedia;
 use App\Models\StaffStatus;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStaffStatus;
 use App\Models\Staff;
 
 class StaffStatusController extends Controller

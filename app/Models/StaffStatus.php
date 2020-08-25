@@ -5,10 +5,8 @@ namespace App\Models;
 use DomainException;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\FormStaffStatus;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Staff\StaffStatusController;
-use Illuminate\Support\Facades\Auth;
 
 class StaffStatus extends Model
 {
@@ -16,16 +14,18 @@ class StaffStatus extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -53,7 +53,8 @@ class StaffStatus extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffStatus::rules(), FormStaffStatus::messages(), FormStaffStatus::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -61,9 +62,8 @@ class StaffStatus extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-
-            try {
-                $values['institute_id'] = Auth::user()->institute_id;
+            try{
+            $values['institute_id']        = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -102,7 +102,8 @@ class StaffStatus extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStaffStatus::rules(), FormStaffStatus::messages(), FormStaffStatus::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -110,9 +111,8 @@ class StaffStatus extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-
-            try {
-                $values['institute_id'] = Auth::user()->institute_id;
+            try{
+            $values['institute_id']        = request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 

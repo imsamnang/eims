@@ -4,7 +4,6 @@ namespace App\Models;
 
 use DomainException;
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CardFrames\CardFramesController;
@@ -15,16 +14,18 @@ class CardFrames extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -49,12 +50,13 @@ class CardFrames extends Model
     public static function addToTable()
     {
         $response           = array();
-        $rules = (new FormCard)->rules();
+        $validate = self::validate();
+        $rules = $validate['rules'];
         $rules['name'] = 'required|unique:' . (new CardFrames)->getTable() . ',name';
         $rules['foreground'] = 'required';
         $rules['background'] = 'required';
 
-        $validator          = Validator::make(request()->all(), $rules, (new FormCard)->messages(), (new FormCard)->attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -104,9 +106,10 @@ class CardFrames extends Model
     {
 
         $response           = array();
-        $rules = (new FormCard)->rules();
+        $validate = self::validate();
+        $rules = $validate['rules'];
         $rules['name'] = 'required|unique:' . (new CardFrames)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, (new FormCard)->messages(), (new FormCard)->attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

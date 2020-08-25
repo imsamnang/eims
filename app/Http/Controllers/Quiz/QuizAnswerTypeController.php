@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Quiz;
 use Carbon\Carbon;
 use App\Models\App as AppModel;
 use App\Models\Users;
-use App\Models\Institute;
 use App\Models\Languages;
 use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
@@ -15,7 +14,7 @@ use App\Models\SocailsMedia;
 use App\Models\QuizAnswerTypes;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormQuizAnswerTypes;
+
 use App\Models\Quiz;
 
 class QuizAnswerTypesController extends Controller

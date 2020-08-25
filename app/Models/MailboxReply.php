@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Helpers\Encryption;
-
-use App\Http\Requests\FormMailboxReplies;
 use DomainException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +44,8 @@ class MailboxReply extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormMailboxReplies::rules('.*'), FormMailboxReplies::messages(), FormMailboxReplies::attributes());
+        $validate = self::validate('.*');
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'](), $validate['attributes']());
 
         if ($validator->fails()) {
             $response       = array(

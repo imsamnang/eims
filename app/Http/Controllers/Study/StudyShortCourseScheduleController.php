@@ -7,13 +7,11 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\SocailsMedia;
 use App\Models\StudySubjects;
 use App\Models\StudyGeneration;
 use App\Models\StudyShortCourseSchedule;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStudyShortCourseSchedule;
 use App\Models\Institute;
 
 class StudyShortCourseScheduleController extends Controller

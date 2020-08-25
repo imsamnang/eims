@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use DomainException;
-
 use App\Helpers\DateHelper;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormStudyShortCourseSession;
 
 class StudyShortCourseSession extends Model
 {
@@ -18,16 +14,18 @@ class StudyShortCourseSession extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -158,66 +156,15 @@ class StudyShortCourseSession extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudyShortCourseSession::select((new StudyShortCourseSession())->getTable() . '.*')
-            ->join((new StudyShortCourseSchedule())->getTable(), (new StudyShortCourseSchedule())->getTable() . '.id', (new StudyShortCourseSession())->getTable() . '.stu_sh_c_schedule_id')
-            ->join((new StudySession)->getTable(), (new StudySession)->getTable() . '.id', (new StudyShortCourseSession)->getTable() . '.study_session_id')
-            ->join((new Institute)->getTable(), (new Institute)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.institute_id')
-            ->join((new StudyGeneration)->getTable(), (new StudyGeneration)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.study_generation_id')
-            ->join((new StudySubjects())->getTable(), (new StudySubjects)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.study_subject_id');
 
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                $student = StudentsStudyShortCourse::where('stu_sh_c_session_id', $row['id'])->count();
-                return [
-                    'id'  => $row['id'],
-                    'study_short_course_schedule' => StudyShortCourseSchedule::getData($row['stu_sh_c_schedule_id'])['data'][0],
-                    'study_session' => StudySession::getData($row['study_session_id'])['data'][0],
-                    'study_start'   => DateHelper::convert($row['study_start'], 'd-M-Y'),
-                    'study_end'    => DateHelper::convert($row['study_end'],  'd-M-Y'),
-                    'student'       => [
-                        'total'  => __('student') . '(' . $student . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple') . ')',
-                        'link_view'  => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyShortCourse::path('url') . '/list?stu_sh_c_sessionId=' . $row['id']),
-                    ],
-                    'province'      => $row['province_id'],
-                    'district'      => $row['district_id'],
-                    'commune'      => $row['commune_id'],
-                    'village'      => $row['village_id'],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSession::path('url') . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (request('instituteId')) {
-                    $query =  $query->where((new StudyShortCourseSchedule())->getTable() . '.institute_id', request('instituteId'));
-                }
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
 
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rules(), FormStudyShortCourseSession::messages(), FormStudyShortCourseSession::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -273,7 +220,9 @@ class StudyShortCourseSession extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSession::rules(), FormStudyShortCourseSession::messages(), FormStudyShortCourseSession::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

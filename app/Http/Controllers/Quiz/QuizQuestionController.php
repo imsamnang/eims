@@ -21,8 +21,6 @@ use App\Models\QuizAnswerTypes;
 use App\Models\QuizQuestionTypes;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormQuizAnswers;
-use App\Http\Requests\FormQuizQuestions;
 
 class QuizQuestionController extends Controller
 {

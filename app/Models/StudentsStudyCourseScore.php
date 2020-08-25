@@ -3,13 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormStudentsStudyCourseScore;
-use Illuminate\Support\Facades\Auth;
 
 class StudentsStudyCourseScore extends Model
 {
@@ -17,16 +12,18 @@ class StudentsStudyCourseScore extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -284,120 +281,7 @@ class StudentsStudyCourseScore extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudentsStudyCourseScore::select((new StudentsStudyCourseScore())->getTable() . '.*', (new Students())->getTable() . '.gender_id')
-            ->join((new StudentsStudyCourse())->getTable(), (new StudentsStudyCourse())->getTable() . '.id', (new StudentsStudyCourseScore())->getTable() . '.student_study_course_id')
-            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new Institute())->getTable(), (new Institute())->getTable() . '.id', (new StudyCourseSchedule())->getTable() . '.institute_id')
-            ->whereNotIn('study_status_id', [7]);
 
-        return DataTables::eloquent($model)
-            ->filter(function ($query) {
-
-                if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id);
-                }
-                if (request('course-sessionId')) {
-                    $query =  $query->where('study_course_session_id', request('course-sessionId'));
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  Students::searchName($query, request('search.value'));
-                            }
-                        }
-                    }
-                }
-                return $query;
-            })
-            ->setTransformer(function ($row) {
-
-                $row = $row->toArray();
-                $key = $row['id'];
-                $node = StudentsStudyCourse::getData($row['student_study_course_id'])['data'][0];
-                $study_course_session = StudyCourseSession::where('id', request('course-sessionId', $node['study_course_session']['id']))
-                    ->first();
-                $scores = StudentsScore::getData($row['id'], $study_course_session->id);
-                $study_subject = StudyCourseRoutine::getSubject($study_course_session->id);
-                $grade = __('Fail');
-
-                $scores = $scores + [
-                    'attendance_score' => [
-                        'id'    => $row['id'],
-                        'study_subject' => [
-                            'name'  => __('Attendance score'),
-                        ],
-                        'score' => $row['attendance_score'],
-                        'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/attendance/edit/' . $row['id']),
-                    ],
-                    'other_score' => [
-                        'id'    => $row['id'],
-                        'study_subject' => [
-                            'name'  => __('Other score'),
-                        ],
-                        'score' => $row['other_score'],
-                        'pass_or_fail' => null,
-                        'action'        => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/other/edit/' . $row['id']),
-                    ]
-                ];
-                $total_marks = StudentsScore::where('student_study_course_score_id', $row['id'])->sum('subject_score') + $row['attendance_score'] + $row['other_score'];
-
-
-                $average = $total_marks > 0 ? $total_marks / count($study_subject) : 0;
-                $study_grade = StudyGrade::getData();
-
-                if ($study_grade['success']) {
-                    foreach ($study_grade['data'] as $value) {
-                        if ($average  > 0 && $average <= $value['score'])
-                            $grade = $value['name'];
-                    }
-                } else {
-                    if ($average >= 0 && $average <= 50)
-                        $grade = __('Fail');
-                    if ($average > 50 && $average <= 70)
-                        $grade = __('C');
-                    if ($average > 70 && $average <= 80)
-                        $grade = __('B');
-                    if ($average > 80 && $average <= 90)
-                        $grade = __('A');
-                    if ($average > 90)
-                        $grade = __('E');
-                }
-                return [
-                    'id'           => $row['id'],
-                    'name'         => $node['name'],
-                    'node'         => $node,
-                    'scores'       => $scores,
-                    'total_marks'  => $total_marks,
-                    'average'      => $average,
-                    'grade'        => $grade,
-                    'action'       => [
-                        'view'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/view/' . $row['id']),
-                        'edit'   => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/edit/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/' . StudentsStudyCourseScore::path('url') . '/delete/' . $row['id']),
-                    ]
-                ];
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-
-            ->toJson();
-    }
 
 
     public static function existsToTable($student_study_course_id)
@@ -459,7 +343,9 @@ class StudentsStudyCourseScore extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudentsStudyCourseScore::rules('.*'), FormStudentsStudyCourseScore::messages(), FormStudentsStudyCourseScore::attributes('.*'));
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

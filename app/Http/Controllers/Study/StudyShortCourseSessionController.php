@@ -11,13 +11,11 @@ use App\Models\Languages;
 use App\Models\Provinces;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\SocailsMedia;
 use App\Models\StudySession;
 use App\Http\Controllers\Controller;
 use App\Models\StudyShortCourseSession;
 use App\Models\StudyShortCourseSchedule;
-use App\Http\Requests\FormStudyShortCourseSession;
 
 class StudyShortCourseSessionController extends Controller
 {

@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\CertificateFrames;
-
-
 use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Students;
@@ -12,10 +10,8 @@ use App\Models\CertificateFrames;
 use App\Helpers\CertificateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormCertificateFrames;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;

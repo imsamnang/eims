@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffInstitutes extends Model
 {
-
     public static function getData($staff_id)
     {
         $response       = array(

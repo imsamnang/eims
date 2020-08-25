@@ -11,7 +11,6 @@ use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormMailboxes;
 use App\Models\Mailbox;
 use App\Models\MailboxImportant;
 use App\Models\MailboxTrash;

@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Quiz\QuizController;
-use App\Http\Requests\FormQuizzes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class Quiz extends Model
@@ -19,16 +15,18 @@ class Quiz extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -168,9 +166,10 @@ class Quiz extends Model
     public static function addToTable()
     {
         $response           = array();
-        $rules = FormQuizzes::rules();
-        $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name';
-        $validator          = Validator::make(request()->all(), $rules, FormQuizzes::messages(), FormQuizzes::attributes());
+        $validate = self::validate();
+        $rules = $validate['rules'];
+        $rules['name'] = 'required|unique:' . self::path('table') . ',name';
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -214,9 +213,10 @@ class Quiz extends Model
     {
 
         $response           = array();
-        $rules = FormQuizzes::rules();
+        $validate = self::validate();
+        $rules = $validate['rules'];
         $rules['name'] = 'required|unique:' . (new Quiz)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormQuizzes::messages(), FormQuizzes::attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

@@ -3,10 +3,7 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormApp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -176,7 +173,8 @@ class App extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormApp)->rules(), (new FormApp)->messages(), (new FormApp)->attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

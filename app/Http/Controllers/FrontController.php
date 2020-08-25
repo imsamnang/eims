@@ -9,14 +9,12 @@ use App\Models\Sponsored;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\StudyCourse;
 use App\Models\ThemesColor;
 use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
 use App\Models\StudyPrograms;
-use App\Http\Requests\FormContact;
 use Illuminate\Support\Facades\Auth;
 use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 
@@ -119,12 +117,7 @@ class FrontController extends Controller
             'parent'     => "Front",
             'view'       => $data['view'],
         );
-        $pages['form']['validate'] = [
-            'rules'       =>  strtolower($param1) == 'contact' ? (new FormContact)->rules() : [],
-            'attributes'  =>  strtolower($param1) == 'contact' ? (new FormContact)->attributes() : [],
-            'messages'    =>  strtolower($param1) == 'contact' ? (new FormContact)->messages() : [],
-            'questions'   =>  strtolower($param1) == 'contact' ? (new FormContact)->questions() : [],
-        ];
+        $pages['form']['validate'] = [];
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view($pages['parent'] . '.index', $data);

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\FormLanguages;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -73,7 +72,8 @@ class Languages extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormLanguages::rules(), FormLanguages::messages(), FormLanguages::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -163,20 +163,14 @@ class Languages extends Model
             return array(
                 'success'   => false,
                 'type'      => 'update',
-                'message'   => array(
-                    'title' => __('Error'),
-                    'text'  => __('Update Unsuccessful') . PHP_EOL
-                        . __('km.and.en.is.default.language.of.application'),
-                    'button'   => array(
-                        'confirm' => __('Ok'),
-                        'cancel'  => __('Cancel'),
-                    ),
-                ),
+                'message'   =>  __('Km and En is default language of application.'),
+
             );
         }
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormLanguages::rules(), FormLanguages::messages(), FormLanguages::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

@@ -1,12 +1,7 @@
 <?php
 
 namespace App\Models;
-
-use App\Models\Staff;
-use App\Models\Students;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Qrcode extends Model
 {

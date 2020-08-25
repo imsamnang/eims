@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Helpers\videoHelper;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,7 +27,7 @@ class ActivityFeedVideo extends Model
                     'title'         => $row['title'],
                     'original_name' => $row['original_name'],
                     'poster'        => $row['poster'],
-                    'video'         => $row['video'] ? (VideoHelper::site(ActivityFeed::$path['video'], $row['video'])) : null,
+                    'video'         => $row['video'] ? (VideoHelper::site(ActivityFeed::path('video'), $row['video'])) : null,
                 );
             }
 
@@ -74,14 +73,14 @@ class ActivityFeedVideo extends Model
             if (request()->hasFile('video')) {
                 $data = [];
                 foreach (request()->file('video') as $video) {
-                    $upload = VideoHelper::uploadvideo($video, ActivityFeed::$path['video']);
+                    $upload = VideoHelper::uploadvideo($video, ActivityFeed::path('video'));
                     if ($upload) {
                         $data[] = [
                             'name'         => $video->getClientOriginalName(),
                             'rename'       => $upload,
                             'extension'    => $video->getClientOriginalExtension(),
                             'reExtension'  => null,
-                            'url'          => VideoHelper::site(ActivityFeed::$path['video'], $upload)
+                            'url'          => VideoHelper::site(ActivityFeed::path('video'), $upload)
                         ];
                     }
                 }

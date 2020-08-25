@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use Illuminate\Database\Eloquent\Model;
 
 class StaffGuardians extends Model

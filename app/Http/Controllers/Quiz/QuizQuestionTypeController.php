@@ -15,10 +15,7 @@ use App\Models\SocailsMedia;
 use App\Models\QuizQuestionTypes;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormQuizAnswerTypes;
 use App\Models\Quiz;
-use App\Models\QuizAnswerTypes;
-use App\Models\QuizQuestions;
 
 class QuizQuestionTypesController extends Controller
 {

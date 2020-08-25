@@ -3,13 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormStudyShortCourseSchedule;
-use Illuminate\Support\Facades\Auth;
 
 class StudyShortCourseSchedule extends Model
 {
@@ -17,16 +12,18 @@ class StudyShortCourseSchedule extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -146,77 +143,14 @@ class StudyShortCourseSchedule extends Model
 
         return $response;
     }
-    public static function getDataTable()
-    {
-        $model = StudyShortCourseSchedule::select((new StudyShortCourseSchedule)->getTable() . '.*')
-            ->join((new Institute)->getTable(), (new Institute)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.institute_id')
-            ->join((new StudyGeneration)->getTable(), (new StudyGeneration)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.study_generation_id')
-            ->join((new StudySubjects)->getTable(), (new StudySubjects)->getTable() . '.id', (new StudyShortCourseSchedule)->getTable() . '.study_subject_id');
 
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'  => $row['id'],
-                    'institute'   => Institute::getData($row['institute_id'])['data'][0],
-                    'study_generation'   => StudyGeneration::getData($row['study_generation_id'])['data'][0],
-                    'study_subject'   => StudySubjects::getData($row['study_subject_id'])['data'][0],
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyShortCourseSchedule::path('url') . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (request('instituteId')) {
-                    $query = $query->where((new StudyShortCourseSchedule)->getTable() . '.institute_id', request('instituteId'));
-                }
-
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'study_generation.name') {
-                                $query =  $query->where((new StudyGeneration())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
-
-                                if (config('app.languages')) {
-                                    foreach (config('app.languages') as $lang) {
-                                        $query->orWhere((new StudyGeneration)->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                    }
-                                }
-                            } elseif ($value['data'] == 'study_subject.name') {
-                                $query =  $query->orWhere((new StudySubjects())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%');
-                                if (config('app.languages')) {
-                                    foreach (config('app.languages') as $lang) {
-                                        $query->orWhere((new StudySubjects)->getTable() . '.' . $lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rules(), FormStudyShortCourseSchedule::messages(), FormStudyShortCourseSchedule::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -267,7 +201,9 @@ class StudyShortCourseSchedule extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyShortCourseSchedule::rules(), FormStudyShortCourseSchedule::messages(), FormStudyShortCourseSchedule::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

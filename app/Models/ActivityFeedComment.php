@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Models;
-
 use App\Events\NewsFeed;
-
 use App\Helpers\ImageHelper;
 use App\Helpers\MentionHelper;
 use Illuminate\Support\Facades\Auth;

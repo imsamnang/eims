@@ -1,12 +1,9 @@
 <?php
 
 namespace App\Models;
-
-
 use App\Helpers\ImageHelper;
 use App\Helpers\VideoHelper;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class ActivityFeedMedia extends Model
 {
@@ -38,8 +35,8 @@ class ActivityFeedMedia extends Model
                 if ($row['type'] == 'image') {
                     $data[$key]['source'] = ImageHelper::site(ActivityFeed::path('image'), $row['source']);
                 } elseif ($row['type'] == 'video') {
-                    $data[$key]['source'] =  VideoHelper::site(ActivityFeed::$path['video'], $row['source']);
-                    // $data[$key]['source'] =  Storage::disk('local')->get(VideoHelper::$path['video'].'/'.ActivityFeed::$path['video'].'/'. $row['source']);
+                    $data[$key]['source'] =  VideoHelper::site(ActivityFeed::path('video'), $row['source']);
+                    // $data[$key]['source'] =  Storage::disk('local')->get(VideoHelper::path('video').'/'.ActivityFeed::path('video').'/'. $row['source']);
 
                 }
             }
@@ -98,9 +95,9 @@ class ActivityFeedMedia extends Model
                         $type   = 'image';
                         $source = ImageHelper::site(ActivityFeed::path('image'), $upload);
                     } elseif (preg_match("/video\/*/", strtolower($media->getMimeType()))) {
-                        $upload = VideoHelper::uploadVideo($media, ActivityFeed::$path['video']);
+                        $upload = VideoHelper::uploadVideo($media, ActivityFeed::path('video'));
                         $type   = 'video';
-                        $source = VideoHelper::site(ActivityFeed::$path['video'], $upload);
+                        $source = VideoHelper::site(ActivityFeed::path('video'), $upload);
                     }
 
                     if ($upload) {

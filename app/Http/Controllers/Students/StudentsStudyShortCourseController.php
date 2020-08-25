@@ -32,7 +32,6 @@ use App\Models\StudyShortCourseSession;
 use App\Models\StudentsStudyShortCourse;
 use App\Models\StudyShortCourseSchedule;
 use App\Models\StudentsShortCourseRequest;
-use App\Http\Requests\FormStudentsStudyShortCourse;
 
 class StudentsStudyShortCourseController extends Controller
 {
@@ -181,12 +180,17 @@ class StudentsStudyShortCourseController extends Controller
             'parent'     => StudentsStudyShortCourse::path('view'),
             'view'       => $data['view'],
         );
+        if($param1 == 'account'){
         $pages['form']['validate'] = [
-            'rules'       => ($param1 == 'account') ? ['password' => 'required'] : (new FormStudentsStudyShortCourse)->rules(),
-            'attributes'  => ($param1 == 'account') ? ['password' => __('Password')] : (new FormStudentsStudyShortCourse)->attributes(),
-            'messages'    => ($param1 == 'account') ? [] : (new FormStudentsStudyShortCourse)->messages(),
-            'questions'   => ($param1 == 'account') ? [] : (new FormStudentsStudyShortCourse)->questions(),
+            'rules'       => ['password' => 'required'],
+            'attributes'  => ['password' => __('Password')],
+            'messages'    => [],
+            'questions'   => [],
         ];
+        }else{
+            $pages['form']['validate'] = StudentsStudyShortCourse::validate();
+        }
+
 
         //Select Option
 

@@ -13,7 +13,6 @@ use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
-use App\Http\Requests\FormApp;
 use App\Models\ThemeBackground;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,6 @@ use App\Http\Controllers\Settings\RolesController;
 use App\Http\Controllers\Settings\LanguagesController;
 use App\Http\Controllers\Settings\SponsoredController;
 use App\Http\Controllers\Settings\TranslateController;
-use App\Http\Controllers\Settings\FeatureSlidersController;
 
 class SettingsController extends Controller
 {
@@ -175,7 +173,7 @@ class SettingsController extends Controller
             $class = FeatureSlider::path('controller');
             $controller = new $class;
             return $controller->index($param2, $param3);
-            
+
         } elseif ($param1 == Sponsored::path('url')) {
             $view = new SponsoredController();
             return $view->index($param2, $param3);

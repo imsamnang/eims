@@ -15,10 +15,10 @@ use App\Models\SocailsMedia;
 use App\Models\StaffDesignations;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStaffDesignations;
+use App\Models\AttendanceTypes;
 use App\Models\Staff;
 
-class StaffDesignationController extends Controller
+class StaffDesignationsController extends Controller
 {
     public function __construct()
     {
@@ -33,6 +33,7 @@ class StaffDesignationController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        dd(AttendanceTypes::validate());
         $breadcrumb  = [
             [
                 'title' => __('Staff & Teacher'),

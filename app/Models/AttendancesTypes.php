@@ -1,15 +1,11 @@
 <?php
 
 namespace App\Models;
-
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Study\AttendanceTypesController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormAttendanceTypes;
 
 class AttendanceTypes extends Model
 {
@@ -23,10 +19,12 @@ class AttendanceTypes extends Model
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -51,7 +49,8 @@ class AttendanceTypes extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormAttendanceTypes)->rules(), (new FormAttendanceTypes)->messages(), (new FormAttendanceTypes)->attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -98,9 +97,9 @@ class AttendanceTypes extends Model
 
     public static function updateToTable($id)
     {
-
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormAttendanceTypes)->rules(), (new FormAttendanceTypes)->messages(), (new FormAttendanceTypes)->attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

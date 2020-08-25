@@ -5,7 +5,6 @@ namespace App\Models;
 use DomainException;
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\CertificateFrames\CertificateFramesController;
-use App\Http\Requests\FormCertificateFrames;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,16 +14,18 @@ class CertificateFrames extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -60,10 +61,12 @@ class CertificateFrames extends Model
             );
         }
         $response           = array();
-        $rules = (new FormCertificateFrames)->rules();
-        $rules['name'] = 'required|unique:' . (new CertificateFrames)->getTable() . ',name';
+        $validate = self::validate();
+        $rules = $validate['rules'];
+        $rules['name'] = 'required|unique:' . self::path('table') . ',name';
+        $rules['foreground'] = 'required';
 
-        $validator          = Validator::make(request()->all(), $rules, (new FormCertificateFrames)->messages(), (new FormCertificateFrames)->attributes());
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -108,9 +111,11 @@ class CertificateFrames extends Model
     {
 
         $response           = array();
-        $rules = (new FormCertificateFrames)->rules();
-        $rules['name'] = 'required|unique:' . (new CertificateFrames)->getTable() . ',name,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, (new FormCertificateFrames)->messages(), (new FormCertificateFrames)->attributes());
+        $validate = self::validate();
+        $rules = $validate['rules'];
+        $rules['name'] = 'required|unique:' . self::path('table') . ',name,'.$id;
+
+        $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

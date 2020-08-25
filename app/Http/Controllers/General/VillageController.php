@@ -7,7 +7,6 @@ use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Communes;
 use App\Models\Villages;
-
 use App\Models\Districts;
 use App\Models\Institute;
 use App\Models\Languages;
@@ -18,7 +17,6 @@ use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
 use Illuminate\Support\Collection;
-use App\Http\Requests\FormDistrict;
 use App\Http\Controllers\Controller;
 
 class VillageController extends Controller

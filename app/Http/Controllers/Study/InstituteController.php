@@ -9,10 +9,8 @@ use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormInstitute;
 
 
 class InstituteController extends Controller

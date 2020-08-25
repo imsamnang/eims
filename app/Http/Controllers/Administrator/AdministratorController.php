@@ -49,39 +49,43 @@ class AdministratorController extends Controller
     {
         if (strtolower($param1) == null || strtolower($param1) == 'dashboard') {
             return $this->dashboard();
-        } elseif (strtolower($param1) == ActivityFeed::path('url')) {
-            $view = new ActivityFeedController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Mailbox::path('url')) {
-            $view = new MailboxController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Staff::path('url')) {
-            $view = new StaffController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Students::path('url')) {
-            $view = new StudentsController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == 'study') {
-            $view = new StudyController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == 'general') {
-            $view = new GeneralController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Users::path('url')) {
-            $view = new UsersController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == AppModel::path('url')) {
-            $view = new SettingsController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == 'profile') {
-            $view = new ProfileController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
-        } elseif (strtolower($param1) == Quiz::path('url')) {
-            $view = new QuizController();
-            return $view->index($param2, $param3, $param4, $param5, $param6);
         } else {
-            abort(404);
+            $controller = null;
+            if (strtolower($param1) == ActivityFeed::path('url')) {
+                $controller = ActivityFeed::path('controller');
+            } elseif (strtolower($param1) == Mailbox::path('url')) {
+                $view = new MailboxController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == Staff::path('url')) {
+                $view = new StaffController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == Students::path('url')) {
+                $view = new StudentsController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == 'study') {
+                $view = new StudyController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == 'general') {
+                $view = new GeneralController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == Users::path('url')) {
+                $view = new UsersController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == AppModel::path('url')) {
+                $view = new SettingsController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == 'profile') {
+                $view = new ProfileController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            } elseif (strtolower($param1) == Quiz::path('url')) {
+                $view = new QuizController();
+                return $view->index($param2, $param3, $param4, $param5, $param6);
+            }
         }
+
+
+        abort(404);
+
     }
 
     public function dashboard()

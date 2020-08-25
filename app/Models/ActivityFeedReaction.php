@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Models;
-
 use App\Events\NewsFeed;
-
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;

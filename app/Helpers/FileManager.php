@@ -69,11 +69,11 @@ class FileManager
     {
         $files = [];
         foreach (File::files(storage_path('app/public/' . $path)) as $i=> $file) {
-            $isImage = null;//getImageSize($file->getPathname());
+            $isImage = getImageSize($file->getPathname());
             $files[$i] = [
                 'name'    =>  $file->getFilename(),
                 'icon_class' =>  @self::$filesIconClass[$file->getExtension()],
-                'icon_url' =>  route('filemanager.file', [$path . '/' . $file->getFilename()]),
+                'icon_url' => $isImage?route('filemanager.file', [$path . '/' . $file->getFilename()]):null,
                 'sub_directories'   => [],
                 'link'              => route('filemanager.file', [$path . '/' . $file->getFilename()]),
                 'type'              => $isImage? 'image':'file',

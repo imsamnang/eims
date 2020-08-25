@@ -8,14 +8,12 @@ use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\SocailsMedia;
 use App\Models\StudentsScore;
 use App\Models\StudyCourseSession;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use App\Models\StudentsStudyCourseScore;
-use App\Http\Requests\FormStudentsStudyCourseScore;
 
 class StudentsStudyCourseScoreController extends Controller
 {
@@ -115,12 +113,7 @@ class StudentsStudyCourseScoreController extends Controller
             'view'       => $data['view'],
         );
 
-        $pages['form']['validate'] = [
-            'rules'       =>  (new FormStudentsStudyCourseScore)->rules('.*'),
-            'attributes'  =>  (new FormStudentsStudyCourseScore)->attributes('.*'),
-            'messages'    =>  (new FormStudentsStudyCourseScore)->messages(),
-            'questions'   =>  (new FormStudentsStudyCourseScore)->questions(),
-        ];
+        $pages['form']['validate'] = StudentsStudyCourseScore::validate();
         $data[''] = StudyCourseSession::getData();
         $data['student']    = StudentsStudyCourse::getData();
         config()->set('app.title', $data['title']);

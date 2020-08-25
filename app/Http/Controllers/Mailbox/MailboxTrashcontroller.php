@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Mailbox;
-
-
 use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Languages;
@@ -11,7 +9,6 @@ use App\Helpers\MetaHelper;
 use App\Models\ThemesColor;
 use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormMailboxes;
 use App\Models\Mailbox;
 use App\Models\MailboxImportant;
 use App\Models\MailboxTrash;

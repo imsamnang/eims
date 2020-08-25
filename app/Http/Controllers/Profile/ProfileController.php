@@ -7,12 +7,9 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormProfile;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;

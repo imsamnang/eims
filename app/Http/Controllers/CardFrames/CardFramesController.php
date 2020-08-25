@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\CardFrames;
-
-
 use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Students;
@@ -14,7 +12,6 @@ use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
 use App\Models\SocailsMedia;
-use App\Http\Requests\FormCard;
 use App\Models\StudentsStudyCourse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;

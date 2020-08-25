@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Models;
-
 use Embed\Embed;
-
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityFeedLink extends Model

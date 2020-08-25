@@ -36,7 +36,7 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StaffsReportTemplateExport;
 use App\Http\Controllers\Staff\StaffCertificateController;
-use App\Http\Controllers\Staff\StaffDesignationController;
+use App\Http\Controllers\Staff\StaffDesignationsController;
 
 class StaffController extends Controller
 {
@@ -223,7 +223,7 @@ class StaffController extends Controller
                 });
             }
         } elseif (($param1) == StaffDesignations::path('url')) {
-            $view = new StaffDesignationController();
+            $view = new StaffDesignationsController();
             return $view->index($param2, $param3, $param4);
         } elseif (($param1) == StaffStatus::path('url')) {
             $view = new StaffStatusController();
@@ -458,8 +458,6 @@ class StaffController extends Controller
     public function report($excel = null)
     {
 
-
-
         $table = Staff::join((new StaffInstitutes)->getTable(), (new StaffInstitutes)->getTable() . '.staff_id', (new Staff)->getTable() . '.id');
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
@@ -467,6 +465,11 @@ class StaffController extends Controller
         if (request('designationId')) {
             $table->where('designation_id', request('designationId'));
         }
+        $table->orderBy('first_name_km')
+        ->orderBy('last_name_km')
+        ->orderBy('first_name_en')
+        ->orderBy('last_name_en');
+
         $response = $table->get()->map(function ($row) {
             // $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
             $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];

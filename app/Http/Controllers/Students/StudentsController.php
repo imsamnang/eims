@@ -29,7 +29,7 @@ use App\Helpers\DateHelper;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Models\Nationality;
-use App\Models\QuizStudent;
+use App\Models\QuizStudents;
 use App\Models\StudyCourse;
 use App\Helpers\ImageHelper;
 use App\Models\ActivityFeed;
@@ -581,7 +581,11 @@ class StudentsController extends Controller
                 return $row;
             });
 
-        $table = new Students;
+        $table = Students::orderBy('first_name_km')
+        ->orderBy('last_name_km')
+        ->orderBy('first_name_en')
+        ->orderBy('last_name_en');
+
         if (request('instituteId')) {
             $table->where('institute_id', request('instituteId'));
         }
@@ -1002,8 +1006,8 @@ class StudentsController extends Controller
             $data['view']    = Students::path('view') . '.includes.study.includes.attendance.index';
         } elseif ($param1 == Quiz::path('url')) {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                $course_routine = StudentsStudyCourse::select((new QuizStudent())->getTable() . '.*')
-                    ->join((new QuizStudent())->getTable(), (new QuizStudent())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
+                $course_routine = StudentsStudyCourse::select((new QuizStudents())->getTable() . '.*')
+                    ->join((new QuizStudents())->getTable(), (new QuizStudents())->getTable() . '.student_study_course_id', (new StudentsStudyCourse())->getTable() . '.id')
                     ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
                     ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
                     ->where('student_id', Auth::user()->node_id)

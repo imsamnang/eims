@@ -3,12 +3,8 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormStudyFaculty;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
 
 class StudyFaculty extends Model
@@ -17,16 +13,18 @@ class StudyFaculty extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -151,66 +149,15 @@ class StudyFaculty extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudyFaculty::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyFaculty::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyFaculty::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyFaculty::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyFaculty::path('url') . '/delete/' . $row['id']),
-                    ]
 
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyFaculty::rules(), FormStudyFaculty::messages(), FormStudyFaculty::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -258,7 +205,9 @@ class StudyFaculty extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyFaculty::rules(), FormStudyFaculty::messages(), FormStudyFaculty::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

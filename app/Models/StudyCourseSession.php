@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use DomainException;
-
 use App\Helpers\DateHelper;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormStudyCourseSession;
 
 class StudyCourseSession extends Model
 {
@@ -18,16 +14,18 @@ class StudyCourseSession extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -183,93 +181,13 @@ class StudyCourseSession extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudyCourseSession::select((new StudyCourseSession())->getTable() . '.*')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->join((new StudySession)->getTable(), (new StudySession)->getTable() . '.id', (new StudyCourseSession)->getTable() . '.study_session_id')
-            ->join((new Institute)->getTable(), (new Institute)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.institute_id')
-            ->join((new StudyPrograms)->getTable(), (new StudyPrograms)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.study_program_id')
-            ->join((new StudyCourse)->getTable(), (new StudyCourse)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.study_course_id')
-            ->join((new StudyGeneration)->getTable(), (new StudyGeneration)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.study_generation_id')
-            ->join((new StudyAcademicYears)->getTable(), (new StudyAcademicYears)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.study_academic_year_id')
-            ->join((new StudySemesters)->getTable(), (new StudySemesters)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.study_semester_id');
-
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'  => $row['id'],
-                    'id'  => $row['id'],
-                    'study_course_schedule' => StudyCourseSchedule::getData($row['study_course_schedule_id'])['data'][0],
-                    'study_session' => StudySession::getData($row['study_session_id'])['data'][0],
-                    'study_start'   => DateHelper::convert($row['study_start'], 'd-M-Y'),
-                    'study_end'    => DateHelper::convert($row['study_end'],  'd-M-Y'),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/delete/' . $row['id']),
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-                if (Auth::user()->role_id == 2) {
-                    $query =  $query->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id);
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'study_course_schedule.name') {
-                                $query =  $query->where((new StudyPrograms)->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyPrograms)->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyPrograms)->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%')
-
-                                    ->orWhere((new StudyCourse())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyCourse())->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyCourse())->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%')
-
-                                    ->orWhere((new StudyGeneration())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyGeneration())->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyGeneration())->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%')
-
-                                    ->orWhere((new StudyAcademicYears())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyAcademicYears())->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudyAcademicYears())->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%')
-
-                                    ->orWhere((new StudySemesters())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudySemesters())->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudySemesters())->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%');
-                            } elseif ($value['data'] == 'study_session.name') {
-                                $query =  $query->orWhere((new StudySession())->getTable() . '.name', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudySession())->getTable() . '.en', 'LIKE', '%' . request('search.value') . '%')
-                                    ->orWhere((new StudySession())->getTable() . '.km', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
-
 
     public static function addToTable()
     {
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseSession::rules(), FormStudyCourseSession::messages(), FormStudyCourseSession::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -321,7 +239,9 @@ class StudyCourseSession extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourseSession::rules(), FormStudyCourseSession::messages(), FormStudyCourseSession::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

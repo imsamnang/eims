@@ -3,13 +3,9 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\FormThemeBackground;
 
 class ThemeBackground extends Model
 {
@@ -17,16 +13,18 @@ class ThemeBackground extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -54,7 +52,9 @@ class ThemeBackground extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormThemeBackground)->rules(), (new FormThemeBackground)->messages(), (new FormThemeBackground)->attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if (!request()->hasFile('image')) {
             return array(
@@ -72,14 +72,14 @@ class ThemeBackground extends Model
             );
         } else {
             $image      = request()->file('image');
-            if (!in_array($image->getMimeType(), ImageHelper::$path['mime'])) {
+            if (!in_array($image->getMimeType(), ImageHelper::path('mime'))) {
                 return array(
                     'success'   => false,
                     'type'      => 'add',
                     'message'   => array(
                         'title' => __('Error'),
                         'text'  => __('Add Unsuccessful') . PHP_EOL
-                            . __('Image allow') . ' ( ' . str_replace('image/', '', implode(',', ImageHelper::$path['mime'])) . ' )',
+                            . __('Image allow') . ' ( ' . str_replace('image/', '', implode(',', ImageHelper::path('mime'))) . ' )',
                         'button'   => array(
                             'confirm' => __('Ok'),
                             'cancel'  => __('Cancel'),
@@ -134,7 +134,9 @@ class ThemeBackground extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), (new FormThemeBackground)->rules(), (new FormThemeBackground)->messages(), (new FormThemeBackground)->attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

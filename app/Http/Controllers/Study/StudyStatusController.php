@@ -6,9 +6,7 @@ use Carbon\Carbon;
 use App\Models\App as AppModel;
 use App\Models\Users;
 use App\Models\Institute;
-use App\Models\Languages;
 use App\Helpers\DateHelper;
-
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
 use App\Helpers\ImageHelper;
@@ -16,8 +14,6 @@ use App\Models\SocailsMedia;
 use App\Models\StudyStatus;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStudyStatus;
-
 
 class StudyStatusController extends Controller
 {

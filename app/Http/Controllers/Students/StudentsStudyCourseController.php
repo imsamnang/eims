@@ -37,7 +37,6 @@ use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
 use App\Models\StudentsStudyCourseScore;
 use App\Http\Controllers\CardFrames\CardFramesController;
-use App\Http\Requests\FormStudentsStudyCourse;
 use App\Http\Controllers\Photo\PhotoController;
 use App\Http\Controllers\QrCode\QrCodeController;
 use App\Http\Controllers\CertificateFrames\CertificateFramesController;

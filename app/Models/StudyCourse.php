@@ -3,11 +3,7 @@
 namespace App\Models;
 
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\FormStudyCourse;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Validator;
@@ -18,16 +14,18 @@ class StudyCourse extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -205,80 +203,14 @@ class StudyCourse extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = StudyCourse::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'  => $row['id'],
-                    'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    '_name'                   => $row['en'],
-                    'description'             => $row['description'],
-                    'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
-                    'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
-                    'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
-                    'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
-                    'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
-                    'study_overall_fund'      => $row['study_overall_fund_id'] == null ? null : StudyOverallFund::getData($row['study_overall_fund_id'])['data'][0],
-                    'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
-                    'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
-
-                    'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'action'                   => [
-                        'edit' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/edit/' . $row['id']), //?id
-                        'view' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/view/' . $row['id']), //?id
-                        'delete' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/delete/' . $row['id']), //?id
-                    ]
-
-                ];
-            })
-            ->filter(function ($query) {
-
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'name') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('name', 'LIKE', '%' . request('search.value') . '%');
-                                    if (config('app.languages')) {
-                                        foreach (config('app.languages') as $lang) {
-                                            $q->orWhere($lang['code_name'], 'LIKE', '%' . request('search.value') . '%');
-                                        }
-                                    }
-                                });
-                            } elseif ($value['data'] == 'description') {
-                                $query->orWhere('description', 'LIKE', '%' . request('search.value') . '%');
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourse::rules(), FormStudyCourse::messages(), FormStudyCourse::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -333,7 +265,9 @@ class StudyCourse extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormStudyCourse::rules(), FormStudyCourse::messages(), FormStudyCourse::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(

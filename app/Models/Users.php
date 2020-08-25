@@ -3,18 +3,12 @@
 namespace App\Models;
 
 use DomainException;
-
 use App\Helpers\DateHelper;
-
 use App\Helpers\ImageHelper;
-use App\Http\Requests\FormStaff;
-use App\Http\Requests\FormUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\Validator;
-use Laravolt\Avatar\Avatar;
 
 class Users extends Model
 {
@@ -22,16 +16,18 @@ class Users extends Model
      *  @param string $key
      *  @param string|array $key
      */
-    public static function path($key = null)
+     public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -94,7 +90,9 @@ class Users extends Model
                 );
             }
         }
-        $validator          = Validator::make(request()->all(), FormUsers::rules(), FormUsers::messages(), FormUsers::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -168,13 +166,15 @@ class Users extends Model
         $response           = array();
 
         $rule = [];
-        foreach (FormUsers::rules() as $key => $value) {
+        $validate = self::validate();
+
+        foreach ($validate['rules'] as $key => $value) {
             if ($key != 'password')
                 $rule[$key] = $value;
         }
 
 
-        $validator          = Validator::make(request()->all(), $rule, FormUsers::messages(), FormUsers::attributes());
+        $validator          = Validator::make(request()->all(), $rule, $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -328,7 +328,9 @@ class Users extends Model
     }
     public static function register()
     {
-        $validator          = Validator::make(request()->all(), FormUsers::rules2(), FormStaff::messages(), FormStaff::attributes());
+        $validate = self::validate();
+
+        $validator          = Validator::make(request()->all(), $validate['rules2'], $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,

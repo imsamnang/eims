@@ -7,7 +7,6 @@ use App\Models\Users;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
 use App\Helpers\MetaHelper;
-
 use App\Models\StudyCourse;
 use App\Models\SocailsMedia;
 use App\Models\StudyPrograms;
@@ -16,7 +15,6 @@ use App\Models\StudyGeneration;
 use App\Models\StudyAcademicYears;
 use App\Models\StudyCourseSchedule;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FormStudyCourseSchedule;
 use App\Models\Institute;
 
 class StudyCourseScheduleController extends Controller
