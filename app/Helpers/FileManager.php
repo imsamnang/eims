@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use DateTime;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -80,7 +81,7 @@ class FileManager
                     'name'  => $file->getFilename(),
                     'extension'  => $file->getExtension(),
                     'size'  => self::byteconvert($file->getSize()),
-                    'date'  => DateHelper::convert($file->getCTime(), 'd-F-Y'),
+                    'date'  => DateHelper::convert(date('Y-m-d',$file->getCTime()), 'd-F-Y'),
                 ]
             ];
 
