@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers\FileManager;
 
+use App\Models\Languages;
 use App\Helpers\FileManager;
+use App\Models\SocailsMedia;
 use App\Http\Controllers\Controller;
+use App\Models\App as AppModel;
 use Illuminate\Support\Facades\File;
 
 class FileManagerController extends Controller
 {
     function __construct()
     {
+        $this->middleware('auth');
+        AppModel::setConfig();
+        Languages::setConfig();
+        SocailsMedia::setConfig();
+        view()->share('breadcrumb', []);
         view()->share('segments', null);
     }
 

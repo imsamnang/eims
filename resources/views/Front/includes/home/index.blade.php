@@ -1,217 +1,128 @@
 @if ($sliders)
-    <div class="col-12">
+<section class="banner banner-property">
+    <div class="owl-carousel owl-nav-top-right" data-animateOut="fadeOut" data-nav-arrow="false" data-items="1"
+        data-md-items="1" data-sm-items="1" data-xs-items="1" data-xx-items="1" data-space="0">
+        @foreach ($sliders['data'] as $row)
+        <div class="item">
+            <div class="property-offer">
+                <div class="property-offer-item">
+                    <div class="property-offer-image bg-holder"
+                        style="background-image: url({{$row['property']['image']}});">
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-5 col-md-8 col-sm-12">
+                                    <div class="property-details">
+                                        <div class="property-details-inner">
+                                            <h5 class="property-title">
+                                                <a href="{{$row['property']['action']['detail']}}">
+                                                    {{$row['property']['title']}}
+                                                </a>
+                                            </h5>
+                                            <span class="property-address">
+                                                <i class="fas fa-map-marker-alt fa-xs"></i>
+                                                {{$row['property']['province']}},
+                                                {{$row['property']['district']}},
+                                                {{$row['property']['commune']}}
 
-        <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
+                                            </span>
+                                            <span class="property-agent-date float-right">
+                                                <i class="far fa-clock fa-md"></i>
 
-            <ol class="carousel-indicators">
+                                                <span datetime="{{$row['property']['created_at']}}">
+                                                    {{$row['property']['created_att']}}
+                                                </span>
+                                            </span>
+                                            <p class="mb-0 d-block mt-3">{{$row['property']['description']}}</p>
+                                            <div class="property-price">
+                                                $ {{$row['property']['price']}}
+                                                @if ($row['property']['rental_period'])
+                                                <span> / {{$row['property']['rental_period']}}</span>
 
-                @foreach ($sliders['data'] as $key => $item)
-
-                    <li data-target="#carousel-indicators" data-slide-to="{{ $key }}" class="{{ $item['status'] }}">
-
-                    </li>
-
-                @endforeach
-
-
-
-            </ol>
-
-            <div class="carousel-inner">
-
-                @foreach ($sliders['data'] as $key => $item)
-
-                    <div class="carousel-item {{ $item['status'] }}">
-
-                        <img class="img-center w-100" style="max-height:400px;min-height:300px"
-                            src="{{ $item['image'] }}?type=slide" alt="{{ $item['institute']['name'] }}" />
-
+                                                @endif
+                                            </div>
+                                            <ul class="property-info list-unstyled d-flex">
+                                                @if ($row['property']['bedroom'])
+                                                <li class="flex-fill property-bed">
+                                                    <i class="fas fa-bed"></i>
+                                                    {{__('Bed')}}<span>{{$row['property']['bedroom']}}</span>
+                                                </li>
+                                                @endif
+                                                @if ($row['property']['bathroom'])
+                                                <li class="flex-fill property-bath">
+                                                    <i class="fas fa-bath"></i>
+                                                    {{__('Bath')}}<span>{{$row['property']['bathroom']}}</span>
+                                                </li>
+                                                @endif
+                                                <li class="flex-fill property-m-sqft">
+                                                    <i class="far fa-square"></i>
+                                                    {{__('Size')}}<span>{{$row['property']['size']}}</span> {{__('m²')}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="property-btn">
+                                            <a class="property-link" href="{{$row['property']['action']['detail']}}">
+                                                {{__('See Details')}}
+                                            </a>
+                                            <ul class="property-listing-actions list-unstyled mb-0">
+                                                <li class="property-compare">
+                                                    <a data-toggle="tooltip" data-placement="top"
+                                                        title="{{__('Compare')}}" id="property-compare-add"
+                                                        href="{{route('front.compare.action','add')}}"
+                                                        data-slug="{{$row['property']['slug']}}"
+                                                        data-target-count="#compares-count">
+                                                        <i
+                                                            class="fas fa-exchange-alt {{in_array($row['property']['slug'],$compares) ? 'text-success' : ''}}"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="property-favourites">
+                                                    <a data-toggle="tooltip" id="property-favourite-add"
+                                                        data-placement="top" title="{{__('Favourite')}}"
+                                                        href="{{route('front.favourite.action','add')}}"
+                                                        data-target-count="#favourites-count"
+                                                        data-slug="{{$row['property']['slug']}}">
+                                                        <i
+                                                            class="fas fa-heart {{in_array($row['property']['slug'],$favourites) ? 'text-danger' : ''}}"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                @endforeach
-
-
-
+                </div>
             </div>
-
-            <a class="carousel-control-prev" href="#carousel-indicators" role="button" data-slide="prev">
-
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                <span class="sr-only">Previous</span>
-
-            </a>
-
-            <a class="carousel-control-next" href="#carousel-indicators" role="button" data-slide="next">
-
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                <span class="sr-only">Next</span>
-
-            </a>
-
         </div>
-
-
+        @endforeach
 
     </div>
-
+</section>
 @endif
-
-<div class="col-md-12">
-
-    <section class="our-features section">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-12">
-
-                    <div style="padding:15px;text-align: center;">
-
-                        <h2>គោលដៅរបស់វិទ្យាស្ថាន</h2>
-
-                        <p>ផ្តល់ការអប់រំបណ្តុះបណ្តាលបច្ចេកទេស និងវិជ្ជាជីវៈ ដល់សិស្ស-និស្សិតទាំងប្រុសស្រី
-                            ដើម្បីជួយពួកគេឱ្យមានលទ្ធភាពបំរើប្រទេសជាតិប្រកបដោយ ភាពជឿ អប់រំសិស្ស-និស្សិតទាំងប្រុសស្រី
-                            លើជំនាញវិស្វកម្មសំណង់ស៊ីវិល វិស្វកម្មអគស្គិនី និងអេឡិចត្រូនិច ស្ថាបត្យកម្ម
-                            ផ្តល់ឱកាសសម្រាប់ធ្វើការស្រាវជ្រាវ ដែលផ្តល់ផលប្រយោជន៍ដល់សង្គម និង
-                            បុគ្គល។និងបច្ចេកវិទ្យាព័ត៌មានវិទ្យា ។ជាក់ និងមោទនៈភាព។</p>
-
-
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="row">__
-
-                <div class="col-lg-4 col-md-4 col-12">
-
-                    <!-- Single Feature -->
-
-                    <div class="single-feature">
-
-                        <div class="feature-head">
-
-                            <img style="width:100%;"
-                                src="https://eims.rpitssr.edu.kh/images/feature/27720116_111483131821611_4518591155221611671_n.jpg?type=slide"
-                                alt="#">
-
-                        </div>
-
-                        <h2 style="padding:15px;text-align: center;">វិទ្យាសាស្រ្តកុំព្យូទ័រ</h2>
-
-                        <p>យើងខ្ញុំបណ្តុះបណ្តាលដើម្បីឆ្លើយតបនឹងតម្រូវការទីផ្សារការងារ។</p>
-
-                    </div>
-
-                    <!--/ End Single Feature -->
-
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-12">
-
-                    <!-- Single Feature -->
-
-                    <div class="single-feature">
-
-                        <div class="feature-head">
-
-                            <img style="width:100%;"
-                                src="https://eims.rpitssr.edu.kh/images/feature/03501476_751111133978861_9102412169151741216_n.jpg?type=slide"
-                                alt="#">
-
-                        </div>
-
-                        <h2 style="padding:15px;text-align: center;">ជំនាញអគ្គិសនីគ្រប់​កម្រឹត</h2>
-
-                        <p>ជាជំនាញដែលសិស្សរៀនច្រើនជាងគេក្នុងតំបន់ និងមានទំនុកចិត្តខ្ពស់។</p>
-
-                    </div>
-
-                    <!--/ End Single Feature -->
-
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-12">
-
-                    <!-- Single Feature -->
-
-                    <div class="single-feature">
-
-                        <div class="feature-head">
-
-                            <img style="width:100%;"
-                                src="https://eims.rpitssr.edu.kh/images/feature/53013514_291119116501404_4112028292819116161_n.jpg?type=slide"
-                                alt="#">
-
-                        </div>
-
-                        <h2 style="padding:15px;text-align: center;">ជំនាញសំណង់</h2>
-
-                        <p>ជាជំនាញស្នូលសំខាន់សម្រាប់វិទ្យាស្ថាយើង។</p>
-
-                    </div>
-
-                    <!--/ End Single Feature -->
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
 
 
 <!--Sponsor-->
-
-
-
 @if ($sponsored)
-
-    <div class="row">
-
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-
-            <span class="text-white h3">{{ __('Sponsored by') }}</span>
-
-        </div>
-
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
+        <span class="text-white h3">{{ __('Sponsored by') }}</span>
     </div>
 
-    <div class="row">
+</div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
-
-            <ul class="list-unstyled list-inline social text-center">
-
-                @foreach ($sponsored['data'] as $item)
-
-                    <li class="img-thumbnail list-inline-item mb-2" width="150" height="150">
-
-                        <a href="#">
-
-                            <img class="img-responsive" width="150" height="150" src="{{ $item['image'] }}" />
-
-                        </a>
-
-                    </li>
-
-                @endforeach
-
-            </ul>
-
-        </div>
-
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+        <ul class="list-unstyled list-inline social text-center">
+            @foreach ($sponsored['data'] as $item)
+            <li class="img-thumbnail list-inline-item mb-2" width="150" height="150">
+                <a href="#">
+                    <img class="img-responsive" width="150" height="150" src="{{ $item['image'] }}" />
+                </a>
+            </li>
+            @endforeach
+        </ul>
     </div>
+
+</div>
 
 @endif

@@ -18,7 +18,7 @@
                 </div>
             @elseif($item['type'] == 'image')
             @else
-                <a href="{{ $item['link'] }}"
+                <a href="{{ $item['link'] }}" id="show-items" data-items='{!! json_encode(@$item['sub_directories'])!!}'
                     class="text-truncate nav-link {{ request()->is($active . '/' . $item['name'] . '*') ? 'active text-blue' : '' }}"
                     title="{{ $item['name'] }}" role="button">
                     <i class="{{ $item['icon_class'] }}"></i>

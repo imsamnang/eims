@@ -23,7 +23,6 @@
 <link rel="stylesheet" href="{{asset("/assets/vendor/feed/dist/feed.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/plyr/dist/plyr.css")}}" />
 <link rel="stylesheet" href="{{asset("/assets/vendor/reaction/dist/reaction.css")}}" />
-<link rel="stylesheet" href="{{asset("/styles/xcode.css")}}" />
 <link rel="stylesheet" href="{{asset("/assets/css/images-grid.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/hovercard/dist/jquery.hovercard.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/jquery-tooltipster/dist/jquery.tooltipster.css")}}">

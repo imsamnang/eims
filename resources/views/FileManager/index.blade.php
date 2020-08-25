@@ -4,6 +4,7 @@
 @endsection
 @section('style')
     <link rel="icon" href="{{ config('app.favicon') }}" type="image/png">
+    <link rel="stylesheet" href="{{asset("/assets/vendor/nucleo/css/nucleo.css")}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('/assets/vendor/@fortawesome/fontawesome-pro/css/pro.min.css') }}"
         type="text/css">
     <link rel="stylesheet" href="{{ asset('/assets/css/argon.min.css?v=1.1.0') }}" type="text/css">
@@ -11,62 +12,61 @@
     <link rel="stylesheet" href="{{ asset('/assets/vendor/viewerjs/dist/viewer.min.css') }}" />
 
     <style>
-        .file-manager {
+        .filemanager {
             border: 1px solid #e7eaec;
             padding: 0;
             background-color: #ffffff;
             position: relative;
         }
 
-        .file-manager .icon,
-        .file-manager .image {
+        .filemanager .icon,
+        .filemanager .image {
             width: 100%;
             height: 100px;
             overflow: hidden;
         }
 
-        .file-manager .image img {
+        .filemanager .image img {
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             object-fit: contain;
         }
 
-        .file-manager .icon {
+        .filemanager .icon {
             padding: 15px 10px;
             text-align: center;
         }
 
-        .file-manager-control {
+        .filemanager-control {
             color: inherit;
             font-size: 11px;
             margin-right: 10px;
         }
 
-        .file-manager-control.active {
+        .filemanager-control.active {
             text-decoration: underline;
         }
 
-        .file-manager .icon i {
+        .filemanager .icon i {
             font-size: 70px;
-            color: #dadada;
         }
 
-        .file-manager .file-manager-name {
+        .filemanager .filemanager-name {
             font-size: 12px;
             padding: 10px;
             background-color: #f8f8f8;
             border-top: 1px solid #e7eaec;
         }
 
-        .file-manager-name small {
+        .filemanager-name small {
             color: #676a6c;
         }
 
         .corner {
             position: absolute;
             display: inline-block;
-            width: 0;
+            font-size: 12px;
             height: 0;
             line-height: 0;
             border: 0.6em solid transparent;
@@ -76,13 +76,6 @@
             bottom: 0em;
         }
 
-        #sidenav-main {
-            max-width: 300px !important;
-        }
-
-        .main-content {
-            margin-left: 300px !important;
-        }
 
         ul.tree,
         ul.tree ul {
@@ -153,6 +146,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        .fa-folder{
+            color : #ffc107;
+        }
+        .fa-file-pdf{
+            color: #f44336
+        }
+
     </style>
     <link rel="stylesheet" href="https://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css">
 @endsection
@@ -160,6 +160,8 @@
 @section('content')
     @include('FileManager.includes.navLeft',['items' => $directories])
     <div class="main-content" id="panel">
+        {{-- @include(Auth::user()->role('view_path').".includes.navTop") --}}
+        {{-- @include("layouts.navHeader") --}}
         <div class="page-content container-fluid my-3">
             @include('FileManager.includes.view.index',['items' => $view_directories])
         </div>
@@ -172,7 +174,7 @@
     <script src="{{ asset('/assets/vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/assets/vendor/jquery/dist/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('/assets/vendor/jquery/dist/jquery-2.1.4.min.js') }}"></script>
-
+    <script src="{{asset("/assets/js/custom/urlhelper.js")}}"></script>
     <script src="{{ asset('/assets/vendor/js-cookie/js.cookie.js') }}"></script>
     <script src="{{ asset('/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
     <script src="{{ asset('/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
@@ -226,6 +228,82 @@
                 $(result).removeClass('d-none');
             }
         });
+
+        $('[id="show-items"]').click(function(event) {
+            event.preventDefault();
+            var items = $(this).data('items');
+            var url = $(this).attr('href');
+            var urlhelper =  new UrlHelper();
+
+            $('#filemanager-items').html('');
+            $(this).parents('ul').find('.active')
+                .removeClass('text-blue')
+                .removeClass('active');
+
+            $(this)
+                .addClass('text-blue')
+                .addClass('active');
+
+            new Viewer($('#filemanager-items').get(0)).destroy();
+            urlhelper.set(items,url);
+            if (items && items.length) {
+                $('#filemanager-items-result').addClass('d-none');
+                $.each(items, (i, $item) => {
+
+                    var tpl = ` <div class="filemanager-box col-2 px-2" id="dir-items" data-type="${$item['type']}">
+                        <div class="filemanager mb-3">
+                            <a href="${ $item['type'] == 'directory' ? $item['link'] : '#' }">
+                                <span class="corner">${ $item['file_info']['size'] }</span>
+                                ${$item['icon_url'] ? `
+                                    <div class="image p-0">
+                                        <img src="${ $item['icon_url']}" class="w-100 h-100">
+                                    </div>
+                                `: ` <div class="icon">  <i class="${ $item['icon_class'] }"></i> </div>` }
+                                <div class="filemanager-name text-truncate" title="${ $item['name'] }">
+                                    ${$item['type'] == 'file' || $item['type'] ==  'image' ? `
+                                        <table>
+                                            <tr>
+                                                <td>{{ __('Name') }} :</td>
+                                                <td>${ $item['file_info']['name'] }</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ __('Type') }} :</td>
+                                                <td>${ $item['file_info']['extension'] }</td>
+                                            </tr>
+                                            ${$item['file_info']['width'] ? `
+                                            <tr>
+                                                <td colspan="2">${ $item['file_info']['width'] } x ${ $item['file_info']['height'] }</td>
+                                            </tr>
+                                            `:''}
+                                            <tr>
+                                                <td colspan="2">${ $item['file_info']['date'] }</td>
+                                            </tr>
+                                        </table>
+                                    `:$item['name']}
+                                </div>
+                            </a>
+                        </div>
+                    </div>`;
+                    $('#filemanager-items').append(tpl);
+                });
+                //lazyLoadInstance.update();
+                new Viewer($('#filemanager-items').get(0)).reset();
+            } else {
+                $('#filemanager-items-result').removeClass('d-none');
+            }
+            var total_directory =  $('#filemanager-items').find('[data-type="directory"]').length;
+            var total_file =  $('#filemanager-items').find('[data-type="file"]').length;
+            var total_image =  $('#filemanager-items').find('[data-type="image"]').length;
+            $('#filemanager-items').parents('.card').find('.card-footer').html(`
+                <div class=''>
+                    <div class="col">{{__('Folders')}} :${total_directory}</div>
+                    <div class="col">{{__('Files')}} : ${total_file}</div>
+                    <div class="col">{{__('Image')}} :${total_image}</div>
+                </div>
+            `);
+
+        });
+
 
     </script>
 

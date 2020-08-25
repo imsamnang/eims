@@ -105,7 +105,7 @@ class ImageHelper
             $fileInFolderSize =  storage_path('app/'  . $folderSize . '/' . $name);
             if (!file_exists($fileInFolderSize)) {
                 File::copy($destinationPath . '/' . $name, $fileInFolderSize);
-                Image::make($fileInFolderSize)->fit(1000, 400, function ($constraint) {
+                Image::make($fileInFolderSize)->resize(1000, 400, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save(null, 100);
@@ -132,9 +132,9 @@ class ImageHelper
             'error'   => '?type=[small, large, original]'
         ];
         if (File::exists($file)) {
-            if (in_array(File::mimeType($file), self::path('mime'))) {
-                $response = Image::make($file)->response(null, $quality);
-            }
+            return response(File::get($file), 200, [
+                'Content-Type' => mime_content_type($file)
+            ]);
         } else {
             $response = [
                 'success' => false,

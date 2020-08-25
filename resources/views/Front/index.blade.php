@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="{{asset('/assets/css/custom.css')}}" type="text/css">
 <link rel="stylesheet" href="{{asset('/assets/css/spinner.css')}}" type="text/css">
 <link rel="stylesheet" href="{{asset("/assets/vendor/quill/dist/quill.core.css") }}" />
+<link rel="stylesheet" href="{{asset("/assets/vendor/owl-carousel/owl.carousel.min.css") }}" />
 
 <link rel="stylesheet" href="{{asset("/assets/css/icon.css") }}" />
 <link rel="stylesheet" href="{{asset("/assets/css/images-grid.css")}}">
@@ -23,7 +24,6 @@
 <link rel="stylesheet" href="{{asset("/assets/vendor/feed/dist/feed.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/plyr/dist/plyr.css")}}" />
 <link rel="stylesheet" href="{{asset("/assets/vendor/reaction/dist/reaction.css")}}" />
-<link rel="stylesheet" href="{{asset("/styles/xcode.css")}}" />
 <link rel="stylesheet" href="{{asset("/assets/vendor/hovercard/dist/jquery.hovercard.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/jquery-tooltipster/dist/jquery.tooltipster.css")}}">
 <link rel="stylesheet" href="{{asset("/assets/vendor/jquery-tooltipster/dist/hovercard.css")}}">
@@ -206,6 +206,7 @@
     src="{{asset("/assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.".app()->getLocale().".min.js")}}">
 </script>
 @endif
+<script src="{{asset("/assets/vendor/owl-carousel/owl.carousel.min.js") }}"></script>
 
 <script src="{{asset('/assets/js/custom/validation.js')}}"></script>
 <script src="{{asset('/assets/js/custom/replace-with-tag.js')}}"></script>

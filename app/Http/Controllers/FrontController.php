@@ -77,8 +77,14 @@ class FrontController extends Controller
                 'programId' =>  request('programId') ? request('programId') : 4
             ]);
 
-            $data['study_program']  = StudyPrograms::getData();
-            $data['study_course']   = StudyCourse::getData();
+            $data['study_program']['data']= StudyPrograms::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image? ImageHelper::site(StudyPrograms::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });
+            $data['study_course']['data']   = StudyCourse::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
+                $row['image']   = $row->image? ImageHelper::site(StudyCourse::path('image'), $row->image) : ImageHelper::prefix();
+                return $row;
+            });;
         } elseif (strtolower($param1) == 'news-even') {
             $data['response']    =  ActivityFeed::getData(null, 10);
             $data['theme_color'] = ThemesColor::getData();

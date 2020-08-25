@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Http\Requests;
-
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FormFeatureSliders extends FormRequest
@@ -26,10 +23,8 @@ class FormFeatureSliders extends FormRequest
 
     public function rules()
     {
-        if (Auth::user()->role_id == 1) {
-            $rules["institute"]   = "required";
-        }
-        $rules["title"]           = "required";
+        $rules["institute"]   = "required";
+        $rules["name"]           = "required";
         //$rules["image"]         = "required";
         //$rules["description"]   = "required";
         return $rules;
@@ -38,7 +33,7 @@ class FormFeatureSliders extends FormRequest
     public function attributes()
     {
         $attributes["institute"]   = __('Institute');
-        $attributes["title"]       = __('Title');
+        $attributes["name"]       = __('Title');
         $attributes["image"]       = __('Image');
         $attributes["description"] = __('Description');
         return $attributes;

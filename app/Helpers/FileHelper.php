@@ -8,7 +8,7 @@ class FileHelper
 {
 
     public static $path = [
-        'file'  =>  'file',
+        'file'  =>  'files',
     ];
 
     public static function uploadFile($file, $destination, $rename = null)

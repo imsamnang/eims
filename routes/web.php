@@ -124,14 +124,14 @@ Route::group(['middleware' => ['web']], function () {
         Route::any('general/{param1}/{param2}/{param3}/{param4}/{param5}', ['uses' => 'TeacherController@general']);
     });
 
-    Route::group(['prefix' => 'file-manager'], function () {
+    Route::group(['prefix' => 'filemanager'], function () {
         Route::any('/', ['uses' => 'FileManager\FileManagerController@index']);
         Route::any('/directory/{directory}', ['uses' => 'FileManager\FileManagerController@directory'])
-            ->name('file-manager.directory')
+            ->name('filemanager.directory')
             ->where('directory', '(.*)');
 
         Route::any('/file/{path}', ['uses' => 'FileManager\FileManagerController@file'])
-            ->name('file-manager.file')
+            ->name('filemanager.file')
             ->where('path', '(.*)');
     });
 

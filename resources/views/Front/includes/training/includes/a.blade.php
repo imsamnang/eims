@@ -1,4 +1,4 @@
-@if ($study_course["success"])
+@if ($study_course)
 <ul class="list-group list-group-flush list my--3">
     @foreach ($study_course["data"] as $course)
 
@@ -40,6 +40,6 @@
 </ul>
 @else
 <div class="text-center text-red" style="height:400px">
-    {{$study_course["message"]}}
+    {{__('No Data')}}
 </div>
 @endif

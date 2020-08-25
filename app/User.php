@@ -39,7 +39,7 @@ class User extends Authenticatable
         $socail_auth = SocialAuth::getData(null, Auth::user()->id);
         $profile = null;
         if (Auth::user()->profile) {
-            $profile = ImageHelper::site('profile', Auth::user()->profile);
+            $profile = ImageHelper::site((new self)->getTable(), Auth::user()->profile);
         } elseif ($socail_auth) {
             $profile = $socail_auth['_avatar'];
         }

@@ -22,7 +22,7 @@ use App\Http\Controllers\Settings\RolesController;
 use App\Http\Controllers\Settings\LanguagesController;
 use App\Http\Controllers\Settings\SponsoredController;
 use App\Http\Controllers\Settings\TranslateController;
-use App\Http\Controllers\Settings\FeatureSliderController;
+use App\Http\Controllers\Settings\FeatureSlidersController;
 
 class SettingsController extends Controller
 {
@@ -172,8 +172,10 @@ class SettingsController extends Controller
             $view = new TranslateController();
             return $view->index($param2, $param3);
         } elseif ($param1 == FeatureSlider::path('url')) {
-            $view = new FeatureSliderController();
-            return $view->index($param2, $param3);
+            $class = FeatureSlider::path('controller');
+            $controller = new $class;
+            return $controller->index($param2, $param3);
+            
         } elseif ($param1 == Sponsored::path('url')) {
             $view = new SponsoredController();
             return $view->index($param2, $param3);

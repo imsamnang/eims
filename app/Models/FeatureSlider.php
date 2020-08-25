@@ -4,12 +4,8 @@ namespace App\Models;
 
 use App\Models\App as AppModel;
 use DomainException;
-
-
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Requests\FormFeatureSlider;
-
 use Illuminate\Support\Facades\Validator;
 
 class FeatureSlider extends Model
@@ -27,12 +23,13 @@ class FeatureSlider extends Model
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
-            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'requests'   => 'App\Http\Requests\Form' . $tableUcwords,
+            'controller'   => 'App\Http\Controllers\Settings\\'. $tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
 
-     /**
+    /**
      *  @param string $key
      *  @param string $flag
      *  @return array
@@ -47,7 +44,7 @@ class FeatureSlider extends Model
             'messages'    =>  $formRequests->messages($flag),
             'questions'   =>  $formRequests->questions($flag),
         ];
-        return $key? @$validate[$key] : $validate;
+        return $key ? @$validate[$key] : $validate;
     }
 
     public static function getData($id = null, $paginate = null, $random = null)
@@ -140,78 +137,17 @@ class FeatureSlider extends Model
         return $response;
     }
 
-    public static function getDataTable()
-    {
-        $model = FeatureSlider::query();
-        return DataTables::eloquent($model)
-            ->setTransformer(function ($row) {
-                $row = $row->toArray();
-                return [
-                    'id'            => $row['id'],
-                    'title'         => $row['title'],
-                    'institute'     => Institute::getData($row['institute_id'])['data'][0],
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(FeatureSlider::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . AppModel::path('url') . '/' . FeatureSlider::path('url') . '/delete/' . $row['id']),
-
-                    ]
-                ];
-            })
-            ->filter(function ($query) {
-                if (request('instituteId')) {
-                    $query = $query->where('institute_id', request('instituteId'));
-                }
-                if (request('search.value')) {
-                    foreach (request('columns') as $i => $value) {
-                        if ($value['searchable']) {
-                            if ($value['data'] == 'title') {
-                                $query =  $query->where(function ($q) {
-                                    $q->where('title', 'LIKE', '%' . request('search.value') . '%');
-                                });
-                            }
-                        }
-                    }
-                }
-
-                return $query;
-            })
-            ->order(function ($query) {
-                if (request('order')) {
-                    foreach (request('order') as $order) {
-                        $col = request('columns')[$order['column']];
-                        if ($col['data'] == 'id') {
-                            $query->orderBy('id', $order['dir']);
-                        }
-                    }
-                }
-            })
-            ->toJson();
-    }
 
     public static function addToTable()
     {
-
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormFeatureSlider::rules(), FormFeatureSlider::messages(), FormFeatureSlider::attributes());
 
-        if (!request()->hasFile('image')) {
-            return array(
-                'success'   => false,
-                'type'      => 'add',
-                'message'   => array(
-                    'title' => __('Error'),
-                    'text'  => __('Add Unsuccessful') . PHP_EOL
-                        . __('Image empty'),
-                    'button'   => array(
-                        'confirm' => __('Ok'),
-                        'cancel'  => __('Cancel'),
-                    ),
-                ),
-            );
-        }
+        $validate = self::validate();
+        $rules  = $validate['rules'];
+        $rules['image'] = 'required';
+        $validator = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
+
+
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -222,8 +158,8 @@ class FeatureSlider extends Model
             try {
 
                 $values['institute_id']  = request('institute');
-                $values['title']         = trim(request('title'));
-                $values['description']   = trim(request('description'));
+                $values['title']         = request('name');
+                $values['description']   = request('description');
                 $values['image']         = null;
 
                 $add = FeatureSlider::insertGetId($values);
@@ -231,15 +167,17 @@ class FeatureSlider extends Model
                 if ($add) {
 
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($add, ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true));
+                        $image = request()->file('image');
+                        $image = ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true);
+                        FeatureSlider::updateImageToTable($add, $image);
                     }
-
+                    $class     = self::path('controller');
+                    $controller  = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => FeatureSlider::getData($add)['data'],
-                        'message'   => __('Add Successfully'),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   =>  __('Add Successfully')
                     );
                 }
             } catch (DomainException $e) {
@@ -253,7 +191,8 @@ class FeatureSlider extends Model
     {
 
         $response           = array();
-        $validator          = Validator::make(request()->all(), FormFeatureSlider::rules(), FormFeatureSlider::messages(), FormFeatureSlider::attributes());
+        $validate = self::validate();
+        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -264,14 +203,15 @@ class FeatureSlider extends Model
 
             try {
                 $values['institute_id']  = request('institute');
-                $values['title']         = trim(request('title'));
-                $values['description']   = trim(request('description'));
+                $values['title']         =request('name');
+                $values['description']   =request('description');
                 $update = FeatureSlider::where('id', $id)->update($values);
 
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        FeatureSlider::updateImageToTable($id, ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true));
+                        $image = ImageHelper::uploadImage($image, FeatureSlider::path('image'), null, null, true);
+                        FeatureSlider::updateImageToTable($id, $image);
                     }
                     $response       = array(
                         'success'   => true,

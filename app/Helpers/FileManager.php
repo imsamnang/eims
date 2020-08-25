@@ -31,11 +31,12 @@ class FileManager
                 'name'              => $directory,
                 'icon_class'        => 'fas fa-folder',
                 'sub_directories'   => self::directory($directory),
-                'link'              => route('file-manager.directory', [$directory]),
+                'link'              => route('filemanager.directory', [$directory]),
                 'type'              => 'directory'
             ];
             $files = self::files($directory);
             $directories[$directory] += $files;
+
         }
 
         return $directories;
@@ -53,11 +54,10 @@ class FileManager
                 'name'    =>  str_replace($path . '/', '', $directory),
                 'icon_class' =>  'fas fa-folder',
                 'sub_directories'   => self::directory($directory),
-                'link'              => route('file-manager.directory', [$directory]),
+                'link'              => route('filemanager.directory', [$directory]),
                 'type'              => 'directory'
             ];
         }
-
         return array_merge($directories, self::files($path));
     }
 
@@ -67,14 +67,15 @@ class FileManager
     public static function files($path)
     {
         $files = [];
-        foreach (File::files(storage_path('app/public/' . $path)) as $file) {
-            $files[] = [
+        foreach (File::files(storage_path('app/public/' . $path)) as $i=> $file) {
+            $isImage = null;//getImageSize($file->getPathname());
+            $files[$i] = [
                 'name'    =>  $file->getFilename(),
                 'icon_class' =>  @self::$filesIconClass[$file->getExtension()],
-                'icon_url' => route('file-manager.file', [$path . '/' . $file->getFilename()]),
+                'icon_url' =>  route('filemanager.file', [$path . '/' . $file->getFilename()]),
                 'sub_directories'   => [],
-                'link'              => route('file-manager.file', [$path . '/' . $file->getFilename()]),
-                'type'              => $file->getType(),
+                'link'              => route('filemanager.file', [$path . '/' . $file->getFilename()]),
+                'type'              => $isImage? 'image':'file',
                 'file_info'         => [
                     'name'  => $file->getFilename(),
                     'extension'  => $file->getExtension(),
@@ -82,6 +83,11 @@ class FileManager
                     'date'  => DateHelper::convert($file->getCTime(), 'd-F-Y'),
                 ]
             ];
+
+            if($isImage){
+                $files[$i]['file_info']['width'] = $isImage[0];
+                $files[$i]['file_info']['height'] = $isImage[1];
+            }
         }
         return $files;
     }

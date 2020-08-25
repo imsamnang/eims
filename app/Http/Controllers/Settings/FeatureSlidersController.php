@@ -13,8 +13,7 @@ use App\Models\SocailsMedia;
 use App\Models\FeatureSlider;
 use App\Http\Controllers\Controller;
 
-
-class FeatureSliderController extends Controller
+class FeatureSlidersController extends Controller
 {
     public function __construct()
     {
@@ -29,6 +28,9 @@ class FeatureSliderController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+
+        
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -42,12 +44,7 @@ class FeatureSliderController extends Controller
             } else {
                 $data = $this->list($data);
             }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  FeatureSlider::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
+
         } elseif ($param1 == 'add') {
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
@@ -118,7 +115,13 @@ class FeatureSliderController extends Controller
             $table->where('institute_id', request('instituteId'));
         }
 
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+
+        $response = $table->get()->map(function ($row,$nid) use($count) {
+            $row['nid']  = $count - $nid;
             $row['name']  = $row->title;
             $row['image'] = ImageHelper::site(FeatureSlider::path('image'), $row['image']);
             $row['action']  = [
@@ -129,6 +132,10 @@ class FeatureSliderController extends Controller
 
             return $row;
         });
+
+        if ($id) {
+            return $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = FeatureSlider::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Feature Slide');
