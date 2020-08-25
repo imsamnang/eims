@@ -449,6 +449,7 @@ class Staff extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
+                        'data'      => [['id'=>$id]],
                         'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );

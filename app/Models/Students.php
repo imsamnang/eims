@@ -177,12 +177,12 @@ class Students extends Model
         //     ];
         // }
 
-
-        $rules += FormStudents::rules();
+        $validate = self::validate();
+        $rules += $validate['rules'];
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
+        $validator          = Validator::make(request()->all(), $rules,  $validate['messages'],  $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -251,8 +251,8 @@ class Students extends Model
     public static function register()
     {
 
-        $rules = FormStudents::rules();
-
+        $validate = self::validate();
+        $rules =  $validate['rules'];
         unset($rules['pob_province']);
         unset($rules['pob_district']);
         unset($rules['pob_commune']);
@@ -272,7 +272,7 @@ class Students extends Model
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone';
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email';
 
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
+        $validator          = Validator::make(request()->all(), $rules,  $validate['messages'],  $validate['attributes']);
         if ($validator->fails()) {
             $response       = array(
                 'success'   => false,
@@ -324,10 +324,11 @@ class Students extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $rules = FormStudents::rules();
+        $validate = self::validate();
+        $rules =  $validate['rules'];
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:' . (new Students)->getTable() . ',phone,' . $id;
         $rules['email'] = 'required|email|unique:' . (new Students)->getTable() . ',email,' . $id;
-        $validator          = Validator::make(request()->all(), $rules, FormStudents::messages(), FormStudents::attributes());
+        $validator          = Validator::make(request()->all(), $rules,  $validate['messages'],  $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -380,12 +381,7 @@ class Students extends Model
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => [
-                            [
-                                'id' => $id,
-                            ]
-
-                        ],
+                        'data'      => [['id'=>$id]],
                         'html'      => view(Students::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );

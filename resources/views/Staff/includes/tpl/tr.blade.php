@@ -9,7 +9,7 @@
         </div>
 
     </td>
-    <td>{{$row['id']}}</td>
+    <td>{{$row['nid']}}</td>
     <td>{{$row['name']}}</td>
     <td>{{$row['gender']}}</td>
     <td>{{$row['date_of_birth']}}</td>
