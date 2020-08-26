@@ -200,8 +200,8 @@ class ImageHelper
         if (File::exists($dir . '/original/' . $filename)) {
             File::delete($dir . '/original/' . $filename);
         }
-        foreach (self::path('resize') as $size) {
-            $file = $dir . '/' . $size . '/' . $filename;
+        foreach (self::path('resize') as $sizeName => $size) {
+            $file = $dir . '/' . $sizeName . '/' . $filename;
             if (File::exists($file)) {
                 File::delete($file);
             }

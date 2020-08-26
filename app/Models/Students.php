@@ -224,25 +224,24 @@ class Students extends Model
                 ]);
 
                 if ($add && StudentsGuardians::addToTable($add)) {
-                    if (request()->hasFile('photo')) {
-                        $photo      = request()->file('photo');
-                        Students::updateImageToTable($add, ImageHelper::uploadImage($photo, Students::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, Students::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')), true);
+
+                        if (request()->hasFile('photo')) {
+                            $image    = request()->file('photo');
+                            $image   = ImageHelper::uploadImage($image, self::path('image'));
+                            self::updateImageToTable($add, $image);
+                        }
+                        $class  = self::path('controller');
+                        $controller = new $class;
+                        $response       = array(
+                            'success'   => true,
+                            'type'      => 'add',
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'message'   => __('Add Successfully'),
+                        );
                     }
-
-                    $controller = new StudentsController;
-
-                    $response       = array(
-                        'success'   => true,
-                        'type'      => 'add',
-                        'html'      => view(Students::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
-                        'message'   => __('Add Successfully'),
-                    );
-                }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -385,9 +384,9 @@ class Students extends Model
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -411,9 +410,9 @@ class Students extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -512,8 +511,8 @@ class Students extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

@@ -25,7 +25,7 @@ class QuizQuestionTypes extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -76,27 +76,26 @@ class QuizQuestionTypes extends Model
                     }
                 }
 
-                $add = QuizQuestionTypes::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        QuizQuestionTypes::updateImageToTable($add, ImageHelper::uploadImage($image, QuizQuestionTypes::path('image')));
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
-                    $controller = new QuizQuestionTypesController;
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(QuizQuestionTypes::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -126,11 +125,11 @@ class QuizQuestionTypes extends Model
                     }
                 }
 
-                $update = QuizQuestionTypes::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        QuizQuestionTypes::updateImageToTable($id, ImageHelper::uploadImage($image, QuizQuestionTypes::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $controller = new QuizQuestionTypesController;
                     $response       = array(
@@ -142,13 +141,13 @@ class QuizQuestionTypes extends Model
                             ]
 
                         ],
-                        'html'      => view(QuizQuestionTypes::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -161,7 +160,7 @@ class QuizQuestionTypes extends Model
         );
         if ($image) {
             try {
-                $update =  QuizQuestionTypes::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -172,9 +171,9 @@ class QuizQuestionTypes extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -183,18 +182,18 @@ class QuizQuestionTypes extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (QuizQuestionTypes::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = QuizQuestionTypes::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

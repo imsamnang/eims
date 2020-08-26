@@ -28,7 +28,7 @@ class StudentsAttendances extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }

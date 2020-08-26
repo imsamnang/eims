@@ -29,6 +29,7 @@
             </span>
         </a>
         @if (Auth::user()->role_id == 1)
+
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
             <span class="d-none d-sm-inline">
@@ -36,7 +37,7 @@
             </span>
         </a>
         @endif
-        <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
+        <a href="{{str_replace('add','report',config('pages.form.action.add'))}}" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
             <i class="fas fa-file-export m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Report")}}
@@ -52,7 +53,7 @@
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
             <div class="col-12 collapse mb-3 " id="filter">
                 <div class="form-row">
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <select class="form-control" data-toggle="select" id="institute" title="Simple select"
                             data-allow-clear="true" data-text="{{ __("Add new option") }}"
                             data-placeholder="{{__('Institute')}}" name="instituteId"
@@ -62,8 +63,7 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <button type="submit" class="btn btn-primary float-right"><i class="fa fa-filter-search"></i>
                             {{ __("Search filter") }}</button>
                     </div>

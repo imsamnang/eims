@@ -25,7 +25,7 @@ class StudentsShortCourseRequest extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -103,9 +103,9 @@ class StudentsShortCourseRequest extends Model
                         'message'   => __('Already exists'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -169,9 +169,9 @@ class StudentsShortCourseRequest extends Model
                         }
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -203,9 +203,9 @@ class StudentsShortCourseRequest extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -244,8 +244,8 @@ class StudentsShortCourseRequest extends Model
                                 ];
                             }
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

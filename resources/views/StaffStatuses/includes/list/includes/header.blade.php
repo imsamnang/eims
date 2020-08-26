@@ -29,6 +29,7 @@
             </span>
         </a>
         @if (Auth::user()->role_id == 1)
+
         <a href="#filter" data-toggle="collapse" class="btn btn-primary" role="button" aria-expanded="false">
             <i class="fa fa-filter m-0"></i>
             <span class="d-none d-sm-inline">
@@ -36,7 +37,7 @@
             </span>
         </a>
         @endif
-        <a href="#" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
+        <a href="{{str_replace('add','report',config('pages.form.action.add'))}}" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
             <i class="fas fa-file-export m-0"></i>
             <span class="d-none d-sm-inline">
                 {{__("Report")}}

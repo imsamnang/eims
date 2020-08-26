@@ -62,7 +62,7 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizStudentAnswerController;
 use App\Http\Controllers\CertificateFrames\CertificateFramesController;
 use App\Http\Controllers\ActivityFeed\ActivityFeedController;
-use App\Http\Controllers\Students\StudentsStudyCourseController;
+use App\Http\Controllers\Students\StudentsStudyCoursesController;
 use App\Http\Controllers\Students\StudentsShortCourseRequestController;
 
 class StudentsController extends Controller
@@ -322,7 +322,7 @@ class StudentsController extends Controller
             } elseif (($param1) == 'report') {
                 return $this->report();
             } elseif ($param1  == StudentsStudyCourse::path('url')) {
-                $student = new StudentsStudyCourseController();
+                $student = new StudentsStudyCoursesController();
                 return $student->index($param2, $param3, $param4);
             } elseif ($param1  == StudentsRequest::path('url')) {
                 $student = new StudentsRequestController();

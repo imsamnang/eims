@@ -216,9 +216,9 @@ class App extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -249,9 +249,9 @@ class App extends Model
                         ),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -278,9 +278,9 @@ class App extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }

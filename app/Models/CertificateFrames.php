@@ -25,7 +25,7 @@ class CertificateFrames extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -82,27 +82,25 @@ class CertificateFrames extends Model
                 $values['layout']      = request('layout');
                 $values['description'] = request('description');
 
-
-
-                $add = CertificateFrames::insertGetId($values);
+                $add = self::insertGetId($values);
                 if ($add) {
-
                     if (request()->hasFile('foreground')) {
-                        $image      = request()->file('foreground');
-                        CertificateFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CertificateFrames::path('image')), 'foreground');
+                        $image    = request()->file('foreground');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image,'foreground');
                     }
-
-                    $controller = new CertificateFramesController;
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(CertificateFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
-                        'message'   =>  __('Update Successfully')
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -131,23 +129,23 @@ class CertificateFrames extends Model
                 $values['layout']     = request('layout');
                 $values['description'] = request('description');
 
-                $update = CertificateFrames::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CertificateFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CertificateFrames::path('image')), 'foreground');
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')), 'foreground');
                     }
                     $controller = new CertificateFramesController;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'html'      => view(CertificateFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -160,7 +158,7 @@ class CertificateFrames extends Model
         );
         if ($image) {
             try {
-                $update =  CertificateFrames::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     $column   => $image,
                 ]);
 
@@ -171,9 +169,9 @@ class CertificateFrames extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -224,18 +222,18 @@ class CertificateFrames extends Model
         if ($id && request()->ajax()) {
             if (request()->method() == 'POST') {
                 try {
-                    CertificateFrames::where('status', 1)->update([
+                    self::where('status', 1)->update([
                         'status' => 0,
                     ]);
-                    $update = CertificateFrames::where('id', $id)->update([
+                    $update = self::where('id', $id)->update([
                         'status' => 1,
                     ]);
                     if ($update) {
                         $response       = array(
                             'success'   => true,
-                            'data'      => CertificateFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
-                                $row['foreground'] = ImageHelper::site(CertificateFrames::path('image'), $row->foreground, 'original');
-                                $row['background'] = ImageHelper::site(CertificateFrames::path('image'), $row->background, 'original');
+                            'data'      => self::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
+                                $row['foreground'] = ImageHelper::site(self::path('image'), $row->foreground, 'original');
+                                $row['background'] = ImageHelper::site(self::path('image'), $row->background, 'original');
                                 return $row;
                             })->first(),
                             'message'   => __('Set as default successfully'),
@@ -252,18 +250,18 @@ class CertificateFrames extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (CertificateFrames::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = CertificateFrames::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

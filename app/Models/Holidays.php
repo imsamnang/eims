@@ -26,7 +26,7 @@ class Holidays extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -48,125 +48,6 @@ class Holidays extends Model
         ];
         return $key? @$validate[$key] : $validate;
     }
-    public static function getData($id = null, $edit = null, $paginate = null)
-    {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/' . Holidays::path('url') . '/add/'),
-            ),
-        );
-
-        $data = array();
-        $orderBy = 'DESC';
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-        $get = Holidays::orderBy('id', $orderBy);
-
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        } else {
-            if (request('instituteId')) {
-                $get = $get->where('institute_id', request('instituteId'));
-            }
-        }
-
-        if (request('month')) {
-            $get = $get->where('month', request('month'));
-        }
-        if (request('year')) {
-            $get = $get->where('year', request('year'));
-        }
-
-        if ($paginate) {
-            $get = $get->paginate(30)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-                if (gettype($edit) == 'string' && $edit == 'calendar') {
-                    $data[]         = array(
-                        'id'            => $row['id'],
-                        'title'         => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                        'start'         => $row['year'] . '-' . $row['month'] . '-' . $row['date'],
-                        'allDay'        => true,
-                        'className'     => 'bg-green',
-                        'description'   => $row['description'],
-                    );
-                } else {
-                    $data[$key]         = array(
-                        'id'            => $row['id'],
-                        'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                        'date'          => $row['date'] . '-' . Months::getData($row['month'])['data'][0]['name'] . '-' . $row['year'],
-                        'description'   => $row['description'],
-                        'image'         => $row['image'] ? (ImageHelper::site(Holidays::path('image'), $row['image'])) : ImageHelper::prefix(),
-                        'action'        => [
-                            'edit' => url(Users::role() . '/general/' . Holidays::path('url') . '/edit/' . $row['id']),
-                            'view' => url(Users::role() . '/general/' . Holidays::path('url') . '/view/' . $row['id']),
-                            'delete' => url(Users::role() . '/general/' . Holidays::path('url') . '/delete/' . $row['id']),
-                        ]
-                    );
-                    $pages['listData'][] = array(
-                        'id'     => $data[$key]['id'],
-                        'name'   => $data[$key]['name'],
-                        'image'  => null,
-                        'action' => $data[$key]['action'],
-
-                    );
-
-                    if ($edit) {
-                        $data[$key]['name'] = $row['name'];
-                        $data[$key]['date'] = $row['date'] . '-' . $row['month'] . '-' . $row['year'];
-
-                        if (config('app.languages')) {
-                            foreach (config('app.languages') as $lang) {
-                                $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                            }
-                        }
-                    }
-                }
-            }
-            if (gettype($edit) == 'string' && $edit == 'calendar') {
-                return $data;
-            }
-
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-
 
     public static function getHoliday($year = null, $month = null, $study_course_session_id = null)
     {
@@ -178,11 +59,11 @@ class Holidays extends Model
         $data = array();
 
         if ($year && $month) {
-            $get = Holidays::where('year', $year)->where('month', $month)->get()->toArray();
+            $get = self::where('year', $year)->where('month', $month)->get()->toArray();
         } else {
             $year = date('Y');
             $month = Months::now();
-            $get = Holidays::where('year', $year)->where('month', $month)->get()->toArray();
+            $get = self::where('year', $year)->where('month', $month)->get()->toArray();
         }
 
 
@@ -267,26 +148,25 @@ class Holidays extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $add = Holidays::insertGetId($values);
+                $add = self::insertGetId($values);
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        Holidays::updateImageToTable($add, ImageHelper::uploadImage($image, Holidays::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, Holidays::path('image'), Holidays::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => Holidays::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -317,22 +197,22 @@ class Holidays extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $update = Holidays::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Holidays::updateImageToTable($id, ImageHelper::uploadImage($image, Holidays::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => Holidays::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -345,7 +225,7 @@ class Holidays extends Model
         );
         if ($image) {
             try {
-                $update = Holidays::where('id', $id)->update([
+                $update = self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -356,9 +236,9 @@ class Holidays extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -368,18 +248,18 @@ class Holidays extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (Holidays::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = Holidays::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

@@ -27,8 +27,12 @@
             <span class="d-none d-sm-inline">
                 {{__("Delete")}}
             </span>
-
-
+        </a>
+        <a href="{{str_replace('add','report',config('pages.form.action.add'))}}" data-toggle="report" class="float-right btn btn-success mb-3" role="button" aria-expanded="false">
+            <i class="fas fa-file-export m-0"></i>
+            <span class="d-none d-sm-inline">
+                {{__("Report")}}
+            </span>
         </a>
     </div>
 

@@ -7,16 +7,13 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-8">
-
                 @if (Auth::user()->role_id == 1)
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label data-toggle="tooltip" rel="tooltip" data-placement="top"
                                 title="{{ config('pages.form.validate.questions.institute') }}"
                                 class="form-control-label" for="institute">
-
                                 {{ __('Institute') }}
-
                                 @if (config('pages.form.validate.rules.institute'))
                                     <span class="badge badge-md badge-circle badge-floating badge-danger"
                                         style="background:unset">
@@ -44,10 +41,11 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-control-label" for="name">
                             {{ __('Name') }}
-
                             @if (config('pages.form.validate.rules.name'))
                                 <span class="badge badge-md badge-circle badge-floating badge-danger"
-                                    style="background:unset"><i class="fas fa-asterisk fa-xs"></i></span>
+                                    style="background:unset">
+                                    <i class="fas fa-asterisk fa-xs"></i>
+                                </span>
                             @endif
 
                         </label>
@@ -171,9 +169,10 @@
                                 <label class="form-control-label">
                                     <span class="badge badge-md badge-circle badge-floating badge-danger"
                                         style="background:unset">
-                                        <i class="fas fa-asterisk fa-xs"></i></span> <span>
-                                        {{ __('Field required') }}</span> </label>
-
+                                        <i class="fas fa-asterisk fa-xs"></i>
+                                    </span>
+                                    <span> {{ __('Field required') }}</span>
+                                </label>
                             </div>
                         </div>
                     </div>

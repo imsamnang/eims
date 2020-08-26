@@ -1,7 +1,7 @@
 @if (Internet::conneted())
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBfY6ipJn-hvZ6O6VndRfp8yI9nOYovsuM" type="text/javascript">
 </script>
-<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+{{-- <script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script> --}}
 <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
 <script>
     window.pusher = new Pusher('{{env("PUSHER_APP_KEY")}}',{

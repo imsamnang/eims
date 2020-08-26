@@ -24,7 +24,7 @@ class Days extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -51,7 +51,7 @@ class Days extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Days::path('url') . '/add/'),
+                'add'    => url(Users::role() . '/general/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -67,7 +67,7 @@ class Days extends Model
                 $orderBy = 'DESC';
             }
         }
-        $get = Days::orderBy('id', $orderBy);
+        $get = self::orderBy('id', $orderBy);
 
         if ($id) {
             $get = $get->whereIn('id', $id);
@@ -102,11 +102,11 @@ class Days extends Model
                     'id'            => $row['id'],
                     'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Days::path('image'), $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(self::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Days::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Days::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Days::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/general/' . self::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/general/' . self::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/general/' . self::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -169,26 +169,25 @@ class Days extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $add = Days::insertGetId($values);
+                $add = self::insertGetId($values);
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        Days::updateImageToTable($add, ImageHelper::uploadImage($image, Days::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, Days::path('image'), Days::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => Days::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -215,22 +214,22 @@ class Days extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $update = Days::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Days::updateImageToTable($id, ImageHelper::uploadImage($image, Days::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => Days::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -243,7 +242,7 @@ class Days extends Model
         );
         if ($image) {
             try {
-                $update =  Days::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -254,9 +253,9 @@ class Days extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -272,18 +271,18 @@ class Days extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (Days::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = Days::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

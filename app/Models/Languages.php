@@ -28,7 +28,7 @@ class Languages extends Model
 
     public static function getLanguages($id = null)
     {
-        $get = Languages::orderBy('id', 'desc');
+        $get = self::orderBy('id', 'desc');
         if ($id) {
             $get = $get->where('id', $id);
         }
@@ -37,15 +37,15 @@ class Languages extends Model
         if ($get) {
             foreach ($get as $key => $row) {
 
-                $image = $row['image'] ? (ImageHelper::getImage($row['image'], Languages::path('image'))) : null;
+                $image = $row['image'] ? (ImageHelper::getImage($row['image'], self::path('image'))) : null;
                 $data[$row['code_name']] = array(
                     'id'             => $row['id'],
                     'name'           => $row['name'],
                     'translate_name' => array_key_exists(app()->getLocale(), $row) ? $row[app()->getLocale()] : $row['name'],
                     'code_name'      => $row['code_name'],
-                    'image'         => $image ? ImageHelper::site(Languages::path('image'), $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : ImageHelper::prefix()),
+                    'image'         => $image ? ImageHelper::site(self::path('image'), $row['image']) : ($row['image'] ? asset('/assets/img/icons/flags/' . $row['image']) : ImageHelper::prefix()),
                     'action'        => [
-                        'set'       => url(Languages::path('url') . '/set/' . $row['code_name']),
+                        'set'       => url(self::path('url') . '/set/' . $row['code_name']),
                     ]
                 );
             }
@@ -66,7 +66,7 @@ class Languages extends Model
 
     public static function setConfig()
     {
-        config()->set('app.languages', Languages::getLanguages()['data']);
+        config()->set('app.languages', self::getLanguages()['data']);
     }
 
     public static function addToTable()
@@ -81,7 +81,7 @@ class Languages extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-            if (Languages::exists()) {
+            if (self::exists()) {
                 $response       = array(
                     'success'   => false,
                     'type'      => 'add',
@@ -116,7 +116,7 @@ class Languages extends Model
                     foreach ($tables_in_db as $table) {
                         if (Schema::hasColumn($table->{$db}, 'km') && Schema::hasColumn($table->{$db}, 'en')) {
                             if (!Schema::hasColumn($table->{$db}, $lang)) {
-                                $last = Languages::latest('id')->first()->code_name;
+                                $last = self::latest('id')->first()->code_name;
                                 Schema::table($table->{$db}, function ($table) use ($lang, $last) {
                                     $table->string($lang)->after($last)->nullable();
                                 });
@@ -124,29 +124,21 @@ class Languages extends Model
                         }
                     }
 
-                    $add = Languages::insertGetId($values);
+                    $add = self::insertGetId($values);
 
                     if ($add) {
-
                         if (request()->hasFile('image')) {
-                            $image      = request()->file('image');
-                            Languages::updateImageToTable($add, ImageHelper::uploadImage($image, Languages::path('image')));
-                        } else {
-                            ImageHelper::uploadImage(false, Languages::path('image'), Languages::path('image'), public_path('/assets/img/icons/image.jpg'));
+                            $image    = request()->file('image');
+                            $image   = ImageHelper::uploadImage($image, self::path('image'));
+                            self::updateImageToTable($add, $image);
                         }
-
+                        $class  = self::path('controller');
+                        $controller = new $class;
                         $response       = array(
                             'success'   => true,
                             'type'      => 'add',
-                            'data'      => Languages::getData($add),
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Add Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'message'   => __('Add Successfully'),
                         );
                     }
                 } catch (\DomainException $e) {
@@ -178,7 +170,7 @@ class Languages extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-            if (Languages::exists()) {
+            if (self::exists()) {
                 $response       = array(
                     'success'   => false,
                     'type'      => 'update',
@@ -209,17 +201,17 @@ class Languages extends Model
                         }
                     }
 
-                    $update = Languages::where('id', $id)->uupdate($values);
+                    $update = self::where('id', $id)->uupdate($values);
 
                     if ($update) {
                         if (request()->hasFile('image')) {
                             $image      = request()->file('image');
-                            Languages::updateImageToTable($id, ImageHelper::uploadImage($image, Languages::path('image')));
+                            self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                         }
                         $response       = array(
                             'success'   => true,
                             'type'      => 'update',
-                            'data'      => Languages::getData($id),
+                            'data'      => self::getData($id),
                             'message'   =>  __('Update Successfully'),
                         );
                     }
@@ -239,7 +231,7 @@ class Languages extends Model
         );
         if ($image) {
             try {
-                $update =  Languages::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -259,7 +251,7 @@ class Languages extends Model
 
     public static function exists()
     {
-        return Languages::where('code_name', trim(request('code_name')))->exists();
+        return self::where('code_name', trim(request('code_name')))->exists();
     }
 
     public static function deleteFromTable($id)
@@ -285,10 +277,10 @@ class Languages extends Model
                 }
             }
 
-            if (Languages::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        foreach (Languages::whereIn('id', $id)->get()->toArray() as $key => $value) {
+                        foreach (self::whereIn('id', $id)->get()->toArray() as $key => $value) {
                             $lang =  $value['code_name'];
                             $tables_in_db = DB::select('SHOW TABLES');
                             $db = 'Tables_in_' . env('DB_DATABASE');
@@ -303,15 +295,15 @@ class Languages extends Model
                             }
                         }
 
-                        $delete    = Languages::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

@@ -26,7 +26,7 @@ class StudyCourseRoutine extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -47,139 +47,6 @@ class StudyCourseRoutine extends Model
             'questions'   =>  $formRequests->questions($flag),
         ];
         return $key? @$validate[$key] : $validate;
-    }
-
-    public static function getData($study_course_session_id = null, $paginate = null)
-    {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/study/' . self::path('url') . '/add/'),
-            ),
-        );
-        $data = array();
-        $get = self::select((new self())->getTable() . '.*')
-            ->join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new self())->getTable() . '.study_course_session_id')
-            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-            ->orderBy('study_course_session_id', 'DESC');
-
-        if ($study_course_session_id) {
-            $study_course_session_id  =  (gettype($study_course_session_id) == 'array') ? $study_course_session_id :  explode(',', $study_course_session_id);
-            $get = $get->whereIn('study_course_session_id', $study_course_session_id);
-        }
-
-        if (request('instituteId')) {
-            $get = $get->where('institute_id', request('instituteId'));
-        }
-
-        $get = $get->groupBy('study_course_session_id');
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-            foreach ($get as $key => $row) {
-                $routine = self::where('study_course_session_id', $row['study_course_session_id'])->get()->toArray();
-                $kdata = [];
-
-                foreach ($routine as  $k) {
-                    $teacher = Staff::find($k['teacher_id']);
-                    if ($teacher) {
-
-                        $first_name = array_key_exists('first_name_' . app()->getLocale(), $teacher->getAttributes()) ? $teacher->{'first_name_' . app()->getLocale()} : $teacher->{'first_name_en'};
-                        $last_name  = array_key_exists('last_name_' . app()->getLocale(), $teacher->getAttributes()) ? $teacher->{'last_name_' . app()->getLocale()} : $teacher->{'last_name_en'};
-                        $teacher = [
-                            'id'    => $teacher->id,
-                            'name'  => $first_name . ' ' . $last_name,
-                            'email'  => $teacher->email,
-                            'phone'  => $teacher->phone,
-                            'photo'  => ImageHelper::site(Staff::path('image'), $teacher->photo),
-                        ];
-                    }
-                    $kdata[$k['start_time'] . '-' . $k['end_time']]['times'] = [
-                        'start_time' => $k['start_time'],
-                        'end_time' => $k['end_time'],
-                    ];
-                    $kdata[$k['start_time'] . '-' . $k['end_time']]['days'][] = [
-                        'day' => Days::getData($k['day_id'])['data'][0],
-                        'teacher' => $teacher,
-                        'study_subject' => StudySubjects::getData($k['study_subject_id'])['data'][0],
-                        'study_class' => StudyClass::getData($k['study_class_id'])['data'][0],
-                    ];
-                }
-                $generateId = Encryption::encode([
-                    'study_course_session_id' => $row['study_course_session_id'],
-                ]);
-                $data[$key]    = array(
-                    'id'    => $generateId,
-                    'study_course_session' => StudyCoursesession::getData($row['study_course_session_id'])['data'][0],
-                    'children' => array_values($kdata),
-                    'action' => [
-                        'edit'    => url(users::role() . '/study/' . self::path('url') . '/edit/' . $generateId),
-                        'delete'  => url(users::role() . '/study/' . self::path('url') . '/delete/' . $generateId),
-                    ]
-                );
-                $data[$key]['name'] =  $data[$key]['study_course_session']['name'];
-                $data[$key]['image'] =  $data[$key]['study_course_session']['image'];
-
-                $pages['listData'][$key] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-            }
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
-    public static function getSubject($study_course_session_id, $study_subject_id = null)
-    {
-        $data = array();
-        $get = self::orderBy('day_id', 'ASC')->groupBy('study_subject_id')
-            ->where('study_course_session_id', $study_course_session_id);
-        if ($study_subject_id) {
-            $get = $get->where('study_subject_id', $study_subject_id);
-        }
-        if (request('teacherId')) {
-            $get = $get->where('teacher_id', request('teacherId'));
-        }
-
-        $get = $get->get()->toArray();
-        if ($get) {
-            foreach ($get as $row) {
-                if ($row['study_subject_id']) {
-                    $data[] = array(
-                        'subject'       => StudySubjects::getData($row['study_subject_id'])['data'][0],
-                    );
-                }
-            }
-        }
-        return $data;
     }
 
     public static function addToTable()
@@ -228,24 +95,24 @@ class StudyCourseRoutine extends Model
 
                     $add = self::insert($values);
                     if ($add) {
+                        if (request()->hasFile('image')) {
+                            $image    = request()->file('image');
+                            $image   = ImageHelper::uploadImage($image, self::path('image'));
+                            self::updateImageToTable($add, $image);
+                        }
+                        $class  = self::path('controller');
+                        $controller = new $class;
                         $response       = array(
                             'success'   => true,
-                            'data'      => [],
                             'type'      => 'add',
-                            'message'   => array(
-                                'title' => __('Success'),
-                                'text'  => __('Add Successfully'),
-                                'button'   => array(
-                                    'confirm' => __('Ok'),
-                                    'cancel'  => __('Cancel'),
-                                ),
-                            ),
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'message'   => __('Add Successfully'),
                         );
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -301,9 +168,9 @@ class StudyCourseRoutine extends Model
                         );
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -331,8 +198,8 @@ class StudyCourseRoutine extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

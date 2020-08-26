@@ -26,26 +26,24 @@ class FormStudyCourseSchedules extends FormRequest
     public function rules()
     {
         return [
-            'institute'            => 'required',
-            'study_program'        => 'required',
-            'study_course'         => 'required',
-            'study_generation'     => 'required',
-            'study_academic_year'  => 'required',
-            'study_semester'       => 'required',
-
-
+            'institute'               => 'required',
+            'study_program'           => 'required',
+            'study_course'            => 'required',
+            'study_generation'        => 'required',
+            'study_academic_year'     => 'required',
+            'study_semester'          => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'institute'         => __('Institute'),
-            'study_program'         => __('Study program'),
-            'study_course'         => __('Study course'),
-            'study_generation'     => __('Study generation'),
-            'study_academic_year'        => __('Study academic year'),
-            'study_semester'       => __('Study semester'),
+            'institute'               => __('Institute'),
+            'study_program'           => __('Study Program'),
+            'study_course'            => __('Study Course'),
+            'study_generation'        => __('Study Generation'),
+            'study_academic_year'     => __('Study Academic Years'),
+            'study_semester'          => __('Study Semester'),
         ];
     }
 

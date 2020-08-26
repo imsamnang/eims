@@ -33,7 +33,6 @@ class StaffDesignationsController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
-        dd(AttendanceTypes::validate());
         $breadcrumb  = [
             [
                 'title' => __('Staff & Teacher'),

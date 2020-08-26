@@ -31,6 +31,19 @@ class AttendanceTypesController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Study'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url')),
+            ],
+            [
+                'title' => __('List Attendance'),
+                'status' => false,
+                'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url') . '/list'),
+            ]
+        ];
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -38,42 +51,54 @@ class AttendanceTypesController extends Controller
         $data['formAction'] = '/add';
         $data['listData']       = array();
         $id = request('id', $param2);
-        if ($param1 == 'list') {
+        if ($param1 == null || $param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return AttendanceTypes::getData(null, null, 10);
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  AttendanceTypes::getDataTable();
             } else {
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url') . '/' . $param1),
+            ];
             if (request()->method() === 'POST') {
                 return AttendanceTypes::addToTable();
             }
             $data = $this->show($data, null, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Attendance');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url') . '/' . $param1 . '/' . $id),
+            ];
             if (request()->method() === 'POST') {
                 return AttendanceTypes::updateToTable($id);
             }
+
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Attendance');
         } elseif ($param1 == 'view') {
+
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . AttendanceTypes::path('url') . '/' . $param1 . '/' . $id),
+            ];
+
             $data = $this->show($data, $id, $param1);
-            $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Attendance');
+            $data['view']  = AttendanceTypes::path('view') . '.includes.view.index';
         } elseif ($param1 == 'delete') {
-            return AttendanceTypes::deleteFromTable($id);
+            if (request()->method() === 'POST') {
+                return AttendanceTypes::deleteFromTable($id);
+            }
+            abort(404);
         } elseif ($param1 == 'report') {
             return $this->report();
         } else {
             abort(404);
         }
-
+        view()->share('breadcrumb', $breadcrumb);
         MetaHelper::setConfig([
             'title'       => $data['title'],
             'author'      => config('app.name'),
@@ -97,15 +122,16 @@ class AttendanceTypesController extends Controller
             'view'       => $data['view'],
         );
         $pages['form']['validate'] = AttendanceTypes::validate();
+
         //Select Option
-        $data['institute']['data']           = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-            $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
+        $data['institute']['data'] = Institute::get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
+            $row->image   = ImageHelper::site(Institute::path('image'), $row->logo);
             return $row;
         });
 
-        $data['instituteFilter']['data']           = Institute::whereIn('id', AttendanceTypes::groupBy('institute_id')->pluck('institute_id'))
+        $data['instituteFilter']['data'] = Institute::whereIn('id', AttendanceTypes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
+                $row->image   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;
             });
 
@@ -117,17 +143,33 @@ class AttendanceTypesController extends Controller
     public function list($data, $id = null)
     {
         $table = AttendanceTypes::orderBy('id', 'DESC');
-        $response = $table->get()->map(function ($row) {
-            $row['name']  = $row->km . ' - ' . $row->en;
-            $row['image'] = ImageHelper::site(AttendanceTypes::path('image'), $row['image']);
-            $row['action']  = [
-                'edit'   => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/edit/' . $row['id']),
-                'view'   => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/view/' . $row['id']),
-                'delete' => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/delete/' . $row['id']),
-            ];
+        $table->whereHas('institute', function ($query) {
+            if (request('instituteId')) {
+                $query->where('id', request('instituteId'));
+            }
+        });
 
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+
+
+        $response = $table->get()->map(function ($row, $nid) use ($count) {
+            $row->nid = $count - $nid;
+            $row->name  = $row->km . ' - ' . $row->en;
+            $row->image = ImageHelper::site(AttendanceTypes::path('image'), $row->image);
+            $row->action  = [
+                'edit'   => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/edit/' . $row->id),
+                'view'   => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/view/' . $row->id),
+                'delete' => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/delete/' . $row->id),
+            ];
             return $row;
         });
+        if ($id) {
+            return $response;
+        }
+
         $data['response']['data'] = $response;
         $data['view']     = AttendanceTypes::path('view') . '.includes.list.index';
         $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Attendance');
@@ -136,10 +178,10 @@ class AttendanceTypesController extends Controller
 
     public function show($data, $id, $type)
     {
-        $data['view']       = AttendanceTypes::path('view') . '.includes.form.index';
+        $table = AttendanceTypes::orderBy('id', 'desc');
         if ($id) {
-
-            $response           = AttendanceTypes::whereIn('id', explode(',', $id))->get()->map(function ($row) {
+            $table->whereIn('id', explode(',', $id));
+            $response =  $table->get()->map(function ($row) {
                 $row['image'] = $row['image'] ? ImageHelper::site(AttendanceTypes::path('image'), $row['image']) : ImageHelper::prefix();
                 $row['action']  = [
                     'edit'   => url(Users::role() . '/' . 'study/' . AttendanceTypes::path('url') . '/edit/' . $row['id']),
@@ -163,6 +205,9 @@ class AttendanceTypesController extends Controller
             $data['formData']   = $response;
             $data['formAction'] = '/' . $type . '/' . $id;
         }
+
+        $data['view']  = AttendanceTypes::path('view') . '.includes.form.index';
+        $data['title'] = Users::role(app()->getLocale()) . ' | ' . __('Attendance') . ' | ' . __($type);
         return $data;
     }
 
@@ -176,7 +221,7 @@ class AttendanceTypesController extends Controller
         config()->set('app.title', __('List Attendance'));
         config()->set('pages.parent', AttendanceTypes::path('view'));
 
-        $data['instituteFilter']['data']           = Institute::whereIn('id', AttendanceTypes::groupBy('institute_id')->pluck('institute_id'))
+        $data['instituteFilter']['data'] = Institute::whereIn('id', AttendanceTypes::groupBy('institute_id')->pluck('institute_id'))
             ->get(['id', app()->getLocale() . ' as name', 'logo'])->map(function ($row) {
                 $row['image']   = ImageHelper::site(Institute::path('image'), $row->logo);
                 return $row;

@@ -24,7 +24,7 @@ class StaffTeachSubject extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -51,7 +51,7 @@ class StaffTeachSubject extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/teaching/' . StaffTeachSubject::path('url') . '/add/'),
+                'add'    => url(Users::role() . '/teaching/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -60,7 +60,7 @@ class StaffTeachSubject extends Model
             $pages['form']['action']['add'] = str_replace('teaching', 'study', $pages['form']['action']['add']);
         }
 
-        $get = StaffTeachSubject::groupBy('year')
+        $get = self::groupBy('year')
             ->groupBy('study_subject_id')
             ->orderBy('year', 'DESC');
 
@@ -156,12 +156,12 @@ class StaffTeachSubject extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-            $exists = StaffTeachSubject::existsToTable(request('staff'), request('study_subject'), request('year'));
+            $exists = self::existsToTable(request('staff'), request('study_subject'), request('year'));
             if ($exists) {
                 $response       = array(
                     'success'   => false,
                     'type'      => 'add',
-                    'data'      => StaffTeachSubject::getData($exists->id)['data'],
+                    'data'      => self::getData($exists->id)['data'],
                     'message'   => array(
                         'title' => __('Error'),
                         'text'  => __('Add Unsuccessful') . PHP_EOL .
@@ -178,14 +178,15 @@ class StaffTeachSubject extends Model
                     $values['staff_id']        = request('staff');
                     $values['study_subject_id'] = request('study_subject');
                     $values['year']       = trim(request('year'));
-                    $add = StaffTeachSubject::insertGetId($values);
+                    $add = self::insertGetId($values);
                     if ($add) {
-                        $controller = new StaffTeachSubjectController;
 
+                        $class  = self::path('controller');
+                        $controller = new $class;
                         $response       = array(
                             'success'   => true,
                             'type'      => 'add',
-                            'html'      => view(StaffTeachSubject::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                             'message'   => __('Add Successfully'),
                         );
                     }
@@ -212,12 +213,12 @@ class StaffTeachSubject extends Model
             );
         } else {
 
-            $exists = StaffTeachSubject::existsToTable(request('staff'), request('study_subject'), request('year'));
+            $exists = self::existsToTable(request('staff'), request('study_subject'), request('year'));
             if ($exists) {
                 $response       = array(
                     'success'   => false,
                     'type'      => 'update',
-                    'data'      => StaffTeachSubject::getData($exists->id)['data'],
+                    'data'      => self::getData($exists->id)['data'],
                     'message'   => array(
                         'title' => __('Error'),
                         'text'  => __('Update Unsuccessful') . PHP_EOL .
@@ -235,7 +236,7 @@ class StaffTeachSubject extends Model
                     $values['study_subject_id'] = request('study_subject');
                     $values['year']       = trim(request('year'));
 
-                    $update = StaffTeachSubject::where('id', $id)->update($values);
+                    $update = self::where('id', $id)->update($values);
                     if ($update) {
 
                         $controller = new StaffTeachSubjectController;
@@ -248,7 +249,7 @@ class StaffTeachSubject extends Model
                                 ]
 
                             ],
-                            'html'      => view(StaffTeachSubject::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                             'message'   =>  __('Update Successfully')
                         );
                     }
@@ -262,7 +263,7 @@ class StaffTeachSubject extends Model
 
     public static function existsToTable($staff_id, $study_subject_id, $year)
     {
-        return StaffTeachSubject::where('staff_id', $staff_id)
+        return self::where('staff_id', $staff_id)
             ->where('study_subject_id', $study_subject_id)
             ->where('year', $year)
             ->first();
@@ -272,18 +273,18 @@ class StaffTeachSubject extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (StaffTeachSubject::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StaffTeachSubject::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

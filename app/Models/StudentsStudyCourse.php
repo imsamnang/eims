@@ -8,7 +8,7 @@ use App\Helpers\QRHelper;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Students\StudentsStudyCourseController;
+use App\Http\Controllers\Students\StudentsStudyCoursesController;
 
 class StudentsStudyCourse extends Model
 {
@@ -27,7 +27,7 @@ class StudentsStudyCourse extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -134,7 +134,7 @@ class StudentsStudyCourse extends Model
                     }
                 }
                 if ($sid) {
-                    $controller = new StudentsStudyCourseController;
+                    $controller = new StudentsStudyCoursesController;
                     $html = '';
                     foreach ($controller->list([], $sid) as  $row) {
                         $html .= view(self::path('view') . '.includes.tpl.tr', ['row' => $row])->render();
@@ -153,9 +153,9 @@ class StudentsStudyCourse extends Model
                         'message'   => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -192,7 +192,7 @@ class StudentsStudyCourse extends Model
                         'study_status_id'  => request('study_status'),
                     ]);
                     if ($update) {
-                        $controller = new StudentsStudyCourseController;
+                        $controller = new StudentsStudyCoursesController;
                         $response       = array(
                             'success'   => true,
                             'type'      => 'update',
@@ -207,9 +207,9 @@ class StudentsStudyCourse extends Model
                         );
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -244,9 +244,9 @@ class StudentsStudyCourse extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -470,8 +470,8 @@ class StudentsStudyCourse extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

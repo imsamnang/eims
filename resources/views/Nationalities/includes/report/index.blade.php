@@ -16,7 +16,32 @@
 
                 <form role="filter" class="needs-validation" method="GET" action="{{request()->url()}}" id="form-filter"
                     enctype="multipart/form-data">
+                    @if (Auth::user()->role_id == 1)
+                    <div style="margin: 10px 0">
+                        <b> {{__('Filter')}}</b>
+                    </div>
+                    <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;">
+                        <div>
+                            <label style="display: inline-block;width:100%" for="institute">{{__('Institute')}}</label>
+                            <select style="display: inline-block" class="form-control" data-toggle="select"
+                                id="institute" title="Simple select" data-allow-clear="true"
+                                data-text="{{ __("Add new option") }}" data-placeholder=""
+                                data-select-value="{{request('instituteId')}}" name="instituteId">
+                                <option value="">{{__('Choose')}}</option>
+                                @foreach($instituteFilter["data"] as $o)
+                                <option {{$o["id"] ==request('instituteId') ?'selected':''}} data-src="{{$o["image"]}}"
+                                    value="{{$o["id"]}}">{{ $o["name"]}}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
+                        <div>
+                            <button type="submit" class="btn btn-primary float-right"><i
+                                    class="fa fa-filter-search"></i>
+                                {{ __("Search filter") }}</button>
+                        </div>
+                    </div>
+                    @endif
 
                     <div style="margin: 10px 0">
                         <b> {{__('Sheet')}}</b>

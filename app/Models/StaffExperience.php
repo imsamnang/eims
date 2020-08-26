@@ -29,9 +29,9 @@ class StaffExperience extends Model
                         'data'      => $data,
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
     }
 

@@ -25,7 +25,7 @@ class StaffStatus extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -73,27 +73,26 @@ class StaffStatus extends Model
                     }
                 }
 
-                $add = StaffStatus::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        StaffStatus::updateImageToTable($add, ImageHelper::uploadImage($image, StaffStatus::path('image')));
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
-                    $controller = new StaffStatusController;
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(StaffStatus::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -122,11 +121,11 @@ class StaffStatus extends Model
                     }
                 }
 
-                $update = StaffStatus::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StaffStatus::updateImageToTable($id, ImageHelper::uploadImage($image, StaffStatus::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $controller = new StaffStatusController;
                     $response       = array(
@@ -138,13 +137,13 @@ class StaffStatus extends Model
                             ]
 
                         ],
-                        'html'      => view(StaffStatus::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -157,7 +156,7 @@ class StaffStatus extends Model
         );
         if ($image) {
             try {
-                $update =  StaffStatus::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -168,9 +167,9 @@ class StaffStatus extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -179,18 +178,18 @@ class StaffStatus extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (StaffStatus::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StaffStatus::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

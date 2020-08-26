@@ -24,7 +24,7 @@ class BloodGroup extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -73,27 +73,26 @@ class BloodGroup extends Model
                     }
                 }
 
-                $add = BloodGroup::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        BloodGroup::updateImageToTable($add, ImageHelper::uploadImage($image, BloodGroup::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, BloodGroup::path('image'), BloodGroup::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => BloodGroup::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -122,23 +121,23 @@ class BloodGroup extends Model
                     }
                 }
 
-                $update = BloodGroup::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
 
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        BloodGroup::updateImageToTable($id, ImageHelper::uploadImage($image, BloodGroup::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => BloodGroup::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -151,7 +150,7 @@ class BloodGroup extends Model
         );
         if ($image) {
             try {
-                $update =  BloodGroup::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -162,9 +161,9 @@ class BloodGroup extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -174,18 +173,18 @@ class BloodGroup extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (BloodGroup::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = BloodGroup::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

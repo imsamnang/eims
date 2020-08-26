@@ -24,7 +24,7 @@ class Nationality extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -46,107 +46,6 @@ class Nationality extends Model
         ];
         return $key? @$validate[$key] : $validate;
     }
-    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
-    {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/general/' . Nationality::path('url') . '/add/'),
-            ),
-        );
-
-
-
-        $data = array();
-        $orderBy = 'ASC';
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-        $get = Nationality::orderBy('id', $orderBy);
-
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-        if ($get) {
-
-            foreach ($get as $key => $row) {
-                $data[$key]         = array(
-                    'id'            => $row['id'],
-                    'name'          => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                    'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(Nationality::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    'action'        => [
-                        'edit' => url(Users::role() . '/general/' . Nationality::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/general/' . Nationality::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/general/' . Nationality::path('url') . '/delete/' . $row['id']),
-                    ]
-                );
-                $pages['listData'][] = array(
-                    'id'     => $data[$key]['id'],
-                    'name'   => $data[$key]['name'],
-                    'image'  => $data[$key]['image'],
-                    'action' => $data[$key]['action'],
-
-                );
-                if ($edit) {
-                    $data[$key]['name'] =  $row['name'];
-                    if (config('app.languages')) {
-                        foreach (config('app.languages') as $lang) {
-                            $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                        }
-                    }
-                }
-            }
-
-
-
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages,
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-
-        return $response;
-    }
-
 
     public static function addToTable()
     {
@@ -172,26 +71,25 @@ class Nationality extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $add = Nationality::insertGetId($values);
+                $add = self::insertGetId($values);
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        Nationality::updateImageToTable($add, ImageHelper::uploadImage($image, Nationality::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, Nationality::path('image'), Nationality::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => Nationality::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -219,22 +117,22 @@ class Nationality extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $update = Nationality::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        Nationality::updateImageToTable($id, ImageHelper::uploadImage($image, Nationality::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => Nationality::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -247,7 +145,7 @@ class Nationality extends Model
         );
         if ($image) {
             try {
-                $update =  Nationality::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -258,9 +156,9 @@ class Nationality extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -270,18 +168,18 @@ class Nationality extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (Nationality::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = Nationality::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

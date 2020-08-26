@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use DateTime;
 use DomainException;
-use App\Helpers\QRHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\ImageHelper;
 use App\Models\StaffGuardians;
@@ -13,7 +11,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Staff\StaffController;
 
 class Staff extends Model
 {
@@ -27,12 +24,14 @@ class Staff extends Model
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
         $role = Roles::find(5)->first();
         $path = [
+            'table'  => $table,
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'role'   => $role->name,
             'roleId'   => $role->id,
-            'requests'   => 'App\Http\Requests\Form'.$tableUcwords
+            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
+            'controller'   => 'App\Http\Controllers\Staff\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -146,9 +145,9 @@ class Staff extends Model
 
                         if (strpos($query->toSql(), 'institute_id') > 0) {
                             $value = $query->getBindings();
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::path('url') . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . self::path('url') . '/list/?instituteId=' . $value[0] . '&statusId=' . $status['id']);
                         } else {
-                            $data[$status['id']]['link'] = url(Users::role() . '/' . Staff::path('url') . '/list/?statusId=' . $status['id']);
+                            $data[$status['id']]['link'] = url(Users::role() . '/' . self::path('url') . '/list/?statusId=' . $status['id']);
                         }
                     }
                 }
@@ -164,7 +163,7 @@ class Staff extends Model
 
     public static function updatestaffStatus($staff_id, $staff_status_id)
     {
-        return Staff::where('id', $staff_id)->update([
+        return self::where('id', $staff_id)->update([
             'staff_status_id' => $staff_status_id
         ]);
     }
@@ -218,10 +217,10 @@ class Staff extends Model
         //     ];
         // }
 
-        $validate = Staff::validate();
+        $validate = self::validate();
         $rules += $validate['rules'];
-        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
-        $rules['email'] = 'required|email|unique:staff,email';
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:'.self::path('table').',phone';
+        $rules['email'] = 'required|email|unique:'.self::path('table').',email';
         $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
@@ -233,7 +232,7 @@ class Staff extends Model
 
 
             try {
-                $add = Staff::insertGetId([
+                $add = self::insertGetId([
                     'first_name_km' => trim(request('first_name_km')),
                     'last_name_km'  => trim(request('last_name_km')),
                     'first_name_en' => trim(request('first_name_en')),
@@ -277,16 +276,17 @@ class Staff extends Model
                 ) {
 
                     if (request('status')) {
-                        Staff::updatestaffStatus($add, request('status'));
+                        self::updatestaffStatus($add, request('status'));
                     }
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::path('image')));
+                        self::updateImageToTable($add, ImageHelper::uploadImage($photo, self::path('image')));
                     } else {
-                        ImageHelper::uploadImage(false, Staff::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')));
+                        ImageHelper::uploadImage(false, self::path('image'), (request('gender') == '1') ? 'male' : 'female', public_path('/assets/img/user/' . ((request('gender') == '1') ? 'male.jpg' : 'female.jpg')));
                     }
 
-                    $controller = new StaffController;
+                    $class = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
@@ -294,16 +294,16 @@ class Staff extends Model
                         'message'   =>  __('Add Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
 
     public static function register()
     {
-        $validate = Staff::validate();
+        $validate = self::validate();
         $rules = $validate['rules'];
         unset($rules['pob_province']);
         unset($rules['pob_district']);
@@ -321,8 +321,8 @@ class Staff extends Model
         unset($rules['mother_phone']);
         unset($rules['guardian']);
         unset($rules['__guardian']);
-        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone';
-        $rules['email'] = 'required|email|unique:staff,email';
+        $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:'.self::path('table').',phone';
+        $rules['email'] = 'required|email|unique:'.self::path('table').',email';
 
         $validator          = Validator::make(request()->all(), $rules, $validate['messages'], $validate['attributes']);
         if ($validator->fails()) {
@@ -351,7 +351,7 @@ class Staff extends Model
                 'extra_info'         => trim(request('extra_info')),
                 'photo'              => (request('gender') == '1') ? 'male.jpg' : 'female.jpg',
             ];
-            $add = Staff::insertGetId($values);
+            $add = self::insertGetId($values);
 
             if ($add) {
                 StaffInstitutes::addToTable($add);
@@ -363,7 +363,7 @@ class Staff extends Model
 
                 if (request()->hasFile('photo')) {
                     $photo      = request()->file('photo');
-                    Staff::updateImageToTable($add, ImageHelper::uploadImage($photo, Staff::path('image')));
+                    self::updateImageToTable($add, ImageHelper::uploadImage($photo, self::path('image')));
                 }
 
                 $response       = array(
@@ -380,7 +380,7 @@ class Staff extends Model
     public static function updateToTable($id)
     {
         $response           = array();
-        $validate = Staff::validate();
+        $validate = self::validate();
         $rules = $validate['rules'];
         $rules['phone'] = 'required|regex:/^([0-9\(\)\/\+ \-]*)$/|min:9|unique:staff,phone,'.$id;
         $rules['email'] = 'required|email|unique:staff,email,'.$id;
@@ -394,7 +394,7 @@ class Staff extends Model
         } else {
             try {
 
-                $update = Staff::where('id', $id)->update([
+                $update = self::where('id', $id)->update([
                     'first_name_km' => trim(request('first_name_km')),
                     'last_name_km'  => trim(request('last_name_km')),
                     'first_name_en' => trim(request('first_name_en')),
@@ -436,16 +436,16 @@ class Staff extends Model
 
                     if (request()->hasFile('photo')) {
                         $photo      = request()->file('photo');
-                        $photo = ImageHelper::uploadImage($photo, Staff::path('image'));
-                        Staff::updateImageToTable($id, $photo);
+                        $photo = ImageHelper::uploadImage($photo, self::path('image'));
+                        self::updateImageToTable($id, $photo);
                     }
 
 
                     if (request('status')) {
-                        Staff::updatestaffStatus($id, request('status'));
+                        self::updatestaffStatus($id, request('status'));
                     }
-
-                    $controller = new StaffController;
+                    $class = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
@@ -454,9 +454,9 @@ class Staff extends Model
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -469,7 +469,7 @@ class Staff extends Model
         );
         if ($image) {
             try {
-                $update =  Staff::where('id', $add)->update([
+                $update =  self::where('id', $add)->update([
                     'photo'    => $image,
                 ]);
 
@@ -480,91 +480,13 @@ class Staff extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
 
-
-    public static function makeQrCodeToTable($id = null, $options = null)
-    {
-        $response = array(
-            'success'   => false,
-            'type'   => 'makeQRCode',
-            'data'   => [],
-        );
-
-
-        if ($id) {
-            $make = Staff::getData($id, true);
-        } else {
-            $make = Staff::getData(null, true);
-        }
-
-        if ($make['success']) {
-            $data = array();
-            foreach ($make['data'] as $row) {
-                $oldQrcode = $row['qrcode']['image'];
-                if ($oldQrcode) {
-                    if (file_exists(storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode))) {
-                        unlink(storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image') . '/' . $oldQrcode));
-                    }
-                }
-
-                $date = new DateTime();
-                $date->modify('+1 year');
-                $q['size'] = $options && $options['code'] ? $options['code'] : 100;
-                $q['code']  = Qrcode::encryptQrcode([
-                    'id'    => $row['id'],
-                    'type'  => Staff::path('role'),
-                    'aYear'  =>  $row['study_academic_year_id']['id'],
-                    'exp'  =>  $date->format('Y-m-d'),
-                ]);
-
-                if ($options && $options['image'] > 0) {
-                    $q['center']  = array(
-                        'image' => $row['photo'] . '?type=larg', //ImageHelper::getImage($row['photoName'], Staff::path('image'), true), //storage_path(ImageHelper::path('image') . '/' . Staff::path('image') . '/' . ImageHelper::$path['resize'][0] . '/' . $row['photoName']),
-                        'percentage' => $options && $options['image'] ? $options['image'] / $options['code']  : .19
-                    );
-                }
-
-                $qrCode  = QRHelper::make($q, true);
-                $qrCode_image = ImageHelper::uploadImage($qrCode, ImageHelper::path('image') . '/' . Staff::path('image') . '/' . QRHelper::path('image'));
-                if ($qrCode_image) {
-
-                    try {
-                        Staff::where('id', $row['id'])->update([
-                            'qrcode'        => Qrcode::decryptQrcode($q['code']),
-                            'qrcode_image'  => $qrCode_image,
-                        ]);
-                    } catch (DomainException $e) {
-                        return $e;
-                    }
-
-                    $data[] = ImageHelper::site(QRHelper::path('image'), $qrCode_image);
-                }
-            }
-
-            $response       = array(
-                'success'   => true,
-                'type'   => 'makeQRCode',
-                'data'   => $data,
-                'message'   => array(
-                    'title' => __('Success'),
-                    'text'  => __('Update Successfully'),
-                    'button'   => array(
-                        'confirm' => __('Ok'),
-                        'cancel'  => __('Cancel'),
-                    ),
-                ),
-            );
-        }
-
-
-        return $response;
-    }
 
     public static function createAccountToTable($id)
     {
@@ -573,7 +495,7 @@ class Staff extends Model
         ];
         $id = (gettext($id) == 'array') ? $id : explode(',', $id);
 
-        $staff = Staff::whereIn('id', $id)->get();
+        $staff = self::whereIn('id', $id)->get();
 
         foreach ($staff as $row) {
             $account = Users::where('email', $row->email)->where('node_id', $row->id)->exists();
@@ -614,18 +536,18 @@ class Staff extends Model
                     //$response['errors'][$row->id] = $response['errors']->getMessages();
                 } else {
                     try {
-                        $folder  = 'public/' . ImageHelper::path('image') . '/' . Staff::path('image');
+                        $folder  = 'public/' . ImageHelper::path('image') . '/' . self::path('image');
                         $filePath = storage_path('app/'. $folder);
 
-                        $first_name = array_key_exists('first_name_' . app()->getLocale(), $row) ? $row['first_name_' . app()->getLocale()] : $row->first_name_en;
-                        $last_name  = array_key_exists('last_name_' . app()->getLocale(), $row) ? $row['last_name_' . app()->getLocale()] : $row->last_name_en;
+                        $first_name = $row['first_name_' . app()->getLocale()] ? $row['first_name_' . app()->getLocale()] : $row->first_name_en;
+                        $last_name  = $row['first_name_' . app()->getLocale()] ? $row['last_name_' . app()->getLocale()] : $row->last_name_en;
                         $create = Users::insertGetId([
                             'name'          => $first_name . ' ' . $last_name,
                             'email'         => $row->email,
                             'password'      => Hash::make(request('password')),
                             'phone'         => $row->phone,
                             'address'       => $row->permanent_address,
-                            'role_id'       => request('role', Staff::path('roleId')),
+                            'role_id'       => request('role', self::path('roleId')),
                             'node_id'       => $row->id,
                             'institute_id'  => StaffInstitutes::where('staff_id', $row->id)->pluck('institute_id')->first(),
                         ]);
@@ -640,7 +562,7 @@ class Staff extends Model
                                 Users::updateImageToTable($create, $profile);
                             }
 
-                            $response['data'] = Users::getData($create)['data'];
+                            $response['data'][] = ['id'=> $row->id];
                         }
                     } catch (DomainException $e) {
                         $response['errors'][$row->id] = $e;
@@ -649,16 +571,27 @@ class Staff extends Model
             }
         }
 
+        $class = self::path('controller');
+        $controller = new $class;
+        $html = '';
+        $sid =  implode(',',array_column(@$response['data'],'id'));
+        if($sid){
+            foreach($controller->list([], $sid) as $row){
+                $html .= view(self::path('view') . '.includes.tpl.tr', ['row' => $row])->render();
+            }
+            return [
+                'success'   => true,
+                'type'      => 'update',
+                'data'      => $response['data'],
+                'html'      => $html,
+                'message'   => __('Create Successfully'),
+            ];
+        }
+
         return [
-            'success'   => @$response['data'] ? true : false,
-            'message'   => array(
-                'title' => @$response['data'] ? __('Success') : __('Error'),
-                'text'  => @$response['data'] ? __('Create Successfully') : __('Create unsuccessful'),
-                'button'   => array(
-                    'confirm' => __('Ok'),
-                    'cancel'  => __('Cancel'),
-                ),
-            ),
+            'success'   =>  false,
+            'type'      => 'update',
+            'message'   => __('Create unsuccessful'),
             'errors' => @$response['errors'],
         ];
     }
@@ -666,18 +599,18 @@ class Staff extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (Staff::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = Staff::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {
@@ -726,7 +659,7 @@ class Staff extends Model
                         'name'    => $class->name,
                         'image'    => $class->image ? ImageHelper::site(StudyClass::path('image'), $class->image) : ImageHelper::prefix(),
                     ],
-                    'subjects' => Staff::getSubjectsTeaching($teacher_id, $row['study_class_id']),
+                    'subjects' => self::getSubjectsTeaching($teacher_id, $row['study_class_id']),
                 ];
             }
             return [

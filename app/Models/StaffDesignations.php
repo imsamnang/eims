@@ -24,7 +24,7 @@ class StaffDesignations extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form' . $tableUcwords,
-            'controller' => 'App\Http\Controllers\\' . $tableUcwords . 'Controller',
+            'controller' => 'App\Http\Controllers\Staff\\' . $tableUcwords . 'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -62,7 +62,7 @@ class StaffDesignations extends Model
             );
         } else {
             try {
-                $values['institute_id']        = request('institute');
+                $values['institute_id']= request('institute');
                 $values['name']        = request('name');
                 $values['description'] = request('description');
 
@@ -75,14 +75,13 @@ class StaffDesignations extends Model
                 $add = self::insertGetId($values);
 
                 if ($add) {
-
                     if (request()->hasFile('image')) {
                         $image    = request()->file('image');
                         $image   = ImageHelper::uploadImage($image, self::path('image'));
                         self::updateImageToTable($add, $image);
                     }
-
-                    $controller = new StaffDesignationsController;
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
@@ -90,9 +89,9 @@ class StaffDesignations extends Model
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -141,9 +140,9 @@ class StaffDesignations extends Model
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -167,9 +166,9 @@ class StaffDesignations extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -188,8 +187,8 @@ class StaffDesignations extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

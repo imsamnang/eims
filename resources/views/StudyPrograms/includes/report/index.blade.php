@@ -20,7 +20,6 @@
                     <div style="margin: 10px 0">
                         <b> {{__('Filter')}}</b>
                     </div>
-
                     <div style="display: inline-block;border: 1px solid #ccc;padding: 10px;">
                         <div>
                             <label style="display: inline-block;width:100%" for="institute">{{__('Institute')}}</label>

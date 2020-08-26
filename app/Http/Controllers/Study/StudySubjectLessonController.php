@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StaffTeachSubject;
 
 
-class StudySubjectLessonController extends Controller
+class StudySubjectLessonsController extends Controller
 {
 
 

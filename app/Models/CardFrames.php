@@ -25,7 +25,7 @@ class CardFrames extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -75,29 +75,31 @@ class CardFrames extends Model
                 $values['status'] = 0;
 
 
-                $add = CardFrames::insertGetId($values);
+                $add = self::insertGetId($values);
 
                 if ($add) {
-
                     if (request()->hasFile('foreground')) {
-                        $image      = request()->file('foreground');
-                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::path('image')), 'foreground');
+                        $image    = request()->file('foreground');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image,'foreground');
                     }
                     if (request()->hasFile('background')) {
-                        $image      = request()->file('background');
-                        CardFrames::updateImageToTable($add, ImageHelper::uploadImage($image, CardFrames::path('image')), 'background');
+                        $image    = request()->file('background');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image,'background');
                     }
-                    $controller = new CardFramesController;
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'html'      => view(CardFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
-                        'message'   =>  __('Add Successfully')
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
+                        'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -127,15 +129,15 @@ class CardFrames extends Model
                 $values['description'] = request('description');
 
 
-                $update = CardFrames::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('foreground')) {
                         $image      = request()->file('foreground');
-                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::path('image')), 'foreground');
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')), 'foreground');
                     }
                     if (request()->hasFile('background')) {
                         $image      = request()->file('background');
-                        CardFrames::updateImageToTable($id, ImageHelper::uploadImage($image, CardFrames::path('image')), 'background');
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')), 'background');
                     }
                     $controller = new CardFramesController;
                     $response       = array(
@@ -147,13 +149,13 @@ class CardFrames extends Model
                             ]
 
                         ],
-                        'html'      => view(CardFrames::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   =>  __('Update Successfully')
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -166,7 +168,7 @@ class CardFrames extends Model
         );
         if ($image) {
             try {
-                $update =  CardFrames::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     $column    => $image,
                 ]);
 
@@ -177,9 +179,9 @@ class CardFrames extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -223,18 +225,18 @@ class CardFrames extends Model
         if ($id && request()->ajax()) {
             if (request()->method() == 'POST') {
                 try {
-                    CardFrames::where('status', 1)->update([
+                    self::where('status', 1)->update([
                         'status' => 0,
                     ]);
-                    $update = CardFrames::where('id', $id)->update([
+                    $update = self::where('id', $id)->update([
                         'status' => 1,
                     ]);
                     if ($update) {
                         $response       = array(
                             'success'   => true,
-                            'data'      => CardFrames::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
-                                $row['foreground'] = ImageHelper::site(CardFrames::path('image'), $row->foreground, 'large');
-                                $row['background'] = ImageHelper::site(CardFrames::path('image'), $row->background, 'large');
+                            'data'      => self::where('id', $id)->get(['foreground', 'background', 'layout'])->map(function ($row) {
+                                $row['foreground'] = ImageHelper::site(self::path('image'), $row->foreground, 'large');
+                                $row['background'] = ImageHelper::site(self::path('image'), $row->background, 'large');
                                 return $row;
                             })->first(),
                             'message'   => __('Set as default successfully'),
@@ -251,18 +253,18 @@ class CardFrames extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (CardFrames::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = CardFrames::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

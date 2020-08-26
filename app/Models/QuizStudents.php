@@ -27,7 +27,7 @@ class QuizStudents extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -163,13 +163,8 @@ class QuizStudents extends Model
         return $response;
     }
 
-
-
-
-
     public static function addToTable()
     {
-
         $response           = array();
         $validate = self::validate();
 
@@ -223,12 +218,21 @@ class QuizStudents extends Model
 
 
                 if ($qsid) {
+
+                    if (request()->hasFile('image')) {
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
+                    }
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => self::getData($qsid)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $qsid)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
+
                 } else {
                     $response       = array(
                         'success'   => false,
@@ -236,9 +240,9 @@ class QuizStudents extends Model
                         'message'   => __('Add Unsuccessful') . PHP_EOL . __('Already exists'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -272,9 +276,9 @@ class QuizStudents extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -307,8 +311,8 @@ class QuizStudents extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

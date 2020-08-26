@@ -43,7 +43,7 @@ use App\Http\Controllers\CertificateFrames\CertificateFramesController;
 use App\Http\Controllers\Students\StudentsAttendanceController;
 use App\Http\Controllers\Students\StudentsStudyCourseScoreController;
 
-class StudentsStudyCourseController extends Controller
+class StudentsStudyCoursesController extends Controller
 {
 
 

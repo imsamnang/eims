@@ -41,7 +41,7 @@ use App\Http\Controllers\General\GeneralController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Controllers\Students\StudentsAttendanceController;
-use App\Http\Controllers\Students\StudentsStudyCourseController;
+use App\Http\Controllers\Students\StudentsStudyCoursesController;
 use App\Models\Quiz;
 use App\Models\StaffTeachSubject;
 use App\Models\StudySubjectLesson;
@@ -514,7 +514,7 @@ class TeacherController extends Controller
             }
         } elseif (strtolower($param1) == Students::path('url')) {
             if (strtolower($param2)  == StudentsStudyCourse::path('url')) {
-                $student = new StudentsStudyCourseController();
+                $student = new StudentsStudyCoursesController();
                 return $student->index($param3);
             } else {
                 abort(404);

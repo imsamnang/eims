@@ -24,7 +24,7 @@ class SocailsMedia extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -49,7 +49,7 @@ class SocailsMedia extends Model
 
     public static function setConfig()
     {
-        $app = SocailsMedia::where('app_id', config('app.id'))->get()->toArray();
+        $app = self::where('app_id', config('app.id'))->get()->toArray();
         foreach ($app as $value) {
             config()->set('app.socail.' . $value['name'], $value);
         }
@@ -58,7 +58,7 @@ class SocailsMedia extends Model
     {
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . '/' . SocailsMedia::path('url') . '/add/'),
+                'add'    => url(Users::role() . '/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -75,7 +75,7 @@ class SocailsMedia extends Model
                 $orderBy = 'DESC';
             }
         }
-        $get = SocailsMedia::orderBy('id', $orderBy);
+        $get = self::orderBy('id', $orderBy);
 
         if ($id) {
             $get = $get->whereIn('id', $id);
@@ -109,11 +109,11 @@ class SocailsMedia extends Model
                     'link'          => $row['link'],
                     'icon'          => $row['icon'],
                     'description'   => $row['description'],
-                    'image'         => $row['image'] ? (ImageHelper::site(SocailsMedia::path('image'), $row['image'])) : ImageHelper::prefix(),
+                    'image'         => $row['image'] ? (ImageHelper::site(self::path('image'), $row['image'])) : ImageHelper::prefix(),
                     'action'        => [
-                        'edit' => url(Users::role() . '/' . SocailsMedia::path('url') . '/edit/' . $row['id']),
-                        'view' => url(Users::role() . '/' . SocailsMedia::path('url') . '/view/' . $row['id']),
-                        'delete' => url(Users::role() . '/' . SocailsMedia::path('url') . '/delete/' . $row['id']),
+                        'edit' => url(Users::role() . '/' . self::path('url') . '/edit/' . $row['id']),
+                        'view' => url(Users::role() . '/' . self::path('url') . '/view/' . $row['id']),
+                        'delete' => url(Users::role() . '/' . self::path('url') . '/delete/' . $row['id']),
                     ]
                 );
                 $pages['listData'][] = array(
@@ -171,7 +171,7 @@ class SocailsMedia extends Model
 
             try {
                 foreach (config('app.socail') as $key => $value) {
-                    $update = SocailsMedia::where('app_id', $app_id)->where('id', $value['id'])->update([
+                    $update = self::where('app_id', $app_id)->where('id', $value['id'])->update([
                         'link'  => trim(request($value['name']))
                     ]);
                     if ($update) {
@@ -182,9 +182,9 @@ class SocailsMedia extends Model
                         );
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }

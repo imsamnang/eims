@@ -268,8 +268,15 @@ class StaffController extends Controller
         );
         $validate = Staff::validate();
         $pages['form']['validate'] = [
-            'rules'       => ($param1) == 'account' ? [] : $validate['rules'],
-            'attributes'  => ($param1) == 'account' ? [] : $validate['attributes'],
+            'rules'       => ($param1) == 'account' ? [
+                'password' => 'required',
+                'role' => 'required'
+            ] : $validate['rules'],
+            'attributes'  => ($param1) == 'account' ? [
+                'password' => __('Password'),
+                'role' => __('Role'),
+                'email' => __('Email')
+            ] : $validate['attributes'],
             'messages'    => ($param1) == 'account' ? [] : $validate['messages'],
             'questions'   => ($param1) == 'account' ? [] : $validate['questions'],
         ];
@@ -354,6 +361,7 @@ class StaffController extends Controller
         return view(Staff::path('view') . '.index', $data);
     }
 
+  
     public function list($data, $id = null)
     {
         $table = Staff::whereHas('institute', function ($query) use($id){

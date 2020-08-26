@@ -28,6 +28,7 @@ class FormInstitutes extends FormRequest
         $rules['name']         = 'required';
         $rules['short_name']   = 'required';
         $rules['website']      = 'required';
+        $rules['phone']        = 'required';
         $rules['address']      = 'required';
         //$rules['location']     = 'required';
         if (config('app.languages')) {
@@ -46,6 +47,7 @@ class FormInstitutes extends FormRequest
         $attributes['name']          = __('Institute');
         $attributes['short_name']    = __('Short name');
         $attributes['website']       = __('Website');
+        $attributes['phone']         = __('Phone');
         $attributes['address']       = __('Address');
         $attributes['location']      = __('Location').'(Goolge Map)';
         if (config('app.languages')) {

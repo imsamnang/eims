@@ -25,7 +25,7 @@ class SocialAuth extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -51,9 +51,9 @@ class SocialAuth extends Model
     public static function getData($id, $user_id = null)
     {
         if ($id) {
-            $get =  SocialAuth::where('id', $id)->first();
+            $get =  self::where('id', $id)->first();
         } elseif ($user_id) {
-            $get = SocialAuth::where('user_id', $user_id)->first();
+            $get = self::where('user_id', $user_id)->first();
         }
 
         if ($get) {
@@ -66,7 +66,7 @@ class SocialAuth extends Model
         try {
             $user = Socialite::driver($provider)->user();
 
-            $ck = SocialAuth::where('provider', $provider)
+            $ck = self::where('provider', $provider)
                 ->where('_id', $user->getId())
                 ->where('_email', $user->getEmail())
                 ->first();
@@ -75,7 +75,7 @@ class SocialAuth extends Model
             if ($ck) {
                 if ($ck_user) {
                     Auth::loginUsingId($ck_user->id, true);
-                    return SocialAuth::redirect($ck_user->role_id);
+                    return self::redirect($ck_user->role_id);
                 } else {
                     $create_user = Users::insertGetId([
                         'name'  => $user->getName(),
@@ -84,20 +84,20 @@ class SocialAuth extends Model
                         'role_id'   => 9,
                     ]);
                     if ($create_user) {
-                        $update = SocialAuth::updateUserToTable($ck->id, $create_user);
+                        $update = self::updateUserToTable($ck->id, $create_user);
                         if ($update['success']) {
                             Auth::loginUsingId($create_user, true);
-                            return SocialAuth::redirect(9);
+                            return self::redirect(9);
                         }
                     }
                 }
             } elseif ($ck_user) {
-                $add = SocialAuth::addToTable($user, $provider);
+                $add = self::addToTable($user, $provider);
                 if ($add['success']) {
-                    $update = SocialAuth::updateUserToTable($add['data']['id'], $ck_user->id);
+                    $update = self::updateUserToTable($add['data']['id'], $ck_user->id);
                     if ($update['success']) {
                         Auth::loginUsingId($ck_user->id, true);
-                        return SocialAuth::redirect($ck_user->role_id);
+                        return self::redirect($ck_user->role_id);
                     }
                 }
             } else {
@@ -109,12 +109,12 @@ class SocialAuth extends Model
                 ]);
 
                 if ($create_user) {
-                    $add = SocialAuth::addToTable($user, $provider);
+                    $add = self::addToTable($user, $provider);
                     if ($add['success']) {
-                        $update = SocialAuth::updateUserToTable($add['data']['id'], $create_user);
+                        $update = self::updateUserToTable($add['data']['id'], $create_user);
                         if ($update['success']) {
                             Auth::loginUsingId($create_user, true);
-                            return SocialAuth::redirect(9);
+                            return self::redirect(9);
                         }
                     }
                 }
@@ -127,7 +127,7 @@ class SocialAuth extends Model
     public static function addToTable($user, $provider)
     {
         if ($user) {
-            $add = SocialAuth::insertGetId([
+            $add = self::insertGetId([
                 'provider'   => $provider,
                 '_id'   => $user->getId(),
                 '_email'   => $user->getEmail(),
@@ -137,7 +137,7 @@ class SocialAuth extends Model
             if ($add) {
                 $response = [
                     'success'   => true,
-                    'data'      => SocialAuth::getData($add),
+                    'data'      => self::getData($add),
                 ];
             }
         }
@@ -147,7 +147,7 @@ class SocialAuth extends Model
     public static function updateUserToTable($id, $user_id)
     {
         if ($id && $user_id) {
-            $update = SocialAuth::where('id', $id)->update([
+            $update = self::where('id', $id)->update([
                 'user_id'   => $user_id
             ]);
             if ($update) {

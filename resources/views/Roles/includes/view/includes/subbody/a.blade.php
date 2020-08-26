@@ -35,16 +35,6 @@
                             </tr>
                             @endforeach
                             @endif
-
-                            <tr>
-                                <td style="width: 400px">
-                                    <span>{{__('View Path')}}</span>
-                                </td>
-                                <td colspan="3" style="width: 400px" class="text-{{config('app.theme_color.name')}}">
-                                    <strong>{{$row['view_path']}}</strong>
-                                </td>
-                            </tr>
-
                             <tr>
                                 <td style="width: 400px">
                                     <span>{{__('Description')}}</span>

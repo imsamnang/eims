@@ -23,7 +23,7 @@ class QuizStudentAnswer extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -54,7 +54,7 @@ class QuizStudentAnswer extends Model
             'total_marks' => $total_marks . ' ' . __('score'),
         );
         if ($quiz_student_id) {
-            $get = QuizStudentAnswer::where('quiz_student_id', $quiz_student_id);
+            $get = self::where('quiz_student_id', $quiz_student_id);
             if ($paginate) {
                 $get = $get->paginate($paginate)->toArray();
                 foreach ($get as $key => $value) {
@@ -132,7 +132,7 @@ class QuizStudentAnswer extends Model
 
         $pages['form'] = array(
             'action'  => array(
-                'add'    => url(Users::role() . 'study/' . Quiz::path('url') . '/' . QuizStudentAnswer::path('url') . '/add/'),
+                'add'    => url(Users::role() . 'study/' . Quiz::path('url') . '/' . self::path('url') . '/add/'),
             ),
         );
 
@@ -151,7 +151,7 @@ class QuizStudentAnswer extends Model
         if ($get) {
             foreach ($get as $qstu) {
                 $countQ = QuizQuestions::where('quiz_id', $qstu['quiz_id'])->count();
-                $countA = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->count();
+                $countA = self::where('quiz_student_id', $qstu['id'])->count();
 
                 if ($countQ != $countA) {
                     $qq = Quiz::getData($qstu['quiz_id'])['data'][0];
@@ -166,7 +166,7 @@ class QuizStudentAnswer extends Model
 
                     if ($quizQuestion) {
                         foreach ($quizQuestion['data'] as $question) {
-                            $answered = QuizStudentAnswer::where('quiz_student_id', $qstu['id'])->where('quiz_question_id', $question['id'])->get()->toArray();
+                            $answered = self::where('quiz_student_id', $qstu['id'])->where('quiz_question_id', $question['id'])->get()->toArray();
                             $b[$qstu['quiz_id']][] = [
                                 'id'    => $question['id'],
                                 'quiz_type'    => QuizQuestionTypes::getData($question['quiz_question_type_id'])['data'][0],
@@ -237,7 +237,7 @@ class QuizStudentAnswer extends Model
                 'errors'    => $validator->getMessageBag(),
             );
         } else {
-            if (QuizStudentAnswer::exists(request('quiz_student'), request('quiz_question'))) {
+            if (self::exists(request('quiz_student'), request('quiz_question'))) {
                 return array(
                     'success'   => false,
                     'type'      => 'exists',
@@ -255,7 +255,7 @@ class QuizStudentAnswer extends Model
                 } elseif ($quiz_question->quiz_answer_type_id == 3) {
                     $answer = request('answer')[0];
                 }
-                $add = QuizStudentAnswer::insertGetId([
+                $add = self::insertGetId([
                     'quiz_student_id'   => trim(request('quiz_student')),
                     'quiz_question_id'   => trim(request('quiz_question')),
                     'answered'   => $answer,
@@ -272,9 +272,9 @@ class QuizStudentAnswer extends Model
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -295,7 +295,7 @@ class QuizStudentAnswer extends Model
         } else {
 
             try {
-                $quiz_student = QuizStudentAnswer::where('id', $id)->first();
+                $quiz_student = self::where('id', $id)->first();
                 if (!is_null($quiz_student->score)) {
                     $response       = array(
                         'success'   => false,
@@ -326,7 +326,7 @@ class QuizStudentAnswer extends Model
                         $answer = request('answer')[0];
                     }
 
-                    $update = QuizStudentAnswer::where('id', $id)->update([
+                    $update = self::where('id', $id)->update([
                         'answered'   => $answer,
                     ]);
                     if ($update) {
@@ -342,15 +342,15 @@ class QuizStudentAnswer extends Model
                         );
                     }
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
     public static function updateAnswerAgainToTable($id)
     {
-        $update = QuizStudentAnswer::where('id', $id)->update([
+        $update = self::where('id', $id)->update([
             'score'     => null
         ]);
         if ($update) {
@@ -403,7 +403,7 @@ class QuizStudentAnswer extends Model
             } else {
                 try {
 
-                    $update = QuizStudentAnswer::where('id', $id)->update([
+                    $update = self::where('id', $id)->update([
                         'score'     => trim(request('score'))
                     ]);
                     if ($update) {
@@ -441,6 +441,6 @@ class QuizStudentAnswer extends Model
     }
     public static function exists($quiz_student_id, $quiz_question_id)
     {
-        return QuizStudentAnswer::where('quiz_student_id', $quiz_student_id)->where('quiz_question_id', $quiz_question_id)->first();
+        return self::where('quiz_student_id', $quiz_student_id)->where('quiz_question_id', $quiz_question_id)->first();
     }
 }

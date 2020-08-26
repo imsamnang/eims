@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use DomainException;
 use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +23,7 @@ class Institute extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\Study\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -50,9 +49,9 @@ class Institute extends Model
     public static function addToTable()
     {
 
-        $response           = array();
+        $response = array();
         $validate = self::validate();
-        $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
+        $validator = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {
             $response       = array(
@@ -63,42 +62,40 @@ class Institute extends Model
 
             try {
 
-                $values['name']        = trim(request('name'));
-                $values['short_name']  = trim(request('short_name'));
-                $values['website']     = trim(request('website'));
-                $values['phone']       = trim(request('phone'));
-                $values['address']     = trim(request('address'));
-                $values['location']    = trim(request('location'));
-                $values['description'] = trim(request('description'));
-                $values['logo']       = null;
+                $values['name']        = request('name');
+                $values['short_name']  = request('short_name');
+                $values['website']     = request('website');
+                $values['phone']       = request('phone');
+                $values['address']     = request('address');
+                $values['location']    = request('location');
+                $values['description'] = request('description');
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
+                        $values[$lang['code_name']] = request($lang['code_name']);
                     }
                 }
 
                 $add = self::insertGetId($values);
 
                 if ($add) {
-
-                    if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        self::updateImageToTable($add, ImageHelper::uploadImage($image, self::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, self::path('image'), self::path('image'), public_path('/assets/img/icons/image.jpg'), null, true);
+                    if (request()->hasFile('logo')) {
+                        $logo    = request()->file('logo');
+                        $logo   = ImageHelper::uploadImage($logo, self::path('image'));
+                        self::updateImageToTable($add, $logo);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => self::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -117,37 +114,45 @@ class Institute extends Model
         } else {
 
             try {
-                $values['name']        = trim(request('name'));
-                $values['short_name']  = trim(request('short_name'));
-                $values['website']     = trim(request('website'));
-                $values['phone']       = trim(request('phone'));
-                $values['address']     = trim(request('address'));
-                $values['location']    = trim(request('location'));
-                $values['description'] = trim(request('description'));
+                $values['name']        = request('name');
+                $values['short_name']  = request('short_name');
+                $values['website']     = request('website');
+                $values['phone']       = request('phone');
+                $values['address']     = request('address');
+                $values['location']    = request('location');
+                $values['description'] = request('description');
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
+                        $values[$lang['code_name']] = request($lang['code_name']);
                     }
                 }
 
-                $update = self::where('id', $id)->update($values);
+                $table = self::where('id', $id);
+                $old = $table->first();
+                $update = $table->update($values);
 
                 if ($update) {
-                    if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
+                    if (request()->hasFile('logo')) {
+                        $logo    = request()->file('l');
+                        $logo   = ImageHelper::uploadImage($logo, self::path('image'));
+                        if (self::updateImageToTable($id, $logo)['success']) {
+                            ImageHelper::delete(self::path('image'),$old->logo);
+                        }
                     }
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => self::getData($id),
+                        'data'      => [['id' => $id]],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -171,9 +176,9 @@ class Institute extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -193,8 +198,8 @@ class Institute extends Model
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

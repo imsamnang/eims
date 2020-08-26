@@ -25,7 +25,7 @@ class StudyCourse extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'\Controller',
+            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -46,161 +46,6 @@ class StudyCourse extends Model
             'questions'   =>  $formRequests->questions($flag),
         ];
         return $key? @$validate[$key] : $validate;
-    }
-
-
-
-    public static function getData($id = null, $edit = null, $paginate = null, $search = null)
-    {
-        $pages['form'] = array(
-            'action'  => array(
-                'add'    => url(Users::role() . '/study/' . StudyCourse::path('url') . '/add/'),
-            ),
-        );
-        $data = array();
-
-
-        $type   = request('typeId');
-        $program   = request('programId');
-        $orderBy = 'DESC';
-        if ($id) {
-            $id  =  gettype($id) == 'array' ? $id : explode(',', $id);
-            $sorted = array_values($id);
-            sort($sorted);
-            if ($id === $sorted) {
-                $orderBy = 'ASC';
-            } else {
-                $orderBy = 'DESC';
-            }
-        }
-        $get = StudyCourse::orderBy('id', $orderBy);
-        if ($id) {
-            $get = $get->whereIn('id', $id);
-        } else {
-
-
-
-            if ($program) {
-                $get = $get->where('study_program_id', $program);
-            }
-
-            if (request('instituteId')) {
-                $get = $get->where('institute_id', request('instituteId'));
-            }
-        }
-
-        if ($search) {
-            $get = $get->where('name', 'LIKE', '%' . $search . '%');
-            if (config('app.languages')) {
-                foreach (config('app.languages') as $lang) {
-                    $get = $get->orWhere($lang['code_name'], 'LIKE', '%' . $search . '%');
-                }
-            }
-        }
-
-
-
-        if ($paginate) {
-            $get = $get->paginate($paginate)->toArray();
-            foreach ($get as $key => $value) {
-                if ($key == 'data') {
-                } else {
-                    $pages[$key] = $value;
-                }
-            }
-
-            $get = $get['data'];
-        } else {
-            $get = $get->get()->toArray();
-        }
-
-
-        if ($get) {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                foreach ($get as $key => $row) {
-                    $data[$key] = [
-                        'id'  => $row['id'],
-                        '_name'                   => $row['en'],
-                        'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                        'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
-                        'study_generation'        => $row['study_generation_id'] == null ? null : StudyGeneration::getData($row['study_generation_id'])['data'][0],
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
-                    ];
-
-                    if (request('ref') != StudentsStudyCourse::path('image') . '-certificate') {
-                        if ($data[$key]['study_program']) {
-                            $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
-                        }
-
-                        $data[$key]['name'] = $data[$key]['_name'];
-                    }
-                }
-            } else {
-
-                foreach ($get as $key => $row) {
-                    $data[$key]                   = array(
-                        'id'  => $row['id'],
-                        'name' => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
-                        '_name'                   => $row['en'],
-                        'description'             => $row['description'],
-                        'institute'               => $row['institute_id'] == null ? null : Institute::getData($row['institute_id'])['data'][0],
-                        'study_faculty'           => $row['study_faculty_id'] == null ? null : StudyFaculty::getData($row['study_faculty_id'])['data'][0],
-                        'course_type'             => $row['course_type_id'] == null ? null : CourseTypes::getData($row['course_type_id'])['data'][0],
-                        'study_modality'          => $row['study_modality_id'] == null ? null : StudyModality::getData($row['study_modality_id'])['data'][0],
-                        'study_program'           => $row['study_program_id'] == null ? null : StudyPrograms::getData($row['study_program_id'])['data'][0],
-                        'study_overall_fund'      => $row['study_overall_fund_id'] == null ? null : StudyOverallFund::getData($row['study_overall_fund_id'])['data'][0],
-                        'curriculum_author'       => $row['curriculum_author_id'] == null ? null : CurriculumAuthor::getData($row['curriculum_author_id'])['data'][0],
-                        'curriculum_endorsement'  => $row['curriculum_endorsement_id'] == null ? null : CurriculumEndorsement::getData($row['curriculum_endorsement_id'])['data'][0],
-
-                        'image'         =>  $row['image'] ? (ImageHelper::site(StudyCourse::path('image'), $row['image'])) : ImageHelper::prefix(),
-                        'action'                   => [
-                            'edit' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/edit/' . $row['id']), //?id
-                            'view' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/view/' . $row['id']), //?id
-                            'delete' => url(Users::role() . '/study/' . StudyCourse::path('url') . '/delete/' . $row['id']), //?id
-                        ]
-                    );
-
-                    if (request('ref') != StudentsStudyCourse::path('image') . '-certificate') {
-                        if ($data[$key]['study_program']) {
-                            $data[$key]['_name'] =  $data[$key]['_name'] . ' - ' . $data[$key]['study_program']['name'];
-                        }
-                    }
-                    if (request('ref') == Students::path('url') . '-' . StudentsRequest::path('url')) {
-                        $data[$key]['name'] = $data[$key]['_name'];
-                    }
-
-                    $pages['listData'][] = array(
-                        'id'     => $data[$key]['id'],
-                        'name'   => $data[$key]['name'],
-                        'image'  => $data[$key]['image'],
-                        'action' => $data[$key]['action'],
-
-                    );
-
-                    if ($edit) {
-                        $data[$key]['name'] =  $row['name'];
-                        if (config('app.languages')) {
-                            foreach (config('app.languages') as $lang) {
-                                $data[$key][$lang['code_name']] = $row[$lang['code_name']];
-                            }
-                        }
-                    }
-                }
-            }
-            $response       = array(
-                'success'   => true,
-                'data'      => $data,
-                'pages'     => $pages
-            );
-        } else {
-            $response = array(
-                'success'   => false,
-                'data'      => [],
-                'pages'     => $pages,
-                'message'   => __('No Data'),
-            );
-        }
-        return $response;
     }
 
 
@@ -236,27 +81,25 @@ class StudyCourse extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $add = StudyCourse::insertGetId($values);
+                $add = self::insertGetId($values);
                 if ($add) {
-
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        StudyCourse::updateImageToTable($add, ImageHelper::uploadImage($image, StudyCourse::path('image')));
-                    } else {
-                        ImageHelper::uploadImage(false, StudyCourse::path('image'), StudyCourse::path('image'), public_path('/assets/img/icons/image.jpg', null, true));
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        self::updateImageToTable($add, $image);
                     }
-
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'add',
-                        'data'      => StudyCourse::getData($add)['data'],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $add)[0]])->render(),
                         'message'   => __('Add Successfully'),
-
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -293,16 +136,16 @@ class StudyCourse extends Model
                         $values[$lang['code_name']] = trim(request($lang['code_name']));
                     }
                 }
-                $update = StudyCourse::where('id', $id)->update($values);
+                $update = self::where('id', $id)->update($values);
                 if ($update) {
                     if (request()->hasFile('image')) {
                         $image      = request()->file('image');
-                        StudyCourse::updateImageToTable($id, ImageHelper::uploadImage($image, StudyCourse::path('image')));
+                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
                     }
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => StudyCourse::getData($id),
+                        'data'      => self::getData($id),
                         'message'   => array(
                             'title' => __('Success'),
                             'text'  => __('Update Successfully'),
@@ -314,9 +157,9 @@ class StudyCourse extends Model
 
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
         return $response;
     }
@@ -329,7 +172,7 @@ class StudyCourse extends Model
         );
         if ($image) {
             try {
-                $update =  StudyCourse::where('id', $id)->update([
+                $update =  self::where('id', $id)->update([
                     'image'    => $image,
                 ]);
 
@@ -340,9 +183,9 @@ class StudyCourse extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-            } catch (DomainException $e) {
-                return $e;
-            }
+           } catch (\Throwable $th) {
+                        throw $th;
+                    }
         }
 
         return $response;
@@ -353,18 +196,18 @@ class StudyCourse extends Model
     {
         if ($id) {
             $id  = explode(',', $id);
-            if (StudyCourse::whereIn('id', $id)->get()->toArray()) {
+            if (self::whereIn('id', $id)->get()->toArray()) {
                 if (request()->method() === 'POST') {
                     try {
-                        $delete    = StudyCourse::whereIn('id', $id)->delete();
+                        $delete    = self::whereIn('id', $id)->delete();
                         if ($delete) {
                             return [
                                 'success'   => true,
                                 'message'   => __('Delete Successfully'),
                             ];
                         }
-                    } catch (\Exception $e) {
-                        return $e;
+                    } catch (\Throwable $th) {
+                        throw $th;
                     }
                 }
             } else {

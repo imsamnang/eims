@@ -32,7 +32,7 @@ class StaffsReportTemplateExport implements FromCollection, ShouldAutoSize, With
         $new_data = [];
         foreach ($this->data as $key => $row) {
             $new_data[] = [
-                'id'    => $row['id'],
+                'id'    =>  $key + 1,
                 'name'    => $row['name'],
                 'gender'    => $row['gender'],
                 'dob'    => $row['date_of_birth'],

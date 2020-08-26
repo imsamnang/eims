@@ -68,7 +68,7 @@
 @endif
 <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
 <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>
-<script src="{{asset("/assets/js/custom/languages.js")}}"></script>
+
 <script src="{{asset("/assets/js/custom/validation.js")}}"></script>
 <script src="{{asset("/assets/js/custom/replace-with-tag.js")}}"></script>
 <script src="{{asset("/assets/js/custom/form-modal.js")}}"></script>

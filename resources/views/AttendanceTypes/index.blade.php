@@ -52,8 +52,6 @@
 <script src="{{asset("/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/select2/4.0.2/js/select2.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/select2/dist/js/select2.dropdownPosition.js")}}"></script>
-
-<script src="{{asset("/assets/vendor/nouislider/distribute/nouislider.min.js")}}"></script>
 <script src="{{asset("/assets/vendor/dropzone/dist/min/dropzone.min.js")}}"></script>
 
 <script src="{{asset("/assets/vendor/list.js/dist/list.min.js")}}"></script>
@@ -66,7 +64,6 @@
 @endif
 <script src="{{asset("/assets/vendor/lazyload/intersection-observer.js")}}"></script>
 <script src="{{asset("/assets/vendor/lazyload/lazyload.min.js")}}"></script>
-<script src="{{asset("/assets/js/custom/languages.js")}}"></script>
 <script src="{{asset("/assets/js/custom/validation.js")}}"></script>
 <script src="{{asset("/assets/js/custom/replace-with-tag.js")}}"></script>
 <script src="{{asset("/assets/js/custom/form-modal.js")}}"></script>

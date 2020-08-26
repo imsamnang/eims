@@ -136,7 +136,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input type="url" class="form-control" id="phone" placeholder="" value="{{config("pages.form.data.".$key.".phone")}}"
+                                <input type="url" class="form-control" id="phone" name="phone" placeholder="" value="{{config("pages.form.data.".$key.".phone")}}"
                                     {{(array_key_exists("phone", config("pages.form.validate.rules"))) ? "required" : ""}}
                                     name="phone" />
                             </div>
@@ -243,7 +243,7 @@
                             <div class="fallback">
                                 <div class="custom-file">
                                     <input type="file" placeholder="" class="custom-file-input" id="dropzoneBasicUpload"
-                                        name="image"
+                                        name="logo"
                                         {{(array_key_exists("image", config("pages.form.validate.rules"))) ? "required" : ""}} />
                                     <label data-toggle="tooltip" rel="tooltip" data-placement="top" title="123"
                                         class="custom-file-label"
