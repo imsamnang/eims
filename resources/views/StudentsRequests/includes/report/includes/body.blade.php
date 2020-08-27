@@ -18,7 +18,7 @@
                     <th>{{__('Study Generation')}}</th>
                     @endif
                     @if (!request('academicId'))
-                    <th>{{__('Study Academic year')}}</th>
+                    <th>{{__('Study Academic Years')}}</th>
                     @endif
                     @if (!request('semesterId'))
                     <th>{{__('Study Semester')}}</th>

@@ -41,13 +41,32 @@ class StudyCoursesController extends Controller
         $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return StudyCourse::getData(null, null, 10);
-            } else {
-                $data = $this->list($data);
-            }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  StudyCourse::getDataTable();
+                $table = StudyCourse::whereHas('institute', function ($query) {
+                    if (request('instituteId')) {
+                        $query->where('id', request('instituteId'));
+                    }
+                })->whereHas('program', function ($query) {
+                    if (request('programId')) {
+                        $query->where('id', request('programId'));
+                    }
+                })->get()->map(function ($row) {
+                    $row['name']  = $row->{app()->getLocale()};
+                    $row['image'] = ImageHelper::site(StudyCourse::path('image'), $row['image']);
+                    $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
+                    return $row;
+                });
+                if($table->count()){
+                    return [
+                        'success' => true,
+                        'data'  => $table,
+                    ];
+                }else{
+                    return [
+                        'success' => false,
+                        'data'  => [],
+                        'message'  => __('No Data'),
+                    ];
+                }
             } else {
                 $data = $this->list($data);
             }

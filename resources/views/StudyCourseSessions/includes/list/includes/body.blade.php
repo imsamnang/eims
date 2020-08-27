@@ -1,6 +1,6 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table class="table table-flush" data-toggle="datatable-ajax">
+        <table class="table table-flush" id="datatable-basic">
             <thead class="thead-light">
                 <tr>
                     <th>
@@ -23,6 +23,11 @@
 
                 </tr>
             </thead>
+            <tbody>
+                @foreach ($response['data'] as $row)
+                @include(config("pages.parent").".includes.tpl.tr",['row'=>$row])
+                @endforeach
+            </tbody>
         </table>
 
     </div>

@@ -26,7 +26,7 @@
                                 <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
                                     <strong>{{$row['study_generation']}}</strong>
                                 </td>
-                                <td style="width: 400px"><span>{{__('Study Academic year')}}</span></td>
+                                <td style="width: 400px"><span>{{__('Study Academic Years')}}</span></td>
                                 <td style="width: 400px" class="text-{{config('app.theme_color.name')}}">
                                     <strong>{{$row['study_academic_year']}}</strong>
                                 </td>
@@ -48,7 +48,7 @@
                                     <strong>{{$row['created_at']}}</strong>
                                 </td>
                             </tr>
-                            
+
                         </tbody>
                     </table>
                 </td>

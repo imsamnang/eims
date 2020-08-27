@@ -43,9 +43,9 @@ class StudentsStudyCourse extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }
@@ -55,11 +55,11 @@ class StudentsStudyCourse extends Model
     {
         $data = [];
         if (gettype($query) == 'object' && $query->count()) {
-            $studyStatus = StudyStatus::getData();
-            if ($studyStatus['success']) {
-                foreach ($studyStatus['data'] as  $status) {
+            $studyStatus = StudyStatus::get();
+
+                foreach ($studyStatus as  $status) {
                     $data[$status['id']] = [
-                        'title' => in_array($status['id'], [2, 3]) ? $status['name'] :  __('Students') . $status['name'],
+                        'title' => in_array($status['id'], [2, 3]) ? $status[app()->getLocale()] :  __('Students') . $status[app()->getLocale()],
                         'color' => $status['color'],
                         'text'  => [],
                     ];
@@ -84,7 +84,7 @@ class StudentsStudyCourse extends Model
                         }
                     }
                 }
-            }
+
         }
 
         $newData = [];

@@ -42,11 +42,16 @@ class Holidays extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
+    }
+
+    public function institute()
+    {
+        return $this->hasMany(Institute::class,  'id', 'institute_id');
     }
 
     public static function getHoliday($year = null, $month = null, $study_course_session_id = null)

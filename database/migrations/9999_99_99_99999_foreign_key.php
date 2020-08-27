@@ -25,7 +25,7 @@ use App\Models\StudyClass;
 use App\Models\CourseTypes;
 use App\Models\MailboxRead;
 use App\Models\Nationality;
-use App\Models\QuizStudent;
+use App\Models\QuizStudents;
 use App\Models\StaffStatus;
 use App\Models\StudyCourse;
 use App\Models\StudyStatus;
@@ -45,7 +45,7 @@ use App\Models\StudySubjects;
 use App\Models\QuizAnswerTypes;
 use App\Models\StaffGuardians;
 use App\Models\StudySemesters;
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use App\Models\StaffExperience;
 use App\Models\StaffInstitutes;
 use App\Models\StudentsRequest;
@@ -202,7 +202,7 @@ class ForeignKey extends Migration
 
         Schema::table((new StudentsAttendances())->getTable(), function (Blueprint $table) {
             $table->foreign('student_study_course_id')->references('id')->on((new StudentsStudyCourse())->getTable())->onDelete('cascade');
-            $table->foreign('attendance_type_id')->references('id')->on((new AttendancesType())->getTable())->onDelete('cascade');
+            $table->foreign('attendance_type_id')->references('id')->on((new AttendanceTypes())->getTable())->onDelete('cascade');
         });
 
         Schema::table((new StudentsCertificate())->getTable(), function (Blueprint $table) {
@@ -340,7 +340,7 @@ class ForeignKey extends Migration
         Schema::table((new QuizAnswers())->getTable(), function (Blueprint $table) {
             $table->foreign('quiz_question_id')->references('id')->on((new QuizQuestions())->getTable())->onDelete('cascade');
         });
-        Schema::table((new QuizStudent())->getTable(), function (Blueprint $table) {
+        Schema::table((new QuizStudents())->getTable(), function (Blueprint $table) {
             $table->foreign('quiz_id')->references('id')->on((new Quiz())->getTable())->onDelete('cascade');
             $table->foreign('student_study_course_id')->references('id')->on((new StudentsStudyCourse())->getTable())->onDelete('cascade');
         });

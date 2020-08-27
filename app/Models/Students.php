@@ -44,9 +44,9 @@ class Students extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }
@@ -99,11 +99,11 @@ class Students extends Model
 
             return array(
                 'male'      => [
-                    'title' => __('Students male'),
+                    'title' => __('Male'),
                     'text'  => count($male) . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'female'    => [
-                    'title' => __('Students female'),
+                    'title' => __('Female'),
                     'text'  => count($female) . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'total'      => [
@@ -114,15 +114,15 @@ class Students extends Model
         } else {
             return array(
                 'male'      => [
-                    'title' => __('Students male'),
+                    'title' => __('Male'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'female'    => [
-                    'title' => __('Students female'),
+                    'title' => __('Female'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'total'      => [
-                    'title' => __('Students total'),
+                    'title' => __('Students Total'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
             );

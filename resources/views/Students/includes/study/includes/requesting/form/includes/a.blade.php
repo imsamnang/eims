@@ -111,7 +111,7 @@
                     title="{{config("pages.form.validate.questions.study_academic_year")}}" class="form-control-label"
                     for="study_academic_year">
 
-                    {{ __("Study Academic year") }}
+                    {{ __("Study Academic Years") }}
 
                     @if(config("pages.form.validate.rules.study_academic_year"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">

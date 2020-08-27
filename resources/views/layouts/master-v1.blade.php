@@ -19,6 +19,10 @@
         :root {
             --app-color : {{config('app.theme_color.color')}};
         }
+        .fc-unthemed td.fc-today span{
+            color: #fff;
+            background: var(--app-color);
+        }
 
         .plyr__control--overlaid {
             background: var(--app-color);
@@ -249,7 +253,7 @@
         @yield("content")
         @include("layouts.jsvars")
         @yield("script")
-        
+
     </div>
 </body>
 

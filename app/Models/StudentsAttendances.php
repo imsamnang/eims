@@ -44,9 +44,9 @@ class StudentsAttendances extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }

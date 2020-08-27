@@ -47,7 +47,7 @@ class FormStudySubjects extends FormRequest
     {
 
         $attributes['name']                     = __('Name');
-        $attributes['course_type']              = __('Course type');
+        $attributes['course_type']              = __('Course Type');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
                 $attributes[$lang['code_name']] =  $lang['translate_name'];

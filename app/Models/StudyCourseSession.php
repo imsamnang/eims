@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use DomainException;
 use App\Helpers\DateHelper;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +23,7 @@ class StudyCourseSession extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
+            'controller'   => 'App\Http\Controllers\Study\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -41,14 +39,26 @@ class StudyCourseSession extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }
+    public function study_course_schedule()
+    {
+        return $this->hasOne(StudyCourseSchedule::class,'id','study_course_schedule_id');
+    }
 
+    public function study_course_routine()
+    {
+       return $this->hasMany(StudyCourseRoutine::class,'study_course_session_id');
+    }
 
+    public function study_session()
+    {
+        return $this->hasOne(StudySession::class,'id','study_session_id');
+    }
     public static function addToTable()
     {
         $response           = array();
@@ -76,11 +86,10 @@ class StudyCourseSession extends Model
                     $add = self::insertGetId([
                         'study_course_schedule_id'  => request('study_course_schedule'),
                         'study_session_id'      => request('study_session'),
-                        'study_start'      => DateHelper::convert(trim(request('study_start'))),
-                        'study_end'      => DateHelper::convert(trim(request('study_end'))),
+                        'study_start'      => DateHelper::convert(request('study_start')),
+                        'study_end'      => DateHelper::convert(request('study_end')),
                     ]);
                     if ($add) {
-
                         $class  = self::path('controller');
                         $controller = new $class;
                         $response       = array(
@@ -117,24 +126,19 @@ class StudyCourseSession extends Model
                 $update = self::where('id', $id)->update([
                     'study_course_schedule_id'  => request('study_course_schedule'),
                     'study_session_id'      => request('study_session'),
-                    'study_start'      => DateHelper::convert(trim(request('study_start'))),
-                    'study_end'      => DateHelper::convert(trim(request('study_end'))),
+                    'study_start'      => DateHelper::convert(request('study_start')),
+                    'study_end'      => DateHelper::convert(request('study_end')),
                 ]);
                 if ($update) {
-                    $response       = array(
-                        'success'   => true,
-                        'type'      => 'update',
-                        'data'      => self::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'      => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-
-                    );
+                    $class  = self::path('controller');
+                        $controller = new $class;
+                        $response       = array(
+                            'success'   => true,
+                            'type'      => 'update',
+                            'data'      => [['id' => $id]],
+                            'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                            'message'   => __('Update Successfully'),
+                        );
                 }
            } catch (\Throwable $th) {
                         throw $th;
@@ -147,8 +151,8 @@ class StudyCourseSession extends Model
     {
         return self::where('study_course_schedule_id', request('study_course_schedule'))
             ->where('study_session_id', request('study_session'))
-            ->where('study_start', DateHelper::convert(trim(request('study_start'))))
-            ->where('study_end', DateHelper::convert(trim(request('study_end'))))
+            ->where('study_start', DateHelper::convert(request('study_start')))
+            ->where('study_end', DateHelper::convert(request('study_end')))
             ->first();
     }
     public static function deleteFromTable($id)

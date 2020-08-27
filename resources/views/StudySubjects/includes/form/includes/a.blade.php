@@ -29,7 +29,7 @@
                     title="{{config("pages.form.validate.questions.course_type")}}" class="form-control-label"
                     for="course_type">
 
-                    {{ __("Course type") }}
+                    {{ __("Course Type") }}
 
                     @if(config("pages.form.validate.rules.course_type"))
                     <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset">

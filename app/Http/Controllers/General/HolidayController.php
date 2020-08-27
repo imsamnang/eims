@@ -40,16 +40,30 @@ class HolidayController extends Controller
         $id = request('id', $param2);
         if ($param1 == 'list') {
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return Holidays::getData(null, null, 10);
             } else {
                 $data = $this->list($data);
             }
-        } elseif (strtolower($param1) == 'list-datatable') {
-            if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
-                return  Holidays::getDataTable();
-            } else {
-                $data = $this->list($data);
-            }
+        } elseif ($param1 == 'calendar') {
+
+            $response =  Holidays::whereHas('institute', function ($query) {
+                if (request('instituteId')) {
+                    $query->where('id', request('instituteId'));
+                }
+            })->where('month', request('month'))
+                ->where('year', request('year'))
+                ->get()->map(function ($row) {
+                    return array(
+                        'id'            => $row->id,
+                        'title'         => $row[app()->getLocale()] ? $row[app()->getLocale()] : $row['name'],
+                        'start'         => $row['year'] . '-' . $row['month'] . '-' . $row['date'],
+                        'allDay'        => true,
+                        'className'     => 'bg-green',
+                        'description'   => $row['description'],
+                    );
+                });
+
+
+            return $response;
         } elseif ($param1 == 'add') {
             if (request()->ajax()) {
                 if (request()->method() === 'POST') {
@@ -227,6 +241,7 @@ class HolidayController extends Controller
 
         $data['institute'] = Institute::where('id', request('instituteId'))
             ->get(['logo', app()->getLocale() . ' as name'])
+
             ->map(function ($row) {
                 $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;

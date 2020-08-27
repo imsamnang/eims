@@ -60,7 +60,8 @@ AjaxFormModal = function (opts) {
                 .removeClass("modal-xs");
 
             settings.modalContainer.find(".modal-title").html("");
-            settings.modalContainer.find(".modal-footer").html("");
+            settings.modalContainer.find(".modal-header").removeClass('border-bottom');
+            settings.modalContainer.find(".modal-footer").removeClass('border-top').html("");
             settings.modalContainer
                 .find(".card-body")
                 .addClass("text-center")
@@ -74,12 +75,14 @@ AjaxFormModal = function (opts) {
                 newModal = $(newDocument).find("div.modal"),
                 newModalHeader = newModal.find("div.modal-header");
             var oldModal = settings.modalContainer,
-                oldModalHeader = oldModal.find("div.modal-header"),
                 oldModalBody = oldModal.find("div.modal-body");
 
 
             oldModal.html(newModal.html());
-            oldModalHeader.html(newModalHeader.html());
+            var  oldModalHeader = oldModal.find("div.modal-header"),
+            oldModalFooter = oldModal.find("div.modal-footer");
+            oldModalHeader.addClass('border-bottom').html(newModalHeader.html());
+            oldModalFooter.addClass('border-top');
 
             var loadstyle = settings.element ? settings.element.data("loadstyle") : [];
             var loadscript = settings.element ? settings.element.data("loadscript") : [];

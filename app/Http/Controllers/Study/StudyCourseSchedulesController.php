@@ -53,7 +53,6 @@ class StudyCourseSchedulesController extends Controller
         $data['formData']            = [[]];
         $data['formAction']      = '/add';
         $data['formName']        = 'study/' . StudyCourseSchedule::path('url');
-        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('List Request study');
         $data['metaImage']       = asset('assets/img/icons/' . $param1 . '.png');
         $data['metaLink']        = url(Users::role() . '/' . $param1);
         $data['listData']       = array();
@@ -67,7 +66,7 @@ class StudyCourseSchedulesController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/study/' . 'study/' . $param1),
+                'link'  => url(Users::role() . '/study/' .StudyCourseSchedule::path('url'). '/' . $param1),
             ];
             if (request()->method() == 'POST') {
                 return StudyCourseSchedule::addToTable();
@@ -79,7 +78,7 @@ class StudyCourseSchedulesController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/study/' . 'study/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/study/' .StudyCourseSchedule::path('url'). '/' . $param1 . '/' . $id),
             ];
             $data = $this->show($data, $id, $param1);
             $data['view']  = StudyCourseSchedule::path('view') . '.includes.view.index';
@@ -88,7 +87,7 @@ class StudyCourseSchedulesController extends Controller
             $breadcrumb[] = [
                 'title' => __($param1),
                 'status' => 'active',
-                'link'  => url(Users::role() . '/study/' . 'study/' . $param1 . '/' . $id),
+                'link'  => url(Users::role() . '/study/' .StudyCourseSchedule::path('url'). '/' . $param1 . '/' . $id),
             ];
             if (request()->method() == 'POST') {
                 return StudyCourseSchedule::updateToTable($id);
@@ -167,11 +166,6 @@ class StudyCourseSchedulesController extends Controller
             $row['image']   = $row->image ? ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
             return $row;
         });
-        $data['study_session']['data']       = StudySession::get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-            $row['image']   = $row->image ? ImageHelper::site(Institute::path('image'), $row->image) : ImageHelper::prefix();
-            return $row;
-        });
-
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);
         return view(StudyCourseSchedule::path('view') . '.index', $data);
@@ -179,12 +173,14 @@ class StudyCourseSchedulesController extends Controller
 
     public function list($data, $id = null)
     {
+
         $table = StudyCourseSchedule::orderBy('id', 'DESC');
         $table->whereHas('institute', function ($query) {
             if (request('instituteId')) {
                 $query->where('id', request('instituteId'));
             }
         });
+
         $count = $table->count();
         if ($id) {
             $table->whereIn('id', explode(',', $id));
@@ -198,7 +194,7 @@ class StudyCourseSchedulesController extends Controller
                 $row['study_academic_year']  = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
                 $row['study_semester']       = StudySemesters::where('id', $row->study_semester_id)->pluck(app()->getLocale())->first();
 
-                $row['name'] = $row['study_generation'] . ' ('  . $row['study_program'] . ' - ' . $row['study_course'] . ' - ' . $row['study_academic_year']. ' - ' . $row['study_semester']. ')';
+                $row['name'] = $row['study_program'] . ' (' . $row['study_course'] . ')';
 
 
                 $row['action']  = [
@@ -217,35 +213,27 @@ class StudyCourseSchedulesController extends Controller
         }
         $data['response']['data'] = $response;
 
-
-
-
         $data['view']  = StudyCourseSchedule::path('view') . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study Course Schedule');
         return $data;
     }
 
     public function show($data, $id, $type)
     {
+        $data['title']           = Users::role(app()->getLocale()) . ' | ' . __('Study Course Schedule'). ' | ' . __($type);
         $data['view']       = StudyCourseSchedule::path('view') . '.includes.form.index';
         if ($id) {
+            $response        = StudyCourseSchedule::whereIn('id', explode(',', $id))
+                ->get()->map(function ($row) {
+                    $row['institute']            = Institute::where('id', $row->institute_id)->pluck(app()->getLocale())->first();
+                    $row['study_program']        = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
+                    $row['study_course']         = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
+                    $row['study_generation']     = StudyGeneration::where('id', $row->study_generation_id)->pluck(app()->getLocale())->first();
+                    $row['study_academic_year']  = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
+                    $row['study_semester']       = StudySemesters::where('id', $row->study_semester_id)->pluck(app()->getLocale())->first();
 
-            $response        = StudyCourseSchedule::join((new StudyCourseSchedule)->getTable(), (new StudyCourseSchedule)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.student_id')
-                ->whereIn((new StudyCourseSchedule)->getTable() . '.id', explode(',', $id))
-                ->get([
-                    (new StudyCourseSchedule)->getTable() . '.*',
-                    (new StudyCourseSchedule())->getTable() . '.first_name_km',
-                    (new StudyCourseSchedule())->getTable() . '.last_name_km',
-                    (new StudyCourseSchedule())->getTable() . '.first_name_en',
-                    (new StudyCourseSchedule())->getTable() . '.last_name_en',
-                    (new StudyCourseSchedule())->getTable() . '.gender_id',
-                    (new StudyCourseSchedule())->getTable() . '.photo',
-                    (new StudyCourseSchedule())->getTable() . '.email',
-                    (new StudyCourseSchedule())->getTable() . '.phone',
+                    $row['name'] = $row['study_program'] . ' (' . $row['study_course'] . ')';
 
-                ])->map(function ($row) {
-                    $row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
-                    $row['photo'] = $row['photo'] ? ImageHelper::site(StudyCourseSchedule::path('image'), $row['photo']) : ImageHelper::site(StudyCourseSchedule::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
                     $row['action']  = [
                         'edit'   => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/edit/' . $row['id']),
                         'view'   => url(Users::role() . '/study/' . StudyCourseSchedule::path('url') . '/view/' . $row['id']),
@@ -254,6 +242,7 @@ class StudyCourseSchedulesController extends Controller
 
                     return $row;
                 });
+            $data['response']['data'] = $response;
             $data['listData'] =  $response->map(function ($row) {
                 return [
                     'id'  => $row->id,
@@ -279,7 +268,7 @@ class StudyCourseSchedulesController extends Controller
             'layout'  => request('layout', 'landscape'),
         ]);
 
-        config()->set('app.title', __('List Student study course'));
+        config()->set('app.title', __('List Study Course Schedule'));
         config()->set('pages.parent', StudyCourseSchedule::path('view'));
 
 
@@ -315,41 +304,20 @@ class StudyCourseSchedulesController extends Controller
                 $row['image']   = ImageHelper::site(Institute::path('image'), $row->image);
                 return $row;
             });
-        $data['sessionFilter']['data']           = StudySession::whereIn('id', StudyCourseSchedule::groupBy('study_session_id')->pluck('study_session_id'))
-            ->get(['id', app()->getLocale() . ' as name', 'image'])->map(function ($row) {
-                $row['image']   = ImageHelper::site(Institute::path('image'), $row->image);
-                return $row;
-            });
 
 
-        $table = StudyCourseSchedule::join((new StudyCourseSchedule)->getTable(), (new StudyCourseSchedule)->getTable() . '.id', (new StudyCourseSchedule)->getTable() . '.student_id');
+
+        $table = StudyCourseSchedule::orderBy('id');
         if (request('instituteId')) {
             $table->where((new StudyCourseSchedule)->getTable() . '.institute_id', request('instituteId'));
         }
 
-        $response = $table->get([
-            (new StudyCourseSchedule)->getTable() . '.*',
-            (new StudyCourseSchedule)->getTable() . '.first_name_km',
-            (new StudyCourseSchedule)->getTable() . '.last_name_km',
-            (new StudyCourseSchedule)->getTable() . '.first_name_en',
-            (new StudyCourseSchedule)->getTable() . '.last_name_en',
-            (new StudyCourseSchedule)->getTable() . '.gender_id',
-            (new StudyCourseSchedule)->getTable() . '.email',
-            (new StudyCourseSchedule)->getTable() . '.phone',
-
-        ])->map(function ($row) {
-            //$row['name'] = $row->first_name_km . ' ' . $row->last_name_km . ' - ' . $row->first_name_en . ' ' . $row->last_name_en;
-            $row['name'] = $row['first_name_' . app()->getLocale()] . ' ' . $row['last_name_' . app()->getLocale()];
-            $row['gender'] = Gender::where('id', $row->gender_id)->pluck(app()->getLocale())->first();
-            $row['photo'] = $row['photo'] ? ImageHelper::site(StudyCourseSchedule::path('image'), $row['photo']) : ImageHelper::site(StudyCourseSchedule::path('image'), ($row->gender_id == 1 ? 'male.jpg' : 'female.jpg'));
-
-
+        $response = $table->get()->map(function ($row) {
             $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
             $row['study_course'] = StudyCourse::where('id', $row->study_course_id)->pluck(app()->getLocale())->first();
             $row['study_generation'] = StudyGeneration::where('id', $row->study_generation_id)->pluck(app()->getLocale())->first();
             $row['study_academic_year'] = StudyAcademicYears::where('id', $row->study_academic_year_id)->pluck(app()->getLocale())->first();
             $row['study_semester'] = StudySemesters::where('id', $row->study_semester_id)->pluck(app()->getLocale())->first();
-            $row['study_session'] = StudySession::where('id', $row->study_session_id)->pluck(app()->getLocale())->first();
 
             return $row;
         })->toArray();
@@ -375,7 +343,6 @@ class StudyCourseSchedulesController extends Controller
         $data['response'] = [
             'data'   => $newData,
             'total'  => $items->count(),
-            'genders' => StudyCourseSchedule::gender($table),
             'date'      => [
                 'day'   => $date->day,
                 '_day'  => $date->getTranslatedDayName(),
@@ -392,7 +359,7 @@ class StudyCourseSchedulesController extends Controller
                 return $row;
             })->first();
 
-        config()->set('pages.title', __('StudyCourseSchedule required'));
+        config()->set('pages.title', __('List Study Course Schedule'));
 
         return view(StudyCourseSchedule::path('view') . '.includes.report.index', $data);
     }

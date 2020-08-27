@@ -137,7 +137,7 @@
                             <div class="col-md-3 mb-3">
                                 <select class="form-control" data-toggle="select" id="academic" title="Simple select"
                                     data-allow-clear="true" data-text="{{ __("Add new option") }}"
-                                    data-placeholder="{{__('Study Academic year')}}" name="academicId"
+                                    data-placeholder="{{__('Study Academic Years')}}" name="academicId"
                                     data-select-value="{{request('academicId')}}">
                                     @foreach($academicFilter["data"] as $o)
                                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

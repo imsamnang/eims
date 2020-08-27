@@ -14,11 +14,6 @@
     <td>{{$row['study_generation']}}</td>
     <td>{{$row['study_academic_year']}}</td>
     <td>{{$row['study_semester']}}</td>
-    <td>
-        @if ($row['status'])
-        <i class="fas fa-check-circle text-green"></i>
-        @endif
-    </td>
     <td class="text-right">
         <div class="dropdown">
             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"

@@ -18,7 +18,7 @@
                         {{__('Name')}}​
                     </th>
                     <th>
-                        {{__("Description")}}​
+                      a  {{__("Description")}}​
                     </th>
                     <th></th>
                 </tr>

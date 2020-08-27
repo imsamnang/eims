@@ -58,7 +58,7 @@ class FormStudyCourses extends FormRequest
 
             $attributes['institute']                = __('Institute');
             $attributes['study_faculty']            = __('Study faculty');
-            $attributes['course_type']              = __('Course type');
+            $attributes['course_type']              = __('Course Type');
             $attributes['study_modality']           = __('Study Modality');
             $attributes['study_program']            = __('Study Program');
             $attributes['study_overall_fund']       = __('Study overall fund');

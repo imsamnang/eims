@@ -439,7 +439,7 @@ class StudentsStudyCoursesController extends Controller
             $view = new StudentsAttendanceController();
             $monthYear =  request('month_year') ? explode('-', request('month_year')) : null;
             request()->merge([
-                'year'  => $monthYear ? $monthYear[1] : Years::now(),
+                'year'  => $monthYear ? $monthYear[1] : date('Y'),
                 'month' => $monthYear ? $monthYear[0] : Months::now(),
                 'date'  => request('date') ? request('date') : date('d'),
                 'type'  => Students::path('role'),

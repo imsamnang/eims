@@ -23,7 +23,7 @@ class StudyCourseSchedule extends Model
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
             'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
+            'controller'   => 'App\Http\Controllers\Study\\'.$tableUcwords.'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
@@ -39,17 +39,56 @@ class StudyCourseSchedule extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }
     public function institute()
     {
-        return $this->hasMany(Institute::class,  'id', 'institute_id');
+        return $this->hasOne(Institute::class,  'id', 'institute_id');
     }
-    
+    public function study_course_session()
+    {
+        return $this->hasMany(StudyCourseSession::class);
+    }
+    public function study_program()
+    {
+        return $this->hasOne(StudyPrograms::class,'id','study_program_id');
+    }
+    public function study_course()
+    {
+        return $this->hasOne(StudyCourse::class,'id','study_course_id');
+    }
+    public function study_generation()
+    {
+        return $this->hasOne(StudyGeneration::class,'id','study_generation_id');
+    }
+    public function study_academic_year()
+    {
+        return $this->hasOne(StudyAcademicYears::class,'id','study_academic_year_id');
+    }
+    public function study_semester()
+    {
+        return $this->hasOne(StudySemesters::class,'id','study_semester_id');
+    }
+
+    public function study_course_routine(){
+      return  $this->hasManyThrough(
+            StudyCourseRoutine::class,
+            StudyCourseSession::class,
+            'study_course_schedule_id',
+            'study_course_session_id',
+            'id',
+            'id'
+        );
+
+    }
+
+
+
+
     public static function addToTable()
     {
         $response           = array();
@@ -127,19 +166,14 @@ class StudyCourseSchedule extends Model
                     'study_semester_id'      => request('study_semester')
                 ]);
                 if ($update) {
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => StudyCourseSchedule::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'      => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-
+                        'data'      => [['id'=>$id]],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   => __('Update Successfully'),
                     );
                 }
            } catch (\Throwable $th) {

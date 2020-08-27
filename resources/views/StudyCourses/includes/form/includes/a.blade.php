@@ -59,7 +59,7 @@
 
             {{-- <div class="col-md-3 mb-3">
                 <label class="form-control-label" for="course_type">
-                    {{ __("Course type") }}
+                    {{ __("Course Type") }}
 
             @if(array_key_exists("course_type",config("pages.form.validate.rules")))
             <span class="badge badge-md badge-circle badge-floating badge-danger" style="background:unset"><i

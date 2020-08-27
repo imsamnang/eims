@@ -19,6 +19,7 @@ class DateHelper
             $dt = new Carbon( $date);
             if ($translate) {
                 $date = $dt->translatedFormat($format);
+
             } else {
                 $date = $dt->format($format);
             }

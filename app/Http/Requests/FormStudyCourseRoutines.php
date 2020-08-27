@@ -29,9 +29,9 @@ class FormStudyCourseRoutines extends FormRequest
             'study_course_session'       => 'required',
             'start_time'.$flag           => 'required',
             'end_time'.$flag             => 'required',
-            'day'.$flag                  => 'required',
-            'teacher'.$flag              => 'required',
-            'study_subject'.$flag        => 'required',
+            'days'.$flag                  => 'required',
+            'teachers'.$flag              => 'required',
+            'study_subjects'.$flag        => 'required',
             'study_class'.$flag          => 'required',
 
         ];
@@ -43,9 +43,9 @@ class FormStudyCourseRoutines extends FormRequest
             'study_course_session'       => __('Study course session'),
             'start_time'.$flag           => __('Start time'),
             'end_time'.$flag             => __('End time'),
-            'day'.$flag                  => __('Day'),
-            'teacher'.$flag              => __('Teacher'),
-            'study_subject'.$flag        => __('Study subjects'),
+            'days'.$flag                  => __('Day'),
+            'teachers'.$flag              => __('Teacher'),
+            'study_subjects'.$flag        => __('Study subjects'),
             'study_class'.$flag          => __('Study class'),
         ];
     }

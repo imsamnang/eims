@@ -146,7 +146,7 @@ class Mailbox extends Model
     public static function addToTable()
     {
         $response           = array();
-        $validate = self::validate('.*');
+        $validate = self::validate(null,'.*');
         $validator          = Validator::make(request()->all(), $validate['rules'], $validate['messages'], $validate['attributes']);
 
         if ($validator->fails()) {

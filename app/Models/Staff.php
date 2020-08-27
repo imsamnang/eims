@@ -46,16 +46,16 @@ class Staff extends Model
         $formRequests = new $class;
         $validate =  [
             'rules'       =>  $formRequests->rules($flag),
-            'attributes'  =>  $formRequests->attributes($flag),
-            'messages'    =>  $formRequests->messages($flag),
-            'questions'   =>  $formRequests->questions($flag),
+            'attributes'  =>  $formRequests->attributes(),
+            'messages'    =>  $formRequests->messages(),
+            'questions'   =>  $formRequests->questions(),
         ];
         return $key? @$validate[$key] : $validate;
     }
 
-    public function institute()
+    public function staff_institute()
     {
-        return $this->hasMany(StaffInstitutes::class,  'staff_id', 'id');
+        return $this->hasOne(StaffInstitutes::class,  'staff_id', 'id');
     }
 
     public static function searchName($query, $search)
@@ -77,9 +77,6 @@ class Staff extends Model
         });
     }
 
-
-
-
     public static function gender($query)
     {
 
@@ -95,11 +92,11 @@ class Staff extends Model
             }
             return array(
                 'male'      => [
-                    'title' => __('Staff male'),
+                    'title' => __('Male'),
                     'text'  => $male . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'female'    => [
-                    'title' => __('Staff female'),
+                    'title' => __('Female'),
                     'text'  => $female . ((app()->getLocale() == 'km') ? ' នាក់' : ' Poeple'),
                 ],
                 'total'      => [
@@ -110,11 +107,11 @@ class Staff extends Model
         } else {
             return array(
                 'male'      => [
-                    'title' => __('Staff male'),
+                    'title' => __('Male'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'female'    => [
-                    'title' => __('Staff female'),
+                    'title' => __('Female'),
                     'text'  => ((app()->getLocale() == 'km') ? '0 នាក់' : '0 Poeple'),
                 ],
                 'total'      => [

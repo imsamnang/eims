@@ -9,6 +9,7 @@ use App\Models\Users;
 use App\Models\Students;
 use App\Models\Languages;
 use App\Helpers\FormHelper;
+use App\Helpers\ImageHelper;
 use App\Helpers\MetaHelper;
 use App\Models\ActivityFeed;
 use App\Models\SocailsMedia;
@@ -128,7 +129,7 @@ class ManagerController extends Controller
             ],
             [
                 'title'   => __('Teacher'),
-                'link'    => url(Users::role() . '/' . Staff::path('url') . '/list'),
+                'link'    => url(Users::role() . '/' . Staff::path('url') . '/list?designationId=2'),
                 'icon'    => 'fas fa-chalkboard-teacher',
                 'image'   => null,
                 'gender'  => Staff::gender(Staff::join((new StaffInstitutes())->getTable(), (new Staff())->getTable() . '.id', (new StaffInstitutes())->getTable() . '.staff_id')->whereNotIn('staff_status_id', [1, 4])->where('designation_id', 2)->where('institute_id', Auth::user()->institute_id)),
@@ -165,29 +166,30 @@ class ManagerController extends Controller
             ],
         );
 
-        $studyPrograms = StudyPrograms::getData();
-        $data['studyProgram'] = [];
-        if ($studyPrograms['success']) {
-            foreach ($studyPrograms['data'] as $row) {
-                $data['studyProgram'][] = [
-                    'title'   => $row['name'],
-                    'link'    => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list?programId=' . $row['id']),
-                    'icon'    => null,
-                    'image'   => $row['image'],
-                    'gender'  => Students::gender(
-                        StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
-                            ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
-                            ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
-                            ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
-                            ->whereNotIn('study_status_id', [7])
-                            ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row['id'])
-                            ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
-                    ),
-                    'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
-                    'color'   => config('app.theme_color.name'),
-                ];
-            }
-        }
+        $data['studyProgram'] =  StudyPrograms::whereHas('institute', function ($query) {
+            $query->where('id',Auth::user()->institute_id);
+
+        })->get()->map(function($row){
+           return [
+                'title'   => $row->{app()->getLocale()},
+                'link'    => url(Users::role() . '/' . Students::path('url') . '/' . StudentsStudyCourse::path('url') . '/list?programId=' . $row['id']),
+                'icon'    => null,
+                'image'   => $row->image ? ImageHelper::site(StudyPrograms::path('image'),$row['image']) : ImageHelper::prefix(),
+                'gender'  => Students::gender(
+                    StudentsStudyCourse::join((new StudyCourseSession())->getTable(), (new StudyCourseSession())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.study_course_session_id')
+                        ->join((new StudyCourseSchedule())->getTable(), (new StudyCourseSchedule())->getTable() . '.id', (new StudyCourseSession())->getTable() . '.study_course_schedule_id')
+                        ->join((new StudentsRequest())->getTable(), (new StudentsRequest())->getTable() . '.id', (new StudentsStudyCourse())->getTable() . '.student_request_id')
+                        ->join((new Students())->getTable(), (new Students())->getTable() . '.id', (new StudentsRequest())->getTable() . '.student_id')
+                        ->whereNotIn('study_status_id', [7])
+                        ->where((new StudyCourseSchedule())->getTable() . '.study_program_id', $row['id'])
+                        ->where((new StudyCourseSchedule())->getTable() . '.institute_id', Auth::user()->institute_id)
+                ),
+                'status'  => [], // StudentsStudyCourse::studyStatus(StudentsStudyCourse::join((new Students())->getTable(), (new Students())->getTable() . '.id',  (new StudentsStudyCourse())->getTable() . '.student_id')->where('institute_id', Auth::user()->institute_id)->where('study_program_id', $row['id'])),
+                'color'   => config('app.theme_color.name'),
+            ];
+        });
+
+
 
         config()->set('app.title', $data['title']);
         config()->set('pages', $pages);

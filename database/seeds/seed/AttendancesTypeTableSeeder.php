@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\AttendancesType;
+use App\Models\AttendanceTypes;
 use Illuminate\Database\Seeder;
 
 class AttendancesTypeTableSeeder extends Seeder
@@ -12,7 +12,7 @@ class AttendancesTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        AttendancesType::insert([
+        AttendanceTypes::insert([
             [
                 'institute_id'  => 1,
                 'name'          => 'Present',

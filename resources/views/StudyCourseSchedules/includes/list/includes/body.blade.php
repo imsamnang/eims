@@ -23,11 +23,12 @@
                         {{__("Study Generation")}}
                     </th>
                     <th>
-                        {{__("Study Academic year")}}
+                        {{__("Study Academic Years")}}
                     </th>
                     <th>
-                        {{__("Study Semester")}}
+                        {{__("Study Semesters")}}
                     </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

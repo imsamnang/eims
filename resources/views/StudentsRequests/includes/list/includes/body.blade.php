@@ -32,7 +32,7 @@
                         {{__("Study Generation")}}
                     </th>
                     <th>
-                        {{__("Study Academic year")}}
+                        {{__("Study Academic Years")}}
                     </th>
                     <th>
                         {{__("Study Semester")}}

@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
             StudySemestersTableSeeder::class,
             StudySessionsTableSeeder::class,
             StudyStatusTableSeeder::class,
-            YearsTableSeeder::class,
             MonthsTableSeeder::class,
             DaysTableSeeder::class,
             StudyClassTableSeeder::class,
@@ -74,7 +73,7 @@ class DatabaseSeeder extends Seeder
             QuizTableSeeder::class,
             QuizAnswerTypesTableSeeder::class,
             QuizQuestionTableSeeder::class,
-            QuizStudentTableSeeder::class,
+            QuizStudentsTableSeeder::class,
         ]);
     }
 }

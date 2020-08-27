@@ -103,5 +103,6 @@
 <script src="{{asset('/assets/vendor/autogrow/autogrow-ui.js')}}"></script>
 <script src="{{asset("/assets/js/custom/main-content.js")}}"></script>
 <script src="{{asset("/assets/js/custom/ajaxTableData.js")}}"></script>
+<script src="{{asset("/assets/js/custom/clock.js")}}"></script>
 <script src="{{asset("/assets/js/argon.min.js?v=1.1.0")}}"></script>
 @endsection

@@ -76,7 +76,7 @@
                         </div>
                         <div>
                             <label style="display: inline-block;width:100%"
-                                for="institute">{{__('Study Academic year')}}</label>
+                                for="institute">{{__('Study Academic Years')}}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
                                 id="academic" title="Simple select" data-allow-clear="true"
                                 data-text="{{ __("Add new option") }}" data-placeholder=""

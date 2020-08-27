@@ -146,7 +146,7 @@ class StudySubjectsController extends Controller
         });
         $data['response']['data'] = $response;
         $data['view']     = StudySubjects::path('view') . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study subject');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study Subjects');
         return $data;
     }
 
@@ -194,7 +194,7 @@ class StudySubjectsController extends Controller
             'layout'  => request('layout', 'portrait'),
         ]);
 
-        config()->set('app.title', __('List Study subject'));
+        config()->set('app.title', __('List Study Subjects'));
         config()->set('pages.parent', StudySubjects::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudySubjects::groupBy('institute_id')->pluck('institute_id'))
@@ -265,7 +265,7 @@ class StudySubjectsController extends Controller
                 $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
-        config()->set('pages.title', __('List Study subject'));
+        config()->set('pages.title', __('List Study Subjects'));
         return view(StudySubjects::path('view') . '.includes.report.index', $data);
     }
 }

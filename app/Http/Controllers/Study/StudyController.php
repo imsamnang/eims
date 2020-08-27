@@ -216,7 +216,7 @@ class StudyController extends Controller
                             'color' => 'bg-' . config('app.theme_color.name'),
                         ],
                         [
-                            'name'  => __('List Study Subject Lesson'),
+                            'name'  => __('List Study Subjects Lesson'),
                             'link'  => url(Users::role() . '/study/' . StudySubjectLesson::path('url') . '/list'),
                             'icon'  => 'fas fa-book-alt',
                             'image' => null,

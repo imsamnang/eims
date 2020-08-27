@@ -37,8 +37,8 @@ class FormStudyCourseSessions extends FormRequest
     {
         return [
 
-            'study_course_schedule'      => __('Study course schedule'),
-            'study_session'              => __('Study session'),
+            'study_course_schedule'      => __('Study Course Schedule'),
+            'study_session'              => __('Study Session'),
             'study_start'                => __('Study start'),
             'study_end'                  => __('Study end'),
 

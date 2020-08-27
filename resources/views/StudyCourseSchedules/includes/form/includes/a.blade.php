@@ -1,5 +1,5 @@
 
-<div class="card">
+<div class="card m-0">
     <div class="card-header py-2 px-3">
         <label class="label-arrow label-primary label-arrow-right">
             A
@@ -51,7 +51,7 @@
                     data-text="{{ __("Add new option") }}"
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_program_id")}}" data-append-to="#study_course"
-                    data-append-url="{{str_replace("add","list?programId=",$study_course["action"]["list"])}}">
+                    data-append-url="{{$study_course["action"]["list"]}}?programId=">
                     @foreach($study_program["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">
                         {{ $o["name"]}}</option>
@@ -69,9 +69,7 @@
                     @endif
                 </label>
                 <select {{$study_course? "" : "disabled" }} class="form-control"
-                    data-toggle="select" id="study_course" title="Simple select"
-
-
+                    data-toggle="select" id="study_course"  name="study_course" title="Simple select"
                     data-text="{{ __("Add new option") }}"
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_course_id")}}">

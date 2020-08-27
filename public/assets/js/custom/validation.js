@@ -353,7 +353,7 @@
             };
 
         $(this).on("submit", function (e) {
-            options.hasOwnProperty("onSubmit") && "function" == typeof options.onSubmit ? settings.onSubmit(e, validation) : onSubmit(e);
+            options.hasOwnProperty("onSubmit") && "function" == typeof options.onSubmit ? settings.onSubmit(e, validation,load) : onSubmit(e);
         });
 
         $(this).find("input[name] , textarea[name]").on("input", function () {
