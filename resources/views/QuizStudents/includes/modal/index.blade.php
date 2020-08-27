@@ -65,7 +65,7 @@
                 <button data-dismiss="modal" class="float-left btn btn-secondary">
                     {{__('Close')}}
                 </button>
-                <a href="" name="scrollTo"></a>
+
                 <button id="btn-submit" class="float-right btn btn-primary">
                     {{__('Save')}}
                 </button>

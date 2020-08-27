@@ -284,11 +284,12 @@
                         }
 
                         var scroll = Object.keys(fields);
-
-                        if ($(this).find('[name="scrollTo"]').length) {
-                            $(this).find('[name="scrollTo"]').attr("href", "#" + scroll[0].replace(/\[/g, "").replace(/\]/g, ""));
-                            validation.scroll($(this).find('[name="scrollTo"]'), scroll[0].replace(/\[/g, "").replace(/\]/g, ""));
+                        var scrollTo = $('<a name="scrollTo">');
+                        if ($(this).find('[name="scrollTo"]').length == 0) {
+                            $(this).append(scrollTo);
                         }
+                        $(this).find('[name="scrollTo"]').attr("href", "#" + scroll[0].replace(/\[/g, "").replace(/\]/g, ""));
+                        validation.scroll($(this).find('[name="scrollTo"]'), scroll[0].replace(/\[/g, "").replace(/\]/g, ""));
                     },
                     success: (fields, form) => {
 
@@ -375,5 +376,7 @@
         //         $(this).parent().find(".select2-selection").removeClass("has-error").addClass("has-success");
         //     });
         // });
+
+
     };
 })(jQuery);

@@ -150,6 +150,7 @@ class CourseTypesController extends Controller
         });
 
         $count = $table->count();
+
         if ($id) {
             $table->whereIn('id', explode(',', $id));
         }

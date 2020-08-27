@@ -65,7 +65,7 @@ class BloodGroup extends Model
 
                 $values['name']        = trim(request('name'));
                 $values['description'] = trim(request('description'));
-                $values['image']       = null;
+
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {

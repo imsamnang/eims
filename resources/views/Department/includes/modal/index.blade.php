@@ -34,7 +34,7 @@
                     <div class="col">
                         <div class="row">
                             <div class="{{count($listData) > 1 ? "col-md-8":"col-md-12"}}">
-                                <a href="" name="scrollTo"></a>
+
                                 <button class="btn btn-primary ml-auto float-right" type="submit">
                                     @if (config("pages.form.role") == "add")
                                     @if (Auth::user()->role_id == 6)

@@ -103,7 +103,7 @@ class Languages extends Model
                     $values['code_name']   = trim(request('code_name'));
                     $values['country_code'] = trim(request('country_code'));
                     $values['description'] = trim(request('description'));
-                    $values['image']       = null;
+
 
                     if (config('app.languages')) {
                         foreach (config('app.languages') as $lang) {
@@ -193,7 +193,7 @@ class Languages extends Model
                     $values['code_name']   = trim(request('code_name'));
                     $values['country_code'] = trim(request('country_code'));
                     $values['description'] = trim(request('description'));
-                    $values['image']       = null;
+
 
                     if (config('app.languages')) {
                         foreach (config('app.languages') as $lang) {

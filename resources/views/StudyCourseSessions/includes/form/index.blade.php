@@ -72,7 +72,7 @@
                                                             @include(config("pages.parent").".includes.form.includes.a",['key'=>$key])
                                                         </div>
                                                     </div>
-                                                    <a href="" name="scrollTo"></a>
+
                                                 </div>
                                                 @if (config('pages.parameters.param1') == 'add')
                                                     @if (!request()->ajax())

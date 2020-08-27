@@ -19,7 +19,7 @@
 
                 <div class="card-body p-0 m-0">
                     <div class="row">
-                        
+
                         @if (count($listData) > 1)
                             <div class="col-md-3">
                                 <div class="card sticky-top">
@@ -76,7 +76,7 @@
                                                             @include(config("pages.parent").".includes.form.includes.a",['key'=>$key])
                                                         </div>
                                                     </div>
-                                                    <a href="" name="scrollTo"></a>
+
                                                 </div>
                                                 @if (config('pages.parameters.param1') == 'add')
                                                     @if (!request()->ajax())

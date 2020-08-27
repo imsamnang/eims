@@ -32,6 +32,20 @@ class StudyCoursesController extends Controller
 
     public function index($param1 = 'list', $param2 = null, $param3 = null)
     {
+        $breadcrumb  = [
+            [
+                'title' => __('Study'),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . StudyCourse::path('url')),
+            ],
+            [
+                'title' => __('List Study Course'),
+                'status' => false,
+                'link'  => url(Users::role() . '/study/' . StudyCourse::path('url') . '/list'),
+            ]
+        ];
+
+
         $data['formData'] = array(
             ['image' => asset('/assets/img/icons/image.jpg'),]
         );
@@ -40,6 +54,7 @@ class StudyCoursesController extends Controller
         $data['listData']       = array();
         $id = request('id', $param2);
         if ($param1 == 'list') {
+            $breadcrumb[1]['status']  = 'active';
             if (strtolower(request()->server('CONTENT_TYPE')) == 'application/json') {
                 $table = StudyCourse::whereHas('institute', function ($query) {
                     if (request('instituteId')) {
@@ -71,19 +86,33 @@ class StudyCoursesController extends Controller
                 $data = $this->list($data);
             }
         } elseif ($param1 == 'add') {
-
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . StudyCourse::path('url') . '/' . $param1),
+            ];
             if (request()->method() === 'POST') {
                 return StudyCourse::addToTable();
             }
             $data = $this->show($data, null, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Add Study course');
         } elseif ($param1 == 'edit') {
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . StudyCourse::path('url') . '/' . $param1.'/'.$id),
+            ];
             if (request()->method() === 'POST') {
                 return StudyCourse::updateToTable($id);
             }
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('Edit Study course');
         } elseif ($param1 == 'view') {
+            $breadcrumb[]  = [
+                'title' => __($param1),
+                'status' => 'active',
+                'link'  => url(Users::role() . '/study/' . StudyCourse::path('url') . '/' . $param1.'/'.$id),
+            ];
             $data = $this->show($data, $id, $param1);
             $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('View Study course');
         } elseif ($param1 == 'delete') {
@@ -93,6 +122,8 @@ class StudyCoursesController extends Controller
         } else {
             abort(404);
         }
+
+        view()->share('breadcrumb', $breadcrumb);
 
         MetaHelper::setConfig([
             'title'       => $data['title'],
@@ -153,8 +184,12 @@ class StudyCoursesController extends Controller
         if (request('programId')) {
             $table->where('study_program_id', request('programId'));
         }
-
-        $response = $table->get()->map(function ($row) {
+        $count = $table->count();
+        if ($id) {
+            $table->whereIn('id', explode(',', $id));
+        }
+        $response = $table->get()->map(function ($row,$nid) use($count){
+            $row->nid = $count - $nid;
             $row['name']  = $row->km . ' - ' . $row->en;
             $row['image'] = ImageHelper::site(StudyCourse::path('image'), $row['image']);
             $row['study_program'] = StudyPrograms::where('id', $row->study_program_id)->pluck(app()->getLocale())->first();
@@ -166,9 +201,12 @@ class StudyCoursesController extends Controller
 
             return $row;
         });
+        if ($id) {
+            return $response;
+        }
         $data['response']['data'] = $response;
         $data['view']     = StudyCourse::path('view') . '.includes.list.index';
-        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study course');
+        $data['title']    = Users::role(app()->getLocale()) . ' | ' . __('List Study Course');
         return $data;
     }
 
@@ -212,7 +250,7 @@ class StudyCoursesController extends Controller
             'layout'  => request('layout', 'portrait'),
         ]);
 
-        config()->set('app.title', __('List Study course'));
+        config()->set('app.title', __('List Study Course'));
         config()->set('pages.parent', StudyCourse::path('view'));
 
         $data['instituteFilter']['data']           = Institute::whereIn('id', StudyCourse::groupBy('institute_id')->pluck('institute_id'))
@@ -276,7 +314,7 @@ class StudyCoursesController extends Controller
                 $row['logo'] = ImageHelper::site(Institute::path('image'), $row['logo']);
                 return $row;
             })->first();
-        config()->set('pages.title', __('List Study course'));
+        config()->set('pages.title', __('List Study Course'));
         return view(StudyCourse::path('view') . '.includes.report.index', $data);
     }
 }

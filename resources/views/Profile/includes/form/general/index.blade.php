@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="" name="scrollTo"></a>
+
                         <button
                             class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                             type="submit">

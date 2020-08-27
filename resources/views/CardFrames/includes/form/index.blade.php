@@ -74,7 +74,7 @@
                                                             @include(config("pages.parent").".includes.form.includes.a",['key'=>$key])
                                                         </div>
                                                     </div>
-                                                    <a href="" name="scrollTo"></a>
+
                                                 </div>
                                                 @if (!request()->ajax())
 

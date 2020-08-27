@@ -86,7 +86,7 @@
                                                                 class="btn btn-default" type="button">
                                                                 {{ __('Back') }}
                                                             </a>
-                                                            <a href="" name="scrollTo"></a>
+
                                                             <input class="btn btn-primary float-right" type="submit"
                                                                 value="{{ __('Save') }}" id="submit">
                                                         </div>
@@ -98,7 +98,7 @@
                                                                 class="btn btn-default" type="button">
                                                                 {{ __('Back') }}
                                                             </a>
-                                                            <a href="" name="scrollTo"></a>
+
 
                                                             <input class="btn btn-primary float-right" type="submit"
                                                                 value="{{ __('Update') }}" id="submit">
@@ -106,7 +106,7 @@
                                                     @else
                                                         @if (count($listData) > 1)
                                                             <div class="card-footer">
-                                                                <a href="" name="scrollTo"></a>
+
                                                                 <input class="btn btn-primary float-right" type="submit"
                                                                     value="{{ __('Update') }}" id="submit">
                                                             </div>

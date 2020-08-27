@@ -30,7 +30,7 @@
                             class="btn btn-default" type="button">{{ __("Back") }}</a>
                         @endif
 
-                        <a href="" name="scrollTo"></a>
+
                         <button href="{{config("pages.form.action.add")}}" class="btn btn-primary ml-auto pull-right"
                             data-for="save" id="btn-save" name="btn-save" type="submit">{{ __("Save") }}</button>
                     </div>

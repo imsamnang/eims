@@ -132,7 +132,6 @@ class StudyPrograms extends Model
                 $update = $table->update($values);
                 if ($update) {
 
-
                     if (request()->hasFile('image')) {
                         $image    = request()->file('image');
                         $image   = ImageHelper::uploadImage($image, self::path('image'));

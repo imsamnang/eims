@@ -58,7 +58,7 @@
                             @endif
                         </div>
                     </div>
-                    <a href="" name="scrollTo"></a>
+
                     <div class="card-footer">
                         @if (!request()->ajax())
                         <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview")."list")}}"

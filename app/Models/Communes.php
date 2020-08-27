@@ -68,7 +68,7 @@ class Communes extends Model
                 $values['district_id'] = request('district');
                 $values['name']        = trim(request('name'));
                 $values['description'] = trim(request('description'));
-                $values['image']       = null;
+
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {

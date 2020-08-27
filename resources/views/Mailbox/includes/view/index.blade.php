@@ -118,7 +118,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="" name="scrollTo"></a>
+
                                             <button class="btn btn-primary ml-auto float-right" type="submit">
                                                 {{ __("Send message") }}
 

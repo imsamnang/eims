@@ -32,7 +32,7 @@
                         <div class="col">
                             <div class="row">
                                 <div class="{{count($listData) > 1 ? "col-md-8":"col-md-12"}}">
-                                    <a href="" name="scrollTo"></a>
+
                                     <button class="btn btn-primary ml-auto float-right" type="submit">
 
                                         {{ __("Send message") }}

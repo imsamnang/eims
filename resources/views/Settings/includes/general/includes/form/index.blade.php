@@ -57,7 +57,7 @@
             <a href="{{url(config("pages.host").config("pages.path").config("pages.pathview"))}}"
                 class="btn btn-default" type="button">{{ __("Back") }}</a>
             @endif
-            <a href="" name="scrollTo"></a>
+
             <button class="btn btn-primary ml-auto float-right {{config("pages.form.role") == "view"? "d-none": ""}}"
                 type="submit">
                 @if (config("pages.form.role") == "add")

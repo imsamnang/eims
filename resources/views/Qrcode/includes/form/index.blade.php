@@ -80,7 +80,7 @@
 
 
                                             <div class="card-footer">
-                                                <a href="" name="scrollTo"></a>
+
                                                 @if (count(config('pages.form.data')) > 1)
                                                 <input class="btn btn-primary float-left" type="submit"
                                                     value="{{__('Make All')}}" id="submit-all">

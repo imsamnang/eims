@@ -14,7 +14,7 @@ class StudyCourse extends Model
      *  @param string $key
      *  @param string|array $key
      */
-     public static function path($key = null)
+    public static function path($key = null)
     {
         $table = (new self)->getTable();
         $tableUcwords = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
@@ -24,13 +24,13 @@ class StudyCourse extends Model
             'image'  => $table,
             'url'    => str_replace('_', '-', $table),
             'view'   => $tableUcwords,
-            'requests'   => 'App\Http\Requests\Form'.$tableUcwords,
-            'controller'   => 'App\Http\Controllers\\'.$tableUcwords.'Controller',
+            'requests'   => 'App\Http\Requests\Form' . $tableUcwords,
+            'controller'   => 'App\Http\Controllers\Study\\' . $tableUcwords . 'Controller',
         ];
         return $key ? @$path[$key] : $path;
     }
 
-     /**
+    /**
      *  @param string $key
      *  @param string $flag
      *  @return array
@@ -45,7 +45,7 @@ class StudyCourse extends Model
             'messages'    =>  $formRequests->messages(),
             'questions'   =>  $formRequests->questions(),
         ];
-        return $key? @$validate[$key] : $validate;
+        return $key ? @$validate[$key] : $validate;
     }
 
     public function institute()
@@ -74,7 +74,7 @@ class StudyCourse extends Model
 
             try {
                 $values['institute_id']                 = request('institute');
-                $values['name']                         = trim(request('name'));
+                $values['name']                         = request('name');
                 $values['study_faculty_id']             = request('study_faculty');
                 $values['course_type_id']               = request('course_type');
                 $values['study_modality_id']            = request('study_modality');
@@ -82,12 +82,12 @@ class StudyCourse extends Model
                 $values['study_overall_fund_id']        = request('study_overall_fund');
                 $values['curriculum_author_id']         = request('curriculum_author');
                 $values['curriculum_endorsement_id']    = request('curriculum_endorsement');
-                $values['description']                  = trim(request('description'));
-                $values['image']                        = null;
+                $values['description']                  = request('description');
+
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
+                        $values[$lang['code_name']] = request($lang['code_name']);
                     }
                 }
                 $add = self::insertGetId($values);
@@ -106,9 +106,9 @@ class StudyCourse extends Model
                         'message'   => __('Add Successfully'),
                     );
                 }
-           } catch (\Throwable $th) {
-                        throw $th;
-                    }
+            } catch (\Throwable $th) {
+                throw $th;
+            }
         }
         return $response;
     }
@@ -130,7 +130,7 @@ class StudyCourse extends Model
 
             try {
                 $values['institute_id']                 = request('institute');
-                $values['name']                         = trim(request('name'));
+                $values['name']                         = request('name');
                 $values['study_faculty_id']             = request('study_faculty');
                 $values['course_type_id']               = request('course_type');
                 $values['study_modality_id']            = request('study_modality');
@@ -138,37 +138,39 @@ class StudyCourse extends Model
                 $values['study_overall_fund_id']        = request('study_overall_fund');
                 $values['curriculum_author_id']         = request('curriculum_author');
                 $values['curriculum_endorsement_id']    = request('curriculum_endorsement');
-                $values['description']                  = trim(request('description'));
+                $values['description']                  = request('description');
 
                 if (config('app.languages')) {
                     foreach (config('app.languages') as $lang) {
-                        $values[$lang['code_name']] = trim(request($lang['code_name']));
+                        $values[$lang['code_name']] = request($lang['code_name']);
                     }
                 }
-                $update = self::where('id', $id)->update($values);
+                $table = self::where('id', $id);
+                $old = $table->first();
+                $update = $table->update($values);
                 if ($update) {
+
                     if (request()->hasFile('image')) {
-                        $image      = request()->file('image');
-                        self::updateImageToTable($id, ImageHelper::uploadImage($image, self::path('image')));
+                        $image    = request()->file('image');
+                        $image   = ImageHelper::uploadImage($image, self::path('image'));
+                        if (self::updateImageToTable($id, $image)['success']) {
+                            ImageHelper::delete(self::path('image'), $old->image);
+                        }
                     }
+
+                    $class  = self::path('controller');
+                    $controller = new $class;
                     $response       = array(
                         'success'   => true,
                         'type'      => 'update',
-                        'data'      => self::getData($id),
-                        'message'   => array(
-                            'title' => __('Success'),
-                            'text'  => __('Update Successfully'),
-                            'button'      => array(
-                                'confirm' => __('Ok'),
-                                'cancel'  => __('Cancel'),
-                            ),
-                        ),
-
+                        'data'      => [['id' => $id]],
+                        'html'      => view(self::path('view') . '.includes.tpl.tr', ['row' => $controller->list([], $id)[0]])->render(),
+                        'message'   => __('Update Successfully'),
                     );
                 }
-           } catch (\Throwable $th) {
-                        throw $th;
-                    }
+            } catch (\Throwable $th) {
+                throw $th;
+            }
         }
         return $response;
     }
@@ -192,9 +194,9 @@ class StudyCourse extends Model
                         'message'   => __('Update Successfully'),
                     );
                 }
-           } catch (\Throwable $th) {
-                        throw $th;
-                    }
+            } catch (\Throwable $th) {
+                throw $th;
+            }
         }
 
         return $response;

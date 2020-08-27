@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="" name="scrollTo"></a>
+
                         <div class="row">
                             {{-- <div class="col">
                                 <select class="form-control" data-toggle="select" id="teacher_or_student"

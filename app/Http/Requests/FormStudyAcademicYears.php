@@ -39,7 +39,7 @@ class FormStudyAcademicYears extends FormRequest
     public function attributes()
     {
 
-        $attributes['name']    = __('Study academic years');
+        $attributes['name']    = __('Study Academic Years');
         if (config('app.languages')) {
             foreach (config('app.languages') as $lang) {
                 $attributes[$lang['code_name']] =  $lang['translate_name'];

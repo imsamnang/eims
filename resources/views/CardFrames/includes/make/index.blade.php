@@ -106,7 +106,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <a href="" name="scrollTo"></a>
+
                                                 @if (count($response['data']) > 1)
                                                 <input class="btn btn-primary float-left" type="submit"
                                                     value="{{__('Adjust​ All')}}" id="submit-all">

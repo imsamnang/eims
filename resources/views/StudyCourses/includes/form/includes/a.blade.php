@@ -46,7 +46,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_program" name="study_program" title="Simple select"
                     data-text="{{ __("Add new option") }}" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_program_id")}}"
                     {{config("pages.form.validate.rules.study_program") ? "required" : ""}}>
