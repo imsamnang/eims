@@ -25,7 +25,7 @@
                         @endif
                     </label>
 
-                    <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                    <select class="form-control" data-toggle="select" id="institute" 
                         name="institute" data-text="{{ __('Add new option') }}" data-placeholder=""
                         data-select-value="1" {{ config('pages.form.validate.rules.institute') ? 'required' : '' }}>
                         @foreach ($institute['data'] as $o)
@@ -48,7 +48,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="designation" title="Simple select"
+                <select class="form-control" data-toggle="select" id="designation" 
                     name="designation" data-text="{{ __('Add new option') }}" data-allow-clear="true"
                     data-select-value="{{ config('pages.form.data.staff_institute.designation.id') }}"
                     data-placeholder="">
@@ -71,7 +71,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="status" title="Simple select" name="status"
+                <select class="form-control" data-toggle="select" id="status"  name="status"
                     data-text="{{ __('Add new option') }}" data-allow-clear="true"
                     data-select-value="{{ config('pages.form.data.staff_status.id') }}" data-placeholder="">
                     @foreach ($status['data'] as $o)

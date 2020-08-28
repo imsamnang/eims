@@ -17,7 +17,7 @@ class CreateActivityFeedNotifacationsTable extends Migration
             $table->bigIncrements('id');
             $table->enum('type',['post','reaction','comment','replied','share'])->nullable();
             $table->bigInteger('node_id')->nullable();
-            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'))->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->timestamp('updated_at')->nullable();
         });
     }

@@ -14,14 +14,14 @@ class CourseTyesTableSeeder extends Seeder
     {
         CourseTypes::insert([
             [
-                'instiute_id' => 1,
+                'institute_id' => 1,
                 'name'        => 'Short Course',
                 'en'          => 'Short Course',
                 'km'          => 'វគ្គខ្លី',
 
             ],
             [
-                'instiute_id' => 1,
+                'institute_id' => 1,
                 'name'        => 'Long Course',
                 'en'          => 'Long Course',
                 'km'          => 'វគ្គវែង',

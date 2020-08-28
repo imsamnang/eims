@@ -61,7 +61,7 @@
             <form role="edit" class="needs-validation" method="POST"
                 action="{{config('pages.form.data.'.$key.'.action.edit',config("pages.form.action.detect"))}}"
                 id="form-edit-attendance" enctype="multipart/form-data">
-                <select class="form-control" data-toggle="select" id="attendance_type" title="Simple select"
+                <select class="form-control" data-toggle="select" id="attendance_type" 
                     data-minimum-results-for-search="Infinity" data-placeholder="">
                     @foreach($attendances_type["data"] as $o)
                     <option value="{{$o["id"]}}" data-absent="{{$o["credit_absent"]}}">{{ $o["name"]}}</option>

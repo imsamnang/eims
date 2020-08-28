@@ -16,7 +16,7 @@
                     </span>
                 </label>
 
-                <select class="form-control" data-toggle="select" id="student" title="Simple select"
+                <select class="form-control" data-toggle="select" id="student" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.node.id")}}"
                     {{config("pages.form.validate.rules.student") ? "required" : ""}}>

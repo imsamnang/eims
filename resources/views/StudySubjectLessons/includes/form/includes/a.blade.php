@@ -33,10 +33,10 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
+                        <select class="form-control" data-toggle="select" id="staff_teach_subject" 
 
 
-                            data-text="{{ __("Add new option") }}"
+                            
                             data-placeholder=""
                             data-select-value="{{config("pages.form.data.staff_teach_subject.id")}}"
                             {{config("pages.form.validate.rules.staff_teach_subject") ? "required" : ""}}>

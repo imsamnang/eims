@@ -24,8 +24,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="institute" 
+                             data-placeholder=""
                             data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                             {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                             @foreach($institute["data"] as $o)
@@ -198,7 +198,7 @@
                         </label>
 
                         <select class="form-control check-reference" data-toggle="select" id="role"
-                            title="Simple select" data-text="{{ __("Add new option") }}" data-placeholder=""
+                              data-placeholder=""
                             data-select-value="{{config("pages.form.data.".$key.".role_id",9)}}"
                             {{config("pages.form.validate.rules.role") ? "required" : ""}}>
                             @foreach($role["data"] as $o)
@@ -221,8 +221,8 @@
 
                         </label>
 
-                        <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                        <select disabled class="form-control" data-toggle="select" id="reference" 
+                             data-placeholder=""
                             data-select-value="{{config("pages.form.data.".$key.".student_id")}}"
                             {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                             @foreach($student["data"] as $o)
@@ -244,8 +244,8 @@
 
                         </label>
 
-                        <select disabled class="form-control" data-toggle="select" id="reference" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                        <select disabled class="form-control" data-toggle="select" id="reference" 
+                             data-placeholder=""
                             data-select-value="{{config("pages.form.data.".$key.".staff_id")}}"
                             {{config("pages.form.validate.rules.staff") ? "required" : ""}}>
                             @foreach($staff["data"] as $o)

@@ -24,7 +24,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-school"></i></span>
                                 </div>
-                                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                                <select class="form-control" data-toggle="select" id="institute" 
                                     data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                                     {{(array_key_exists("institute", config("pages.form.validate.rules"))) ? "required" : ""}}>
@@ -59,7 +59,7 @@
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
                                 <select class="form-control" data-toggle="select" id="type" name="type"
-                                    title="Simple select" data-minimum-results-for-search="Infinity" data-placeholder=""
+                                     data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".type")}}">
                                     <option value="student">
                                         {{ __("Student")}}
@@ -93,7 +93,7 @@
                                     <span class="input-group-text"><i class="fas fa-columns"></i></span>
                                 </div>
                                 <select class="form-control" data-change-text="frame_foreground,frame_background"
-                                    data-toggle="select" id="layout" title="Simple select" name="layout"
+                                    data-toggle="select" id="layout"  name="layout"
                                     data-minimum-results-for-search="Infinity" data-placeholder=""
                                     data-select-value="{{config("pages.form.data.".$key.".layout")}}">
                                     <option data-text="(250x350 pixels)" value="vertical">

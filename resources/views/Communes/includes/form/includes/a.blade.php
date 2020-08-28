@@ -23,8 +23,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="province" 
+                             data-allow-clear="true" data-placeholder=""
                             name="province" data-select-value="{{config("pages.form.data.".$key.".province_id")}}"
                             data-append-to="#district"
                             data-append-url="{{$districts["action"]["list"]}}?provinceId="
@@ -54,8 +54,8 @@
                         </label>
 
                         <select disabled {{config("pages.form.data.".$key.".district_id")? "" :"disabled"}}
-                            class="form-control" data-toggle="select" id="district" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            class="form-control" data-toggle="select" id="district" 
+                             data-allow-clear="true" data-placeholder=""
                             name="district" data-select-value="{{config("pages.form.data.".$key.".district_id")}}"
                             {{config("pages.form.validate.rules.district") ? "required" : ""}}>
                             @foreach($districts["data"] as $o)

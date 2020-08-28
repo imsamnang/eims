@@ -128,8 +128,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-flag"></i></span>
                         </div>
-                        <select class="form-control" data-toggle="select" id="nationality" name="nationality" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="nationality" name="nationality" 
+                             data-allow-clear="true" data-placeholder=""
                             data-select-value="{{config("pages.form.data.nationality.id")}}">
                             @foreach($nationality["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -151,8 +151,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="mother_tong" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="mother_tong" 
+                     data-allow-clear="true" data-placeholder=""
                     name="mother_tong" data-select-value="{{config("pages.form.data.mother_tong.id")}}">
                     @foreach($mother_tong["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -277,8 +277,8 @@
                 </label>
 
 
-                <select class="form-control" data-toggle="select" id="marital" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder="" name="marital"
+                <select class="form-control" data-toggle="select" id="marital" 
+                     data-allow-clear="true" data-placeholder="" name="marital"
                     data-select-value="{{config("pages.form.data.marital.id")}}">
                     @foreach($marital["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

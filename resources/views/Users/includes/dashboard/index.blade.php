@@ -58,7 +58,7 @@
                         <div class="row">
                             {{-- <div class="col">
                                 <select class="form-control" data-toggle="select" id="teacher_or_student"
-                                    title="Simple select" data-text="{{ __("Add new option") }}"
+                                     
                             data-placeholder=""
                             name="teacher_or_student"
                             {{config("pages.form.validate.rules.teacher_or_student") ? "required" : ""}}>

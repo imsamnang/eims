@@ -23,10 +23,10 @@
                     <div class="form-row">
 
                         <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
+                            <select class="form-control" data-toggle="select" id="quiz" 
                                  data-allow-clear="true"
 
-                                data-text="{{ __("Add new option") }}"
+                                
                                 data-placeholder=""
                                 data-select-value="{{request('quizId')}}">
                                 @foreach($quiz["data"] as $o)

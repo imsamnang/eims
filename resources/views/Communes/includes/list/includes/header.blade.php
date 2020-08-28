@@ -50,7 +50,7 @@
                 <div class="form-row">
                     @isset($provinces)
                     <div class="col-md-4 mb-3">
-                        <select class="form-control" data-toggle="select" id="province" title="Simple select"
+                        <select class="form-control" data-toggle="select" id="province" 
                             data-allow-clear="true" data-add-text="{{ __("Add new option") }}" name="provinceId"
                             data-placeholder="{{__('Province')}}" data-select-value="{{request('provinceId')}}"
                             {{isset($districts) ? " data-append-to=#district data-append-url=".$districts["action"]["list"]."?provinceId=" :""}}>
@@ -65,7 +65,7 @@
                     @isset($districts)
                     <div class="col-md-4 mb-3">
                         <select disabled {{request('districtId') ? "" : "disabled"}} class="form-control"
-                            data-toggle="select" id="district" title="Simple select" data-allow-clear="true"
+                            data-toggle="select" id="district"  data-allow-clear="true"
                             data-add-text="{{ __("Add new option") }}" data-placeholder="{{__('District')}}"
                             name="districtId" data-select-value="{{request('districtId')}}"
                             {{isset($communes) ? " data-append-to=#commune data-append-url=".$communes["action"]["list"]."?districtId=":""}}>
@@ -80,7 +80,7 @@
                     @isset($communes)
                     <div class="col-md-4 mb-3">
                         <select disabled {{request('communeId') ? "" : "disabled"}} class="form-control"
-                            data-toggle="select" id="commune" title="Simple select" data-allow-clear="true"
+                            data-toggle="select" id="commune"  data-allow-clear="true"
                             data-add-text="{{ __("Add new option") }}" data-placeholder="{{__('Commune')}}"
                             data-select-value="{{request('communeId')}}" ​ name="communeId">
                             @foreach($communes["data"] as $o)

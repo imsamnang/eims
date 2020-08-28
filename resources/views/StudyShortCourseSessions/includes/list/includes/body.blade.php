@@ -1,6 +1,6 @@
 <div class="card-body p-0">
     <div class="table-responsive py-4">
-        <table class="table table-flush" data-toggle="datatable-ajax">
+        <table id="datatable-basic" class="table table-flush">
             <thead class="thead-light">
                 <tr>
                     <th>
@@ -12,27 +12,22 @@
                         </div>
                     </th>
                     <th>
-                        {{__("Id")}}​</th>
+                        {{__("Id")}}​</th>                    
                     <th>
-                        {{__("Study subjects")}}​</th>
-                    <th>
-                        {{__("Credit hour")}}​
+                        {{__('Study Generation')}}​
                     </th>
                     <th>
-                        {{__("Students")}}​
-                    </th>
-                    <th>
-                        {{__("Study Session")}}​
-                    </th>
-
-                    <th>
-                        {{__("Study start & Study end")}}​</th>
-                    <th>
-                        {{__("Image")}}​</th>
+                        {{__('Study Subjects')}}​
+                    </th>                    
                     <th></th>
-
                 </tr>
+
             </thead>
+            <tbody>
+                @foreach ($response['data'] as $row)
+                @include(config("pages.parent").".includes.tpl.tr",['row'=>$row])
+                @endforeach
+            </tbody>
         </table>
 
     </div>

@@ -52,8 +52,8 @@
         enctype="multipart/form-data">
         <div class="row flex-lg-row flex-md-row flex-sm-row-reverse flex-xs-row-reverse">
             <div class="col-md-6 mb-3">
-                <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                    data-allow-clear="true" data-text="{{ __("Add new option") }}" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="study_course_session" 
+                    data-allow-clear="true"  data-placeholder=""
                     name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                     @foreach($study_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

@@ -20,8 +20,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="quiz" 
+                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".quiz_id")}}"
                     {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                     @foreach($quiz["data"] as $o)
@@ -76,8 +76,8 @@
                         </span>
                     </label>
 
-                    <select multiple class="form-control" data-toggle="select" id="student" title="Simple select"
-                        data-text="{{ __("Add new option") }}" data-placeholder=""
+                    <select multiple class="form-control" data-toggle="select" id="student" 
+                         data-placeholder=""
                         data-select-value="{{config("pages.form.data.".$key.".student_study_course_id")}}"
                         {{config("pages.form.validate.rules.student") ? "required" : ""}}>
                         @foreach($student["data"] as $o)
@@ -103,7 +103,7 @@
                         </span>
                     </label>
                     <select multiple class="form-control" data-toggle="select" id="study_course_session"
-                        title="Simple select" data-text="{{ __("Add new option") }}" data-placeholder=""
+                          data-placeholder=""
                         name="study_course_session[]"
                         data-select-value="{{request('course-sessionId',config("pages.form.data.".$key.".study_course_session_id"))}}">
                         @foreach($study_course_session["data"] as $o)

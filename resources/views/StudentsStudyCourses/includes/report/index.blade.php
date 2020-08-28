@@ -24,7 +24,7 @@
                                 <label style="display: inline-block;width:100%"
                                     for="institute">{{ __('Institute') }}</label>
                                 <select style="display: inline-block" class="form-control" data-toggle="select"
-                                    id="institute" title="Simple select" data-allow-clear="true"
+                                    id="institute"  data-allow-clear="true"
                                     data-text="{{ __('Add new option') }}" data-placeholder=""
                                     data-select-value="{{ request('instituteId') }}" name="instituteId">
                                     <option value="">{{ __('Choose') }}</option>
@@ -40,7 +40,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Program') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select" id="program"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __('Add new option') }}"
+                                 data-allow-clear="true" data-text="{{ __('Add new option') }}"
                                 data-placeholder="" data-select-value="{{ request('programId') }}" name="programId">
                                 <option value="">{{ __('Choose') }}</option>
                                 @foreach ($programFilter['data'] as $o)
@@ -53,7 +53,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Course') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select" id="course"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __('Add new option') }}"
+                                 data-allow-clear="true" data-text="{{ __('Add new option') }}"
                                 data-placeholder="" data-select-value="{{ request('courseId') }}" name="courseId">
                                 <option value="">{{ __('Choose') }}</option>
                                 @foreach ($courseFilter['data'] as $o)
@@ -66,7 +66,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Generation') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
-                                id="generation" title="Simple select" data-allow-clear="true"
+                                id="generation"  data-allow-clear="true"
                                 data-text="{{ __('Add new option') }}" data-placeholder=""
                                 data-select-value="{{ request('generationId') }}" name="generationId">
                                 <option value="">{{ __('Choose') }}</option>
@@ -80,7 +80,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Academic Years') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
-                                id="academic" title="Simple select" data-allow-clear="true"
+                                id="academic"  data-allow-clear="true"
                                 data-text="{{ __('Add new option') }}" data-placeholder=""
                                 data-select-value="{{ request('academicId') }}" name="academicId">
                                 <option value="">{{ __('Choose') }}</option>
@@ -94,7 +94,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Semester') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select"
-                                id="semester" title="Simple select" data-allow-clear="true"
+                                id="semester"  data-allow-clear="true"
                                 data-text="{{ __('Add new option') }}" data-placeholder=""
                                 data-select-value="{{ request('semesterId') }}" name="semesterId">
                                 <option value="">{{ __('Choose') }}</option>
@@ -108,7 +108,7 @@
                             <label style="display: inline-block;width:100%"
                                 for="institute">{{ __('Study Session') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select" id="session"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __('Add new option') }}"
+                                 data-allow-clear="true" data-text="{{ __('Add new option') }}"
                                 data-placeholder="" data-select-value="{{ request('sessionId') }}" name="sessionId">
                                 <option value="">{{ __('Choose') }}</option>
                                 @foreach ($sessionFilter['data'] as $o)
@@ -131,7 +131,7 @@
                         <div>
                             <label style="display: inline-block;width:100%" for="size">{{ __('Size') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select" id="size"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __('Add new option') }}"
+                                 data-allow-clear="true" data-text="{{ __('Add new option') }}"
                                 data-placeholder="" data-select-value="{{ request('size') }}" name="size">
                                 <option {{ request('size') == 'A3' ? 'selected' : '' }} value="A3">
                                     {{ __('A3') }}
@@ -147,7 +147,7 @@
                         <div>
                             <label style="display: inline-block;width:100%" for="layout">{{ __('Layout') }}</label>
                             <select style="display: inline-block" class="form-control" data-toggle="select" id="layout"
-                                title="Simple select" data-allow-clear="true" data-text="{{ __('Add new option') }}"
+                                 data-allow-clear="true" data-text="{{ __('Add new option') }}"
                                 data-placeholder="" data-select-value="{{ request('layout') }}" name="layout">
                                 <option {{ request('layout') == 'portrait' ? 'selected' : '' }} value="portrait">
                                     {{ __('Portrait') }}

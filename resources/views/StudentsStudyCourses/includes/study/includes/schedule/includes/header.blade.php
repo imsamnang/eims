@@ -16,10 +16,10 @@
                 <div class="form-row">
                     <div class="col-xl-8 mb-3">
                         <select class="form-control" data-toggle="select" id="study_course_session"
-                            title="Simple select" data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
+                             data-url="{{$study_course_session["pages"]["form"]["action"]["add"]}}"
                             data-allow-clear="true"
 
-                            data-text="{{ __("Add new option") }}"
+                            
                             data-placeholder=""
                             name="course-sessionId" data-select-value="{{request('course-sessionId')}}">
                             @foreach($study_course_session["data"] as $o)

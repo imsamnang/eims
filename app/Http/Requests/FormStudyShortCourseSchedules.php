@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FormStudyShortCourseSchedule extends FormRequest
+class FormStudyShortCourseSchedules extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,12 @@ class FormStudyShortCourseSchedule extends FormRequest
     public function rules()
     {
         return [
-            'institute'            => 'required',
-            'study_generation'     => 'required',
-            'study_subject'        => 'required',
+            'institute'         => 'required',
+            'study_generation'  => 'required',
+            'study_subject'     => 'required',
+            'study_session'     => 'required',
+            'study_start'       => 'required',
+            'study_end'         => 'required'
         ];
     }
 
@@ -36,8 +39,11 @@ class FormStudyShortCourseSchedule extends FormRequest
     {
         return [
             'institute'         => __('Institute'),
-            'study_generation'     => __('Study generation'),
-            'study_subject'         => __('Study subjects'),
+            'study_generation'  => __('Study Generation'),
+            'study_subject'     => __('Study subjects'),
+            'study_session'     => __('Study session'),
+            'study_start'       => __('Study start'),
+            'study_end'         => __('Study end'),
         ];
     }
 

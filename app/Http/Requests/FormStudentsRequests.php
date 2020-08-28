@@ -42,7 +42,7 @@ class FormStudentsRequests extends FormRequest
         $attributes['institute']          = __('Institute');
         $attributes['study_program']      = __('Study program');
         $attributes['study_course']       = __('Study course');
-        $attributes['study_generation']   = __('Study generation');
+        $attributes['study_generation']   = __('Study Generation');
         $attributes['study_academic_year'] = __('Study academic​ year');
         $attributes['study_semester']     = __('Study semester');
         $attributes['study_session']      = __('Study session');

@@ -38,7 +38,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="course_type" title="Simple select"
+                <select class="form-control" data-toggle="select" id="course_type" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".course_type_id",request("courseId"))}}">
                     @foreach($course_type["data"] as $o)

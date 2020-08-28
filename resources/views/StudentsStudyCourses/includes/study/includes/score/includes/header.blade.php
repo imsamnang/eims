@@ -16,10 +16,10 @@
                 <div class="col-xl-8 col-12">
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
+                            <select class="form-control" data-toggle="select" id="study_course_session" 
                                 data-allow-clear="true"
 
-                                data-text="{{ __("Add new option") }}"
+                                
                                 data-placeholder=""
                                 name="course-sessionId"
                                 data-select-value="{{request('course-sessionId')}}">

@@ -94,8 +94,8 @@
                         <div class="form-row">
                             @if (Auth::user()->role_id == 1)
                             <div class="col-md-5 mb-3">
-                                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                <select class="form-control" data-toggle="select" id="institute" 
+                                    data-allow-clear="true" 
                                     data-placeholder="{{__('Institute')}}" name="instituteId"
                                     data-select-value="{{request('instituteId')}}">
                                     @foreach($instituteFilter["data"] as $o)
@@ -106,8 +106,8 @@
                             @endif
 
                             <div class="col-md-3 mb-3">
-                                <select class="form-control" data-toggle="select" id="generation" title="Simple select"
-                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                <select class="form-control" data-toggle="select" id="generation" 
+                                    data-allow-clear="true" 
                                     data-placeholder="{{__('Study Generation')}}" name="generationId"
                                     data-select-value="{{request('generationId')}}">
                                     @foreach($generationFilter["data"] as $o)
@@ -117,8 +117,8 @@
                             </div>
 
                             <div class="col-md-3 mb-3">
-                                <select class="form-control" data-toggle="select" id="session" title="Simple select"
-                                    data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                                <select class="form-control" data-toggle="select" id="session" 
+                                    data-allow-clear="true" 
                                     data-placeholder="{{__('Study Session')}}" name="sessionId"
                                     data-select-value="{{request('sessionId')}}">
                                     @foreach($sessionFilter["data"] as $o)

@@ -19,8 +19,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true"
+                <select class="form-control" data-toggle="select" id="province" 
+                     data-allow-clear="true"
                     data-placeholder="" name="province"
                     data-select-value="{{config("pages.form.data.place_of_birth.province.id")}}"
                     data-append-to="#district"
@@ -47,8 +47,8 @@
 
 
                 <select disabled {{config("pages.form.data.place_of_birth.district.id")? "" :"disabled"}}
-                    class="form-control" data-toggle="select" id="district" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true"
+                    class="form-control" data-toggle="select" id="district" 
+                     data-allow-clear="true"
                     data-placeholder="" name="district"
                     data-select-value="{{config("pages.form.data.place_of_birth.district.id")}}"
                     data-append-to="#commune"
@@ -75,8 +75,8 @@
 
 
                 <select disabled {{config("pages.form.data.place_of_birth.commune.id")? "" :"disabled"}}
-                    class="form-control" data-toggle="select" id="commune" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true"
+                    class="form-control" data-toggle="select" id="commune" 
+                     data-allow-clear="true"
                     data-placeholder="" name="commune"
                     data-select-value="{{config("pages.form.data.place_of_birth.commune.id")}}"
                     data-append-to="#village"
@@ -104,8 +104,8 @@
 
 
                 <select disabled {{config("pages.form.data.place_of_birth.village.id")? "" :"disabled"}}
-                    class="form-control" data-toggle="select" id="village" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true"
+                    class="form-control" data-toggle="select" id="village" 
+                     data-allow-clear="true"
                     data-placeholder="" name="village"
                     data-select-value="{{config("pages.form.data.place_of_birth.village.id")}}"
                     {{config("pages.form.validate.rules.village") ? "required" : ""}}>

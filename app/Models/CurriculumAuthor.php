@@ -48,7 +48,7 @@ class CurriculumAuthor extends Model
 
     public function institute()
     {
-        return $this->hasMany(Institute::class,  'id', 'institute_id');
+        return $this->belongsTo(Institute::class, 'institute_id');
     }
 
     public static function addToTable()

@@ -18,7 +18,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_course_session" name="study_course_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_course_session" name="study_course_session" 
                     data-text="{{ __('Add new option') }}" data-placeholder=""
                     data-select-value="{{ config('pages.form.data.'.$key.'.study_course_session_id') }}">
                     @foreach ($study_course_session['data'] as $o)
@@ -72,7 +72,7 @@
                                             <input type="hidden" name="days[]" value="{{ $routine['day'] }}">
                                             <div class="m-1">
                                                 <select class="form-control form-control-sm" data-toggle="select"
-                                                    id="teachers" title="Simple select" name="teachers[]"
+                                                    id="teachers"  name="teachers[]"
                                                     data-text="{{ __('Add new option') }}" data-placeholder=""
                                                     data-select-value="{{ $routine['teacher'] }}"
                                                     {{config('pages.form.validate.rules.teachers') ? 'required' : '' }}>
@@ -86,7 +86,7 @@
 
                                             <div class="m-1">
                                                 <select class="form-control form-control-sm" data-toggle="select"
-                                                    id="study_subjects" title="Simple select"
+                                                    id="study_subjects" 
                                                     data-text="{{ __('Add new option') }}" data-placeholder=""
                                                     name="study_subjects[]"
                                                     data-select-value="{{ $routine['study_subjects'] }}"
@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="m-1">
                                                 <select class="form-control form-control-sm" data-toggle="select"
-                                                    id="study_class" title="Simple select" data-placeholder=""
+                                                    id="study_class"  data-placeholder=""
                                                     name="study_class[]"
                                                     data-select-value="{{ $routine['study_class'] }}"
                                                     {{ config('pages.form.validate.rules.study_class') ? 'required' : '' }}>
@@ -144,7 +144,7 @@
                                         @if ($i == 7 && $day == 1)
                                         <div class="m-1">
                                             <select class="form-control form-control-sm" data-toggle="select"
-                                                id="teachers" title="Simple select" name="teachers[]"
+                                                id="teachers"  name="teachers[]"
                                                 data-text="{{ __('Add new option') }}" data-placeholder="{{__('Teacher')}}"
                                                 data-select-value=""
                                                 {{config('pages.form.validate.rules.teachers') ? 'required' : '' }}>
@@ -158,7 +158,7 @@
 
                                         <div class="m-1">
                                             <select class="form-control form-control-sm" data-toggle="select"
-                                                id="study_subjects" title="Simple select"
+                                                id="study_subjects" 
                                                 data-text="{{ __('Add new option') }}" data-placeholder="{{__('Subjects')}}"
                                                 name="study_subjects[]"
                                                 data-select-value=""
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="m-1">
                                             <select class="form-control form-control-sm" data-toggle="select"
-                                                id="study_class" title="Simple select" data-placeholder="{{__('Class')}}"
+                                                id="study_class"  data-placeholder="{{__('Class')}}"
                                                 name="study_class[]"
                                                 data-select-value=""
                                                 {{ config('pages.form.validate.rules.study_class') ? 'required' : '' }}>
@@ -194,7 +194,7 @@
 
             <div class="d-none tsc-template">
                 <div class="m-1">
-                    <select data-placeholder="{{__('Teacher')}}" class="form-control form-control-sm" id="teachers" title="Simple select"
+                    <select data-placeholder="{{__('Teacher')}}" class="form-control form-control-sm" id="teachers" 
                         data-text="{{ __('Add new option') }}" name="teachers[]"
                         data-select-value="{{ config('pages.form.data.teachers') }}"
                         {{ config('pages.form.validate.rules.teachers') ? 'required' : '' }}>
@@ -207,7 +207,7 @@
                 </div>
 
                 <div class="m-1">
-                    <select class="form-control form-control-sm" id="study_subjects" title="Simple select"
+                    <select class="form-control form-control-sm" id="study_subjects" 
                     data-text="{{ __('Add new option') }}" data-placeholder="{{__('Subjects')}}" name="study_subjects[]"
                         data-select-value="{{ config('pages.form.data.study_subjects') }}"
                         {{config('pages.form.validate.rules.study_subjects') ? 'required' : '' }}>
@@ -218,7 +218,7 @@
                     </select>
                 </div>
                 <div class="m-1">
-                    <select class="form-control form-control-sm" id="study_class" title="Simple select"
+                    <select class="form-control form-control-sm" id="study_class" 
                         data-placeholder="{{__('Class')}}" name="study_class[]" data-select-value=""
                         {{config('pages.form.validate.rules.study_class') ? 'required' : '' }}>
                         @foreach ($study_class['data'] as $o)

@@ -35,8 +35,8 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="study_course_session" 
+                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_course_session.id")}}">
                     @foreach($study_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -80,7 +80,7 @@
                             data-merge="{{$d["teacher"]["id"]}}-{{$d["study_subject"]["id"]}}-{{$d["study_subject"]["id"]}}">
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="teacher"
-                                    title="Simple select" data-text="{{ __("Add new option") }}" data-placeholder=""
+                                      data-placeholder=""
                                     data-select-value="{{$d["teacher"]["id"]}}"
                                     {{(array_key_exists("teacher",config("pages.form.validate.rules"))) ? "required" : ""}}>
                                     @foreach($teacher["data"] as $o)
@@ -93,7 +93,7 @@
 
                             <div class="m-1">
                                 <select class="form-control form-control-sm" data-toggle="select" id="study_class"
-                                    title="Simple select" data-placeholder="" name="study_class[]"
+                                     data-placeholder="" name="study_class[]"
                                     data-select-value="{{$d["study_class"]["id"]}}"
                                     {{(array_key_exists("study_class",config("pages.form.validate.rules"))) ? "required" : ""}}>
                                     @foreach($study_class["data"] as $o)
@@ -138,8 +138,8 @@
 
             <div class="d-none tsc-template">
                 <div class="m-1">
-                    <select class="form-control form-control-sm" id="teacher" title="Simple select"
-                        data-text="{{ __("Add new option") }}" data-placeholder=""
+                    <select class="form-control form-control-sm" id="teacher" 
+                         data-placeholder=""
                         data-select-value="{{config("pages.form.data.teacher")}}"
                         {{(array_key_exists("teacher",config("pages.form.validate.rules"))) ? "required" : ""}}>
                         @foreach($teacher["data"] as $o)
@@ -151,8 +151,8 @@
                 </div>
 
                 <div class="m-1">
-                    <select class="form-control form-control-sm" id="study_subject" title="Simple select"
-                        data-text="{{ __("Add new option") }}" data-placeholder="" name="study_subject[]"
+                    <select class="form-control form-control-sm" id="study_subject" 
+                         data-placeholder="" name="study_subject[]"
                         data-select-value="{{config("pages.form.data.study_subject")}}"
                         {{(array_key_exists("study_subject",config("pages.form.validate.rules"))) ? "required" : ""}}>
                         @foreach($study_subject["data"] as $o)
@@ -162,7 +162,7 @@
                     </select>
                 </div>
                 <div class="m-1">
-                    <select class="form-control form-control-sm" id="study_class" title="Simple select"
+                    <select class="form-control form-control-sm" id="study_class" 
                         data-placeholder="" name="study_class[]" data-select-value=""
                         {{(array_key_exists("study_class",config("pages.form.validate.rules"))) ? "required" : ""}}>
                         @foreach($study_class["data"] as $o)

@@ -14,11 +14,13 @@ class CurriculumAuthorTableSeeder extends Seeder
     {
         CurriculumAuthor::insert([
             [
+                'institute_id' => 1,
                 'name'  => 'Institution own curriculum',
                 'en'    => 'Institution own curriculum',
                 'km'    => 'គ្រឹះស្ថានបង្កើតកម្មវិធីសិក្សាដោយខ្លួនឯង',
             ],
             [
+                'institute_id' => 1,
                 'name'  => 'NTTI based on NCS',
                 'en'    => 'NTTI based on NCS',
                 'km'    => 'NTTI ស្របតាមស្តង់ដារជាតិសមត្ថភាព',

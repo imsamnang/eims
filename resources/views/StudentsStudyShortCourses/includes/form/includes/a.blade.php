@@ -17,8 +17,8 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_short_course_session" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder="" name="study_short_course_session"
+                <select class="form-control" data-toggle="select" id="study_short_course_session" 
+                     data-placeholder="" name="study_short_course_session"
                     data-select-value="{{config("pages.form.data.".$key.".stu_sh_c_session_id")}}">
                     @foreach($study_short_course_session["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -37,7 +37,7 @@
                 </label>
 
                 <select {{config("pages.form.role") == "add" ? "multiple" : ""}} class="form-control"
-                    data-toggle="select" id="students" title="Simple select" data-text="{{ __("Add new option") }}"
+                    data-toggle="select" id="students"  
                     data-placeholder="" name="students[]"
                     data-select-value="{{config("pages.form.data.".$key.".stu_sh_c_request_id",request("studRequestId"))}}"
                     {{config("pages.form.validate.rules.students[]") ? "required" : ""}}>

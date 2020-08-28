@@ -15,7 +15,7 @@
                     @endif
                 </label>
                 <select class="form-control" data-toggle="select" id="study_course_schedule" name="study_course_schedule"
-                    title="Simple select" data-text="{{ __('Add new option') }}" data-placeholder=""
+                     data-text="{{ __('Add new option') }}" data-placeholder=""
                     data-select-value="{{ config('pages.form.data.'.$key.'.study_course_schedule_id') }}">
                     @foreach ($study_course_schedule['data'] as $o)
                         <option data-src="{{ $o['image'] }}" value="{{ $o['id'] }}">{{ $o['name'] }}</option>
@@ -31,7 +31,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_session" name="study_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_session" name="study_session" 
                     data-text="{{ __('Add new option') }}" data-placeholder=""
                     data-select-value="{{ config('pages.form.data.'.$key.'.study_session_id') }}">
                     @foreach ($study_session['data'] as $o)

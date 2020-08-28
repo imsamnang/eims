@@ -22,7 +22,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                <select class="form-control" data-toggle="select" id="institute" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
@@ -44,7 +44,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_program" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_program" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_program.id",request("programId"))}}" data-append-to="#study_course"
@@ -71,7 +71,7 @@
                 </label>
 
                 <select {{$study_program['success']? "" : "disabled" }} class="form-control" data-toggle="select"
-                    id="study_course" title="Simple select"
+                    id="study_course" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_course.id",request("courseId"))}}">
@@ -95,7 +95,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_generation" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_generation" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_generation.id",request("generationId"))}}">
@@ -119,7 +119,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_academic_year" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_academic_year" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_academic_year.id",request("yearId"))}}">
@@ -141,7 +141,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_semester" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_semester" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_semester.id",request("semesterId"))}}">
@@ -164,7 +164,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_session" 
 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">

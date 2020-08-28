@@ -41,14 +41,14 @@ class StudySession extends Model
             'rules'       =>  $formRequests->rules($flag),
             'attributes'  =>  $formRequests->attributes(),
             'messages'    =>  $formRequests->messages(),
-            'questions'   =>  $formRequests->questions(),
+            'questions'   =>  $formRequests->questions($flag),
         ];
         return $key ? @$validate[$key] : $validate;
     }
 
     public function institute()
     {
-        return $this->hasMany(Institute::class,  'id', 'institute_id');
+        return $this->belongsTo(Institute::class, 'institute_id');
     }
 
     public static function addToTable()

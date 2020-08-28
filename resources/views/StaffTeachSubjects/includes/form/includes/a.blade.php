@@ -26,8 +26,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="institute"
+                        <select class="form-control" data-toggle="select" id="institute" 
+                             data-placeholder="" name="institute"
                             data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                             {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                             @foreach($institute["data"] as $o)
@@ -49,8 +49,8 @@
 
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="staff" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="staff"
+                        <select class="form-control" data-toggle="select" id="staff" 
+                             data-placeholder="" name="staff"
                             data-select-value="{{config("pages.form.data.".$key.".staff_id")}}">
                             @foreach($staff["data"] as $o)
                             <option data-src="{{$o["photo"]}}" value="{{$o["id"]}}">
@@ -69,8 +69,8 @@
 
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="study_subject" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="study_subject"
+                        <select class="form-control" data-toggle="select" id="study_subject" 
+                             data-placeholder="" name="study_subject"
                             data-select-value="{{config("pages.form.data.".$key.".study_subject_id")}}">
                             @foreach($study_subject["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

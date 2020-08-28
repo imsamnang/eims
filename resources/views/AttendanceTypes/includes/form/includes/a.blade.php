@@ -22,7 +22,7 @@
                                 @endif
                             </label>
 
-                            <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                            <select class="form-control" data-toggle="select" id="institute" 
                                 data-text="{{ __('Add new option') }}" data-placeholder="" name="institute"
                                 data-select-value="{{ config('pages.form.data.' . $key . '.institute_id') }}"
                                 {{ config('pages.form.validate.rules.institute') ? 'required' : '' }}>

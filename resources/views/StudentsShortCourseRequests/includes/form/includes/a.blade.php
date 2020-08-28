@@ -22,7 +22,7 @@
                         @endif
                     </label>
 
-                    <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                    <select class="form-control" data-toggle="select" id="institute" 
                         data-placeholder="" name="institute"
                         data-select-value="{{config("pages.form.data.institute.id",Auth::user()->institute_id)}}"
                         {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
@@ -49,7 +49,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_subject" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_subject" 
 
                     data-placeholder="" name="study_subject"
                     data-select-value="{{config("pages.form.data.study_subject_id",request("semesterId"))}}">
@@ -72,7 +72,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_session" 
 
                     data-placeholder="" name="study_session"
                     data-select-value="{{config("pages.form.data.study_session.id",request("sessionId"))}}">

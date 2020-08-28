@@ -21,8 +21,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="institute" 
+                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".institute_id")}}"
                     {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
                     @foreach($institute["data"] as $o)
@@ -46,8 +46,8 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_program" name="study_program" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="study_program" name="study_program" 
+                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_program_id")}}"
                     {{config("pages.form.validate.rules.study_program") ? "required" : ""}}>
                     @foreach($study_program["data"] as $o)
@@ -68,8 +68,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="course_type" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder=""
+            <select class="form-control" data-toggle="select" id="course_type" 
+                 data-placeholder=""
                 data-select-value="{{config("pages.form.data.".$key.".course_type.id")}}"
                 {{(array_key_exists("course_type",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($course_type["data"] as $o)
@@ -89,8 +89,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="study_modality" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder=""
+            <select class="form-control" data-toggle="select" id="study_modality" 
+                 data-placeholder=""
                 data-select-value="{{config("pages.form.data.".$key.".study_modality.id")}}"
                 {{(array_key_exists("study_modality",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($study_modality["data"] as $o)
@@ -110,8 +110,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="study_faculty" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder=""
+            <select class="form-control" data-toggle="select" id="study_faculty" 
+                 data-placeholder=""
                 data-select-value="{{config("pages.form.data.".$key.".study_faculty.id")}}"
                 {{(array_key_exists("study_faculty",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($study_faculty["data"] as $o)
@@ -131,8 +131,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="study_overall_fund" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder=""
+            <select class="form-control" data-toggle="select" id="study_overall_fund" 
+                 data-placeholder=""
                 data-select-value="{{config("pages.form.data.".$key.".study_overall_fund.id")}}"
                 {{(array_key_exists("study_overall_fund",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($study_overall_fund["data"] as $o)

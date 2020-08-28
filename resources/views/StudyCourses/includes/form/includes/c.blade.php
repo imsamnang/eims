@@ -17,8 +17,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="curriculum_author" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder=""
+            <select class="form-control" data-toggle="select" id="curriculum_author" 
+                 data-placeholder=""
                 data-select-value="{{config("pages.form.data.".$key.".curriculum_author.id")}}"
                 {{(array_key_exists("curriculum_author",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($curriculum_author["data"] as $o)
@@ -38,8 +38,8 @@
 
             </label>
 
-            <select class="form-control" data-toggle="select" id="curriculum_endorsement" title="Simple select"
-                data-text="{{ __("Add new option") }}" data-placeholder="" name="curriculum_endorsement"
+            <select class="form-control" data-toggle="select" id="curriculum_endorsement" 
+                 data-placeholder="" name="curriculum_endorsement"
                 data-select-value="{{config("pages.form.data.".$key.".curriculum_endorsement.id")}}"
                 {{(array_key_exists("curriculum_endorsement",config("pages.form.validate.rules"))) ? "required" : ""}}>
                 @foreach($curriculum_endorsement["data"] as $o)

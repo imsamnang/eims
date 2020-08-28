@@ -17,7 +17,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="full_mark_theory" title="Simple select"
+                <select class="form-control" data-toggle="select" id="full_mark_theory" 
                     data-minimum-results-for-search="Infinity" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".full_mark_theory")}}"
                     {{config("pages.form.validate.rules.full_mark_theory") ? "required" : ""}}>
@@ -42,7 +42,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="pass_mark_theory" title="Simple select"
+                <select class="form-control" data-toggle="select" id="pass_mark_theory" 
                     data-minimum-results-for-search="Infinity" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".pass_mark_theory")}}"
                     {{config("pages.form.validate.rules.pass_mark_theory") ? "required" : ""}}>
@@ -66,7 +66,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="full_mark_practical" title="Simple select"
+                <select class="form-control" data-toggle="select" id="full_mark_practical" 
                     data-minimum-results-for-search="Infinity" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".full_mark_practical")}}"
                     {{config("pages.form.validate.rules.full_mark_practical") ? "required" : ""}}>
@@ -91,7 +91,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="pass_mark_practical" title="Simple select"
+                <select class="form-control" data-toggle="select" id="pass_mark_practical" 
                     data-minimum-results-for-search="Infinity" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".pass_mark_practical")}}"
                     {{config("pages.form.validate.rules.pass_mark_practical") ? "required" : ""}}>
@@ -116,7 +116,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="credit_hour" title="Simple select"
+                <select class="form-control" data-toggle="select" id="credit_hour" 
                     data-minimum-results-for-search="Infinity" data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".credit_hour")}}"
                     {{config("pages.form.validate.rules.credit_hour") ? "required" : ""}}>

@@ -20,8 +20,8 @@
 
                         </label>
                         <select class="form-control" data-toggle="taginputs" id="recipient"
-                            title="Simple select"
-                            data-text="{{ __("Add new option") }}"
+                            
+                            
 
                             data-allow-clear="true" data-placeholder=""
                             name="recipient[]"

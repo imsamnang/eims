@@ -128,7 +128,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-flag"></i></span>
                         </div>
-                        <select class="form-control" data-toggle="select" id="nationality" title="Simple select"
+                        <select class="form-control" data-toggle="select" id="nationality" 
                             name="nationality" data-text="{{ __('Add new option') }}" data-allow-clear="true"
                             data-placeholder="" data-select-value="{{ config('pages.form.data.nationality.id') }}">
                             @foreach ($nationality['data'] as $o)
@@ -151,7 +151,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="mother_tong" title="Simple select"
+                <select class="form-control" data-toggle="select" id="mother_tong" 
                     data-text="{{ __('Add new option') }}" data-allow-clear="true" data-placeholder=""
                     name="mother_tong" data-select-value="{{ config('pages.form.data.mother_tong.id') }}">
                     @foreach ($mother_tong['data'] as $o)
@@ -279,7 +279,7 @@
                 </label>
 
 
-                <select class="form-control" data-toggle="select" id="marital" title="Simple select"
+                <select class="form-control" data-toggle="select" id="marital" 
                     data-text="{{ __('Add new option') }}" data-allow-clear="true" data-placeholder="" name="marital"
                     data-select-value="{{ config('pages.form.data.marital.id') }}">
                     @foreach ($marital['data'] as $o)
@@ -301,7 +301,7 @@
                 </label>
 
 
-                <select class="form-control" data-toggle="select" id="blood_group" title="Simple select"
+                <select class="form-control" data-toggle="select" id="blood_group" 
                     data-text="{{ __('Add new option') }}" data-allow-clear="true" data-placeholder=""
                     name="blood_group" data-select-value="{{ config('pages.form.data.blood_group.id') }}">
                     @foreach ($blood_group['data'] as $o)

@@ -60,8 +60,8 @@
             <div class="col-12 collapse mb-3" id="filter">
                 <div class="form-row">
                     <div class="col-md-8 mb-3">
-                        <select class="form-control" data-toggle="select" id="staff_teach_subject" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="staff_teach_subject" 
+                            data-allow-clear="true"  data-placeholder=""
                             data-select-value="{{request("t-subjectId")}}">
 
                             @foreach($staff_teach_subject["data"] as $o)

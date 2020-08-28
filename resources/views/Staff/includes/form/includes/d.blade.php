@@ -18,8 +18,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="staff_certificate" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-placeholder="" name="staff_certificate"
+                <select class="form-control" data-toggle="select" id="staff_certificate" 
+                     data-placeholder="" name="staff_certificate"
                     data-select-value="{{config("pages.form.data.".$key.".staff_qualification.certificate_id")}}"
                     {{config("pages.form.validate.rules.staff_certificate") ? "required" : ""}}>
                     @foreach($staff_certificate["data"] as $o)

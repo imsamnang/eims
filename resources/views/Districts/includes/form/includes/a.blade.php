@@ -23,8 +23,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="province" 
+                             data-placeholder=""
                             data-select-value="{{config("pages.form.data.".$key.".province.id")}}"
                             {{config("pages.form.validate.rules.province") ? "required" : ""}}>
                             @foreach($provinces["data"] as $o)

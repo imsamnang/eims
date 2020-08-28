@@ -128,8 +128,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-flag"></i></span>
                         </div>
-                        <select class="form-control" data-toggle="select" id="nationality" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="nationality" 
+                             data-allow-clear="true" data-placeholder=""
                             name="nationality"
                             data-select-value="{{config("pages.form.data.".$key.".nationality_id")}}">
                             @foreach($nationality["data"] as $o)
@@ -152,8 +152,8 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="mother_tong" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="mother_tong" 
+                     data-allow-clear="true" data-placeholder=""
                     name="mother_tong" data-select-value="{{config("pages.form.data.".$key.".mother_tong_id")}}">
                     @foreach($mother_tong["data"] as $o)
                     <option value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -284,8 +284,8 @@
                 </label>
 
 
-                <select class="form-control" data-toggle="select" id="marital" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder="" name="marital"
+                <select class="form-control" data-toggle="select" id="marital" 
+                     data-allow-clear="true" data-placeholder="" name="marital"
                     data-select-value="{{config("pages.form.data.".$key.".marital_id")}}">
                     @foreach($marital["data"] as $o)
                     <option value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -306,8 +306,8 @@
                 </label>
 
 
-                <select class="form-control" data-toggle="select" id="blood_group" title="Simple select"
-                    data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                <select class="form-control" data-toggle="select" id="blood_group" 
+                     data-allow-clear="true" data-placeholder=""
                     name="blood_group" data-select-value="{{config("pages.form.data.".$key.".blood_group_id")}}">
                     @foreach($blood_group["data"] as $o)
                     <option value="{{$o["id"]}}">{{ $o["name"]}}</option>

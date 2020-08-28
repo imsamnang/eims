@@ -53,8 +53,8 @@
                 <div class="form-row">
                     @if (Auth::user()->role_id == 1)
                     <div class="col-md-6">
-                        <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}" name="instituteId"
+                        <select class="form-control" data-toggle="select" id="institute" 
+                            data-allow-clear="true"  name="instituteId"
                             data-placeholder="{{__('Institute')}}" data-select-value="{{request('instituteId')}}">
                             @foreach($instituteFilter["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -63,8 +63,8 @@
                     </div>
                     @endif
                     <div class="col-md-3">
-                        <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}" name="quizId"
+                        <select class="form-control" data-toggle="select" id="quiz" 
+                            data-allow-clear="true"  name="quizId"
                             data-placeholder="{{__('Quiz group')}}" data-select-value="{{request('quizId')}}">
                             @foreach($quizFilter["data"] as $o)
                             <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>

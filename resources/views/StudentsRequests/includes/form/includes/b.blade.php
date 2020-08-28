@@ -18,7 +18,7 @@
                     @endif
                 </label>
 
-                <select {{config("pages.form.data.".$key.".student_id")? '' : 'multiple'}} class="form-control" data-toggle="select" id="students" title="Simple select"
+                <select {{config("pages.form.data.".$key.".student_id")? '' : 'multiple'}} class="form-control" data-toggle="select" id="students" 
                     data-placeholder="" name="students[]"
                     data-select-value="{{config("pages.form.data.".$key.".student_id",request("studentsId"))}}">
                     @foreach($students["data"] as $o)

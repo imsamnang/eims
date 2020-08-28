@@ -24,8 +24,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="quiz" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz"
+                        <select class="form-control" data-toggle="select" id="quiz" 
+                             data-placeholder="" name="quiz"
                             data-select-value="{{ request("quizId", config("pages.form.data.".$key.".quiz_id"))}}"
                             {{config("pages.form.validate.rules.quiz") ? "required" : ""}}>
                             @foreach($quiz["data"] as $o)
@@ -48,8 +48,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="quiz_answer_type" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz_answer_type"
+                        <select class="form-control" data-toggle="select" id="quiz_answer_type" 
+                             data-placeholder="" name="quiz_answer_type"
                             data-select-value="{{config("pages.form.data.".$key.".quiz_answer_type_id")}}"
                             {{config("pages.form.validate.rules.quiz_answer_type") ? "required" : ""}}>
                             @foreach($answerType["data"] as $o)
@@ -72,8 +72,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="quiz_type" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-placeholder="" name="quiz_type"
+                        <select class="form-control" data-toggle="select" id="quiz_type" 
+                             data-placeholder="" name="quiz_type"
                             data-select-value="{{config("pages.form.data.".$key.".quiz_question_type_id")}}"
                             {{config("pages.form.validate.rules.quiz_type") ? "required" : ""}}>
                             @foreach($questionType["data"] as $o)

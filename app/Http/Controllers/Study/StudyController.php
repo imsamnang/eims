@@ -358,7 +358,7 @@ class StudyController extends Controller
             $view = new StudyGradesController();
             return $view->index($param2, $param3);
         } elseif (strtolower($param1) == StudyShortCourseSchedule::path('url')) {
-            $view = new StudyShortCourseScheduleController;
+            $view = new StudyShortCourseSchedulesController;
             return $view->index($param2, $param3);
         } elseif (strtolower($param1) == StudyShortCourseSession::path('url')) {
             $view = new StudyShortCourseSessionController;

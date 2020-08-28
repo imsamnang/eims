@@ -53,8 +53,8 @@
                 <div class="form-row">
                     @if (Auth::user()->role_id == 1)
                     <div class="col-md-4">
-                        <select class="form-control" data-toggle="select" id="institute" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                        <select class="form-control" data-toggle="select" id="institute" 
+                            data-allow-clear="true" 
                             data-placeholder="{{__('Institute')}}" name="instituteId"
                             data-select-value="{{request('instituteId')}}">
                             @foreach($instituteFilter["data"] as $o)
@@ -64,8 +64,8 @@
                     </div>
                     @endif
                     <div class="col-md-3">
-                        <select class="form-control" data-toggle="select" id="subjests" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                        <select class="form-control" data-toggle="select" id="subjests" 
+                            data-allow-clear="true" 
                             data-placeholder="{{__('Study Subjects')}}" name="subjestsId"
                             data-select-value="{{request('subjestsId')}}">
                             @foreach($subjectsFilter["data"] as $o)
@@ -74,8 +74,8 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <select class="form-control" data-toggle="select" id="year" title="Simple select"
-                            data-allow-clear="true" data-text="{{ __("Add new option") }}"
+                        <select class="form-control" data-toggle="select" id="year" 
+                            data-allow-clear="true" 
                             data-placeholder="{{__('Year')}}" name="year" data-select-value="{{request('year')}}">
                             @foreach($yearFilter["data"] as $o)
                             <option value="{{$o}}">{{ $o}}</option>

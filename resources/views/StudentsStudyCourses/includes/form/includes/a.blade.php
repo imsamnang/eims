@@ -17,7 +17,7 @@
 
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_course_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_course_session" 
                     data-text="{{ __('Add new option') }}" data-placeholder="" name="study_course_session"
                     data-select-value="{{ config('pages.form.data.' . $key . '.study_course_session_id') }}">
                     @foreach ($study_course_session['data'] as $o)
@@ -37,7 +37,7 @@
                         </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_status" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_status" 
                     data-text="{{ __('Add new option') }}" data-placeholder="" name="study_status"
                     data-select-value="{{ config('pages.form.data.' . $key . '.study_status_id') }}">
                     @foreach ($study_status['data'] as $o)
@@ -57,7 +57,7 @@
                 </label>
 
                 <select {{ config('pages.form.role') == 'add' ? 'multiple' : '' }} class="form-control"
-                    data-toggle="select" id="students" title="Simple select" data-text="{{ __('Add new option') }}"
+                    data-toggle="select" id="students"  data-text="{{ __('Add new option') }}"
                     data-placeholder="" name="students[]"
                     data-select-value="{{ config('pages.form.data.' . $key . '.student_request_id', request('studRequestId')) }}"
                     {{ array_key_exists('students[]', config('pages.form.validate.rules')) ? 'required' : '' }}>

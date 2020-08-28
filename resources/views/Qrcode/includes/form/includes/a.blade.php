@@ -13,7 +13,7 @@
                     </label>
                     <div class="form-group">
                         <div class="input-group">
-                            <select class="form-control" data-toggle="select" id="expired" title="Simple select"
+                            <select class="form-control" data-toggle="select" id="expired" 
                                 data-minimum-results-for-search="Infinity" data-placeholder="" name="expired"
                                 data-allow-clear="true" data-select-value="{{config("pages.form.data.expired.id")}}"
                                 {{config("pages.form.validate.rules.expired") ? "required" : ""}}>

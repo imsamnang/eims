@@ -3,7 +3,6 @@
 use App\Models\Staff;
 use App\Models\StaffExperience;
 use App\Models\StaffGuardians;
-use App\Models\StaffInstitutes;
 use App\Models\StaffQualifications;
 use Illuminate\Database\Seeder;
 
@@ -20,7 +19,7 @@ class StaffTableSeeder extends Seeder
             [
                 [
                     "id" => 1,
-                    "first_name_km" => "ផង់",
+                    "first_name_km" => "ផង់",                    
                     "last_name_km" => "ពុទ្ធី",
                     "first_name_en" => "Phang",
                     "last_name_en" => "Puthy",
@@ -52,7 +51,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 2,
-                    "first_name_km" => "សេង",
+                    "first_name_km" => "សេង",                    
                     "last_name_km" => "ស៊ង់",
                     "first_name_en" => "Seng",
                     "last_name_en" => "Sourng",
@@ -84,7 +83,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 4,
-                    "first_name_km" => "ពុធ",
+                    "first_name_km" => "ពុធ",                    
                     "last_name_km" => "សុភាឫទ្ធិ",
                     "first_name_en" => "Put",
                     "last_name_en" => "Sophearith",
@@ -116,7 +115,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 5,
-                    "first_name_km" => "អ៊ិន",
+                    "first_name_km" => "អ៊ិន",                    
                     "last_name_km" => "សូឌីន",
                     "first_name_en" => "Inn",
                     "last_name_en" => "Sodin",
@@ -148,7 +147,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 6,
-                    "first_name_km" => "អាន",
+                    "first_name_km" => "អាន",                    
                     "last_name_km" => "បញ្ញា",
                     "first_name_en" => "Ann",
                     "last_name_en" => "phanha",
@@ -180,7 +179,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 7,
-                    "first_name_km" => "ទូច",
+                    "first_name_km" => "ទូច",                    
                     "last_name_km" => "សុខលាង",
                     "first_name_en" => "TOUCH",
                     "last_name_en" => "SOKLEANG",
@@ -212,7 +211,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 8,
-                    "first_name_km" => "មិន",
+                    "first_name_km" => "មិន",                    
                     "last_name_km" => "សុខលី",
                     "first_name_en" => "MIN",
                     "last_name_en" => "SOKLY",
@@ -244,7 +243,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 9,
-                    "first_name_km" => "ង៉ែត",
+                    "first_name_km" => "ង៉ែត",                    
                     "last_name_km" => "វិរៈ",
                     "first_name_en" => "NGET",
                     "last_name_en" => "VIRAK",
@@ -276,7 +275,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 10,
-                    "first_name_km" => "ភន",
+                    "first_name_km" => "ភន",                    
                     "last_name_km" => "ថុល",
                     "first_name_en" => "PHORN",
                     "last_name_en" => "THOL",
@@ -308,7 +307,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 11,
-                    "first_name_km" => "ម៉ក់",
+                    "first_name_km" => "ម៉ក់",                    
                     "last_name_km" => "ច័ន្ទក្រឹស្នា",
                     "first_name_en" => "mak",
                     "last_name_en" => "channkroeusna",
@@ -340,7 +339,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 12,
-                    "first_name_km" => "មាស",
+                    "first_name_km" => "មាស",                    
                     "last_name_km" => "ដារ៉ាវុត",
                     "first_name_en" => "MEAS",
                     "last_name_en" => "DARAVUTH",
@@ -372,7 +371,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 14,
-                    "first_name_km" => "ស៊ុយ",
+                    "first_name_km" => "ស៊ុយ",                    
                     "last_name_km" => "រ៉ានី",
                     "first_name_en" => "SUY",
                     "last_name_en" => "RANY",
@@ -404,7 +403,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 15,
-                    "first_name_km" => "តូ",
+                    "first_name_km" => "តូ",                    
                     "last_name_km" => "សុផាណារ៉ា",
                     "first_name_en" => "TO",
                     "last_name_en" => "SOPHANARA",
@@ -436,7 +435,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 16,
-                    "first_name_km" => "កុល",
+                    "first_name_km" => "កុល",                    
                     "last_name_km" => "សេរីរិទ្ធ",
                     "first_name_en" => "kol",
                     "last_name_en" => "sereyrith",
@@ -468,7 +467,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 19,
-                    "first_name_km" => "សួង",
+                    "first_name_km" => "សួង",                    
                     "last_name_km" => "នូរ័ត្ន",
                     "first_name_en" => "Soung",
                     "last_name_en" => "Noureath",
@@ -500,7 +499,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 21,
-                    "first_name_km" => "ទិត",
+                    "first_name_km" => "ទិត",                    
                     "last_name_km" => "សុគន្ធា",
                     "first_name_en" => "TET",
                     "last_name_en" => "SOKUNTHEA",
@@ -532,7 +531,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 23,
-                    "first_name_km" => "នៅ",
+                    "first_name_km" => "នៅ",                    
                     "last_name_km" => "ឧកញ៉ាវ៉ាន់ធីន",
                     "first_name_en" => "NOUV",
                     "last_name_en" => "OKNHAVANTHIN",
@@ -564,7 +563,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 24,
-                    "first_name_km" => "គិត",
+                    "first_name_km" => "គិត",                    
                     "last_name_km" => "ថៃសេង",
                     "first_name_en" => "Kith",
                     "last_name_en" => "Thaiseng",
@@ -596,7 +595,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 25,
-                    "first_name_km" => "ហ៊",
+                    "first_name_km" => "ហ៊",                    
                     "last_name_km" => "ស៊ុនលាភ",
                     "first_name_en" => "Hor",
                     "last_name_en" => "Sunleap",
@@ -628,7 +627,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 27,
-                    "first_name_km" => "សោ",
+                    "first_name_km" => "សោ",                    
                     "last_name_km" => "សុបុណ្យ",
                     "first_name_en" => "SOR",
                     "last_name_en" => "SOBONN",
@@ -660,7 +659,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 28,
-                    "first_name_km" => "ព្រហ្ម",
+                    "first_name_km" => "ព្រហ្ម",                    
                     "last_name_km" => "វុទ្ធី",
                     "first_name_en" => "Prum",
                     "last_name_en" => "Vuthy",
@@ -692,7 +691,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 30,
-                    "first_name_km" => "ហម",
+                    "first_name_km" => "ហម",                    
                     "last_name_km" => "រ៉ូហ្សា",
                     "first_name_en" => "Ham",
                     "last_name_en" => "Rosa",
@@ -724,7 +723,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 31,
-                    "first_name_km" => "ស៊ុំ",
+                    "first_name_km" => "ស៊ុំ",                    
                     "last_name_km" => "សុខនៅ",
                     "first_name_en" => "SUM",
                     "last_name_en" => "SOKNAO",
@@ -756,7 +755,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 32,
-                    "first_name_km" => "សម្បត្តិ",
+                    "first_name_km" => "សម្បត្តិ",                    
                     "last_name_km" => "រតនា",
                     "first_name_en" => "SAMBATH",
                     "last_name_en" => "RATHANA",
@@ -788,7 +787,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 33,
-                    "first_name_km" => "យ៉ាង",
+                    "first_name_km" => "យ៉ាង",                    
                     "last_name_km" => "សៅលី",
                     "first_name_en" => "YANG",
                     "last_name_en" => "SAOLY",
@@ -820,7 +819,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 34,
-                    "first_name_km" => "ចក់",
+                    "first_name_km" => "ចក់",                    
                     "last_name_km" => "ចន្ទបូណាវី",
                     "first_name_en" => "CHAK",
                     "last_name_en" => "CHANBONAVY",
@@ -852,7 +851,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 35,
-                    "first_name_km" => "ជួន",
+                    "first_name_km" => "ជួន",                    
                     "last_name_km" => "កុម្ភៈ",
                     "first_name_en" => "chuon",
                     "last_name_en" => "kumpheak",
@@ -884,7 +883,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 36,
-                    "first_name_km" => "ម៉ន",
+                    "first_name_km" => "ម៉ន",                    
                     "last_name_km" => "ពេជ្រពន្លក",
                     "first_name_en" => "MON",
                     "last_name_en" => "PICHPHONLORK",
@@ -916,7 +915,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 38,
-                    "first_name_km" => "ឆែម",
+                    "first_name_km" => "ឆែម",                    
                     "last_name_km" => "រ័ត្ន",
                     "first_name_en" => "Chhem",
                     "last_name_en" => "Rath",
@@ -948,7 +947,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 40,
-                    "first_name_km" => "ឃ្លាំង",
+                    "first_name_km" => "ឃ្លាំង",                    
                     "last_name_km" => "ចិន្តា",
                     "first_name_en" => "KHLEANG",
                     "last_name_en" => "CHINDA",
@@ -980,7 +979,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 41,
-                    "first_name_km" => "វ៉ាន់",
+                    "first_name_km" => "វ៉ាន់",                    
                     "last_name_km" => "គឹមសាក់",
                     "first_name_en" => "Vann",
                     "last_name_en" => "Kimsak",
@@ -1012,7 +1011,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 42,
-                    "first_name_km" => "អ៊ុន",
+                    "first_name_km" => "អ៊ុន",                    
                     "last_name_km" => "ឌីណាត",
                     "first_name_en" => "UN",
                     "last_name_en" => "DINATH",
@@ -1044,7 +1043,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 43,
-                    "first_name_km" => "ជា",
+                    "first_name_km" => "ជា",                    
                     "last_name_km" => "ម៉ូលីការ",
                     "first_name_en" => "chea",
                     "last_name_en" => "molica",
@@ -1076,7 +1075,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 45,
-                    "first_name_km" => "សែម",
+                    "first_name_km" => "សែម",                    
                     "last_name_km" => "ផល្លា",
                     "first_name_en" => "sem",
                     "last_name_en" => "pholla",
@@ -1108,7 +1107,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 47,
-                    "first_name_km" => "ស៊ីម",
+                    "first_name_km" => "ស៊ីម",                    
                     "last_name_km" => "ចាន់ថន",
                     "first_name_en" => "sim",
                     "last_name_en" => "chanthan",
@@ -1140,7 +1139,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 48,
-                    "first_name_km" => "យ៉ុម",
+                    "first_name_km" => "យ៉ុម",                    
                     "last_name_km" => "ប៊ុន្នី",
                     "first_name_en" => "yom",
                     "last_name_en" => "bunny",
@@ -1172,7 +1171,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 49,
-                    "first_name_km" => "ឈឺន",
+                    "first_name_km" => "ឈឺន",                    
                     "last_name_km" => "ឈីន",
                     "first_name_en" => "CHOEUNN",
                     "last_name_en" => "CHIN",
@@ -1204,7 +1203,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 52,
-                    "first_name_km" => "ឡេង",
+                    "first_name_km" => "ឡេង",                    
                     "last_name_km" => "ណារ៉ុន",
                     "first_name_en" => "Leng",
                     "last_name_en" => "Naron",
@@ -1236,7 +1235,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 53,
-                    "first_name_km" => "វួ",
+                    "first_name_km" => "វួ",                    
                     "last_name_km" => "គីមហ៊ាង",
                     "first_name_en" => "VOUR",
                     "last_name_en" => "KIMHEANG",
@@ -1268,7 +1267,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 54,
-                    "first_name_km" => "ឆេង",
+                    "first_name_km" => "ឆេង",                    
                     "last_name_km" => "លីហ៊ួរ",
                     "first_name_en" => "Chheng",
                     "last_name_en" => "Lyhuor",
@@ -1300,7 +1299,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 55,
-                    "first_name_km" => "ប៊ី",
+                    "first_name_km" => "ប៊ី",                    
                     "last_name_km" => "សារ័ត្ន",
                     "first_name_en" => "Bi",
                     "last_name_en" => "Saroath",
@@ -1332,7 +1331,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 56,
-                    "first_name_km" => "ពេជ្រ",
+                    "first_name_km" => "ពេជ្រ",                    
                     "last_name_km" => "ល្ហាច",
                     "first_name_en" => "PICH",
                     "last_name_en" => "LHACH",
@@ -1364,7 +1363,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 57,
-                    "first_name_km" => "ប៉ិល",
+                    "first_name_km" => "ប៉ិល",                    
                     "last_name_km" => "គីម",
                     "first_name_en" => "PIL",
                     "last_name_en" => "KIM",
@@ -1396,7 +1395,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 58,
-                    "first_name_km" => "ឡេង",
+                    "first_name_km" => "ឡេង",                    
                     "last_name_km" => "សុីណា",
                     "first_name_en" => "LENG",
                     "last_name_en" => "SINA",
@@ -1428,7 +1427,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 59,
-                    "first_name_km" => "ម៉ៃ",
+                    "first_name_km" => "ម៉ៃ",                    
                     "last_name_km" => "ចិន្ដា",
                     "first_name_en" => "mai",
                     "last_name_en" => "chenda",
@@ -1460,7 +1459,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 60,
-                    "first_name_km" => "រុន",
+                    "first_name_km" => "រុន",                    
                     "last_name_km" => "សីហា",
                     "first_name_en" => "RUN",
                     "last_name_en" => "SEYHA",
@@ -1492,7 +1491,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 61,
-                    "first_name_km" => "ចាន់",
+                    "first_name_km" => "ចាន់",                    
                     "last_name_km" => "សុខនី",
                     "first_name_en" => "CHAN",
                     "last_name_en" => "SOKNY",
@@ -1524,7 +1523,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 62,
-                    "first_name_km" => "ស៊ឹម",
+                    "first_name_km" => "ស៊ឹម",                    
                     "last_name_km" => "សុភាព",
                     "first_name_en" => "SIM",
                     "last_name_en" => "SOPHEAP",
@@ -1556,7 +1555,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 63,
-                    "first_name_km" => "ស្រ៊ឺ",
+                    "first_name_km" => "ស្រ៊ឺ",                    
                     "last_name_km" => "ស្រៀវ",
                     "first_name_en" => "SRER",
                     "last_name_en" => "SREAV",
@@ -1588,7 +1587,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 66,
-                    "first_name_km" => "ទូច",
+                    "first_name_km" => "ទូច",                    
                     "last_name_km" => "សារ៉ាយ",
                     "first_name_en" => "TOUCH",
                     "last_name_en" => "SARAY",
@@ -1620,7 +1619,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 67,
-                    "first_name_km" => "ស្រេង",
+                    "first_name_km" => "ស្រេង",                    
                     "last_name_km" => "ម៉េងគ័ង",
                     "first_name_en" => "SRENG",
                     "last_name_en" => "Mengkorng",
@@ -1652,7 +1651,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 68,
-                    "first_name_km" => "យង់",
+                    "first_name_km" => "យង់",                    
                     "last_name_km" => "សីលា",
                     "first_name_en" => "YOANG",
                     "last_name_en" => "SEILA",
@@ -1684,7 +1683,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 70,
-                    "first_name_km" => "ឡេង",
+                    "first_name_km" => "ឡេង",                    
                     "last_name_km" => "គីមហេង",
                     "first_name_en" => "Leng",
                     "last_name_en" => "Kimheng",
@@ -1716,7 +1715,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 72,
-                    "first_name_km" => "គង់",
+                    "first_name_km" => "គង់",                    
                     "last_name_km" => "ផលឡៃ",
                     "first_name_en" => "KONG",
                     "last_name_en" => "PHALLAI",
@@ -1748,7 +1747,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 73,
-                    "first_name_km" => "គិត",
+                    "first_name_km" => "គិត",                    
                     "last_name_km" => "ម៉េងឈឿង",
                     "first_name_en" => "KIT",
                     "last_name_en" => "Mengchhoeurng",
@@ -1780,7 +1779,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 74,
-                    "first_name_km" => "អ៊ុក",
+                    "first_name_km" => "អ៊ុក",                    
                     "last_name_km" => "ស៊ីផា",
                     "first_name_en" => "OUK",
                     "last_name_en" => "SYPHA",
@@ -1812,7 +1811,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 75,
-                    "first_name_km" => "ស៊ិន",
+                    "first_name_km" => "ស៊ិន",                    
                     "last_name_km" => "សៀងលី",
                     "first_name_en" => "SIN",
                     "last_name_en" => "SIENGLY",
@@ -1844,7 +1843,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 76,
-                    "first_name_km" => "ទិត្យ",
+                    "first_name_km" => "ទិត្យ",                    
                     "last_name_km" => "សេរីរ័ត្ន",
                     "first_name_en" => "TITH",
                     "last_name_en" => "SEREYROTH",
@@ -1876,7 +1875,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 77,
-                    "first_name_km" => "ផាន់",
+                    "first_name_km" => "ផាន់",                    
                     "last_name_km" => "សុផាត",
                     "first_name_en" => "PHANN",
                     "last_name_en" => "SOPHAT",
@@ -1908,7 +1907,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 78,
-                    "first_name_km" => "ចាន់",
+                    "first_name_km" => "ចាន់",                    
                     "last_name_km" => "រិទ្ធី",
                     "first_name_en" => "CHAN",
                     "last_name_en" => "RITHY",
@@ -1940,7 +1939,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 80,
-                    "first_name_km" => "លី",
+                    "first_name_km" => "លី",                    
                     "last_name_km" => "បូរ៉ា",
                     "first_name_en" => "Ly",
                     "last_name_en" => "Bora",
@@ -1972,7 +1971,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 81,
-                    "first_name_km" => "យុង",
+                    "first_name_km" => "យុង",                    
                     "last_name_km" => "សិរីរ័ត្ន",
                     "first_name_en" => "YONG",
                     "last_name_en" => "SIREYROTH",
@@ -2004,7 +2003,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 82,
-                    "first_name_km" => "ហេង",
+                    "first_name_km" => "ហេង",                    
                     "last_name_km" => "បូរ៉ាម៉ី",
                     "first_name_en" => "Heng",
                     "last_name_en" => "Boramy",
@@ -2036,7 +2035,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 83,
-                    "first_name_km" => "អ៊ាវ",
+                    "first_name_km" => "អ៊ាវ",                    
                     "last_name_km" => "ចាន់ឌី",
                     "first_name_en" => "EAV",
                     "last_name_en" => "CHANDY",
@@ -2068,7 +2067,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 84,
-                    "first_name_km" => "ឡាយ",
+                    "first_name_km" => "ឡាយ",                    
                     "last_name_km" => "វិជាតិ",
                     "first_name_en" => "Lay",
                     "last_name_en" => "Vicheat",
@@ -2100,7 +2099,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 85,
-                    "first_name_km" => "ជួប",
+                    "first_name_km" => "ជួប",                    
                     "last_name_km" => "សារិទ្ធ",
                     "first_name_en" => "CHOUP",
                     "last_name_en" => "SARITH",
@@ -2132,7 +2131,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 86,
-                    "first_name_km" => "ថេន",
+                    "first_name_km" => "ថេន",                    
                     "last_name_km" => "ថេនីត",
                     "first_name_en" => "THEN",
                     "last_name_en" => "THENIT",
@@ -2164,7 +2163,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 87,
-                    "first_name_km" => "ស៊ឹម",
+                    "first_name_km" => "ស៊ឹម",                    
                     "last_name_km" => "ឈុនឈៀង",
                     "first_name_en" => "SOEM",
                     "last_name_en" => "CHHUNCHHIENG",
@@ -2196,7 +2195,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 88,
-                    "first_name_km" => "សយ",
+                    "first_name_km" => "សយ",                    
                     "last_name_km" => "សំបុក",
                     "first_name_en" => "Soy",
                     "last_name_en" => "Sambok",
@@ -2228,7 +2227,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 89,
-                    "first_name_km" => "រ៉េន",
+                    "first_name_km" => "រ៉េន",                    
                     "last_name_km" => "សារិទ្ធ",
                     "first_name_en" => "REN",
                     "last_name_en" => "SARITH",
@@ -2260,7 +2259,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 90,
-                    "first_name_km" => "រឹម",
+                    "first_name_km" => "រឹម",                    
                     "last_name_km" => "គិមសាយ",
                     "first_name_en" => "RIM",
                     "last_name_en" => "Kimsay",
@@ -2292,7 +2291,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 91,
-                    "first_name_km" => "ហួន",
+                    "first_name_km" => "ហួន",                    
                     "last_name_km" => "ដារ៉ាក់",
                     "first_name_en" => "Houn",
                     "last_name_en" => "Darak",
@@ -2324,7 +2323,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 93,
-                    "first_name_km" => "យឿន",
+                    "first_name_km" => "យឿន",                    
                     "last_name_km" => "ភារុន",
                     "first_name_en" => "yoeurn",
                     "last_name_en" => "phearun",
@@ -2356,7 +2355,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 94,
-                    "first_name_km" => "ឈាង",
+                    "first_name_km" => "ឈាង",                    
                     "last_name_km" => "វ៉ាន់ឆ័យ",
                     "first_name_en" => "Chheang",
                     "last_name_en" => "Vannchai",
@@ -2388,7 +2387,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 96,
-                    "first_name_km" => "នូ",
+                    "first_name_km" => "នូ",                    
                     "last_name_km" => "ហ៊ត់",
                     "first_name_en" => "Nou",
                     "last_name_en" => "Hoat",
@@ -2420,7 +2419,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 97,
-                    "first_name_km" => "ជា",
+                    "first_name_km" => "ជា",                    
                     "last_name_km" => "សុខុន",
                     "first_name_en" => "Chea",
                     "last_name_en" => "Sokhon",
@@ -2452,7 +2451,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 98,
-                    "first_name_km" => "ច្រឹក",
+                    "first_name_km" => "ច្រឹក",                    
                     "last_name_km" => "ឡង់ឌី",
                     "first_name_en" => "CHREk",
                     "last_name_en" => "LANDY",
@@ -2484,7 +2483,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 101,
-                    "first_name_km" => "នួន",
+                    "first_name_km" => "នួន",                    
                     "last_name_km" => "ចន្ថន",
                     "first_name_en" => "NUON",
                     "last_name_en" => "CHANTHORN",
@@ -2516,7 +2515,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 102,
-                    "first_name_km" => "ស៊ីម",
+                    "first_name_km" => "ស៊ីម",                    
                     "last_name_km" => "ចាន់ថន",
                     "first_name_en" => "sim",
                     "last_name_en" => "chanthan",
@@ -2548,7 +2547,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 106,
-                    "first_name_km" => "ភន",
+                    "first_name_km" => "ភន",                    
                     "last_name_km" => "ថុល",
                     "first_name_en" => "PHON",
                     "last_name_en" => "THOL",
@@ -2580,7 +2579,7 @@ class StaffTableSeeder extends Seeder
                 ],
                 [
                     "id" => 109,
-                    "first_name_km" => "តូ",
+                    "first_name_km" => "តូ",                    
                     "last_name_km" => "សុផាណារ៉ា",
                     "first_name_en" => "TO",
                     "last_name_en" => "Sophanara",
@@ -5734,729 +5733,6 @@ class StaffTableSeeder extends Seeder
                 ]
             ]
         );
-        StaffInstitutes::insert(
-            [
-                [
-                    "id" => 1,
-                    "staff_id" => "1",
-                    "institute_id" => "1",
-                    "designation_id" => "1",
-                    "extra_info" => "",
-                    "created_at" => "2020-04-28 11:11:33",
-                    "updated_at" => "2020-05-05 09:46:12"
-                ],
-                [
-                    "id" => 2,
-                    "staff_id" => "2",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-04-28 11:11:33",
-                    "updated_at" => "2020-05-04 00:51:27"
-                ],
-                [
-                    "id" => 4,
-                    "staff_id" => "4",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-04-28 11:11:33",
-                    "updated_at" => "2020-05-08 09:54:29"
-                ],
-                [
-                    "id" => 5,
-                    "staff_id" => "5",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-04-28 11:11:33",
-                    "updated_at" => "2020-05-04 15:37:24"
-                ],
-                [
-                    "id" => 6,
-                    "staff_id" => "6",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => null,
-                    "created_at" => "2020-04-28 11:11:33",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 7,
-                    "staff_id" => "7",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "ជំនាញ អគ្គិសនី ជំនាន់ទី១៦",
-                    "created_at" => "2020-05-04 15:02:18",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 8,
-                    "staff_id" => "8",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 15:16:25",
-                    "updated_at" => "2020-05-04 16:03:27"
-                ],
-                [
-                    "id" => 9,
-                    "staff_id" => "9",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 15:32:38",
-                    "updated_at" => "2020-05-08 16:37:36"
-                ],
-                [
-                    "id" => 10,
-                    "staff_id" => "10",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "គ្រូបច្ចេកទេស ជំនាញអគ្គិសនី ជំនាន់ទី១៦",
-                    "created_at" => "2020-05-04 15:50:38",
-                    "updated_at" => "2020-05-08 15:25:11"
-                ],
-                [
-                    "id" => 11,
-                    "staff_id" => "11",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "ដេប៉ាតឺម៉ង់មេកានិច",
-                    "created_at" => "2020-05-04 15:56:19",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 12,
-                    "staff_id" => "12",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:01:28",
-                    "updated_at" => "2020-05-04 16:44:04"
-                ],
-                [
-                    "id" => 14,
-                    "staff_id" => "14",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:07:08",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 15,
-                    "staff_id" => "15",
-                    "institute_id" => "1",
-                    "designation_id" => "6",
-                    "extra_info" => "ជាប្រធានការិយាល័យស្ដីទី(គរុនិស្សិតជំនាន់ទី១៣)",
-                    "created_at" => "2020-05-04 16:09:25",
-                    "updated_at" => "2020-05-08 09:24:09"
-                ],
-                [
-                    "id" => 16,
-                    "staff_id" => "16",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:22:23",
-                    "updated_at" => "2020-05-04 16:26:30"
-                ],
-                [
-                    "id" => 19,
-                    "staff_id" => "19",
-                    "institute_id" => "1",
-                    "designation_id" => "5",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:27:04",
-                    "updated_at" => "2020-05-04 16:31:45"
-                ],
-                [
-                    "id" => 21,
-                    "staff_id" => "21",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:30:04",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 23,
-                    "staff_id" => "23",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:32:39",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 24,
-                    "staff_id" => "24",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "គ្រូបច្ចេកទេសកម្រិតឧត្តម ជំនាញគណិតវិទ្យា ជំនាន់ទី១៣",
-                    "created_at" => "2020-05-04 16:39:55",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 25,
-                    "staff_id" => "25",
-                    "institute_id" => "1",
-                    "designation_id" => "5",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-04 16:42:28",
-                    "updated_at" => "2020-05-04 16:58:27"
-                ],
-                [
-                    "id" => 27,
-                    "staff_id" => "27",
-                    "institute_id" => "1",
-                    "designation_id" => "6",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 08:27:58",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 28,
-                    "staff_id" => "28",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 08:38:12",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 30,
-                    "staff_id" => "30",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 09:02:43",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 31,
-                    "staff_id" => "31",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "ជំនាញ គណិតវិទ្យា ជំនាន់ទី១២",
-                    "created_at" => "2020-05-05 09:37:56",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 32,
-                    "staff_id" => "32",
-                    "institute_id" => "1",
-                    "designation_id" => "8",
-                    "extra_info" => "បុគ្គលិកជំនាន់ទី១៤",
-                    "created_at" => "2020-05-05 09:44:37",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 33,
-                    "staff_id" => "33",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 10:17:26",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 34,
-                    "staff_id" => "34",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "ជំនាញសំណង់ ជំនាន់ទី១៦",
-                    "created_at" => "2020-05-05 10:28:29",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 35,
-                    "staff_id" => "35",
-                    "institute_id" => "1",
-                    "designation_id" => "8",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 10:33:24",
-                    "updated_at" => "2020-05-05 13:23:11"
-                ],
-                [
-                    "id" => 36,
-                    "staff_id" => "36",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 10:36:09",
-                    "updated_at" => "2020-05-12 11:07:20"
-                ],
-                [
-                    "id" => 38,
-                    "staff_id" => "38",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 10:53:24",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 40,
-                    "staff_id" => "40",
-                    "institute_id" => "1",
-                    "designation_id" => "6",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-05 14:52:35",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 41,
-                    "staff_id" => "41",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 08:56:56",
-                    "updated_at" => "2020-05-08 09:24:28"
-                ],
-                [
-                    "id" => 42,
-                    "staff_id" => "42",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 14:39:17",
-                    "updated_at" => "2020-05-07 14:45:06"
-                ],
-                [
-                    "id" => 43,
-                    "staff_id" => "43",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 14:44:41",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 45,
-                    "staff_id" => "45",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 14:46:36",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 48,
-                    "staff_id" => "48",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 15:10:05",
-                    "updated_at" => "2020-05-07 15:26:24"
-                ],
-                [
-                    "id" => 49,
-                    "staff_id" => "49",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 15:54:05",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 52,
-                    "staff_id" => "52",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 16:27:24",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 53,
-                    "staff_id" => "53",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-07 16:40:42",
-                    "updated_at" => "2020-05-08 08:21:06"
-                ],
-                [
-                    "id" => 54,
-                    "staff_id" => "54",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 08:35:36",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 55,
-                    "staff_id" => "55",
-                    "institute_id" => "1",
-                    "designation_id" => "6",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 08:51:29",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 56,
-                    "staff_id" => "56",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 09:24:25",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 57,
-                    "staff_id" => "57",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 09:39:29",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 58,
-                    "staff_id" => "58",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 09:40:15",
-                    "updated_at" => "2020-05-08 15:51:56"
-                ],
-                [
-                    "id" => 59,
-                    "staff_id" => "59",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 09:49:05",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 60,
-                    "staff_id" => "60",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 09:56:43",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 61,
-                    "staff_id" => "61",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "គ្រូបច្ចេកទេសជំនាញស្ថាបត្យកម្ម",
-                    "created_at" => "2020-05-08 10:07:13",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 62,
-                    "staff_id" => "62",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 10:44:45",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 63,
-                    "staff_id" => "63",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 10:58:22",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 66,
-                    "staff_id" => "66",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 15:58:50",
-                    "updated_at" => "2020-05-08 16:18:35"
-                ],
-                [
-                    "id" => 67,
-                    "staff_id" => "67",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 16:10:01",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 68,
-                    "staff_id" => "68",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-08 16:43:30",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 70,
-                    "staff_id" => "70",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-09 10:14:22",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 72,
-                    "staff_id" => "72",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 08:49:43",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 73,
-                    "staff_id" => "73",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 10:26:09",
-                    "updated_at" => "2020-05-11 10:30:48"
-                ],
-                [
-                    "id" => 74,
-                    "staff_id" => "74",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 13:28:59",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 75,
-                    "staff_id" => "75",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 13:49:44",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 76,
-                    "staff_id" => "76",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 14:09:33",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 77,
-                    "staff_id" => "77",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-11 17:02:40",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 78,
-                    "staff_id" => "78",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 08:48:22",
-                    "updated_at" => "2020-05-13 19:46:32"
-                ],
-                [
-                    "id" => 80,
-                    "staff_id" => "80",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 09:34:26",
-                    "updated_at" => "2020-05-12 09:37:30"
-                ],
-                [
-                    "id" => 81,
-                    "staff_id" => "81",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 09:49:25",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 82,
-                    "staff_id" => "82",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 10:57:00",
-                    "updated_at" => "2020-05-12 11:02:40"
-                ],
-                [
-                    "id" => 83,
-                    "staff_id" => "83",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 11:03:22",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 84,
-                    "staff_id" => "84",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 14:49:45",
-                    "updated_at" => "2020-05-13 19:42:17"
-                ],
-                [
-                    "id" => 85,
-                    "staff_id" => "85",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 15:08:54",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 86,
-                    "staff_id" => "86",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 15:51:56",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 87,
-                    "staff_id" => "87",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-12 21:17:37",
-                    "updated_at" => "2020-05-13 08:22:44"
-                ],
-                [
-                    "id" => 88,
-                    "staff_id" => "88",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-13 10:04:51",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 89,
-                    "staff_id" => "89",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-13 11:31:12",
-                    "updated_at" => "2020-05-13 11:37:30"
-                ],
-                [
-                    "id" => 90,
-                    "staff_id" => "90",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-13 12:54:25",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 91,
-                    "staff_id" => "91",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-13 17:19:49",
-                    "updated_at" => "2020-05-13 21:16:34"
-                ],
-                [
-                    "id" => 93,
-                    "staff_id" => "93",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-13 21:19:54",
-                    "updated_at" => "2020-05-13 21:49:26"
-                ],
-                [
-                    "id" => 94,
-                    "staff_id" => "94",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-15 09:00:18",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 96,
-                    "staff_id" => "96",
-                    "institute_id" => "1",
-                    "designation_id" => "7",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-15 15:58:16",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 97,
-                    "staff_id" => "97",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-15 16:04:10",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 98,
-                    "staff_id" => "98",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-18 10:51:38",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 101,
-                    "staff_id" => "101",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-05-22 09:48:33",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 102,
-                    "staff_id" => "102",
-                    "institute_id" => "1",
-                    "designation_id" => "5",
-                    "extra_info" => "",
-                    "created_at" => "2020-06-03 10:17:44",
-                    "updated_at" => null
-                ],
-                [
-                    "id" => 106,
-                    "staff_id" => "106",
-                    "institute_id" => "1",
-                    "designation_id" => "2",
-                    "extra_info" => "",
-                    "created_at" => "2020-07-29 10:28:18",
-                    "updated_at" => "2020-07-30 09:37:36"
-                ],
-                [
-                    "id" => 109,
-                    "staff_id" => "109",
-                    "institute_id" => "1",
-                    "designation_id" => "6",
-                    "extra_info" => "",
-                    "created_at" => "2020-07-30 10:14:14",
-                    "updated_at" => null
-                ]
-            ]
-        );
+       
     }
 }

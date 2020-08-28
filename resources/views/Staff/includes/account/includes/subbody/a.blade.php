@@ -108,7 +108,7 @@
                             </label>
 
                             <select class="form-control" data-toggle="select" id="role" name="role"
-                                title="Simple select" data-text="{{ __('Add new option') }}" data-placeholder=""
+                                 data-text="{{ __('Add new option') }}" data-placeholder=""
                                 data-select-value="{{ @$row['suggest_role'] }}"
                                 {{ config('pages.form.validate.rules.role') ? 'required' : '' }}>
                                 @foreach ($roles['data'] as $o)
@@ -187,7 +187,7 @@
                             </label>
 
                             <select class="form-control" data-toggle="select" id="role" name="role"
-                                title="Simple select" data-text="{{ __('Add new option') }}" data-placeholder=""
+                                 data-text="{{ __('Add new option') }}" data-placeholder=""
                                 data-select-value="{{ @$row['suggest_role'] }}"
                                 {{ config('pages.form.validate.rules.role') ? 'required' : '' }}>
                                 @foreach ($roles['data'] as $o)

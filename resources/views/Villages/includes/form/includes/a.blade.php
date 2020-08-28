@@ -23,8 +23,8 @@
                             @endif
                         </label>
 
-                        <select class="form-control" data-toggle="select" id="province" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                        <select class="form-control" data-toggle="select" id="province" 
+                             data-allow-clear="true" data-placeholder=""
                             name="province" data-select-value="{{config("pages.form.data.".$key.".province_id")}}"
                             data-append-to="#district" data-append-url="{{$districts["action"]["list"]}}?provinceId="
                             {{config("pages.form.validate.rules.province") ? "required" : ""}}>
@@ -53,8 +53,8 @@
                         </label>
 
                         <select disabled {{config("pages.form.data.".$key.".district.id")? "" :"disabled"}}
-                            class="form-control" data-toggle="select" id="district" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            class="form-control" data-toggle="select" id="district" 
+                             data-allow-clear="true" data-placeholder=""
                             name="district" data-select-value="{{config("pages.form.data.".$key.".district_id")}}"
                             data-append-to="#commune" data-append-url="{{$communes["action"]["list"]}}?districtId="
                             {{config("pages.form.validate.rules.district") ? "required" : ""}}>
@@ -80,8 +80,8 @@
                         </label>
 
                         <select disabled {{config("pages.form.data.".$key.".commune.id")? "" :"disabled"}}
-                            class="form-control" data-toggle="select" id="commune" title="Simple select"
-                            data-text="{{ __("Add new option") }}" data-allow-clear="true" data-placeholder=""
+                            class="form-control" data-toggle="select" id="commune" 
+                             data-allow-clear="true" data-placeholder=""
                             name="commune" data-select-value="{{config("pages.form.data.".$key.".commune.id")}}"
                             {{config("pages.form.validate.rules.commune") ? "required" : ""}}>
                             @foreach($communes["data"] as $o)

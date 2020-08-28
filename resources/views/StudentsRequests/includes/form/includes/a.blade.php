@@ -22,7 +22,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="institute" title="Simple select"
+                <select class="form-control" data-toggle="select" id="institute" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".institute_id",Auth::user()->institute_id)}}"
                     {{config("pages.form.validate.rules.institute") ? "required" : ""}}>
@@ -49,7 +49,7 @@
                 </label>
 
                 <select class="form-control" data-toggle="select" id="study_program" name="study_program"
-                    title="Simple select" data-placeholder=""
+                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_program_id",request("programId"))}}"
                     data-append-to="#study_course-{{$key}}"
                     data-append-url="{{$study_course["action"]["list"]}}?programId=">
@@ -75,7 +75,7 @@
                 </label>
 
                 <select {{$study_course['data']? "" : "disabled" }} class="form-control" data-toggle="select"
-                    id="study_course-{{$key}}" title="Simple select" data-placeholder="" name="study_course"
+                    id="study_course-{{$key}}"  data-placeholder="" name="study_course"
                     data-select-value="{{config("pages.form.data.".$key.".study_course_id",request("courseId"))}}">
                     @foreach($study_course["data"] as $o)
                     <option data-src="{{$o["image"]}}" value="{{$o["id"]}}">{{ $o["name"]}}</option>
@@ -96,7 +96,7 @@
                     @endif
                 </label>
 
-                <select class="form-control" data-toggle="select" id="study_generation" name="study_generation" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_generation" name="study_generation" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_generation_id",request("generationId"))}}">
                     @foreach($study_generation["data"] as $o)
@@ -119,7 +119,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_academic_year" name="study_academic_year" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_academic_year" name="study_academic_year" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_academic_year_id",request("yearId"))}}">
                     @foreach($study_academic_year["data"] as $o)
@@ -140,7 +140,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_semester" name="study_semester" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_semester" name="study_semester" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_semester_id",request("semesterId"))}}">
                     @foreach($study_semester["data"] as $o)
@@ -162,7 +162,7 @@
                     </span>
                     @endif
                 </label>
-                <select class="form-control" data-toggle="select" id="study_session" name="study_session" title="Simple select"
+                <select class="form-control" data-toggle="select" id="study_session" name="study_session" 
                     data-placeholder=""
                     data-select-value="{{config("pages.form.data.".$key.".study_session_id",request("sessionId"))}}">
                     @foreach($study_session["data"] as $o)
